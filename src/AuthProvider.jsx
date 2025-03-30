@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
+const API_KEY = import.meta.env.VITE_API_KEY;
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
@@ -28,8 +29,7 @@ export const AuthProvider = ({ children }) => {
       axios
         .get(`${API_URL}/api/auth/me`, {
           headers: {
-            "x-api-key":
-              "$2b$10$gIq.OCeriVApWBM1g7aOAuOsL/c7SnQEpepETJ3g.JSbn7VjdjfRC",
+            "x-api-key": API_KEY,
           },
           withCredentials: true,
         })

@@ -12,53 +12,35 @@ import InboxOutlinedIcon from '@mui/icons-material/InboxOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined';
-import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import TemaIcono from "../../componentes/atomos/temaIcono";
+import ElementoMenu from "../../componentes/moleculas/elementoMenu";
 
-const ElementoMenu = ({ titulo, ruta, icono, seleccionado, setSeleccionado }) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);    
-  return (
-      <MenuItem
-        active={seleccionado === titulo}
-        onClick={() => setSeleccionado(titulo)}
-        icon={icono}
-        style={{color: colors.primario[4]}} 
-      >
-      <Link to={ruta} style={{ textDecoration: "none", color: "inherit", width: "100%" }}>
-          <Typography>{titulo}</Typography>
-      </Link>
-      </MenuItem>
-    );
-  };
-  
 
 const BarraLateral = () => {
     const [colapsado, setColapsado] = useState(false);
     const [seleccionado, setSeleccionado] = useState("Inicio");
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);    
-    const colorMode = useContext(ColorModeContext);  
     const location = useLocation();
     const [activeSubmenu, setActiveSubmenu] = useState('');
     const empleadosActivo = location.pathname.includes('/empleados');
   
     return (
       <Box sx={{
-        "& .pro-sidebar-inner": { background: "linear-gradient(180deg, #0E408F 0%, #093068 54.5%, #041E3C 100%)"},
+        "& .pro-sidebar-inner": { background: colors.menu[1]},
         "& .pro-icon-wrapper": { backgroundColor: "transparent !important" },
-        "& .pro-inner-item": { padding: "5px 35px 5px 20px !important" },
         "& .pro-inner-item:hover": { color: "#ffffff !important" },
-        "& .pro-menu-item.active, .pro-sub-menu-item.active": { backgroundColor: "rgba(33, 150, 243, 0.08) !important" },
-        "& .pro-sub-menu .pro-inner-list-item": { paddingLeft: "44px !important" }, 
-        "& .active-submenu": { backgroundColor: "rgba(33, 150, 243, 0.08) !important" },
+        "& .pro-menu-item.active, .pro-sub-menu-item.active": { backgroundColor: colors.menu[3] },
+        "& .pro-sub-menu": { padding: "0px 8px !important" },    
+        "& .pro-sub-menu .pro-inner-list-item": { padding: "0px 10px 8px 33px !important" }, 
+        "& .active-submenu": { backgroundColor: colors.menu[3] },
       }}>
         <ProSidebar collapsed={colapsado}>
           <Menu iconShape="square">
             <MenuItem
               onClick={() => setColapsado(!colapsado)}
               icon={colapsado ? <MenuOutlinedIcon /> : undefined}
-              style={{ margin: "10px 0 20px 0" }}
+              style={{ margin: "10px 0 20px 0" , color: colors.primario[4]}}    
             >
               {!colapsado && (
                 <Box display="flex" justifyContent="space-between" alignItems="center" ml="15px">
@@ -78,7 +60,7 @@ const BarraLateral = () => {
               title="Empleados" 
               icon={<GroupsOutlinedIcon />} 
               component={<Link to="/empleados" />}
-              active={empleadosActivo} 
+              active={empleadosActivo.toString()} 
               className={empleadosActivo ? 'active-submenu' : ''}
               onClick={() => setActiveSubmenu('Empleados')}
               >
@@ -88,22 +70,16 @@ const BarraLateral = () => {
               title="Productos" 
               icon={<LocalOfferOutlinedIcon />} 
               >
-              <ElementoMenu titulo="Categorías de Productos" ruta="/categorias" seleccionado={seleccionado} setSeleccionado={setSeleccionado} />
-              <ElementoMenu titulo="Sets de Productos" ruta="/setsProductos" seleccionado={seleccionado} setSeleccionado={setSeleccionado} />
+              <ElementoMenu titulo="Sets de Productos" ruta="/setsProductos" seleccionado={seleccionado} setSeleccionado={setSeleccionado} />                
+              <ElementoMenu titulo="Categorías" ruta="/categorias" seleccionado={seleccionado} setSeleccionado={setSeleccionado} />
               </SubMenu>
               <ElementoMenu titulo="Pedidos" ruta="/pedidos" icono={<InboxOutlinedIcon />} seleccionado={seleccionado} setSeleccionado={setSeleccionado} />
               <ElementoMenu titulo="Cuotas" ruta="/cuotas" icono={<CurrencyExchangeOutlinedIcon />} seleccionado={seleccionado} setSeleccionado={setSeleccionado} />
               <ElementoMenu titulo="Configuración" ruta="/configuracion" icono={<SettingsOutlinedIcon />} seleccionado={seleccionado} setSeleccionado={setSeleccionado} />
-          </Box>
-          <Box>
-            <IconButton onClick={colorMode.toggleColorMode}>
-                  {theme.palette.mode === "dark" ? (
-                      <DarkModeOutlinedIcon/>
-                  ) : (
-                      <LightModeOutlinedIcon />
-                  )}
-              </IconButton>            
-          </Box>
+          </Box> 
+            <Box sx={{padding: "20px 0px 0px 50px"}}>     
+              <TemaIcono />   
+            </Box>
         </Menu>
       </ProSidebar>
     </Box>

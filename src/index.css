@@ -78,3 +78,7 @@ body,
   position: relative;
 }
 
+.pro-sidebar {
+  width: 275px;
+  min-width: 275px;
+}

@@ -34,6 +34,11 @@ export const tokens = (mode) => ({
             2: "rgba(255, 183, 77, 1)",  
             3: "rgba(191, 54, 12, 1)",  
         },
+        menu: {
+            1:"rgba(23, 23, 23, 1)",
+            2:"rgba(33, 33, 33, 1)",
+            3:"rgba(75, 75, 75, 0.26)"
+        },
      }
     : {
         texto: {
@@ -65,6 +70,11 @@ export const tokens = (mode) => ({
             2:"rgba(239, 108, 0, 1)",
             3:"rgba(102, 60, 0, 1)",
         },
+        menu: {
+            1:"linear-gradient(180deg, #0E408F 0%, #093068 54.5%, #041E3C 100%)",
+            2:"rgba(255, 255, 255, 1)",
+            3:"rgba(33, 150, 243, 0.08)"
+        },        
     }),
 });  
 
@@ -88,7 +98,7 @@ export const themeSettings = (mode) => {
                 light: colors.texto[3],
               },
               background: {
-                default: "rgba(27, 33, 46, 1)",
+                default: colors.menu[2],
               },
             }
           : {
@@ -104,7 +114,7 @@ export const themeSettings = (mode) => {
                 light: colors.texto[3],
               },
               background: {
-                default:"rgba(252, 252, 252, 1)",
+                default: colors.menu[2],
               },
             }),
       },
@@ -172,12 +182,12 @@ export const ColorModeContext = createContext({
 });
   
 export const useMode = () => {
-    const [mode, setMode] = useState("dark");
+    const [mode, setMode] = useState("light");
   
     const colorMode = useMemo(
       () => ({
         toggleColorMode: () =>
-          setMode((prev) => (prev === "light" ? "dark" : "light")),
+          setMode((prev) => (prev === "dark" ? "light" : "dark")),
       }),
       []
     );

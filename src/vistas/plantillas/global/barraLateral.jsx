@@ -12,6 +12,7 @@ import InboxOutlinedIcon from '@mui/icons-material/InboxOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined';
+import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
 import TemaIcono from "../../componentes/atomos/temaIcono";
 import ElementoMenu from "../../componentes/moleculas/elementoMenu";
 
@@ -31,8 +32,8 @@ const BarraLateral = () => {
         "& .pro-icon-wrapper": { backgroundColor: "transparent !important" },
         "& .pro-inner-item:hover": { color: "#ffffff !important" },
         "& .pro-menu-item.active, .pro-sub-menu-item.active": { backgroundColor: colors.menu[3] },
-        "& .pro-sub-menu": { padding: "0px 8px !important" },    
-        "& .pro-sub-menu .pro-inner-list-item": { padding: "0px 10px 8px 33px !important" }, 
+        "& .pro-sub-menu": { padding: "0px 0px 0px 8px !important" },    
+        "& .pro-sub-menu .pro-inner-list-item": { padding: "0px 0px 0px 33px !important", overflow:"visible !important"}, 
         "& .active-submenu": { backgroundColor: colors.menu[3] },
       }}>
         <ProSidebar collapsed={colapsado}>
@@ -75,6 +76,7 @@ const BarraLateral = () => {
               </SubMenu>
               <ElementoMenu titulo="Pedidos" ruta="/pedidos" icono={<InboxOutlinedIcon />} seleccionado={seleccionado} setSeleccionado={setSeleccionado} />
               <ElementoMenu titulo="Cuotas" ruta="/cuotas" icono={<CurrencyExchangeOutlinedIcon />} seleccionado={seleccionado} setSeleccionado={setSeleccionado} />
+              <ElementoMenu titulo="Eventos" ruta="/eventos" icono={<EditCalendarOutlinedIcon />} seleccionado={seleccionado} setSeleccionado={setSeleccionado} />
               <ElementoMenu titulo="Configuración" ruta="/configuracion" icono={<SettingsOutlinedIcon />} seleccionado={seleccionado} setSeleccionado={setSeleccionado} />
           </Box> 
             <Box sx={{padding: "20px 0px 0px 50px"}}>     

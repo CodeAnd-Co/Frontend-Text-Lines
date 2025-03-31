@@ -17,6 +17,7 @@ import Categorias from "./vistas/paginas/categoriasProductos";
 import Pedidos from "./vistas/paginas/pedidos";
 import Cuotas from "./vistas/paginas/cuotas";
 import SetsDeProductos from "./vistas/paginas/setsProducto";
+import Eventos from "./vistas/paginas/eventos";
 import Configuracion from "./vistas/paginas/configuracion";
 import { AuthProvider } from "./AuthProvider";
 import RutaProtegida from "./RutaProtegida";
@@ -88,6 +89,14 @@ function App() {
                     element={
                       <RutaProtegida>
                         <Cuotas />
+                      </RutaProtegida>
+                    }
+                  />
+                  <Route
+                    path='/eventos'
+                    element={
+                      <RutaProtegida>
+                        < Eventos />
                       </RutaProtegida>
                     }
                   />

@@ -11,7 +11,11 @@ const TemaIcono = () => {
 
   return (
     <IconButton onClick={colorMode.toggleColorMode}>
-      {theme.palette.mode === "dark" ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon sx={{ color: colors.primario[4] }} />}
+      {theme.palette.mode === "dark" ? (
+        <LightModeOutlinedIcon />
+      ) : (
+        <DarkModeOutlinedIcon sx={{ color: colors.primario[4] }} />
+      )}
     </IconButton>
   );
 };

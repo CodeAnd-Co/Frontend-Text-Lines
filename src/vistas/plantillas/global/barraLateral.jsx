@@ -22,6 +22,8 @@ const BarraLateral = () => {
   const [seleccionado, setSeleccionado] = useState("Inicio");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [productosAbierto, setProductosAbierto] = useState(false);
+  const [empleadosAbierto, setEmpleadosAbierto] = useState(false);
 
   return (
     <Box
@@ -82,7 +84,12 @@ const BarraLateral = () => {
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}
             />
-            <SubMenu title="Empleados" icon={<GroupsOutlinedIcon />}>
+            <SubMenu
+              title="Empleados"
+              icon={<GroupsOutlinedIcon />}
+              open={colapsado ? false : empleadosAbierto}
+              onOpenChange={() => setEmpleadosAbierto(!empleadosAbierto)}
+            >
               <ElementoMenu
                 titulo="Lista de Empleados"
                 ruta="/empleados"
@@ -96,7 +103,12 @@ const BarraLateral = () => {
                 setSeleccionado={setSeleccionado}
               />
             </SubMenu>
-            <SubMenu title="Productos" icon={<LocalOfferOutlinedIcon />}>
+            <SubMenu
+              title="Productos"
+              icon={<LocalOfferOutlinedIcon />}
+              open={colapsado ? false : productosAbierto}
+              onOpenChange={() => setProductosAbierto(!productosAbierto)}
+            >
               <ElementoMenu
                 titulo="Lista de Productos"
                 ruta="/productos"

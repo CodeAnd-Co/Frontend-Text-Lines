@@ -5,7 +5,7 @@ const RutaProtegida = ({ children }) => {
   const { usuario, cargando } = useAuth();
 
   if (cargando) return <p>Loading...</p>;
-  return usuario ? children : <Navigate to='/inicio' />;
+  return usuario ? children : <Navigate to='/login' />;
 };
 
 export default RutaProtegida;

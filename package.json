@@ -12,7 +12,8 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@mui/material": "^6.4.7",
+    "@mui/icons-material": "^7.0.0",
+    "@mui/material": "^7.0.0",
     "@mui/styled-engine-sc": "^6.4.6",
     "@tailwindcss/vite": "^4.0.9",
     "axios": "^1.7.9",
@@ -20,6 +21,7 @@
     "js-cookie": "^3.0.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-pro-sidebar": "^0.7.1",
     "react-router-dom": "^7.2.0",
     "serve": "^14.2.4",
     "styled-components": "^6.1.15",

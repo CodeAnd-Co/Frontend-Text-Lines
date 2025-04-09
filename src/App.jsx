@@ -63,7 +63,7 @@ const AppLayout = () => {
           <Route
             path='/productos'
             element={
-              <RutaProtegida rolesPermitidos={["Super Administrador"]}>
+              <RutaProtegida permisosPermitidos={["Super Administrador"]}>
                 <Productos />
               </RutaProtegida>
             }
@@ -71,7 +71,9 @@ const AppLayout = () => {
           <Route
             path='/categorias'
             element={
-              <RutaProtegida>
+              <RutaProtegida
+                permisosPermitidos={["Leer Categoría de Productos"]}
+              >
                 <Categorias />
               </RutaProtegida>
             }

@@ -39,6 +39,9 @@ export const tokens = (mode) => ({
           2: "rgba(33, 33, 33, 1)",
           3: "rgba(75, 75, 75, 0.26)",
         },
+        altertex: {
+          1: "rgba(41, 41, 41, 1)",
+        },
       }
     : {
         texto: {
@@ -74,6 +77,9 @@ export const tokens = (mode) => ({
           1: "linear-gradient(180deg, #0E408F 0%, #093068 54.5%, #041E3C 100%)",
           2: "rgba(255, 255, 255, 1)",
           3: "rgba(33, 150, 243, 0.08)",
+        },
+        altertex: {
+          1: "rgba(24, 50, 165, 1)",
         },
       }),
 });

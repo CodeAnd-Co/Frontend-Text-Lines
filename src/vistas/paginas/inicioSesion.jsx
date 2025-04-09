@@ -77,9 +77,8 @@ export default function PaginaInicioSesion() {
       setMensaje("Inicio de sesión exitoso"); // Muestra un mensaje de éxito
 
       // Redirige después de 1 segundo
-      setTimeout(() => navegar("/inicio"), 1000);
+      setTimeout(() => navegar("/inicio"), 500);
     } catch (error) {
-      console.error("Error:", error);
       // Maneja el error, mostrando un mensaje adecuado
       if (
         error.response &&
@@ -98,7 +97,15 @@ export default function PaginaInicioSesion() {
       display='flex'
       justifyContent='center'
       alignItems='center'
-      minHeight='90vh'
+      minHeight='100%'
+      sx={{
+        backgroundImage: 'url("/fondo-inicio-sesion.png")',
+        backgroundSize: "cover", // La imagen cubre toda el área sin deformarse
+        backgroundPosition: "center", // La imagen siempre se centra
+        backgroundRepeat: "no-repeat", // No se repite la imagen
+        backgroundAttachment: "fixed", // La imagen permanece fija cuando se hace scroll
+        width: "100%",
+      }}
     >
       <Card sx={{ width: 631, height: 503, padding: 3, boxShadow: 3 }}>
         {/* Logo de la aplicación */}

@@ -52,6 +52,8 @@ export default function PaginaInicioSesion() {
     event.preventDefault(); // Prevenir el comportamiento predeterminado del formulario
     const data = { correo, contrasenia }; // Datos del formulario
 
+    setMensaje("");
+
     try {
       // Realiza la solicitud de inicio de sesión
       await axios.post(`${API_URL}/api/auth/login`, data, {

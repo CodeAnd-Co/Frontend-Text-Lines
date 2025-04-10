@@ -27,8 +27,8 @@ const FormaLogin = ({
           onChange={(event) => setContrasenia(event.target.value)}
         />
         <MensajeStatus
-          message={mensaje}
-          isSuccess={mensaje && mensaje.includes("exitoso")}
+          mensaje={mensaje}
+          esExito={mensaje && mensaje.includes("exitoso")}
         />
         <BotonForma>Iniciar Sesión</BotonForma>
       </form>

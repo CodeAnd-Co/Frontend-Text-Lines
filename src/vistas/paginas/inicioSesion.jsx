@@ -19,19 +19,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Cookies from "js-cookie";
-import {
-  TextField,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  CardActions,
-  Typography,
-  Box,
-  Stack,
-} from "@mui/material";
 import { useAuth } from "../../AuthProvider";
+import LogoImagen from "../componentes/moleculas/logoImagen";
+import ContenedorFondo from "../plantillas/global/contenedorFondo";
+import PlantillaTarjeta from "../plantillas/global/plantillaTarjeta";
+import FormaLogin from "../componentes/organismos/formaLogin";
 
 // Variables de configuración para la API
 const API_URL = import.meta.env.VITE_API_URL; // URL base de la API
@@ -81,9 +73,9 @@ export default function PaginaInicioSesion() {
     } catch (error) {
       // Maneja el error, mostrando un mensaje adecuado
       if (
-        error.response &&
-        error.response.data &&
-        error.response.data.mensaje
+        error.response
+        && error.response.data
+        && error.response.data.mensaje
       ) {
         setMensaje(error.response.data.mensaje); // Mensaje de error personalizado desde el backend
       } else {
@@ -93,89 +85,21 @@ export default function PaginaInicioSesion() {
   };
 
   return (
-    <Box
-      display='flex'
-      justifyContent='center'
-      alignItems='center'
-      minHeight='100%'
-      sx={{
-        backgroundImage: 'url("/fondo-inicio-sesion.png")',
-        backgroundSize: "cover", // La imagen cubre toda el área sin deformarse
-        backgroundPosition: "center", // La imagen siempre se centra
-        backgroundRepeat: "no-repeat", // No se repite la imagen
-        backgroundAttachment: "fixed", // La imagen permanece fija cuando se hace scroll
-        width: "100%",
-      }}
-    >
-      <Card sx={{ width: 631, height: 503, padding: 3, boxShadow: 3 }}>
-        {/* Logo de la aplicación */}
-        <Box display='flex' justifyContent='center' mb={1}>
-          <img
-            src='/logo-altertex-inicio-sesion.png' // Ruta del logo
-            alt='Logo de la app'
-            style={{ width: "345px", height: "80px" }}
-          />
-        </Box>
-
-        {/* Título del formulario */}
-        <CardHeader
-          title='Iniciar Sesión'
-          titleTypographyProps={{
-            variant: "h6",
-          }}
-          sx={{
-            textAlign: "center",
-            padding: 1,
-          }}
+    <ContenedorFondo>
+      <PlantillaTarjeta title={"Iniciar Sesión"}>
+        <LogoImagen
+          logoSrc='/logo-altertex-inicio-sesion.png'
+          altText='Logo de la app'
         />
-
-        {/* Contenido del formulario */}
-        <CardContent>
-          <form onSubmit={handleSubmit}>
-            {/* Campo de correo electrónico */}
-            <TextField
-              fullWidth
-              label='Correo electronico'
-              type='email'
-              variant='outlined'
-              margin='normal'
-              value={correo}
-              onChange={(event) => setCorreo(event.target.value)}
-            />
-            {/* Campo de contraseña */}
-            <TextField
-              fullWidth
-              label='Contraseña'
-              type='password'
-              variant='outlined'
-              margin='normal'
-              value={contrasenia}
-              onChange={(event) => setContrasenia(event.target.value)}
-            />
-            {/* Mensaje de error o éxito */}
-            {mensaje && (
-              <Typography
-                color={mensaje.includes("exitoso") ? "green" : "red"}
-                textAlign='center'
-                mt={1}
-              >
-                {mensaje}
-              </Typography>
-            )}
-            {/* Botón de envío */}
-            <CardActions sx={{ mt: 3 }}>
-              <Button
-                type='submit'
-                variant='contained'
-                fullWidth
-                sx={{ mt: 2 }}
-              >
-                Iniciar Sesión
-              </Button>
-            </CardActions>
-          </form>
-        </CardContent>
-      </Card>
-    </Box>
+        <FormaLogin
+          correo={correo}
+          setCorreo={setCorreo}
+          contrasenia={contrasenia}
+          setContrasenia={setContrasenia}
+          mensaje={mensaje}
+          handleSubmit={handleSubmit}
+        ></FormaLogin>
+      </PlantillaTarjeta>
+    </ContenedorFondo>
   );
 }

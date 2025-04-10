@@ -20,9 +20,9 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     // Solo verifica el estado de autenticación en el montaje inicial o cambios de ruta que requieran auth
     const rutaActualRequiereAuth = !RUTAS_PUBLICAS.includes(ubicacion.pathname);
-    const deberiaVerificarAuth =
-      (esMontajeInicialRef.current || rutaActualRequiereAuth) &&
-      !verificandoAuthRef.current;
+    const deberiaVerificarAuth
+      = (esMontajeInicialRef.current || rutaActualRequiereAuth)
+      && !verificandoAuthRef.current;
 
     if (deberiaVerificarAuth) {
       verificandoAuthRef.current = true; // Establece bandera para prevenir solicitudes duplicadas
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
         .then((res) => {
           setUsuario(res.data.user);
         })
-        .catch((error) => {
+        .catch(() => {
           setUsuario(null);
           // Si hay un error de autenticación y la ruta requiere autenticación, redirige al login
           if (rutaActualRequiereAuth) {
@@ -60,9 +60,9 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     // Si no está cargando y el usuario es null y la ruta requiere autenticación
     if (
-      !cargando &&
-      usuario === null &&
-      !RUTAS_PUBLICAS.includes(ubicacion.pathname)
+      !cargando
+      && usuario === null
+      && !RUTAS_PUBLICAS.includes(ubicacion.pathname)
     ) {
       navigate("/login", { replace: true });
     }

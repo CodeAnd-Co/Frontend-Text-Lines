@@ -1,7 +1,6 @@
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import { IconButton, useTheme } from "@mui/material";
 import { ColorModeContext, tokens } from "../../../theme";
-import { useContext } from "react";
 import { useAuth } from "../../../AuthProvider";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -11,9 +10,8 @@ const API_KEY = import.meta.env.VITE_API_KEY;
 
 const LogoutIcono = () => {
   const theme = useTheme();
-  const colorMode = useContext(ColorModeContext);
   const colors = tokens(theme.palette.mode);
-  const { user, cerrarSesion } = useAuth();
+  const { cerrarSesion } = useAuth();
   const navegar = useNavigate();
 
   const handleLogout = async () => {

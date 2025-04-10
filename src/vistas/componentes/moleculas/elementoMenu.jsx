@@ -1,11 +1,10 @@
 import React from "react";
 import { MenuItem } from "react-pro-sidebar";
 import { Link } from "react-router-dom";
-import { useTheme } from "@mui/material";
+import { useTheme, Box } from "@mui/material";
 import { tokens } from "../../../theme";
 import IconoMenu from "../atomos/iconoMenu";
 import TextoMenu from "../atomos/textoMenu";
-import { Box } from "@mui/material";
 
 const ElementoMenu = ({
   titulo,

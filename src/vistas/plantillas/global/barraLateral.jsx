@@ -1,8 +1,7 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { ColorModeContext, tokens } from "../../../theme";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
@@ -24,8 +23,6 @@ const BarraLateral = () => {
   const colors = tokens(theme.palette.mode);
   const [productosAbierto, setProductosAbierto] = useState(false);
   const [empleadosAbierto, setEmpleadosAbierto] = useState(false);
-
-  const handleLogout = () => {};
 
   return (
     <Box

@@ -6,6 +6,7 @@ import {
   Route,
   Navigate,
   Link,
+  useLocation,
 } from "react-router-dom";
 import "./App.css";
 import BarraLateral from "./vistas/plantillas/global/barraLateral";
@@ -21,6 +22,105 @@ import Eventos from "./vistas/paginas/eventos";
 import Configuracion from "./vistas/paginas/configuracion";
 import { AuthProvider } from "./AuthProvider";
 import RutaProtegida from "./RutaProtegida";
+import Usuarios from "./vistas/paginas/usuarios";
+
+// Layout component that conditionally renders the sidebar
+const AppLayout = () => {
+  const location = useLocation();
+  const isUsuarios = location.pathname === "/usuarios";
+
+  return (
+    <div className="app">
+      {!isUsuarios && <BarraLateral />}
+      <main className={`content ${isUsuarios ? "full-width" : ""}`}>
+        <Routes>
+          <Route path="/" element={<Navigate to="/usuarios" />} />
+          <Route
+            path="/inicio"
+            element={
+              <RutaProtegida>
+                <Inicio />
+              </RutaProtegida>
+            }
+          />
+          <Route path="/usuarios" element={<Usuarios />} />
+          <Route
+            path="/empleados"
+            element={
+              <RutaProtegida>
+                <Empleados />
+              </RutaProtegida>
+            }
+          />
+          <Route
+            path="/grupoEmpleados"
+            element={
+              <RutaProtegida>
+                <GrupoEmpleados />
+              </RutaProtegida>
+            }
+          />
+          <Route
+            path="/productos"
+            element={
+              <RutaProtegida rolesPermitidos={["Super Administrador"]}>
+                <Productos />
+              </RutaProtegida>
+            }
+          />
+          <Route
+            path="/categorias"
+            element={
+              <RutaProtegida>
+                <Categorias />
+              </RutaProtegida>
+            }
+          />
+          <Route
+            path="/setsProductos"
+            element={
+              <RutaProtegida>
+                <SetsDeProductos />
+              </RutaProtegida>
+            }
+          />
+          <Route
+            path="/pedidos"
+            element={
+              <RutaProtegida>
+                <Pedidos />
+              </RutaProtegida>
+            }
+          />
+          <Route
+            path="/cuotas"
+            element={
+              <RutaProtegida>
+                <Cuotas />
+              </RutaProtegida>
+            }
+          />
+          <Route
+            path="/eventos"
+            element={
+              <RutaProtegida>
+                <Eventos />
+              </RutaProtegida>
+            }
+          />
+          <Route
+            path="/configuracion"
+            element={
+              <RutaProtegida>
+                <Configuracion />
+              </RutaProtegida>
+            }
+          />
+        </Routes>
+      </main>
+    </div>
+  );
+};
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -30,87 +130,7 @@ function App() {
         <CssBaseline />
         <Router>
           <AuthProvider>
-            <div className='app'>
-              <BarraLateral />
-              <main className='content'>
-                <Routes>
-                  <Route path='/' element={<Navigate to='/inicio' />} />
-                  <Route path='/inicio' element={<Inicio />} />
-                  <Route
-                    path='/empleados'
-                    element={
-                      <RutaProtegida>
-                        <Empleados />
-                      </RutaProtegida>
-                    }
-                  />
-                  <Route
-                    path='/grupoEmpleados'
-                    element={
-                      <RutaProtegida>
-                        <GrupoEmpleados />
-                      </RutaProtegida>
-                    }
-                  />
-                  <Route
-                    path='/productos'
-                    element={
-                      <RutaProtegida>
-                        <Productos />
-                      </RutaProtegida>
-                    }
-                  />
-                  <Route
-                    path='/categorias'
-                    element={
-                      <RutaProtegida>
-                        <Categorias />
-                      </RutaProtegida>
-                    }
-                  />
-                  <Route
-                    path='/setsProductos'
-                    element={
-                      <RutaProtegida>
-                        <SetsDeProductos />
-                      </RutaProtegida>
-                    }
-                  />
-                  <Route
-                    path='/pedidos'
-                    element={
-                      <RutaProtegida>
-                        <Pedidos />
-                      </RutaProtegida>
-                    }
-                  />
-                  <Route
-                    path='/cuotas'
-                    element={
-                      <RutaProtegida>
-                        <Cuotas />
-                      </RutaProtegida>
-                    }
-                  />
-                  <Route
-                    path='/eventos'
-                    element={
-                      <RutaProtegida>
-                        < Eventos />
-                      </RutaProtegida>
-                    }
-                  />
-                  <Route
-                    path='/configuracion'
-                    element={
-                      <RutaProtegida>
-                        <Configuracion />
-                      </RutaProtegida>
-                    }
-                  />
-                </Routes>
-              </main>
-            </div>
+            <AppLayout />
           </AuthProvider>
         </Router>
       </ThemeProvider>

@@ -75,9 +75,9 @@ export default function PaginaInicioSesion() {
     } catch (error) {
       // Maneja el error, mostrando un mensaje adecuado
       if (
-        error.response
-        && error.response.data
-        && error.response.data.mensaje
+        error.response &&
+        error.response.data &&
+        error.response.data.mensaje
       ) {
         setMensaje(error.response.data.mensaje); // Mensaje de error personalizado desde el backend
       } else {
@@ -89,10 +89,7 @@ export default function PaginaInicioSesion() {
   return (
     <ContenedorFondo>
       <PlantillaTarjeta title={"Iniciar Sesión"}>
-        <LogoImagen
-          logoSrc='/logo-altertex-inicio-sesion.png'
-          altText='Logo de la app'
-        />
+        <LogoImagen logoSrc='/logoAltertexLogin.svg' altText='Logo de la app' />
         <FormaLogin
           correo={correo}
           setCorreo={setCorreo}

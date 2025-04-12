@@ -63,7 +63,7 @@ const AppLayout = () => {
           <Route
             path='/productos'
             element={
-              <RutaProtegida permisosPermitidos={["Super Administrador"]}>
+              <RutaProtegida>
                 <Productos />
               </RutaProtegida>
             }

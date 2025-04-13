@@ -1,4 +1,4 @@
-import { useAuth } from "./hooks/AuthProvider";
+import { useAuth } from "../../../hooks/AuthProvider";
 import { Navigate } from "react-router-dom";
 
 const RutaProtegida = ({ children, permisosPermitidos = [] }) => {

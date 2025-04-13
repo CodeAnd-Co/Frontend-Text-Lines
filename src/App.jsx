@@ -23,6 +23,7 @@ import Configuracion from "./vistas/paginas/configuracion";
 import { AuthProvider } from "./AuthProvider";
 import RutaProtegida from "./RutaProtegida";
 import PaginaInicioSesion from "./vistas/paginas/inicioSesion";
+import Tienda from "./Tienda";
 
 // Layout component that conditionally renders the sidebar
 const AppLayout = () => {
@@ -118,6 +119,7 @@ const AppLayout = () => {
               </RutaProtegida>
             }
           />
+          <Route path='/tienda' element={<Tienda></Tienda>} />
         </Routes>
       </main>
     </div>

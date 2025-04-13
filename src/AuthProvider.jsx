@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }) => {
   const cerrarSesion = async () => {
     try {
       await axios.post(
-        `${API_URL}/api/logout`,
+        `${API_URL}/api/autenticacion/cerrar-sesion`,
         {},
         { withCredentials: true, headers: { "x-api-key": API_KEY } }
       );

@@ -73,8 +73,13 @@ export default function PaginaInicioSesion() {
       setUsuario(respuesta.data.user); // Almacena los datos del usuario en el contexto
       setMensaje("Inicio de sesión exitoso"); // Muestra un mensaje de éxito
 
-      // Redirige después de 1 segundo
-      setTimeout(() => navegar("/inicio"), 500);
+      const clientesAsociadosArreglo = respuesta.data.user.clientesAsociados;
+
+      if (clientesAsociadosArreglo.length > 0) {
+        setTimeout(() => navegar("/inicio"), 500);
+      } else {
+        setTimeout(() => navegar("/tienda"), 500);
+      }
     } catch (error) {
       console.log(error);
       // Maneja el error, mostrando un mensaje adecuado
@@ -89,6 +94,30 @@ export default function PaginaInicioSesion() {
       }
     }
   };
+
+  //   {
+  //     "user": {
+  //         "permisos": [
+  //             "Acceder al Centro de Ayuda",
+  //             "Leer Carrito de Compras",
+  //             "Actualizar Carrito de Compras",
+  //             "Eliminar Productos del Carrito",
+  //             "Agregar Producto al Carrito",
+  //             "Crear Pedido",
+  //             "Leer Pedido Tienda",
+  //             "Finalizar Pedido",
+  //             "Consultar Lista de Pedidos Tienda",
+  //             "Recibir Notificaciones de Estado del Pedido",
+  //             "Leer Producto Tienda",
+  //             "Consultar Lista de Productos Tienda",
+  //             "Leer Balance",
+  //             "Seleccionar Tipo de Pago"
+  //         ],
+  //         "clientesAsociados": [],
+  //         "iat": 1744570120,
+  //         "exp": 1744598920
+  //     }
+  // }
 
   return (
     <ContenedorFondo>

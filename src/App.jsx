@@ -20,7 +20,7 @@ import Cuotas from "./vistas/paginas/cuotas";
 import SetsDeProductos from "./vistas/paginas/setsProducto";
 import Eventos from "./vistas/paginas/eventos";
 import Configuracion from "./vistas/paginas/configuracion";
-import { AuthProvider } from "./AuthProvider";
+import { AuthProvider } from "./hooks/AuthProvider";
 import RutaProtegida from "./RutaProtegida";
 import PaginaInicioSesion from "./vistas/paginas/inicioSesion";
 import Tienda from "./Tienda";

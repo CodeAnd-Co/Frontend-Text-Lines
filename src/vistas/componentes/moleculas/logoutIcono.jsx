@@ -1,7 +1,7 @@
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import { IconButton, useTheme } from "@mui/material";
 import { ColorModeContext, tokens } from "../../../theme";
-import { useAuth } from "../../../AuthProvider";
+import { useAuth } from "../../../hooks/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 

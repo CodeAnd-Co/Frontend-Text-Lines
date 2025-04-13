@@ -56,16 +56,19 @@ export default function PaginaInicioSesion() {
 
     try {
       // Realiza la solicitud de inicio de sesión
-      await axios.post(`${API_URL}/api/auth/login`, data, {
+      await axios.post(`${API_URL}/api/autenticacion/iniciar-sesion`, data, {
         withCredentials: true,
         headers: { "x-api-key": API_KEY }, // Agrega la clave API en los headers
       });
 
       // Si el login es exitoso, obtiene los datos del usuario
-      const respuesta = await axios.get(`${API_URL}/api/auth/me`, {
-        withCredentials: true,
-        headers: { "x-api-key": API_KEY },
-      });
+      const respuesta = await axios.get(
+        `${API_URL}/api/autenticacion/autenticar`,
+        {
+          withCredentials: true,
+          headers: { "x-api-key": API_KEY },
+        }
+      );
 
       setUsuario(respuesta.data.user); // Almacena los datos del usuario en el contexto
       setMensaje("Inicio de sesión exitoso"); // Muestra un mensaje de éxito
@@ -73,11 +76,12 @@ export default function PaginaInicioSesion() {
       // Redirige después de 1 segundo
       setTimeout(() => navegar("/inicio"), 500);
     } catch (error) {
+      console.log(error);
       // Maneja el error, mostrando un mensaje adecuado
       if (
-        error.response &&
-        error.response.data &&
-        error.response.data.mensaje
+        error.response
+        && error.response.data
+        && error.response.data.mensaje
       ) {
         setMensaje(error.response.data.mensaje); // Mensaje de error personalizado desde el backend
       } else {

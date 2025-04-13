@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
       esMontajeInicialRef.current = false; // Ya no es montaje inicial
 
       axios
-        .get(`${API_URL}/api/auth/me`, {
+        .get(`${API_URL}/api/autenticacion/autenticar`, {
           headers: {
             "x-api-key": API_KEY,
           },

@@ -1,4 +1,7 @@
 /**
+ *
+ * RF78 - Iniciar Sesion - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF78
+ *
  * Componente `PaginaInicioSesion`
  *
  * Este componente proporciona una interfaz de inicio de sesión para que los usuarios ingresen su correo electrónico
@@ -84,9 +87,9 @@ export default function PaginaInicioSesion() {
       console.log(error);
       // Maneja el error, mostrando un mensaje adecuado
       if (
-        error.response
-        && error.response.data
-        && error.response.data.mensaje
+        error.response &&
+        error.response.data &&
+        error.response.data.mensaje
       ) {
         setMensaje(error.response.data.mensaje); // Mensaje de error personalizado desde el backend
       } else {
@@ -94,30 +97,6 @@ export default function PaginaInicioSesion() {
       }
     }
   };
-
-  //   {
-  //     "user": {
-  //         "permisos": [
-  //             "Acceder al Centro de Ayuda",
-  //             "Leer Carrito de Compras",
-  //             "Actualizar Carrito de Compras",
-  //             "Eliminar Productos del Carrito",
-  //             "Agregar Producto al Carrito",
-  //             "Crear Pedido",
-  //             "Leer Pedido Tienda",
-  //             "Finalizar Pedido",
-  //             "Consultar Lista de Pedidos Tienda",
-  //             "Recibir Notificaciones de Estado del Pedido",
-  //             "Leer Producto Tienda",
-  //             "Consultar Lista de Productos Tienda",
-  //             "Leer Balance",
-  //             "Seleccionar Tipo de Pago"
-  //         ],
-  //         "clientesAsociados": [],
-  //         "iat": 1744570120,
-  //         "exp": 1744598920
-  //     }
-  // }
 
   return (
     <ContenedorFondo>

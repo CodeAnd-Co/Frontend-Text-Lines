@@ -26,11 +26,11 @@ const FormaLogin = ({
   contrasenia,
   setContrasenia,
   mensaje,
-  handleInicioSesion,
+  handleSubmit,
 }) => {
   return (
     <CardContent>
-      <form onSubmit={handleInicioSesion}>
+      <form onSubmit={handleSubmit}>
         <CampoFormulario
           label='Correo electronico'
           type='email'

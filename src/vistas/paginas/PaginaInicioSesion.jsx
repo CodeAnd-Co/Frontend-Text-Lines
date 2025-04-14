@@ -32,7 +32,7 @@ export default function PaginaInicioSesion() {
    *
    * @param {React.FormEvent<HTMLFormElement>} event - El evento del formulario.
    */
-  const handleInicioSesion = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       await iniciarSesion({ correo: correoElectronico, contrasenia });
@@ -51,7 +51,7 @@ export default function PaginaInicioSesion() {
           contrasenia={contrasenia}
           setContrasenia={setContrasenia}
           mensaje={mensaje}
-          handleInicioSesion={handleInicioSesion}
+          handleSubmit={handleSubmit}
         />
       </PlantillaTarjeta>
     </ContenedorFondo>

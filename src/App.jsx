@@ -7,6 +7,7 @@ import {
   Navigate,
   Link,
   useLocation,
+  useLocation,
 } from "react-router-dom";
 import "./App.css";
 import BarraLateral from "./vistas/plantillas/global/barraLateral";
@@ -20,6 +21,16 @@ import Cuotas from "./vistas/paginas/cuotas";
 import SetsDeProductos from "./vistas/paginas/setsProducto";
 import Eventos from "./vistas/paginas/eventos";
 import Configuracion from "./vistas/paginas/configuracion";
+import { AuthProvider } from "./hooks/AuthProvider";
+import RutaProtegida from "./vistas/componentes/organismos/RutaProtegida";
+import PaginaInicioSesion from "./vistas/paginas/inicioSesion";
+import Tienda from "./Tienda";
+
+// Layout component that conditionally renders the sidebar
+const AppLayout = () => {
+  const location = useLocation();
+  const isLoginPage = location.pathname === "/login";
+
 import { AuthProvider } from "./AuthProvider";
 import RutaProtegida from "./RutaProtegida";
 import Usuarios from "./vistas/paginas/usuarios";
@@ -30,22 +41,22 @@ const AppLayout = () => {
   const isUsuarios = location.pathname === "/usuarios";
 
   return (
-    <div className="app">
-      {!isUsuarios && <BarraLateral />}
-      <main className={`content ${isUsuarios ? "full-width" : ""}`}>
+    <div className='app'>
+      {!isLoginPage && <BarraLateral />}
+      <main className={`content ${isLoginPage ? "full-width" : ""}`}>
         <Routes>
-          <Route path="/" element={<Navigate to="/usuarios" />} />
+          <Route path='/' element={<Navigate to='/inicio' />} />
           <Route
-            path="/inicio"
+            path='/inicio'
             element={
               <RutaProtegida>
                 <Inicio />
               </RutaProtegida>
             }
           />
-          <Route path="/usuarios" element={<Usuarios />} />
+          <Route path='/login' element={<PaginaInicioSesion />} />
           <Route
-            path="/empleados"
+            path='/empleados'
             element={
               <RutaProtegida>
                 <Empleados />
@@ -53,7 +64,7 @@ const AppLayout = () => {
             }
           />
           <Route
-            path="/grupoEmpleados"
+            path='/grupoEmpleados'
             element={
               <RutaProtegida>
                 <GrupoEmpleados />
@@ -61,23 +72,25 @@ const AppLayout = () => {
             }
           />
           <Route
-            path="/productos"
+            path='/productos'
             element={
-              <RutaProtegida rolesPermitidos={["Super Administrador"]}>
+              <RutaProtegida>
                 <Productos />
               </RutaProtegida>
             }
           />
           <Route
-            path="/categorias"
+            path='/categorias'
             element={
-              <RutaProtegida>
+              <RutaProtegida
+                permisosPermitidos={["Leer Categoría de Productos"]}
+              >
                 <Categorias />
               </RutaProtegida>
             }
           />
           <Route
-            path="/setsProductos"
+            path='/setsProductos'
             element={
               <RutaProtegida>
                 <SetsDeProductos />
@@ -85,7 +98,7 @@ const AppLayout = () => {
             }
           />
           <Route
-            path="/pedidos"
+            path='/pedidos'
             element={
               <RutaProtegida>
                 <Pedidos />
@@ -93,7 +106,7 @@ const AppLayout = () => {
             }
           />
           <Route
-            path="/cuotas"
+            path='/cuotas'
             element={
               <RutaProtegida>
                 <Cuotas />
@@ -101,7 +114,7 @@ const AppLayout = () => {
             }
           />
           <Route
-            path="/eventos"
+            path='/eventos'
             element={
               <RutaProtegida>
                 <Eventos />
@@ -109,13 +122,14 @@ const AppLayout = () => {
             }
           />
           <Route
-            path="/configuracion"
+            path='/configuracion'
             element={
               <RutaProtegida>
                 <Configuracion />
               </RutaProtegida>
             }
           />
+          <Route path='/tienda' element={<Tienda></Tienda>} />
         </Routes>
       </main>
     </div>

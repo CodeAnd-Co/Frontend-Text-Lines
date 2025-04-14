@@ -6,7 +6,7 @@ import FormaLogin from "../componentes/organismos/FormaLogin";
 import useInicioSesion from "../../hooks/useInicioSesion";
 
 /**
- * RF78 - Iniciar Sesion - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF78
+ * RF78 - Iniciar Sesión - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF78
  * `PaginaInicioSesion` - Componente de página para el inicio de sesión de usuarios.
  *
  * Este componente renderiza un formulario de inicio de sesión dentro de una plantilla de tarjeta,

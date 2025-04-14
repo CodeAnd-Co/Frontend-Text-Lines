@@ -1,39 +1,47 @@
 import { Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 
+/**
+ * Componente que muestra un mensaje de estado con un efecto de desvanecimiento.
+ *
+ * @param {string} mensaje - El mensaje que se mostrará en la interfaz.
+ * @param {boolean} esExito - Si es `true`, el mensaje se mostrará en verde (éxito). Si es `false`, en rojo (error).
+ * @returns {JSX.Element|null} El mensaje de estado con transiciones de opacidad.
+ */
+
 const MensajeStatus = ({ mensaje, esExito = false }) => {
   // Agregar una clave única para asegurar que el componente detecte cambios
-  const [key, setKey] = useState(0);
-  const [visibleMessage, setVisibleMessage] = useState(mensaje);
+  const [llave, setLlave] = useState(0);
+  const [mensajeVisible, setMensajeVisible] = useState(mensaje);
   const [fading, setFading] = useState(false);
 
   useEffect(() => {
     // Cuando llega un nuevo mensaje, reseteamos el estado e incrementamos la clave
     if (mensaje) {
-      setKey((prevKey) => prevKey + 1);
-      setVisibleMessage(mensaje);
+      setLlave((llaveAnterior) => llaveAnterior + 1);
+      setMensajeVisible(mensaje);
       setFading(false);
 
-      const fadeTimer = setTimeout(() => {
+      const fadeTemporizador = setTimeout(() => {
         setFading(true);
       }, 1000);
 
-      const removeTimer = setTimeout(() => {
-        setVisibleMessage(null);
+      const removerTemporizador = setTimeout(() => {
+        setMensajeVisible(null);
       }, 2000);
 
       return () => {
-        clearTimeout(fadeTimer);
-        clearTimeout(removeTimer);
+        clearTimeout(fadeTemporizador);
+        clearTimeout(removerTemporizador);
       };
     }
   }, [mensaje]);
 
-  if (!visibleMessage) return null;
+  if (!mensajeVisible) return null;
 
   return (
     <Typography
-      key={key} // Forzar re-renderizado cuando cambia el key
+      key={llave} // Forzar re-renderizado cuando cambia el key
       color={esExito ? "green" : "error"}
       textAlign='center'
       mt={1}
@@ -42,7 +50,7 @@ const MensajeStatus = ({ mensaje, esExito = false }) => {
         opacity: fading ? 0 : 1,
       }}
     >
-      {visibleMessage}
+      {mensajeVisible}
     </Typography>
   );
 };

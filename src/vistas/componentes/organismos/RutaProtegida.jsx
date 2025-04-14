@@ -1,6 +1,20 @@
 import { useAuth } from "../../../hooks/AuthProvider";
 import { Navigate } from "react-router-dom";
 
+/**
+ * Componente de ruta protegida que solo permite el acceso a usuarios autenticados
+ * y con los permisos adecuados.
+ *
+ * Verifica la autenticación y los permisos del usuario antes de renderizar el contenido hijo.
+ * Si el usuario no está autenticado o no tiene los permisos requeridos, será redirigido a la página de login.
+ *
+ * @component
+ * @param {Object} props - Propiedades del componente.
+ * @param {React.ReactNode} props.children - El contenido que se muestra si el usuario está autenticado y tiene los permisos adecuados.
+ * @param {string[]} [props.permisosPermitidos=[]] - Lista de permisos requeridos para acceder al contenido. Si no se especifica, el contenido será accesible para cualquier usuario autenticado.
+ *
+ * @returns {JSX.Element} - El contenido protegido o una redirección si no se cumplen las condiciones de autenticación y permisos.
+ */
 const RutaProtegida = ({ children, permisosPermitidos = [] }) => {
   const { usuario, cargando } = useAuth();
 

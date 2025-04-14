@@ -12,9 +12,9 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
 import CurrencyExchangeOutlinedIcon from "@mui/icons-material/CurrencyExchangeOutlined";
 import EditCalendarOutlinedIcon from "@mui/icons-material/EditCalendarOutlined";
-import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import TemaIcono from "../../componentes/atomos/temaIcono";
 import ElementoMenu from "../../componentes/moleculas/elementoMenu";
+import LogoutIcono from "../../componentes/moleculas/logoutIcono";
 
 const BarraLateral = () => {
   const [colapsado, setColapsado] = useState(false);
@@ -168,7 +168,7 @@ const BarraLateral = () => {
             width='100%'
           >
             <TemaIcono />
-            <LogoutOutlinedIcon />
+            <LogoutIcono />
           </Box>
         </Box>
       </ProSidebar>

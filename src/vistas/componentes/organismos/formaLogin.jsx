@@ -1,7 +1,7 @@
-import CampoFormulario from "../moleculas/CampoFormulario";
-import MensajeStatus from "../moleculas/MensajeStatus";
-import BotonForma from "../moleculas/BotonForma";
-import { CardContent } from "@mui/material";
+import CampoFormulario from '../moleculas/CampoFormulario';
+import MensajeStatus from '../moleculas/MensajeStatus';
+import BotonForma from '../moleculas/BotonForma';
+import { CardContent } from '@mui/material';
 
 /**
  * Componente de formulario de inicio de sesión.
@@ -43,10 +43,7 @@ const FormaLogin = ({
           value={contrasenia}
           onChange={(event) => setContrasenia(event.target.value)}
         />
-        <MensajeStatus
-          mensaje={mensaje}
-          esExito={mensaje && mensaje.includes("exitoso")}
-        />
+        <MensajeStatus mensaje={mensaje} esExito={mensaje && mensaje.includes('exitoso')} />
         <BotonForma>Iniciar Sesión</BotonForma>
       </form>
     </CardContent>

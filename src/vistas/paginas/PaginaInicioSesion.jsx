@@ -1,9 +1,9 @@
-import { useState } from "react";
-import LogoImagen from "../componentes/moleculas/LogoImagen";
-import ContenedorFondo from "../plantillas/global/ContenedorFondo";
-import PlantillaTarjeta from "../plantillas/global/PlantillaTarjeta";
-import FormaLogin from "../componentes/organismos/FormaLogin";
-import useInicioSesion from "../../hooks/useInicioSesion";
+import { useState } from 'react';
+import LogoImagen from '../componentes/moleculas/LogoImagen';
+import ContenedorFondo from '../plantillas/global/ContenedorFondo';
+import PlantillaTarjeta from '../plantillas/global/PlantillaTarjeta';
+import FormaLogin from '../componentes/organismos/FormaLogin';
+import useInicioSesion from '../../hooks/useInicioSesion';
 
 /**
  * RF78 - Iniciar Sesión - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF78
@@ -18,10 +18,10 @@ import useInicioSesion from "../../hooks/useInicioSesion";
  */
 export default function PaginaInicioSesion() {
   // Estado para almacenar el correo electrónico ingresado por el usuario
-  const [correoElectronico, setCorreoElectronico] = useState("");
+  const [correoElectronico, setCorreoElectronico] = useState('');
 
   // Estado para almacenar la contraseña ingresada por el usuario
-  const [contrasenia, setContrasenia] = useState("");
+  const [contrasenia, setContrasenia] = useState('');
 
   // Hook personalizado que contiene la función para iniciar sesión y el mensaje de estado
   const { iniciarSesion, mensaje } = useInicioSesion();
@@ -37,7 +37,7 @@ export default function PaginaInicioSesion() {
     try {
       await iniciarSesion({ correo: correoElectronico, contrasenia });
     } catch (error) {
-      console.error("Error en funcion iniciar sesion: ", error);
+      console.error('Error en funcion iniciar sesion: ', error);
     }
   };
 

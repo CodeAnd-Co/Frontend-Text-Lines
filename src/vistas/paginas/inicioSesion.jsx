@@ -34,7 +34,11 @@ export default function PaginaInicioSesion() {
    */
   const handleInicioSesion = async (event) => {
     event.preventDefault();
-    await iniciarSesion({ correo, contrasenia });
+    try {
+      await iniciarSesion({ correo, contrasenia });
+    } catch {
+      return console.error("Error en funcion de inicio de sesion");
+    }
   };
 
   return (

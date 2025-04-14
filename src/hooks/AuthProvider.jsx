@@ -34,9 +34,9 @@ export const AuthProvider = ({ children }) => {
     const rutaActualRequiereAuth = !RUTAS_PUBLICAS.includes(ubicacion.pathname);
 
     // Solo verificar autenticación si es el primer render o si la ruta lo requiere
-    const deberiaVerificarAuth =
-      (esMontajeInicialRef.current || rutaActualRequiereAuth) &&
-      !verificandoAuthRef.current;
+    const deberiaVerificarAuth
+      = (esMontajeInicialRef.current || rutaActualRequiereAuth)
+      && !verificandoAuthRef.current;
 
     if (deberiaVerificarAuth) {
       verificandoAuthRef.current = true;
@@ -72,9 +72,9 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     // Redirige al login si no hay usuario autenticado en rutas protegidas
     if (
-      !cargando &&
-      usuario === null &&
-      !RUTAS_PUBLICAS.includes(ubicacion.pathname)
+      !cargando
+      && usuario === null
+      && !RUTAS_PUBLICAS.includes(ubicacion.pathname)
     ) {
       navigate("/login", { replace: true });
     }

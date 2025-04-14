@@ -75,9 +75,9 @@ export default function useInicioSesion() {
 
       // Manejo de errores personalizados o genéricos
       if (
-        error.response &&
-        error.response.data &&
-        error.response.data.mensaje
+        error.response
+        && error.response.data
+        && error.response.data.mensaje
       ) {
         setMensaje(error.response.data.mensaje);
       } else {

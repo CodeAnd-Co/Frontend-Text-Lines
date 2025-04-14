@@ -18,7 +18,7 @@ import useInicioSesion from "../../hooks/useInicioSesion";
  */
 export default function PaginaInicioSesion() {
   // Estado para almacenar el correo electrónico ingresado por el usuario
-  const [correo, setCorreo] = useState("");
+  const [correoElectronico, setCorreoElectronico] = useState("");
 
   // Estado para almacenar la contraseña ingresada por el usuario
   const [contrasenia, setContrasenia] = useState("");
@@ -34,7 +34,11 @@ export default function PaginaInicioSesion() {
    */
   const handleInicioSesion = async (event) => {
     event.preventDefault();
-    await iniciarSesion({ correo, contrasenia });
+    try {
+      await iniciarSesion({ correo: correoElectronico, contrasenia });
+    } catch (error) {
+      console.error("Error en funcion iniciar sesion: ", error);
+    }
   };
 
   return (
@@ -42,8 +46,8 @@ export default function PaginaInicioSesion() {
       <PlantillaTarjeta title={"Iniciar Sesión"}>
         <LogoImagen logoSrc='/logoAltertexLogin.svg' altText='Logo de la app' />
         <FormaLogin
-          correo={correo}
-          setCorreo={setCorreo}
+          correo={correoElectronico}
+          setCorreo={setCorreoElectronico}
           contrasenia={contrasenia}
           setContrasenia={setContrasenia}
           mensaje={mensaje}

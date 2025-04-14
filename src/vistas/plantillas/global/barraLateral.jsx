@@ -1,8 +1,7 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { ColorModeContext, tokens } from "../../../theme";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
@@ -13,9 +12,9 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
 import CurrencyExchangeOutlinedIcon from "@mui/icons-material/CurrencyExchangeOutlined";
 import EditCalendarOutlinedIcon from "@mui/icons-material/EditCalendarOutlined";
-import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import TemaIcono from "../../componentes/atomos/temaIcono";
 import ElementoMenu from "../../componentes/moleculas/elementoMenu";
+import LogoutIcono from "../../componentes/moleculas/logoutIcono";
 
 const BarraLateral = () => {
   const [colapsado, setColapsado] = useState(false);
@@ -52,7 +51,7 @@ const BarraLateral = () => {
       }}
     >
       <ProSidebar collapsed={colapsado}>
-        <Menu iconShape="square">
+        <Menu iconShape='square'>
           <MenuItem
             onClick={() => setColapsado(!colapsado)}
             icon={
@@ -64,12 +63,12 @@ const BarraLateral = () => {
           >
             {!colapsado && (
               <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                ml="15px"
+                display='flex'
+                justifyContent='space-between'
+                alignItems='center'
+                ml='15px'
               >
-                <img src="/logoAltertex.svg" style={{ width: "150px" }} />
+                <img src='/logoAltertex.svg' style={{ width: "150px" }} />
                 <IconButton onClick={() => setColapsado(!colapsado)}>
                   <MenuOutlinedIcon sx={{ color: colors.primario[4] }} />
                 </IconButton>
@@ -78,98 +77,98 @@ const BarraLateral = () => {
           </MenuItem>
           <Box>
             <ElementoMenu
-              titulo="Inicio"
-              ruta="/"
+              titulo='Inicio'
+              ruta='/'
               icono={<HomeOutlinedIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}
             />
             <SubMenu
-              title="Empleados"
+              title='Empleados'
               icon={<GroupsOutlinedIcon />}
               open={colapsado ? false : empleadosAbierto}
               onOpenChange={() => setEmpleadosAbierto(!empleadosAbierto)}
             >
               <ElementoMenu
-                titulo="Lista de Empleados"
-                ruta="/empleados"
+                titulo='Lista de Empleados'
+                ruta='/empleados'
                 seleccionado={seleccionado}
                 setSeleccionado={setSeleccionado}
               />
               <ElementoMenu
-                titulo="Grupos de Empleados"
-                ruta="/grupoEmpleados"
+                titulo='Grupos de Empleados'
+                ruta='/grupoEmpleados'
                 seleccionado={seleccionado}
                 setSeleccionado={setSeleccionado}
               />
             </SubMenu>
             <SubMenu
-              title="Productos"
+              title='Productos'
               icon={<LocalOfferOutlinedIcon />}
               open={colapsado ? false : productosAbierto}
               onOpenChange={() => setProductosAbierto(!productosAbierto)}
             >
               <ElementoMenu
-                titulo="Lista de Productos"
-                ruta="/productos"
+                titulo='Lista de Productos'
+                ruta='/productos'
                 seleccionado={seleccionado}
                 setSeleccionado={setSeleccionado}
               />
               <ElementoMenu
-                titulo="Sets de Productos"
-                ruta="/setsProductos"
+                titulo='Sets de Productos'
+                ruta='/setsProductos'
                 seleccionado={seleccionado}
                 setSeleccionado={setSeleccionado}
               />
               <ElementoMenu
-                titulo="Categorías"
-                ruta="/categorias"
+                titulo='Categorías'
+                ruta='/categorias'
                 seleccionado={seleccionado}
                 setSeleccionado={setSeleccionado}
               />
             </SubMenu>
             <ElementoMenu
-              titulo="Pedidos"
-              ruta="/pedidos"
+              titulo='Pedidos'
+              ruta='/pedidos'
               icono={<InboxOutlinedIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}
             />
             <ElementoMenu
-              titulo="Cuotas"
-              ruta="/cuotas"
+              titulo='Cuotas'
+              ruta='/cuotas'
               icono={<CurrencyExchangeOutlinedIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}
             />
             <ElementoMenu
-              titulo="Eventos"
-              ruta="/eventos"
+              titulo='Eventos'
+              ruta='/eventos'
               icono={<EditCalendarOutlinedIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}
             />
             <ElementoMenu
-              titulo="Configuración"
-              ruta="/configuracion"
+              titulo='Configuración'
+              ruta='/configuracion'
               icono={<SettingsOutlinedIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}
             />
           </Box>
         </Menu>
-        <Box position="relative" height="200px">
+        <Box position='relative' height='200px'>
           <Box
-            display="flex"
-            justifyContent="center"
+            display='flex'
+            justifyContent='center'
             gap={10}
-            alignItems="center"
-            position="absolute"
+            alignItems='center'
+            position='absolute'
             bottom={1}
-            width="100%"
+            width='100%'
           >
             <TemaIcono />
-            <LogoutOutlinedIcon />
+            <LogoutIcono />
           </Box>
         </Box>
       </ProSidebar>

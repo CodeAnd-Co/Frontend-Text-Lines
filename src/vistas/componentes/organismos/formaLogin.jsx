@@ -1,6 +1,6 @@
-import CampoFormulario from "../moleculas/campoFormulario";
-import MensajeStatus from "../moleculas/mensajeStatus";
-import BotonForma from "../moleculas/botonForma";
+import CampoFormulario from "../moleculas/CampoFormulario";
+import MensajeStatus from "../moleculas/MensajeStatus";
+import BotonForma from "../moleculas/BotonForma";
 import { CardContent } from "@mui/material";
 
 /**

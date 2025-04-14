@@ -22,7 +22,7 @@ import Eventos from "./vistas/paginas/eventos";
 import Configuracion from "./vistas/paginas/configuracion";
 import { AuthProvider } from "./hooks/AuthProvider";
 import RutaProtegida from "./vistas/componentes/organismos/RutaProtegida";
-import PaginaInicioSesion from "./vistas/paginas/inicioSesion";
+import PaginaInicioSesion from "./vistas/paginas/PaginaInicioSesion";
 import Tienda from "./Tienda";
 
 // Layout component that conditionally renders the sidebar

@@ -1,8 +1,8 @@
 import { useState } from "react";
-import LogoImagen from "../componentes/moleculas/logoImagen";
-import ContenedorFondo from "../plantillas/global/contenedorFondo";
-import PlantillaTarjeta from "../plantillas/global/plantillaTarjeta";
-import FormaLogin from "../componentes/organismos/formaLogin";
+import LogoImagen from "../componentes/moleculas/LogoImagen";
+import ContenedorFondo from "../plantillas/global/ContenedorFondo";
+import PlantillaTarjeta from "../plantillas/global/PlantillaTarjeta";
+import FormaLogin from "../componentes/organismos/FormaLogin";
 import useInicioSesion from "../../hooks/useInicioSesion";
 
 /**

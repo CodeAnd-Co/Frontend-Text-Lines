@@ -15,12 +15,12 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     // Solo verifica el estado de autenticación en el montaje inicial o cambios de ruta que requieran auth
-    const deberiaVerificarAuth =
-      (esMontajeInicialRef.current ||
-        (ubicacion.pathname !== "/login" &&
-          ubicacion.pathname !== "/register")) &&
-      !verificandoAuthRef.current &&
-      !usuario;
+    const deberiaVerificarAuth
+      = (esMontajeInicialRef.current
+        || (ubicacion.pathname !== "/login"
+          && ubicacion.pathname !== "/register"))
+      && !verificandoAuthRef.current
+      && !usuario;
 
     if (deberiaVerificarAuth) {
       verificandoAuthRef.current = true; // Establece bandera para prevenir solicitudes duplicadas

@@ -88,7 +88,7 @@ export const themeSettings = (mode) => {
   const colors = tokens(mode);
   return {
     palette: {
-      mode: mode,
+      mode,
       ...(mode === "dark"
         ? {
             primary: {

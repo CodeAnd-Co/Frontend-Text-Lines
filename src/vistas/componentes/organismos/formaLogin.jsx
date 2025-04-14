@@ -22,7 +22,7 @@ import { CardContent } from "@mui/material";
  */
 const FormaLogin = ({
   correo,
-  setCorreo,
+  setCorreoElectronico,
   contrasenia,
   setContrasenia,
   mensaje,
@@ -35,7 +35,7 @@ const FormaLogin = ({
           label='Correo electronico'
           type='email'
           value={correo}
-          onChange={(event) => setCorreo(event.target.value)}
+          onChange={(event) => setCorreoElectronico(event.target.value)}
         />
         <CampoFormulario
           label='Contraseña'

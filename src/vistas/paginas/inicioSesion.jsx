@@ -47,7 +47,7 @@ export default function PaginaInicioSesion() {
         <LogoImagen logoSrc='/logoAltertexLogin.svg' altText='Logo de la app' />
         <FormaLogin
           correo={correoElectronico}
-          setCorreo={setCorreoElectronico}
+          setCorreoElectronico={setCorreoElectronico}
           contrasenia={contrasenia}
           setContrasenia={setContrasenia}
           mensaje={mensaje}

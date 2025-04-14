@@ -43,7 +43,7 @@ export default function PaginaInicioSesion() {
 
   return (
     <ContenedorFondo>
-      <PlantillaTarjeta title={"Iniciar Sesión"}>
+      <PlantillaTarjeta title='Iniciar Sesión'>
         <LogoImagen logoSrc='/logoAltertexLogin.svg' altText='Logo de la app' />
         <FormaLogin
           correo={correoElectronico}

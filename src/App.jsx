@@ -5,8 +5,6 @@ import {
   Routes,
   Route,
   Navigate,
-  Link,
-  useLocation,
   useLocation,
 } from "react-router-dom";
 import "./App.css";
@@ -26,37 +24,27 @@ import RutaProtegida from "./vistas/componentes/organismos/RutaProtegida";
 import PaginaInicioSesion from "./vistas/paginas/inicioSesion";
 import Tienda from "./Tienda";
 
-// Layout component that conditionally renders the sidebar
 const AppLayout = () => {
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
 
-import { AuthProvider } from "./AuthProvider";
-import RutaProtegida from "./RutaProtegida";
-import Usuarios from "./vistas/paginas/usuarios";
-
-// Layout component that conditionally renders the sidebar
-const AppLayout = () => {
-  const location = useLocation();
-  const isUsuarios = location.pathname === "/usuarios";
-
   return (
-    <div className='app'>
+    <div className="app">
       {!isLoginPage && <BarraLateral />}
       <main className={`content ${isLoginPage ? "full-width" : ""}`}>
         <Routes>
-          <Route path='/' element={<Navigate to='/inicio' />} />
+          <Route path="/" element={<Navigate to="/inicio" />} />
+          <Route path="/login" element={<PaginaInicioSesion />} />
           <Route
-            path='/inicio'
+            path="/inicio"
             element={
               <RutaProtegida>
                 <Inicio />
               </RutaProtegida>
             }
           />
-          <Route path='/login' element={<PaginaInicioSesion />} />
           <Route
-            path='/empleados'
+            path="/empleados"
             element={
               <RutaProtegida>
                 <Empleados />
@@ -64,7 +52,7 @@ const AppLayout = () => {
             }
           />
           <Route
-            path='/grupoEmpleados'
+            path="/grupoEmpleados"
             element={
               <RutaProtegida>
                 <GrupoEmpleados />
@@ -72,7 +60,7 @@ const AppLayout = () => {
             }
           />
           <Route
-            path='/productos'
+            path="/productos"
             element={
               <RutaProtegida>
                 <Productos />
@@ -80,7 +68,7 @@ const AppLayout = () => {
             }
           />
           <Route
-            path='/categorias'
+            path="/categorias"
             element={
               <RutaProtegida
                 permisosPermitidos={["Leer Categoría de Productos"]}
@@ -90,7 +78,7 @@ const AppLayout = () => {
             }
           />
           <Route
-            path='/setsProductos'
+            path="/setsProductos"
             element={
               <RutaProtegida>
                 <SetsDeProductos />
@@ -98,7 +86,7 @@ const AppLayout = () => {
             }
           />
           <Route
-            path='/pedidos'
+            path="/pedidos"
             element={
               <RutaProtegida>
                 <Pedidos />
@@ -106,7 +94,7 @@ const AppLayout = () => {
             }
           />
           <Route
-            path='/cuotas'
+            path="/cuotas"
             element={
               <RutaProtegida>
                 <Cuotas />
@@ -114,7 +102,7 @@ const AppLayout = () => {
             }
           />
           <Route
-            path='/eventos'
+            path="/eventos"
             element={
               <RutaProtegida>
                 <Eventos />
@@ -122,14 +110,14 @@ const AppLayout = () => {
             }
           />
           <Route
-            path='/configuracion'
+            path="/configuracion"
             element={
               <RutaProtegida>
                 <Configuracion />
               </RutaProtegida>
             }
           />
-          <Route path='/tienda' element={<Tienda></Tienda>} />
+          <Route path="/tienda" element={<Tienda />} />
         </Routes>
       </main>
     </div>
@@ -138,6 +126,7 @@ const AppLayout = () => {
 
 function App() {
   const [theme, colorMode] = useMode();
+
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>

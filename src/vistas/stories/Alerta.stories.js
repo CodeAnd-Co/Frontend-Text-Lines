@@ -1,4 +1,3 @@
-import React from 'react';
 import Alerta from '../Componentes/Moleculas/Alerta';
 
 export default {
@@ -13,6 +12,7 @@ export default {
       control: { type: 'select' },
       options: ['info', 'success', 'warning', 'error'],
     },
+    mensaje: { control: 'text' },
     icono: { control: 'boolean' },
     iconoNombre: {
       control: 'text',
@@ -37,11 +37,22 @@ export default {
         'inherit',
       ],
     },
-    textoColor: {
-      control: 'color',
+    textoColor: { control: 'color' },
+    cerrable: {
+      control: 'boolean',
+      description: 'Permite cerrar manualmente la alerta',
     },
-    mensaje: {
-      control: 'text',
+    duracion: {
+      control: 'number',
+      description: 'Duración en milisegundos antes de que se oculte automáticamente',
+    },
+    posicionAbsoluta: {
+      control: 'boolean',
+      description: 'Renderiza la alerta con posición absoluta',
+    },
+    onClose: {
+      action: 'cerrado',
+      description: 'Callback cuando la alerta se cierra',
     },
   },
   args: {
@@ -49,6 +60,8 @@ export default {
     mensaje: 'Este es un mensaje de alerta informativa.',
     icono: true,
     textoVariant: 'body1',
+    cerrable: false,
+    posicionAbsoluta: false,
   },
 };
 
@@ -93,5 +106,34 @@ export const IconoPersonalizado = {
     tipo: 'info',
     mensaje: 'Este usa un ícono personalizado.',
     iconoNombre: 'Lightbulb',
+  },
+};
+
+export const Cerrable = {
+  args: {
+    tipo: 'error',
+    mensaje: 'Haz clic en la X para cerrar esta alerta.',
+    cerrable: true,
+  },
+};
+
+export const CierreAutomatico = {
+  args: {
+    tipo: 'success',
+    mensaje: 'Esta alerta se cerrará automáticamente.',
+    duracion: 3000,
+  },
+};
+
+export const PosicionAbsoluta = {
+  args: {
+    tipo: 'warning',
+    mensaje: 'Esta alerta está posicionada de forma absoluta.',
+    posicionAbsoluta: true,
+    sx: {
+      top: 20,
+      right: 20,
+      width: '200px',
+    },
   },
 };

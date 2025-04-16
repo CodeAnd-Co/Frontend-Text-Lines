@@ -26,17 +26,17 @@ const Boton = ({
 
   // Estilo adicional si el botón está seleccionado
   const selectedStyle =
-  selected && variant === "contained"
-    ? {
-        backgroundColor: "rgba(24, 50, 165, 0.7)", // azul con 70% opacidad
-        color: "#fff", // asegura contraste del texto
-      }
-    : selected && variant === "outlined"
-    ? {
-        backgroundColor: "rgba(24, 50, 165, 0.5)", // azul con 50% opacidad
-        color: "#1832A5", 
-      }
-    : {};
+    selected && variant === 'contained'
+      ? {
+          backgroundColor: 'rgba(24, 50, 165, 0.7)', // azul con 70% opacidad
+          color: '#fff', // asegura contraste del texto
+        }
+      : selected && variant === 'outlined'
+      ? {
+          backgroundColor: 'rgba(24, 50, 165, 0.5)', // azul con 50% opacidad
+          color: '#1832A5',
+        }
+      : {};
 
   return (
     <MUIButton

@@ -81,10 +81,10 @@ export const OutlinedSelected = {
 
 
 export const Text = {
-  args: {
-    label: 'Omitir',
-    variant: 'text',
-    color: 'primary',
+  args:{
+    label:"Label",
+    variant:'text',
+    color:'primary',
   },
 };
 

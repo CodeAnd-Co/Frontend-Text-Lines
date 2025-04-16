@@ -1,6 +1,5 @@
-import React from "react";
 import { fn } from "@storybook/test";
-import Boton from "../componentes/atomos/Boton"; 
+import Boton from "../componentes/atomos/Boton";
 
 export default {
   title: "Componentes/Átomos/Boton",
@@ -11,6 +10,7 @@ export default {
   tags: ["autodocs"],
   argTypes: {
     backgroundColor: { control: "color" },
+    outlineColor: { control: "color" },
     variant: {
       control: { type: "select" },
       options: ["contained", "outlined", "text"],
@@ -33,19 +33,52 @@ export default {
 
 export const Contained = {
   args: {
-    label: "Confirmar",
+    label: "Label",
     variant: "contained",
+    size: "medium",
     color: "primary",
+    fullWidth: false,
+    selected: false,
+    backgroundColor: "rgba(24, 50, 165, 1)",
+  },
+};
+
+export const ContainedSelected = {
+  args: {
+    label: "Label",
+    variant: "contained",
+    size: "medium",
+    color: "primary",
+    fullWidth: false,
+    selected: true,
+    backgroundColor: "rgba(24, 50, 165, 1)",
   },
 };
 
 export const Outlined = {
   args: {
-    label: "Cancelar",
+    label: "Label",
     variant: "outlined",
-    color: "secondary",
+    size: "medium",
+    color: "primary",
+    fullWidth: false,
+    selected: false,
+    outlineColor: "rgba(24, 50, 165, 1)", 
   },
 };
+
+export const OutlinedSelected = {
+  args: {
+    label: "Label",
+    variant: "outlined",
+    size: "medium",
+    color: "primary",
+    fullWidth: false,
+    selected: true,
+    outlineColor: "rgba(24, 50, 165, 1)", 
+  },
+};
+
 
 export const Text = {
   args: {
@@ -55,38 +88,28 @@ export const Text = {
   },
 };
 
-export const ContainedSeleccionado = {
-  args: {
-    label: "Activo",
-    variant: "contained",
-    selected: true,
-    color: "primary",
-  },
-};
-
-export const OutlinedSeleccionado = {
-  args: {
-    label: "Opción activa",
-    variant: "outlined",
-    selected: true,
-    color: "primary",
-  },
-};
-
 export const FullWidth = {
   args: {
-    label: "Cubre todo",
-    fullWidth: true,
-    color: "primary",
+    label: "Label",
     variant: "contained",
+    size: "medium",
+    color: "primary",
+    fullWidth: false,
+    selected: false,
+    backgroundColor: "rgba(24, 50, 165, 1)",
+    fullWidth: true,
   },
 };
 
-export const CustomBackground = {
+export const FullWidthSelected = {
   args: {
-    label: "Personalizado",
-    backgroundColor: "#8e44ad",
-    color: "inherit",
+    label: "Label",
     variant: "contained",
+    size: "medium",
+    color: "primary",
+    fullWidth: false,
+    selected: true,
+    backgroundColor: "rgba(24, 50, 165, 1)",
+    fullWidth: true,
   },
 };

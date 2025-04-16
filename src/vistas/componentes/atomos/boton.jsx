@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { tokens } from '../../../theme';
 import MUIButton from '@mui/material/Button';
 
 /** Botón personalizado usando Material UI */
@@ -11,24 +10,33 @@ const Boton = ({
   color = 'primary', // 'primary', 'secondary', 'error', etc.
   size = 'medium', // 'small' | 'medium' | 'large'
   backgroundColor = null, // Color de fondo opcional
+  outlineColor = null, // Color de outline opcional
   label, // Texto dentro del botón
   onClick, // Función que se ejecuta al hacer clic
   ...props
 }) => {
-  // Estilo adicional si el botón está seleccionado
-  const selectedStyle =
-    selected && variant === 'contained'
+  // Estilo para outlined personalizado
+  const outlinedStyle =
+    variant === 'outlined' && outlineColor
       ? {
-          boxShadow: '0 0 0 2px rgba(0, 0, 0, 0.2)',
-          fontWeight: 'bold',
-        }
-      : selected && variant === 'outlined'
-      ? {
-          borderWidth: '2px',
-          borderColor: '#1976d2',
-          fontWeight: 'bold',
+          border: `1.5px solid ${outlineColor}`,
+          color: outlineColor,
         }
       : {};
+
+  // Estilo adicional si el botón está seleccionado
+  const selectedStyle =
+  selected && variant === "contained"
+    ? {
+        backgroundColor: "rgba(24, 50, 165, 0.7)", // azul con 70% opacidad
+        color: "#fff", // asegura contraste del texto
+      }
+    : selected && variant === "outlined"
+    ? {
+        backgroundColor: "rgba(24, 50, 165, 0.5)", // azul con 50% opacidad
+        color: "#1832A5", 
+      }
+    : {};
 
   return (
     <MUIButton
@@ -38,6 +46,7 @@ const Boton = ({
       fullWidth={fullWidth}
       sx={{
         backgroundColor: backgroundColor || undefined,
+        ...outlinedStyle,
         ...selectedStyle,
       }}
       onClick={onClick}
@@ -61,6 +70,8 @@ Boton.propTypes = {
   size: PropTypes.oneOf(['small', 'medium', 'large']),
   /** Color de fondo personalizado */
   backgroundColor: PropTypes.string,
+  /** Color de borde personalizado (solo para 'outlined') */
+  outlineColor: PropTypes.string,
   /** Texto del botón */
   label: PropTypes.string.isRequired,
   /** Función onClick */

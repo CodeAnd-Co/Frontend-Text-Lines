@@ -5,7 +5,6 @@ import {
   Routes,
   Route,
   Navigate,
-  Link,
   useLocation,
 } from "react-router-dom";
 import "./App.css";
@@ -23,17 +22,22 @@ import Configuracion from "./vistas/paginas/configuracion";
 import { AuthProvider } from "./hooks/AuthProvider";
 import RutaProtegida from "./vistas/componentes/organismos/RutaProtegida";
 import PaginaInicioSesion from "./vistas/paginas/inicioSesion";
+import Usuarios from "./vistas/paginas/usuarios";
 import Tienda from "./Tienda";
 
-// Layout component that conditionally renders the sidebar
+// PRUEBA
+import { ejecutarObtenerUsuario } from "./hooks/Usuarios/leer-usuario";
+window.ejecutarObtenerUsuario = ejecutarObtenerUsuario;
+
 const AppLayout = () => {
   const location = useLocation();
-  const isLoginPage = location.pathname === "/login";
+  const rutasSinBarra = ["/login", "/usuarios"];
+  const isRutaSinBarra = rutasSinBarra.includes(location.pathname);
 
   return (
     <div className='app'>
-      {!isLoginPage && <BarraLateral />}
-      <main className={`content ${isLoginPage ? "full-width" : ""}`}>
+      {!isRutaSinBarra && <BarraLateral />}
+      <main className={`content ${isRutaSinBarra ? "full-width" : ""}`}>
         <Routes>
           <Route path='/' element={<Navigate to='/inicio' />} />
           <Route
@@ -45,6 +49,14 @@ const AppLayout = () => {
             }
           />
           <Route path='/login' element={<PaginaInicioSesion />} />
+          <Route
+            path='/usuarios'
+            element={
+              <RutaProtegida>
+                <Usuarios />
+              </RutaProtegida>
+            }
+          />
           <Route
             path='/empleados'
             element={

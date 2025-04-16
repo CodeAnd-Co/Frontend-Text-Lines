@@ -1,5 +1,5 @@
 import React from 'react';
-import CampoTexto from '../componentes/atomos/CampoTexto';
+import CampoTexto from '../Componentes/Atomos/CampoTexto';
 
 export default {
   title: 'Componentes/Átomos/CampoTexto',

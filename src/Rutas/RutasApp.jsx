@@ -1,46 +1,41 @@
 import { Routes, Route } from 'react-router-dom';
+
+import { RUTAS } from '../Utilidades/Constantes/rutas';
+import { PERMISOS } from '../Utilidades/Constantes/permisos';
+
+import RutaProtegida from './RutaProtegida';
 import RutasAdministrativas from './RutasSistemaAdministrativo';
 import RutasTienda from './RutasTienda';
-import IniciarSesion from '../Vistas/Paginas/IniciarSesion';
-import { RUTAS } from '../Utilidades/Constates/rutas';
-import { PERMISOS } from '../Utilidades/Constates/permisos';
-
-import RutaPrivada from './RutaPrivada';
-import RutaPublica from './RutaPublica';
+import Error404 from '../Vistas/Paginas/Errores/Error404';
+import RedireccionSesion from './RedireccionSesion';
+import RutasSesion from './RutasSesion';
 
 export default function AppRouter() {
   return (
     <Routes>
       <Route
-        path={RUTAS.INICIO}
+        path={RUTAS.RAIZ}
         element={
-          <RutaPublica>
-            <IniciarSesion />
-          </RutaPublica>
+          <RedireccionSesion>
+            <Error404 />
+          </RedireccionSesion>
         }
       />
+      <Route path={RUTAS.INICIO_SESION} element={<RutasSesion />} />
       <Route
-        path={RUTAS.INICIO_SESION}
+        path={RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.RAIZ}
         element={
-          <RutaPublica>
-            <IniciarSesion />
-          </RutaPublica>
-        }
-      />
-      <Route
-        path={RUTAS.SISTEMA_ADMINISTRATIVO.BASE}
-        element={
-          <RutaPrivada permiso={PERMISOS.CONSULTAR_SISTEMA_ADMINISTRATIVO}>
+          <RutaProtegida permiso={PERMISOS.CONSULTAR_SISTEMA_ADMINISTRATIVO}>
             <RutasAdministrativas />
-          </RutaPrivada>
+          </RutaProtegida>
         }
       />
       <Route
-        path={RUTAS.SISTEMA_TIENDA.BASE}
+        path={RUTAS.SISTEMA_TIENDA.BASE + RUTAS.RAIZ}
         element={
-          <RutaPrivada permiso={PERMISOS.CONSULTAR_TIENDA}>
+          <RutaProtegida permiso={PERMISOS.CONSULTAR_TIENDA}>
             <RutasTienda />
-          </RutaPrivada>
+          </RutaProtegida>
         }
       />
     </Routes>

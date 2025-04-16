@@ -1,8 +1,10 @@
 export const RUTAS = {
   INICIO_SESION: '/iniciar-sesion',
+  NO_AUTORIZADO: '/no-autorizado',
+  NO_ENCONTRADO: '/no-encontrado',
   SISTEMA_ADMINISTRATIVO: {
     BASE: '/admin',
-    CLIENTES: '/clientes',
+    TABLERO: '/tablero',
     CONFIGURACION: '/configuracion',
     CUOTAS: '/cuotas',
     EMPLEADOS: '/empleados',

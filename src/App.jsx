@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './hooks/AuthProvider';
 
 import RutasApp from './Rutas/RutasApp';
-import { RUTAS } from './Utilidades/Constates/rutas';
+import { RUTAS } from './Utilidades/Constantes/rutas';
 
 function App() {
   const [theme, colorMode] = useMode();

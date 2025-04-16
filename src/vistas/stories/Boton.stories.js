@@ -1,30 +1,29 @@
-import React from "react";
-import { fn } from "@storybook/test";
-import Boton from "../componentes/atomos/Boton"; 
+import { fn } from '@storybook/test';
+import Boton from '../Componentes/Atomos/Boton';
 
 export default {
-  title: "Componentes/Átomos/Boton",
+  title: 'Componentes/Átomos/Boton',
   component: Boton,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
-    backgroundColor: { control: "color" },
+    backgroundColor: { control: 'color' },
     variant: {
-      control: { type: "select" },
-      options: ["contained", "outlined", "text"],
+      control: { type: 'select' },
+      options: ['contained', 'outlined', 'text'],
     },
     size: {
-      control: { type: "select" },
-      options: ["small", "medium", "large"],
+      control: { type: 'select' },
+      options: ['small', 'medium', 'large'],
     },
     color: {
-      control: { type: "select" },
-      options: ["primary", "secondary", "error", "success", "warning", "info"],
+      control: { type: 'select' },
+      options: ['primary', 'secondary', 'error', 'success', 'warning', 'info'],
     },
-    fullWidth: { control: "boolean" },
-    selected: { control: "boolean" },
+    fullWidth: { control: 'boolean' },
+    selected: { control: 'boolean' },
   },
   args: {
     onClick: fn(),
@@ -33,60 +32,60 @@ export default {
 
 export const Contained = {
   args: {
-    label: "Confirmar",
-    variant: "contained",
-    color: "primary",
+    label: 'Confirmar',
+    variant: 'contained',
+    color: 'primary',
   },
 };
 
 export const Outlined = {
   args: {
-    label: "Cancelar",
-    variant: "outlined",
-    color: "secondary",
+    label: 'Cancelar',
+    variant: 'outlined',
+    color: 'secondary',
   },
 };
 
 export const Text = {
   args: {
-    label: "Omitir",
-    variant: "text",
-    color: "primary",
+    label: 'Omitir',
+    variant: 'text',
+    color: 'primary',
   },
 };
 
 export const ContainedSeleccionado = {
   args: {
-    label: "Activo",
-    variant: "contained",
+    label: 'Activo',
+    variant: 'contained',
     selected: true,
-    color: "primary",
+    color: 'primary',
   },
 };
 
 export const OutlinedSeleccionado = {
   args: {
-    label: "Opción activa",
-    variant: "outlined",
+    label: 'Opción activa',
+    variant: 'outlined',
     selected: true,
-    color: "primary",
+    color: 'primary',
   },
 };
 
 export const FullWidth = {
   args: {
-    label: "Cubre todo",
+    label: 'Cubre todo',
     fullWidth: true,
-    color: "primary",
-    variant: "contained",
+    color: 'primary',
+    variant: 'contained',
   },
 };
 
 export const CustomBackground = {
   args: {
-    label: "Personalizado",
-    backgroundColor: "#8e44ad",
-    color: "inherit",
-    variant: "contained",
+    label: 'Personalizado',
+    backgroundColor: '#8e44ad',
+    color: 'inherit',
+    variant: 'contained',
   },
 };

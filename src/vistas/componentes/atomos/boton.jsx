@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { tokens } from '../../../theme';
+// import { tokens } from '../../../theme';
 import MUIButton from '@mui/material/Button';
 
 /** Botón personalizado usando Material UI */

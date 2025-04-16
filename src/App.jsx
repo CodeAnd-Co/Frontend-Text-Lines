@@ -1,14 +1,31 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Home from "./Home";
-import "./App.css";
+import './App.css';
+
+import { ColorModeContext, useMode } from './theme';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './hooks/AuthProvider';
+
+import RutasApp from './Rutas/RutasApp';
+import { RUTAS } from './Utilidades/Constantes/rutas';
 
 function App() {
+  const [theme, colorMode] = useMode();
+
   return (
-    <Router>
-      <Routes>
-        <Route path='/' element={<Home />} />
-      </Routes>
-    </Router>
+    <div className='app'>
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Router>
+            <AuthProvider>
+              <Routes>
+                <Route path={RUTAS.RAIZ} element={<RutasApp />} />
+              </Routes>
+            </AuthProvider>
+          </Router>
+        </ThemeProvider>
+      </ColorModeContext.Provider>
+    </div>
   );
 }
 

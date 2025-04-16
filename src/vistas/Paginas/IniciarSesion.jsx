@@ -16,7 +16,7 @@ import useInicioSesion from '../../hooks/useInicioSesion';
  * @component
  * @returns {JSX.Element} La interfaz completa de inicio de sesión con fondo, tarjeta y formulario.
  */
-export default function PaginaInicioSesion() {
+export default function IniciarSesion() {
   // Estado para almacenar el correo electrónico ingresado por el usuario
   const [correoElectronico, setCorreoElectronico] = useState('');
 

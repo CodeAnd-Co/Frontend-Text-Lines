@@ -19,11 +19,11 @@ export const NumeroInput = ({
       InputLabelProps={{ shrink: true }}
       variant='outlined'
       sx={{
-        width: width,
+        width,
         backgroundColor: backgroundColor || 'transparent',
       }}
       inputProps={{
-        min: min,
+        min,
       }}
       {...rest}
     />

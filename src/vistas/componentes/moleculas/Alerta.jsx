@@ -58,7 +58,7 @@ const Alerta = ({
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: 1,
-        p: 2,
+        padding: 2,
         backgroundColor: colorFondo,
         borderLeft: `6px solid ${colorPrincipal}`,
         position: posicionAbsoluta ? 'absolute' : 'relative',

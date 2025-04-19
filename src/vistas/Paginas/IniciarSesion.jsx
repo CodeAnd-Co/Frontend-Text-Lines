@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import LogoImagen from '../componentes/moleculas/LogoImagen';
 import ContenedorFondo from '../plantillas/global/ContenedorFondo';
 import PlantillaTarjeta from '../plantillas/global/PlantillaTarjeta';
 import FormaLogin from '../componentes/organismos/FormaLogin';
 import useInicioSesion from '../../hooks/useInicioSesion';
+import Imagen from '../componentes/atomos/Imagen';
 
 /**
  * RF78 - Iniciar Sesión - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF78
@@ -44,7 +44,7 @@ export default function IniciarSesion() {
   return (
     <ContenedorFondo>
       <PlantillaTarjeta title='Iniciar Sesión'>
-        <LogoImagen logoSrc='/logoAltertexLogin.svg' altText='Logo de la app' />
+        <Imagen src={'/logoAltertexLogin.svg'}></Imagen>
         <FormaLogin
           correo={correoElectronico}
           setCorreoElectronico={setCorreoElectronico}

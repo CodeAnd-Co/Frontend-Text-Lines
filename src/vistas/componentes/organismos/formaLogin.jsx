@@ -1,7 +1,7 @@
-import CampoFormulario from '../moleculas/CampoFormulario';
+import CampoTexto from '../atomos/CampoTexto';
 import MensajeStatus from '../moleculas/MensajeStatus';
-import BotonForma from '../moleculas/BotonForma';
 import { CardContent } from '@mui/material';
+import Boton from '../atomos/boton';
 
 /**
  * Componente de formulario de inicio de sesión.
@@ -31,20 +31,22 @@ const FormaLogin = ({
   return (
     <CardContent>
       <form onSubmit={handleSubmit}>
-        <CampoFormulario
-          label='Correo electronico'
-          type='email'
+        <CampoTexto
+          label={'Correo electronico'}
           value={correo}
           onChange={(event) => setCorreoElectronico(event.target.value)}
+          type='email'
         />
-        <CampoFormulario
-          label='Contraseña'
+
+        <CampoTexto
+          label={'Contraseña'}
           type='password'
           value={contrasenia}
           onChange={(event) => setContrasenia(event.target.value)}
         />
+
         <MensajeStatus mensaje={mensaje} esExito={mensaje && mensaje.includes('exitoso')} />
-        <BotonForma>Iniciar Sesión</BotonForma>
+        <Boton label={'Inicar sesión'} type='submit' fullWidth={true} />
       </form>
     </CardContent>
   );

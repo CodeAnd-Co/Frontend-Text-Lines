@@ -11,8 +11,8 @@ export default {
   },
 };
 
-export const ConBotonDeApertura = () => {
-  const [open, setOpen] = useState(false);
+const Template = (args) => {
+  const [open, setOpen] = useState(true);
   const [form, setForm] = useState({ nombre: '' });
 
   const handleChange = (event) => {
@@ -25,26 +25,22 @@ export const ConBotonDeApertura = () => {
   };
 
   return (
-    <>
-      <Boton label='Abrir Modal' variant='contained' onClick={() => setOpen(true)} />
-
-      <ModalFlotante
-        open={open}
-        onClose={() => setOpen(false)}
-        onConfirm={handleConfirm}
-        titulo='Formulario de prueba'
-        confirmLabel='Guardar'
-        cancelLabel='Cancelar'
-      >
-        <CampoTexto
-          label='Nombre'
-          name='nombre'
-          value={form.nombre}
-          onChange={handleChange}
-          fullWidth
-          required
-        />
-      </ModalFlotante>
-    </>
+    <ModalFlotante {...args} open={open} onClose={() => setOpen(false)} onConfirm={handleConfirm}>
+      <CampoTexto
+        label='Nombre'
+        name='nombre'
+        value={form.nombre}
+        onChange={handleChange}
+        fullWidth
+        required
+      />
+    </ModalFlotante>
   );
+};
+
+export const Basico = Template.bind({});
+Basico.args = {
+  titulo: 'Formulario de prueba',
+  confirmLabel: 'Guardar',
+  cancelLabel: 'Cancelar',
 };

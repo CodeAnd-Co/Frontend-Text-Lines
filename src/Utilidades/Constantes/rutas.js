@@ -10,6 +10,7 @@ export const RUTAS = {
     EMPLEADOS: '/empleados',
     EVENTOS: '/eventos',
     PRODUCTOS: '/productos',
+    CATEGORIAS: '/categorias',
     USUARIOS: {
       BASE: '/usuarios',
       CONSULTAR_ROLES: '/consultar-roles',

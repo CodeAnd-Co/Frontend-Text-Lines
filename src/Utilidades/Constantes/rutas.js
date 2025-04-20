@@ -6,7 +6,7 @@ export const RUTAS = {
     BASE: '/admin',
     TABLERO: '/tablero',
     CONFIGURACION: '/configuracion',
-    CUOTAS: '/cuotas',
+    CUOTAS: { BASE: '/cuotas', EDITAR_CUOTAS: '/editar-cuotas' },
     EMPLEADOS: '/empleados',
     EVENTOS: '/eventos',
     PRODUCTOS: '/productos',

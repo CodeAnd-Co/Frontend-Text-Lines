@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ModalFlotante from '../componentes/organismos/ModalFlotante';
-import CampoTexto from '../componentes/atomos/CampoTexto';
+import Texto from '../componentes/atomos/Texto';
 
 export default {
   title: 'Componentes/Organismos/ModalFlotante',
@@ -26,14 +26,7 @@ const Template = (args) => {
 
   return (
     <ModalFlotante {...args} open={open} onClose={() => setOpen(false)} onConfirm={handleConfirm}>
-      <CampoTexto
-        label='Nombre'
-        name='nombre'
-        value={form.nombre}
-        onChange={handleChange}
-        fullWidth
-        required
-      />
+      <Texto>Aqui va el formulario</Texto>
     </ModalFlotante>
   );
 };

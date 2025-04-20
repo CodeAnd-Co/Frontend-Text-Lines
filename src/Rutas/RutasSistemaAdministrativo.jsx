@@ -8,12 +8,21 @@ import Error404 from '../Vistas/Paginas/Errores/Error404';
 
 import RutaProtegida from './RutaProtegida';
 import VerificarClienteSeleccionado from './VerificarClienteSeleccionado';
+import ListaUsuarios from '../vistas/Paginas/Usuarios/ListaUsuarios';
 
 const RutasSistemaAdministrativo = () => {
   return (
     <Routes>
       <Route path={RUTAS.RAIZ} element={<Error404 />} />
       <Route path={RUTAS.INICIO} element={<ListaClientes />} />
+      <Route
+        path={RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE}
+        element={
+          <RutaProtegida permiso={PERMISOS.CONSULTAR_USUARIOS}>
+            <ListaUsuarios />
+          </RutaProtegida>
+        }
+      />
       <Route path={RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION} element={<Configuracion />} />
       <Route
         path={RUTAS.SISTEMA_ADMINISTRATIVO.EMPLEADOS}

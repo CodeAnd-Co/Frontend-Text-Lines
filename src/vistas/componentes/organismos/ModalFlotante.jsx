@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Paper, Stack, Typography } from '@mui/material';
-import Boton from '../atomos/Boton';
+import { Modal, Paper} from '@mui/material';
+import Texto from '../atomos/Texto';
+import GrupoBotones from '../moleculas/GrupoBotones';
 
 /**
  * Modal reutilizable para envolver cualquier formulario u organismo.
@@ -18,10 +19,19 @@ const ModalFlotante = ({
   onClose,
   onConfirm,
   titulo = 'Título',
+  tituloVariant = 'h6',
   confirmLabel = 'Guardar',
   cancelLabel = 'Cancelar',
+  botones = null,
   children,
 }) => {
+  
+  // Botones por defecto si no se proporcionan
+  const defaultBotones = [
+    { label: cancelLabel, variant: 'outlined', onClick: onClose },
+    { label: confirmLabel, variant: 'contained', onClick: onConfirm },
+  ];
+
   return (
     <Modal
       open={open}
@@ -52,17 +62,19 @@ const ModalFlotante = ({
         }}
       >
         {titulo && (
-          <Typography variant='h6' component='h2' gutterBottom>
+          <Texto variant={tituloVariant} gutterBottom>
             {titulo}
-          </Typography>
+          </Texto>
         )}
 
         {children}
 
-        <Stack spacing={1} direction='row' justifyContent='flex-end' mt={2}>
-          <Boton variant='outlined' label={cancelLabel} onClick={onClose} />
-          <Boton variant='contained' label={confirmLabel} onClick={onConfirm} />
-        </Stack>
+        <GrupoBotones
+          buttons={botones ?? defaultBotones}
+          spacing={1}
+          direction="row"
+          align="end"
+        />
       </Paper>
     </Modal>
   );
@@ -73,8 +85,10 @@ ModalFlotante.propTypes = {
   onClose: PropTypes.func.isRequired,
   onConfirm: PropTypes.func.isRequired,
   titulo: PropTypes.string,
+  tituloVariant: PropTypes.string,
   confirmLabel: PropTypes.string,
   cancelLabel: PropTypes.string,
+  botones: PropTypes.array,
   children: PropTypes.node.isRequired,
 };
 

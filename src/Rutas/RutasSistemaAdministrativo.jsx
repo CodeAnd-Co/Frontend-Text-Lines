@@ -30,9 +30,7 @@ const RutasSistemaAdministrativo = () => {
         path={RUTAS.SISTEMA_ADMINISTRATIVO.CATEGORIAS}
         element={
           <RutaProtegida permiso={PERMISOS.CONSULTAR_CATEGORIAS_PRODUCTOS}>
-            <VerificarClienteSeleccionado>
-              <ListaCategorias />
-            </VerificarClienteSeleccionado>
+            <ListaCategorias />
           </RutaProtegida>
         }
       />

@@ -3,7 +3,7 @@ import { RUTAS } from '../Utilidades/Constantes/rutas';
 import { PERMISOS } from '../Utilidades/Constantes/permisos';
 import ListaClientes from '../Vistas/Paginas/Clientes/ListaClientes';
 import ListaCuotas from '../vistas/Paginas/Cuotas/ListaCuotas';
-import ListaEmpleados from '../Vistas/Paginas/Empleados/ListaEmpleados';
+import SistemaAdministrativo from '../Vistas/Paginas/SistemaAdministrativo';
 import Configuracion from '../Vistas/Paginas/Configuracion/ConfiguracionGeneral';
 import Error404 from '../Vistas/Paginas/Errores/Error404';
 import EditarCuotas from '../vistas/Paginas/Cuotas/EditarCuotas';
@@ -20,12 +20,12 @@ const RutasSistemaAdministrativo = () => {
       <Route path={RUTAS.SISTEMA_ADMINISTRATIVO.CUOTAS.BASE} element={<ListaCuotas />} />
       <Route path={RUTAS.SISTEMA_ADMINISTRATIVO.CUOTAS.EDITAR_CUOTAS} element={<EditarCuotas />} />
       <Route
-        path={RUTAS.SISTEMA_ADMINISTRATIVO.EMPLEADOS}
+        path={RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO}
         element={
-          <RutaProtegida permiso={PERMISOS.CONSULTAR_EMPLEADOS}>
-            <VerificarClienteSeleccionado>
-              <ListaEmpleados />
-            </VerificarClienteSeleccionado>
+          <RutaProtegida permiso={PERMISOS.CONSULTAR_SISTEMA_ADMINISTRATIVO}>
+            {/* <VerificarClienteSeleccionado> */}
+            <SistemaAdministrativo />
+            {/* </VerificarClienteSeleccionado> */}
           </RutaProtegida>
         }
       />

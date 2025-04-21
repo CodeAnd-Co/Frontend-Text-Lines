@@ -4,6 +4,8 @@ import ProductosConCuotas from '../../componentes/organismos/ProductosConCuotas'
 import TarjetaRenovacion from '../../componentes/organismos/TarjetaRenovacion';
 import Boton from '../../componentes/atomos/boton';
 import cuotaSetModelo from '../../../dominio/modelos/cuotaSetModelo';
+import { Box } from '@mui/material';
+import Texto from '../../componentes/atomos/Texto';
 
 const EditarCuotas = () => {
   const ubicacion = useLocation();
@@ -40,14 +42,27 @@ const EditarCuotas = () => {
 
   return (
     <>
-      <h1>Editar Cuotas</h1>
+      <Texto variant='h4' sx={{ margin: 5 }}>
+        {nombreCuotaSet}
+      </Texto>
+
       <TarjetaRenovacion
         periodoRenovacion={periodoRenovacion}
         setPeriodoRenovacion={setPeriodoRenovacion}
         renovacionActiva={renovacionActiva}
         setRenovacionActiva={setRenovacionActiva}
       />
-      <ProductosConCuotas productos={productos} manejarCambioCuota={manejarCambioCuota} />
+      <Box
+        sx={{
+          maxHeight: '60vh',
+          overflowY: 'auto',
+          marginY: 2,
+          borderRadius: 2,
+          margin: 1,
+        }}
+      >
+        <ProductosConCuotas productos={productos} manejarCambioCuota={manejarCambioCuota} />
+      </Box>
       <Boton onClick={handleClick} label={'Enviar'} />
     </>
   );

@@ -9,6 +9,8 @@ import SistemaAdministrativo from '../Vistas/Paginas/SistemaAdministrativo';
 import Configuracion from '../Vistas/Paginas/Configuracion/ConfiguracionGeneral';
 import Error404 from '../Vistas/Paginas/Errores/Error404';
 import EditarCuotas from '../vistas/Paginas/Cuotas/EditarCuotas';
+import  ListaRoles  from '../vistas/Paginas/Usuarios/ListaRoles'; 
+import  ListaUsuarios  from '../vistas/Paginas/Usuarios/ListaUsuarios';
 
 import RutaProtegida from './RutaProtegida';
 import VerificarClienteSeleccionado from './VerificarClienteSeleccionado';
@@ -40,6 +42,22 @@ const RutasSistemaAdministrativo = () => {
           </RutaProtegida>
         }
       />
+    <Route
+      path={RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE}
+      element={
+        <RutaProtegida permiso={PERMISOS.CONSULTAR_USUARIOS}>
+          <ListaUsuarios />
+        </RutaProtegida>
+      }
+    />
+    <Route
+      path={RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.CONSULTAR_ROLES}
+      element={
+        <RutaProtegida permiso={PERMISOS.CONSULTAR_ROLES}>
+          <ListaRoles />
+        </RutaProtegida>
+      }
+    />
     </Routes>
   );
 };

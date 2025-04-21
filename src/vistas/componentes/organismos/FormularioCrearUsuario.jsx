@@ -25,6 +25,7 @@ const FormularioCrearUsuario = ({ datosUsuario, setDatosUsuario, errores = {} })
       fechaNacimiento: nuevaFecha,
     }));
   };
+  const CAMPO_OBLIGATORIO = 'Este campo es obligatorio';
 
   return (
     <Box
@@ -47,7 +48,7 @@ const FormularioCrearUsuario = ({ datosUsuario, setDatosUsuario, errores = {} })
             required
             size='medium'
             error={!!errores.nombreCompleto}
-            helperText={errores.nombreCompleto && 'Este campo es obligatorio'}
+            helperText={errores.nombreCompleto && CAMPO_OBLIGATORIO}
           />
         </Grid>
         <Grid size={6} sx={gridStyles}>
@@ -59,21 +60,34 @@ const FormularioCrearUsuario = ({ datosUsuario, setDatosUsuario, errores = {} })
             required
             size='medium'
             error={!!errores.apellido}
-            helperText={errores.apellido && 'Este campo es obligatorio'}
+            helperText={errores.apellido && CAMPO_OBLIGATORIO}
           />
         </Grid>
         <Grid size={6} sx={gridStyles}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateField
+              required
               label='Fecha de nacimiento'
               value={datosUsuario.fechaNacimiento}
               onChange={handleFechaNacimiento}
               sx={{ width: '30ch' }}
+              slotProps={{
+                textField: {
+                  error: !!errores.fechaNacimiento,
+                  helperText:
+                    errores.fechaNacimiento === true
+                      ? CAMPO_OBLIGATORIO
+                      : errores.fechaNacimiento || '',
+                },
+              }}
             />
           </LocalizationProvider>
         </Grid>
         <Grid size={6} sx={gridStyles}>
           <CampoSelect
+            required
+            error={!!errores.genero}
+            helperText={errores.genero && CAMPO_OBLIGATORIO}
             label='Género'
             name='genero'
             size='medium'
@@ -95,7 +109,7 @@ const FormularioCrearUsuario = ({ datosUsuario, setDatosUsuario, errores = {} })
             required
             size='medium'
             error={!!errores.correoElectronico}
-            helperText={errores.correoElectronico && 'Este campo es obligatorio'}
+            helperText={errores.correoElectronico && CAMPO_OBLIGATORIO}
           />
         </Grid>
         <Grid size={6} sx={gridStyles}>
@@ -107,25 +121,19 @@ const FormularioCrearUsuario = ({ datosUsuario, setDatosUsuario, errores = {} })
             required
             size='medium'
             error={!!errores.numeroTelefono}
-            helperText={errores.numeroTelefono && 'Este campo es obligatorio'}
+            helperText={errores.numeroTelefono && CAMPO_OBLIGATORIO}
           />
         </Grid>
         <Grid size={6} sx={gridStyles}>
           <CampoTexto
+            required
             label='Dirección'
             name='direccion'
             value={datosUsuario.direccion}
             onChange={handleChange}
             size='medium'
-          />
-        </Grid>
-        <Grid size={6} sx={gridStyles}>
-          <CampoTexto
-            label='Código Postal'
-            name='codigoPostal'
-            value={datosUsuario.codigoPostal}
-            onChange={handleChange}
-            size='medium'
+            error={!!errores.direccion}
+            helperText={errores.direccion && CAMPO_OBLIGATORIO}
           />
         </Grid>
         <Grid size={6} sx={gridStyles}>
@@ -136,6 +144,8 @@ const FormularioCrearUsuario = ({ datosUsuario, setDatosUsuario, errores = {} })
             value={datosUsuario.cliente}
             onChange={handleChange}
             required
+            error={!!errores.cliente}
+            helperText={errores.cliente && CAMPO_OBLIGATORIO}
             options={[
               { value: 'Toyota', label: 'Toyota' },
               { value: 'Otro', label: 'Otro' },
@@ -150,6 +160,8 @@ const FormularioCrearUsuario = ({ datosUsuario, setDatosUsuario, errores = {} })
             value={datosUsuario.rol}
             onChange={handleChange}
             required
+            error={!!errores.rol}
+            helperText={errores.rol && CAMPO_OBLIGATORIO}
             options={[
               { value: 'Super Administrador', label: 'Super Administrador' },
               { value: 'Administrador', label: 'Administrador' },
@@ -168,7 +180,9 @@ const FormularioCrearUsuario = ({ datosUsuario, setDatosUsuario, errores = {} })
             required
             size='medium'
             error={!!errores.contrasenia}
-            helperText={errores.contrasenia && 'Este campo es obligatorio'}
+            helperText={
+              errores.contrasenia === true ? CAMPO_OBLIGATORIO : errores.contrasenia || ''
+            }
           />
         </Grid>
         <Grid size={6} sx={gridStyles}>
@@ -183,7 +197,7 @@ const FormularioCrearUsuario = ({ datosUsuario, setDatosUsuario, errores = {} })
             error={!!errores.confirmarContrasenia}
             helperText={
               errores.confirmarContrasenia === true
-                ? 'Este campo es obligatorio'
+                ? CAMPO_OBLIGATORIO
                 : errores.confirmarContrasenia || ''
             }
           />

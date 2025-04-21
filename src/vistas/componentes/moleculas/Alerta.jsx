@@ -63,10 +63,14 @@ const Alerta = ({
         backgroundColor: colorFondo,
         borderLeft: `6px solid ${colorPrincipal}`,
         position: centradoInferior ? 'fixed' : posicionAbsoluta ? 'absolute' : 'relative',
-        bottom: centradoInferior ? 24 : undefined,
-        left: centradoInferior ? '50%' : undefined,
-        transform: centradoInferior ? 'translateX(-50%)' : undefined,
-        zIndex: centradoInferior ? 9999 : undefined,
+
+        ...(centradoInferior && {
+          bottom: 24,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 9999,
+        }),
+
         ...props.sx,
       }}
     >

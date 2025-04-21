@@ -1,3 +1,4 @@
+import { Height } from '@mui/icons-material';
 import Alerta from '../Componentes/Moleculas/Alerta';
 
 export default {
@@ -53,6 +54,10 @@ export default {
     onClose: {
       action: 'cerrado',
       description: 'Callback cuando la alerta se cierra',
+    },
+    centradoInferior: {
+      control: 'boolean',
+      description: 'Muestra la alerta flotante, centrada horizontalmente al fondo de la pantalla',
     },
   },
   args: {
@@ -135,5 +140,12 @@ export const PosicionAbsoluta = {
       right: 20,
       width: '200px',
     },
+  },
+};
+export const CentradoInferior = {
+  args: {
+    tipo: 'success',
+    mensaje: 'Alerta centrada al inferior de la pantalla',
+    centradoInferior: true,
   },
 };

@@ -19,9 +19,9 @@ const RutasSistemaAdministrativo = () => {
         path={RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO}
         element={
           <RutaProtegida permiso={PERMISOS.CONSULTAR_SISTEMA_ADMINISTRATIVO}>
-            <VerificarClienteSeleccionado>
-              <SistemaAdministrativo />
-            </VerificarClienteSeleccionado>
+            {/* <VerificarClienteSeleccionado> */}
+            <SistemaAdministrativo />
+            {/* </VerificarClienteSeleccionado> */}
           </RutaProtegida>
         }
       />

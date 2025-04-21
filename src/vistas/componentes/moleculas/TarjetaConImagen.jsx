@@ -8,56 +8,67 @@ import Contenedor from '../Atomos/Contenedor';
 const TarjetaConImagen = ({
   src,
   alt,
-  title,
-  description,
-  iconName,
-  iconVariant,
-  iconSize,
-  iconColor,
-  iconClickable,
-  imageHeight = 'auto',
-  imageWidth = '100%',
-  background = 'white',
-  elevation = 2,
-  borderRadius = '8px',
-  onClickImagen,
-  onClickIcono,
+  titulo,
+  descripcion,
+  nombreIcono,
+  varianteIcono,
+  tamanoIcono,
+  colorIcono,
+  iconoClickeable,
+  tooltipIcono,
+  alturaImagen = 'auto',
+  anchoImagen = '100%',
+  ajuste = 'cover',
+  clickeableImagen = false,
+  estiloImagen = {},
+  colorFondo = 'white',
+  elevacion = 2,
+  bordeRedondeado = '8px',
+  alClicImagen,
+  alClicIcono,
 }) => {
   return (
-    <Contenedor elevation={elevation} background={background} sx={{ borderRadius: borderRadius }}>
-      <div style={{ position: 'relative', borderRadius: borderRadius }}>
+    <Contenedor
+      elevation={elevacion}
+      background={colorFondo}
+      sx={{ borderRadius: bordeRedondeado }}
+    >
+      <div style={{ position: 'relative', borderRadius: bordeRedondeado }}>
         <Imagen
           src={src}
           alt={alt}
-          width={imageWidth}
-          height={imageHeight}
-          fit='cover'
-          borderRadius={`${borderRadius} ${borderRadius} 0 0`}
-          onClick={onClickImagen}
+          width={anchoImagen}
+          height={alturaImagen}
+          fit={ajuste}
+          borderRadius={`${bordeRedondeado} ${bordeRedondeado} 0 0`}
+          onClick={alClicImagen}
+          clickable={clickeableImagen}
+          style={estiloImagen}
         />
       </div>
 
       <div style={{ padding: '16px' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          {title && (
+          {titulo && (
             <Texto variant='h5' gutterBottom style={{ flexGrow: 1 }}>
-              {title}
+              {titulo}
             </Texto>
           )}
-          {iconName && (
-            <div style={{ marginLeft: '8px', cursor: iconClickable ? 'pointer' : 'default' }}>
+          {nombreIcono && (
+            <div style={{ marginLeft: '8px', cursor: iconoClickeable ? 'pointer' : 'default' }}>
               <Icono
-                nombre={iconName}
-                variant={iconVariant}
-                size={iconSize}
-                color={iconColor}
-                clickable={iconClickable}
-                onClick={onClickIcono}
+                nombre={nombreIcono}
+                variant={varianteIcono}
+                size={tamanoIcono}
+                color={colorIcono}
+                clickable={iconoClickeable}
+                tooltip={tooltipIcono}
+                onClick={alClicIcono}
               />
             </div>
           )}
         </div>
-        {description && <Texto variant='body1'>{description}</Texto>}
+        {descripcion && <Texto variant='body1'>{descripcion}</Texto>}
       </div>
     </Contenedor>
   );
@@ -66,20 +77,24 @@ const TarjetaConImagen = ({
 TarjetaConImagen.propTypes = {
   src: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
-  title: PropTypes.string,
-  description: PropTypes.string,
-  iconName: PropTypes.string,
-  iconVariant: PropTypes.oneOf(['filled', 'outlined', 'rounded', 'sharp', 'twoTone']),
-  iconSize: PropTypes.oneOf(['small', 'medium', 'large']),
-  iconColor: PropTypes.string,
-  iconClickable: PropTypes.bool,
-  imageHeight: PropTypes.string,
-  imageWidth: PropTypes.string,
-  background: PropTypes.string,
-  elevation: PropTypes.number,
-  borderRadius: PropTypes.string,
-  onClickImagen: PropTypes.func,
-  onClickIcono: PropTypes.func,
+  titulo: PropTypes.string,
+  descripcion: PropTypes.string,
+  nombreIcono: PropTypes.string,
+  varianteIcono: PropTypes.oneOf(['filled', 'outlined', 'rounded', 'sharp', 'twoTone']),
+  tamanoIcono: PropTypes.oneOf(['small', 'medium', 'large']),
+  colorIcono: PropTypes.string,
+  iconoClickeable: PropTypes.bool,
+  tooltipIcono: PropTypes.string,
+  alturaImagen: PropTypes.string,
+  anchoImagen: PropTypes.string,
+  ajuste: PropTypes.oneOf(['contain', 'cover', 'fill', 'none', 'scale-down']),
+  clickeableImagen: PropTypes.bool,
+  estiloImagen: PropTypes.object,
+  colorFondo: PropTypes.string,
+  elevacion: PropTypes.number,
+  bordeRedondeado: PropTypes.string,
+  alClicImagen: PropTypes.func,
+  alClicIcono: PropTypes.func,
 };
 
 export default TarjetaConImagen;

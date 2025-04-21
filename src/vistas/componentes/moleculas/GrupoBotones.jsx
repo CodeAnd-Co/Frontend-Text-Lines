@@ -4,18 +4,15 @@ import { Stack } from '@mui/material';
 import Boton from '../atomos/Boton';
 
 /** Molécula: grupo de botones */
-const GrupoBotones = ({
-  buttons,
-  spacing = 1,
-  direction = 'row',
-  align = 'center',
-}) => {
+const GrupoBotones = ({ buttons, spacing = 1, direction = 'row', align = 'center' }) => {
   return (
     <Stack
       direction={direction}
       spacing={spacing}
       alignItems={align}
       justifyContent={align}
+      gap={2}
+      flexWrap='wrap'
     >
       {buttons.map((btn, index) => (
         <Boton key={index} {...btn} />

@@ -63,6 +63,7 @@ const FormularioInicioSesion = ({ alEnviar, cargando, mensaje }) => {
         <CampoTexto
           label='Correo Electrónico'
           name='correo'
+          size='medium'
           value={formulario.correo}
           onChange={manejarCambio}
           fullWidth
@@ -72,6 +73,7 @@ const FormularioInicioSesion = ({ alEnviar, cargando, mensaje }) => {
           label='Contraseña'
           name='contrasenia'
           type='password'
+          size='medium'
           value={formulario.contrasenia}
           onChange={manejarCambio}
           fullWidth
@@ -86,6 +88,7 @@ const FormularioInicioSesion = ({ alEnviar, cargando, mensaje }) => {
               type='submit'
               variant='contained'
               color='primary'
+              size='large'
               fullWidth
               label='Iniciar Sesión'
             />

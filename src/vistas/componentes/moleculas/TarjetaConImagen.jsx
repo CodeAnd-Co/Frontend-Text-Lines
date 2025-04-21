@@ -1,4 +1,5 @@
 import React from 'react';
+import { Box } from '@mui/material';
 import PropTypes from 'prop-types';
 import Imagen from '../Atomos/Imagen';
 import Icono from '../Atomos/Icono';
@@ -17,13 +18,13 @@ const TarjetaConImagen = ({
   iconoClickeable,
   tooltipIcono,
   alturaImagen = 'auto',
-  anchoImagen = '100%',
+  anchoImagen = '200px',
   ajuste = 'cover',
   clickeableImagen = false,
   estiloImagen = {},
   colorFondo = 'white',
   elevacion = 2,
-  bordeRedondeado = '8px',
+  bordeRedondeado = '10px',
   alClicImagen,
   alClicIcono,
 }) => {
@@ -33,43 +34,52 @@ const TarjetaConImagen = ({
       background={colorFondo}
       sx={{ borderRadius: bordeRedondeado }}
     >
-      <div style={{ position: 'relative', borderRadius: bordeRedondeado }}>
+      <Box
+        position='relative'
+        borderRadius={bordeRedondeado}
+        padding='8px'
+        display='flex'
+        justifyContent='center'
+        alignItems='center'
+        height={alturaImagen}
+        sx={{
+          background: '#fff',
+          boxShadow: 'inset 0 0 10px rgba(0,0,0,0.1)',
+        }}
+      >
         <Imagen
           src={src}
           alt={alt}
           width={anchoImagen}
           height={alturaImagen}
           fit={ajuste}
-          borderRadius={`${bordeRedondeado} ${bordeRedondeado} 0 0`}
           onClick={alClicImagen}
           clickable={clickeableImagen}
           style={estiloImagen}
         />
-      </div>
+      </Box>
 
-      <div style={{ padding: '16px' }}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+      <Box padding={2}>
+        <Box display='flex' alignItems='center'>
           {titulo && (
-            <Texto variant='h5' gutterBottom style={{ flexGrow: 1 }}>
+            <Texto variant='h6' gutterBottom sx={{ flexGrow: 1 }}>
               {titulo}
             </Texto>
           )}
           {nombreIcono && (
-            <div style={{ marginLeft: '8px', cursor: iconoClickeable ? 'pointer' : 'default' }}>
-              <Icono
-                nombre={nombreIcono}
-                variant={varianteIcono}
-                size={tamanoIcono}
-                color={colorIcono}
-                clickable={iconoClickeable}
-                tooltip={tooltipIcono}
-                onClick={alClicIcono}
-              />
-            </div>
+            <Icono
+              nombre={nombreIcono}
+              variant={varianteIcono}
+              size={tamanoIcono}
+              color={colorIcono}
+              clickable={iconoClickeable}
+              tooltip={tooltipIcono}
+              onClick={alClicIcono}
+            />
           )}
-        </div>
+        </Box>
         {descripcion && <Texto variant='body1'>{descripcion}</Texto>}
-      </div>
+      </Box>
     </Contenedor>
   );
 };

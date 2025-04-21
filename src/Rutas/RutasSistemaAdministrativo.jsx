@@ -3,7 +3,7 @@ import { RUTAS } from '../Utilidades/Constantes/rutas';
 import { PERMISOS } from '../Utilidades/Constantes/permisos';
 import ListaClientes from '../Vistas/Paginas/Clientes/ListaClientes';
 import ListaEmpleados from '../Vistas/Paginas/Empleados/ListaEmpleados';
-import ListaEmpleados from '../Vistas/Paginas/Usuarios/ListaUsuarios';
+import ListaUsuarios from '../vistas/Paginas/Usuarios/ListaUsuarios';
 import Configuracion from '../Vistas/Paginas/Configuracion/ConfiguracionGeneral';
 import Error404 from '../Vistas/Paginas/Errores/Error404';
 

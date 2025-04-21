@@ -1,16 +1,16 @@
 import axios from "axios";
-import { listaCategorias } from "../../modelos/Categorias/ListaCategorias";
+import { ListaCategorias } from "../../modelos/Categorias/ListaCategorias";
 import { RUTAS_API } from "../../../Utilidades/Constantes/rutasAPI";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-export class RepositorioCategorias {
+export class RepositorioListaCategorias {
   /**
    * Obtiene la lista de categorías desde la API
    * @param {Object} filtros - Parámetros opcionales como { limit, offset }
    * @returns {Promise<{categorias: Categoria[], mensaje: string}>}
    */
-  async obtenerTodas({ limit = 10, offset = 0 } = {}) {
+  async obtenerLista({ limit = 10, offset = 0 } = {}) {
     try {
       const respuesta = await axios.post(
         RUTAS_API.CATEGORIAS.CONSULTAR_LISTA,
@@ -23,7 +23,7 @@ export class RepositorioCategorias {
         }
       );
 
-      return listaCategorias(respuesta.data);
+      return ListaCategorias(respuesta.data);
 
     } catch (error) {
       const mensaje =

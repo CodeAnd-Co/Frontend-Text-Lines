@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { RepositorioCategorias } from "../../dominio/repositorios/Categorias/repositorioListaCategorias";
+import { RepositorioListaCategorias } from "../../dominio/repositorios/Categorias/repositorioListaCategorias";
 
 /**
  * Hook para consultar la lista de categorías.
@@ -12,7 +12,7 @@ import { RepositorioCategorias } from "../../dominio/repositorios/Categorias/rep
  *   recargar: () => void
  * }}
  */
-export function reqConsultarCategorias({ limit = 10, offset = 0 } = {}) {
+export function useConsultarCategorias({ limit = 10, offset = 0 } = {}) {
   const [categorias, setCategorias] = useState([]);
   const [mensaje, setMensaje] = useState("");
   const [cargando, setCargando] = useState(true);
@@ -20,14 +20,14 @@ export function reqConsultarCategorias({ limit = 10, offset = 0 } = {}) {
   const [recargarToken, setRecargarToken] = useState(0);
 
   useEffect(() => {
-    const repo = new RepositorioCategorias();
+    const repositorio = new RepositorioListaCategorias();
 
     const cargar = async () => {
       setCargando(true);
       setError(null);
 
       try {
-        const { categorias, mensaje } = await repo.obtenerTodas({ limit, offset });
+        const { categorias, mensaje } = await repositorio.obtenerLista({ limit, offset });
         setCategorias(categorias);
         setMensaje(mensaje);
       } catch (err) {

@@ -4,6 +4,7 @@ import { PERMISOS } from '../Utilidades/Constantes/permisos';
 import ListaClientes from '../Vistas/Paginas/Clientes/ListaClientes';
 import ListaEmpleados from '../Vistas/Paginas/Empleados/ListaEmpleados';
 import ListaCategorias from '../vistas/Paginas/Categorias/ListaCategorias';
+import SistemaAdministrativo from '../Vistas/Paginas/SistemaAdministrativo';
 import Configuracion from '../Vistas/Paginas/Configuracion/ConfiguracionGeneral';
 import Error404 from '../Vistas/Paginas/Errores/Error404';
 
@@ -17,12 +18,10 @@ const RutasSistemaAdministrativo = () => {
       <Route path={RUTAS.INICIO} element={<ListaClientes />} />
       <Route path={RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION} element={<Configuracion />} />
       <Route
-        path={RUTAS.SISTEMA_ADMINISTRATIVO.EMPLEADOS}
+        path={RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO}
         element={
-          <RutaProtegida permiso={PERMISOS.CONSULTAR_EMPLEADOS}>
-            <VerificarClienteSeleccionado>
-              <ListaEmpleados />
-            </VerificarClienteSeleccionado>
+          <RutaProtegida permiso={PERMISOS.CONSULTAR_SISTEMA_ADMINISTRATIVO}>
+              <SistemaAdministrativo />
           </RutaProtegida>
         }
       />

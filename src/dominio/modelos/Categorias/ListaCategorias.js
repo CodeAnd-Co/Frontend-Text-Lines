@@ -8,7 +8,7 @@ import { Categoria } from "./Categoria";
  *   mensaje: string
  * }}
  */
-export function listaCategorias(respuestaJson) {
+export function ListaCategorias(respuestaJson) {
 
   const { mensaje, lista_categorias } = respuestaJson;
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Paper} from '@mui/material';
-import Texto from '../atomos/Texto';
+import { Modal, Paper } from '@mui/material';
+import Texto from '../Atomos/Texto';
 import GrupoBotones from '../moleculas/GrupoBotones';
 
 /**
@@ -25,7 +25,6 @@ const ModalFlotante = ({
   botones = null,
   children,
 }) => {
-  
   // Botones por defecto si no se proporcionan
   const defaultBotones = [
     { label: cancelLabel, variant: 'outlined', onClick: onClose },
@@ -69,12 +68,7 @@ const ModalFlotante = ({
 
         {children}
 
-        <GrupoBotones
-          buttons={botones ?? defaultBotones}
-          spacing={1}
-          direction="row"
-          align="end"
-        />
+        <GrupoBotones buttons={botones ?? defaultBotones} spacing={1} direction='row' align='end' />
       </Paper>
     </Modal>
   );

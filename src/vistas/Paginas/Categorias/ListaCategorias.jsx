@@ -2,11 +2,11 @@
 
 import React from "react";
 import CustomDataGrid from "../../../vistas/componentes/organismos/dataGrid";
-import { reqConsultarCategorias } from "../../../hooks/Categorias/reqConsultarCategorias";
+import { useConsultarCategorias } from "../../../hooks/Categorias/useConsultarCategorias";
 
 const ListaCategorias = () => {
   // Hook que obtiene las categorías desde el repositorio
-  const { categorias, cargando, error } = reqConsultarCategorias({ limit: 5, offset: 0 });
+  const { categorias, cargando, error } = useConsultarCategorias({ limit: 5, offset: 0 });
 
   // Columnas para el DataGrid
   const columns = [

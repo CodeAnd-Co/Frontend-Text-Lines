@@ -7,6 +7,7 @@ import { styled } from '@mui/material/styles';
 
 /** Data grid personalizado usando Material UI */
 const spanishLocaleText = {
+  // Ya tenías estos
   noRowsLabel: 'No hay filas',
   columnMenuSortAsc: 'Ordenar ascendente',
   columnMenuSortDesc: 'Ordenar descendente',
@@ -14,7 +15,36 @@ const spanishLocaleText = {
   columnMenuFilter: 'Filtrar',
   columnMenuHideColumn: 'Ocultar columna',
   columnMenuManageColumns: 'Mostrar columnas',
-  toolbarPaginationRowsPerPage: 'Filas por página',
+  filterOperatorContains: 'Contiene',
+  filterOperatorEquals: 'Es igual a',
+  filterOperatorStartsWith: 'Empieza con',
+  filterOperatorEndsWith: 'Termina con',
+  filterOperatorIs: 'Es',
+  filterOperatorNot: 'No es',
+  filterOperatorAfter: 'Después de',
+  filterOperatorOnOrAfter: 'En o después de',
+  filterOperatorBefore: 'Antes de',
+  filterOperatorOnOrBefore: 'En o antes de',
+  filterOperatorIsEmpty: 'Está vacío',
+  filterOperatorIsNotEmpty: 'No está vacío',
+  filterOperatorIsAnyOf: 'Es cualquiera de',
+  filterOperatorDoesNotContain: 'No contiene',
+  filterOperatorDoesNotEqual: 'No es igual a',
+
+  filterPanelOperator: 'Operador',
+  filterPanelColumns: 'Columnas',
+  filterPanelAddFilter: 'Agregar filtro',
+  filterPanelDeleteIconLabel: 'Eliminar',
+
+  // Paginación
+  footerRowSelected: (count) => `${count.toLocaleString()} fila(s) seleccionada(s)`,
+  footerTotalRows: 'Filas Totales:',
+
+  // Otros opcionales
+  toolbarColumns: 'Columnas',
+  toolbarFilters: 'Filtros',
+  toolbarDensity: 'Densidad',
+  toolbarExport: 'Exportar',
 };
 
 const StyledDataGrid = styled(DataGrid)(({ theme }) => {

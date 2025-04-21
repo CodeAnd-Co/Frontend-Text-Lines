@@ -11,11 +11,17 @@ const ListaCuotas = () => {
   const [nombreCuotaSet, setNombreCuotaSet] = useState('');
   const [descripcionCuotaSet, setDescripcionCuotaSet] = useState('');
   const [productos, setProductos] = useState([]);
+  const [mostrarAlerta, setMostrarAlerta] = useState(false);
 
   const handleAbrir = () => setMostrarFormulario(true);
   const handleCerrar = () => setMostrarFormulario(false);
 
   const handleConfirmar = () => {
+    if (!nombreCuotaSet || !descripcionCuotaSet || productos.length === 0) {
+      setMostrarAlerta(true);
+      return;
+    }
+
     navegar(`/admin${RUTAS.SISTEMA_ADMINISTRATIVO.CUOTAS.EDITAR_CUOTAS}`, {
       state: {
         nombreCuotaSet,
@@ -23,7 +29,6 @@ const ListaCuotas = () => {
         productos,
       },
     });
-    //TODO: agregar logica para enviar datos al backend
   };
 
   return (
@@ -46,6 +51,8 @@ const ListaCuotas = () => {
           setDescripcionCuotaSet={setDescripcionCuotaSet}
           productos={productos}
           setProductos={setProductos}
+          mostrarAlerta={mostrarAlerta}
+          setMostrarAlerta={setMostrarAlerta}
         />
       </ModalFlotante>
     </>

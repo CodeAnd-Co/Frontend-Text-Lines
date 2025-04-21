@@ -1,8 +1,8 @@
-import Contenedor from '../atomos/Contenedor';
-import axios from 'axios';
+import Alerta from '../../componentes/moleculas/Alerta';
 import CampoTexto from '../atomos/CampoTexto';
-import CustomDataGrid from './dataGrid';
 import { useState, useEffect } from 'react';
+import obtenerProductos from '../../../dominio/servicios/obtenerProductos';
+import ProductosCuotaSet from './ProductosCuotaSet';
 
 const columns = [
   { field: 'id', headerName: 'Id', width: 100 },
@@ -20,79 +20,68 @@ const FormaCrearCuotaSet = ({
   setDescripcionCuotaSet,
   productos,
   setProductos,
+  mostrarAlerta,
+  setMostrarAlerta,
 }) => {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    const fetchProductos = async () => {
-      try {
-        const respuesta = await axios.get(`${API_URL}/api/cuotas/obtener-opciones`, {
-          params: { idCliente: 102 },
-          headers: {
-            'x-api-key': API_KEY,
-          },
-        });
-
-        const filasFormateadas = respuesta.data.resultado.map((p) => ({
-          id: p.id,
-          nombreProducto: p.nombreProducto,
-          tipo: p.tipo,
-        }));
-
-        setRows(filasFormateadas);
-      } catch (error) {
-        console.error('Error al obtener productos:', error);
-      }
+    const obtenerDatosProductos = async () => {
+      const productos = await obtenerProductos(API_URL, API_KEY);
+      setRows(productos);
     };
 
-    fetchProductos();
+    obtenerDatosProductos();
   }, []);
 
   const handleClickFila = (evento) => {
     const productoSeleccionado = evento.row;
 
-    const yaExiste = productos.some((p) => p.id === productoSeleccionado.id);
+    const yaExiste = productos.some((producto) => producto.id === productoSeleccionado.id);
     if (!yaExiste) {
       setProductos((prev) => [...prev, productoSeleccionado]);
     }
   };
 
   return (
-    <Contenedor
-      elevation={0}
-      sx={{
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 2,
-      }}
-    >
+    <>
       <CampoTexto
         label={'Nombre'}
         fullWidth
         type={'text'}
         value={nombreCuotaSet}
-        onChange={(e) => setNombreCuotaSet(e.target.value)}
+        onChange={(evento) => setNombreCuotaSet(evento.target.value)}
       />
 
-      <Contenedor elevation={1} sx={{ width: '100%', height: '350px' }}>
-        <CustomDataGrid
-          columns={columns}
-          rows={rows}
-          pageSize={4}
-          checkboxSelection={true}
-          onRowClick={handleClickFila}
-        />
-      </Contenedor>
+      <ProductosCuotaSet
+        elevacion={1}
+        sx={{ width: '100%', height: '350px' }}
+        columnas={columns}
+        filas={rows}
+        paginacion={4}
+        checkBox={true}
+        onRowClick={handleClickFila}
+      />
 
       <CampoTexto
         label={'Descripción'}
         fullWidth
         type={'text'}
         value={descripcionCuotaSet}
-        onChange={(e) => setDescripcionCuotaSet(e.target.value)}
+        onChange={(evento) => setDescripcionCuotaSet(evento.target.value)}
       />
-    </Contenedor>
+
+      {mostrarAlerta && (
+        <Alerta
+          tipo='warning'
+          mensaje={'Completa todos los campos y selecciona al menos un producto.'}
+          cerrable
+          duracion={10000}
+          onClose={() => setMostrarAlerta(false)}
+          sx={{ mb: 2, mt: 2 }}
+        />
+      )}
+    </>
   );
 };
 

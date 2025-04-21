@@ -10,7 +10,6 @@ const ProductosConCuotas = ({ productos, manejarCambioCuota }) => {
           <Box display='flex' justifyContent='space-between' alignItems='center'>
             <div>
               <h3>{producto.nombreProducto}</h3>
-              <h4>Tipo: {producto.tipo}</h4>
             </div>
             <div
               style={{

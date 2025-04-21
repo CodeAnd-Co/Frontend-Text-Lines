@@ -3,7 +3,7 @@ import axios from 'axios';
 const obtenerProductos = async (API_URL, API_KEY) => {
   try {
     const respuesta = await axios.get(`${API_URL}/api/cuotas/obtener-opciones`, {
-      params: { idCliente: 102 },
+      params: { idCliente: 102 }, //TODO: id del cliente esta hardcodeado
       headers: {
         'x-api-key': API_KEY,
       },

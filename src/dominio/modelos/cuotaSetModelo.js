@@ -1,24 +1,24 @@
 class cuotaSetModelo {
   constructor({
-    idCliente, // 👈 include this
+    idCliente,
     nombreCuotaSet,
     descripcion,
     periodoRenovacion,
     renovacionHabilitada = true,
     productos = [],
-    limites = [],
+    limites = {},
   }) {
-    this.idCliente = idCliente; // 👈 assign it here
-
+    this.idCliente = idCliente;
     this.nombre = nombreCuotaSet || '';
     this.descripcion = descripcion || '';
     this.periodoRenovacion = periodoRenovacion || 6;
     this.renovacionHabilitada = renovacionHabilitada;
 
-    this.productosYLimite = productos.map((producto, index) => {
-      const limite = limites[index];
+    this.productosYLimite = productos.map((producto) => {
+      const id = producto.id?.toString();
+      const limite = parseInt(limites[id], 10); // usa el ID como clave
       return {
-        idProducto: producto,
+        idProducto: id,
         limite,
         limiteActual: limite,
       };

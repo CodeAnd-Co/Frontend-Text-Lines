@@ -5,4 +5,8 @@ export const RUTAS_API = {
     BASE: `${BASE_URL}/usuarios`,
     CONSULTAR_USUARIO: (id) => `${BASE_URL}/usuarios/${id}`,
   },
+  ROLES: {
+    BASE: `${BASE_URL}/api/roles`,
+    CONSULTAR_LISTA: `${BASE_URL}/api/roles/consultar-lista`,
+  },
 };

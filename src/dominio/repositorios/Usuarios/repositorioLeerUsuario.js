@@ -11,9 +11,11 @@ export class RepositorioUsuarios {
    * @returns {Promise<{usuario: UsuarioLectura, mensaje: string}>}
    */
   async obtenerPorId(idUsuario) {
+    console.log("📤 [RepositorioUsuarios] Enviando solicitud para ID:", idUsuario);
+
     try {
       const respuesta = await axios.post(
-        RUTAS_API.USUARIOS.LEER,
+        RUTAS_API.USUARIOS.CONSULTAR_LISTA,
         { idUsuario },
         {
           withCredentials: true,
@@ -23,12 +25,20 @@ export class RepositorioUsuarios {
         }
       );
 
+      console.log("📬 [RepositorioUsuarios] Respuesta del backend:", respuesta.data);
+
       const { usuario, mensaje } = respuesta.data;
+
+      const usuarioInstancia = new UsuarioLectura(usuario);
+
+      console.log("🧱 [RepositorioUsuarios] Usuario instanciado correctamente:", usuarioInstancia);
+
       return {
-        usuario: new UsuarioLectura(usuario),
+        usuario: usuarioInstancia,
         mensaje,
       };
     } catch (error) {
+      console.error("❌ [RepositorioUsuarios] Error al obtener usuario:", error);
       const mensaje =
         error.response?.data?.mensaje || "Error al obtener datos del usuario.";
       throw new Error(mensaje);

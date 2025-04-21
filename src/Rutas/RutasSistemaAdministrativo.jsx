@@ -23,15 +23,15 @@ const RutasSistemaAdministrativo = () => {
             <VerificarClienteSeleccionado>
               <ListaEmpleados />
             </VerificarClienteSeleccionado>
-          </RutaProtegida>    
+          </RutaProtegida>
         }
       />
       <Route
-        path={RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS}
+        path={RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE}
         element={
-          <RutaProtegida permiso={PERMISOS.CONSULTAR_USUARIOS}>
-              <ListaUsuarios />
-          </RutaProtegida>    
+          <RutaProtegida permiso={PERMISOS.LEER_USUARIO}>
+            <ListaUsuarios />
+          </RutaProtegida>
         }
       />
     </Routes>

@@ -16,8 +16,8 @@ const Boton = ({
   ...props
 }) => {
   // Estilo para outlined personalizado
-  const outlinedStyle =
-    variant === 'outlined' && outlineColor
+  const outlinedStyle
+    = variant === 'outlined' && outlineColor
       ? {
           border: `1.5px solid ${outlineColor}`,
           color: outlineColor,
@@ -25,8 +25,8 @@ const Boton = ({
       : {};
 
   // Estilo adicional si el botón está seleccionado
-  const selectedStyle =
-    selected && variant === 'contained'
+  const selectedStyle
+    = selected && variant === 'contained'
       ? {
           backgroundColor: 'rgba(24, 50, 165, 0.7)', // azul con 70% opacidad
           color: '#fff', // asegura contraste del texto

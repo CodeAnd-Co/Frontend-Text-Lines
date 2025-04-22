@@ -16,7 +16,7 @@ const Contenedor = ({
       sx={{
         backgroundColor: background,
         borderLeft: borderLeft ? `6px solid ${borderLeft}` : 'none',
-        p: 2,
+        padding: 2,
         ...sx,
       }}
       {...props}

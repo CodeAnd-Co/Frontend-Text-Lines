@@ -15,6 +15,7 @@ const Alerta = ({
   cerrable = false,
   duracion,
   posicionAbsoluta = false,
+  centradoInferior = false,
   onClose,
   ...props
 }) => {
@@ -58,10 +59,18 @@ const Alerta = ({
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: 1,
-        p: 2,
+        padding: 2,
         backgroundColor: colorFondo,
         borderLeft: `6px solid ${colorPrincipal}`,
-        position: posicionAbsoluta ? 'absolute' : 'relative',
+        position: centradoInferior ? 'fixed' : posicionAbsoluta ? 'absolute' : 'relative',
+
+        ...(centradoInferior && {
+          bottom: 24,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 9999,
+        }),
+
         ...props.sx,
       }}
     >
@@ -98,6 +107,8 @@ Alerta.propTypes = {
   cerrable: PropTypes.bool,
   duracion: PropTypes.number,
   posicionAbsoluta: PropTypes.bool,
+  centradoInferior: PropTypes.bool,
+
   onClose: PropTypes.func,
 };
 

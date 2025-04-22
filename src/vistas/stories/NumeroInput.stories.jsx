@@ -17,7 +17,9 @@ export default {
 const Template = (args) => {
   const [value, setValue] = useState(args.value || 1);
 
-  return <NumeroInput {...args} value={value} onChange={(e) => setValue(e.target.value)} />;
+  return (
+    <NumeroInput {...args} value={value} onChange={(evento) => setValue(evento.target.value)} />
+  );
 };
 
 export const Default = Template.bind({});

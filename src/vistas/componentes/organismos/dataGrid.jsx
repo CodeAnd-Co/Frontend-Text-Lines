@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { DataGrid } from '@mui/x-data-grid';
-import { tokens } from '../../../theme';
-import { themeSettings } from '../../../theme';
+import { tokens, themeSettings } from '../../../theme';
 import { styled } from '@mui/material/styles';
 
 /** Data grid personalizado usando Material UI */

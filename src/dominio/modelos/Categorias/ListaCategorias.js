@@ -1,4 +1,4 @@
-import { Categoria } from "./Categoria";
+import { Categoria } from './Categoria';
 
 /**
  * Convierte una lista del backend en instancias del modelo Categoria
@@ -8,13 +8,12 @@ import { Categoria } from "./Categoria";
  *   mensaje: string
  * }}
  */
-export function ListaCategorias(respuestaJson) {
+export function listaCategorias(respuestaJson) {
+  const { mensaje, listaCategoria } = respuestaJson;
 
-  const { mensaje, lista_categorias } = respuestaJson;
+  if (!listaCategoria) return { categorias: [], mensaje: mensaje || '' };
 
-  if (!lista_categorias) return { categorias: [], mensaje: mensaje || "" };
-
-  const categorias = lista_categorias.map(cat => new Categoria(cat));
+  const categorias = listaCategoria.map((cat) => new Categoria(cat));
 
   return { categorias, mensaje };
 }

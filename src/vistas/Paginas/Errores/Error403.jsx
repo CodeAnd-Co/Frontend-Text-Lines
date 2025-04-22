@@ -12,7 +12,7 @@ const estilosContenedor = {
   minHeight: '100vh',
   textAlign: 'center',
   backgroundColor: '#f8f9fa',
-  p: 4,
+  padding: 4,
 };
 
 const estilosTextoSecundario = {

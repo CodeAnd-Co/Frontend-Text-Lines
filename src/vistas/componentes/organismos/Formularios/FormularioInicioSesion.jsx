@@ -15,7 +15,7 @@ const estilosContenedorFormulario = {
   flexDirection: 'column',
   alignItems: 'center',
   borderRadius: '10px',
-  p: 10,
+  padding: 10,
 };
 
 const estilosFormulario = {

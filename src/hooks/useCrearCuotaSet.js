@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import cuotaSetModelo from '../dominio/modelos/cuotaSetModelo';
+import CuotaSetModelo from '../dominio/modelos/Cuotas/CuotaSetModelo';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -24,7 +24,7 @@ export const useCrearCuotaSet = ({
 
   const enviarCuota = async () => {
     setCargando(true);
-    const modelo = new cuotaSetModelo({
+    const modelo = new CuotaSetModelo({
       idCliente,
       nombreCuotaSet,
       descripcion,

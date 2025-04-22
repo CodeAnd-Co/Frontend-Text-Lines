@@ -1,4 +1,4 @@
-class cuotaSetModelo {
+class CuotaSetModelo {
   constructor({
     idCliente,
     nombreCuotaSet,
@@ -26,4 +26,4 @@ class cuotaSetModelo {
   }
 }
 
-export default cuotaSetModelo;
+export default CuotaSetModelo;

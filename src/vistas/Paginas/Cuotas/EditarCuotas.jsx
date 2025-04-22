@@ -59,6 +59,7 @@ const EditarCuotas = () => {
       <Texto variant='h4' sx={{ margin: 5 }}>
         {nombreCuotaSet}
       </Texto>
+
       {exito && (
         <Alerta tipo='success' mensaje={mensaje} duracion={8000} sx={{ margin: 3 }} cerrable />
       )}
@@ -89,29 +90,36 @@ const EditarCuotas = () => {
       >
         <ProductosConCuotas productos={productos} manejarCambioCuota={manejarCambioCuota} />
       </Box>
-      <GrupoBotones
-        buttons={[
-          {
-            label: 'Cancelar',
-            onClick: manejarCancelar, // o navigate(-1) si usas useNavigate
-            variant: 'outlined',
-            color: 'secondary',
-          },
-          {
-            label: cargando ? 'Enviando...' : 'Enviar',
-            onClick: enviarCuota,
-            disabled: cargando,
-            variant: 'contained',
-            color: 'primary',
-          },
-        ]}
-      />
+
+      <Box sx={{ display: 'flex', width: '95%', justifyContent: 'flex-end', margin: 5 }}>
+        <GrupoBotones
+          buttons={[
+            {
+              label: 'Cancelar',
+              onClick: manejarCancelar, // o navigate(-1) si usas useNavigate
+              variant: 'outlined',
+              color: 'secondary',
+              sx: { width: '120px', height: '52px' },
+            },
+            {
+              label: cargando ? 'Enviando...' : 'Enviar',
+              onClick: enviarCuota,
+              disabled: cargando,
+              variant: 'contained',
+              color: 'primary',
+              sx: { width: '120px', height: '52px' },
+            },
+          ]}
+        />
+      </Box>
 
       <PopUpEliminar
         abrir={abrirConfirmacion}
         cerrar={cerrarPopup}
         confirmar={confirmarSalida}
-        dialogo={'¿Estás seguro de que deseas salir sin guardar?'}
+        dialogo={'¿Estás seguro de que deseas salir sin crear la cuota?'}
+        labelConfirmar={'Confirmar'}
+        labelCancelar={'Seguir Editando'}
       />
     </>
   );

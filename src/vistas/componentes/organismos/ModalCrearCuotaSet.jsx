@@ -5,7 +5,7 @@ import FormaCrearCuotaSet from '../organismos/Formularios/FormaCrearCuotaSet';
 import ModalFlotante from '../organismos/ModalFlotante';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';
 
-const ModalCrearCuotaSet = ({}) => {
+const ModalCrearCuotaSet = () => {
   const navegar = useNavigate();
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [nombreCuotaSet, setNombreCuotaSet] = useState('');

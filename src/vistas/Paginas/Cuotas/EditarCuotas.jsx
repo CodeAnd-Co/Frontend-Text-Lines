@@ -74,7 +74,7 @@ const EditarCuotas = () => {
 
   return (
     <>
-      <Texto variant='h4' sx={{ margin: 5 }}>
+      <Texto variant='h4' sx={{ margin: 7 }}>
         {nombreCuotaSet}
       </Texto>
 

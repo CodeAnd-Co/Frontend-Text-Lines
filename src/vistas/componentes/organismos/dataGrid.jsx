@@ -72,6 +72,12 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => {
       fontWeight: tema.typography.subtitulo2.fontWeight,
       fontFamily: tema.typography.subtitulo2.fontFamily,
     },
+    '& .MuiDataGrid-columnHeaderTitleContainer': {
+      justifyContent: 'center', // ✅ Centra el contenedor del título
+    },
+    '& .MuiDataGrid-columnHeaderCheckbox': {
+      display: 'none',
+    },
   };
 });
 

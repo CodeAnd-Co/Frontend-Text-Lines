@@ -26,8 +26,8 @@ export class RepositorioListaCategorias {
       return ListaCategorias(respuesta.data);
 
     } catch (error) {
-      const mensaje =
-        error.response?.data?.mensaje || "Error al obtener categorías";
+      const mensaje
+        = error.response?.data?.mensaje || "Error al obtener categorías";
       throw new Error(mensaje);
     }
   }

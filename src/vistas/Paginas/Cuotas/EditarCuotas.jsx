@@ -47,6 +47,24 @@ const EditarCuotas = () => {
     setAbrirConfirmacion(false);
   };
 
+  const botonesEnviarCancelar = [
+    {
+      label: 'Cancelar',
+      onClick: manejarCancelar, // o navigate(-1) si usas useNavigate
+      variant: 'outlined',
+      color: 'secondary',
+      sx: { width: '120px', height: '52px' },
+    },
+    {
+      label: cargando ? 'Enviando...' : 'Enviar',
+      onClick: enviarCuota,
+      disabled: cargando,
+      variant: 'contained',
+      color: 'primary',
+      sx: { width: '120px', height: '52px' },
+    },
+  ];
+
   const manejarCambioCuota = (id, valor) => {
     setCuotas((prev) => ({
       ...prev,
@@ -60,16 +78,14 @@ const EditarCuotas = () => {
         {nombreCuotaSet}
       </Texto>
 
-      {exito && (
-        <Alerta tipo='success' mensaje={mensaje} duracion={8000} sx={{ margin: 3 }} cerrable />
-      )}
-      {error && (
+      {(exito || error) && (
         <Alerta
-          tipo='error'
+          tipo={exito ? 'success' : 'error'}
           mensaje={mensaje}
-          duracion={10000}
+          duracion={exito ? 8000 : 10000}
+          sx={{ margin: 3 }}
           cerrable
-          onClose={() => setError(false)}
+          onClose={error ? () => setError(false) : undefined}
         />
       )}
 
@@ -92,25 +108,7 @@ const EditarCuotas = () => {
       </Box>
 
       <Box sx={{ display: 'flex', width: '95%', justifyContent: 'flex-end', margin: 5 }}>
-        <GrupoBotones
-          buttons={[
-            {
-              label: 'Cancelar',
-              onClick: manejarCancelar, // o navigate(-1) si usas useNavigate
-              variant: 'outlined',
-              color: 'secondary',
-              sx: { width: '120px', height: '52px' },
-            },
-            {
-              label: cargando ? 'Enviando...' : 'Enviar',
-              onClick: enviarCuota,
-              disabled: cargando,
-              variant: 'contained',
-              color: 'primary',
-              sx: { width: '120px', height: '52px' },
-            },
-          ]}
-        />
+        <GrupoBotones buttons={botonesEnviarCancelar} />
       </Box>
 
       <PopUpEliminar

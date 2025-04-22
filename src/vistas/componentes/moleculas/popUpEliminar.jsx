@@ -10,7 +10,7 @@ import { Dialog, DialogActions, DialogContent, Button } from '@mui/material';
  * @returns {JSX.Element} Componente de pop-up de eliminacion.
  */
 
-const PopUpEliminar = ({ abrir, cerrar, confirmar, dialogo }) => {
+const PopUpEliminar = ({ abrir, cerrar, confirmar, dialogo, labelCancelar, labelConfirmar }) => {
   return (
     <Dialog
       open={abrir}
@@ -23,8 +23,8 @@ const PopUpEliminar = ({ abrir, cerrar, confirmar, dialogo }) => {
     >
       <DialogContent>{dialogo}</DialogContent>
       <DialogActions>
-        <Button onClick={cerrar}>Cancelar</Button>
-        <Button onClick={confirmar}>Confirmar</Button>
+        <Button onClick={cerrar}>{labelCancelar}</Button>
+        <Button onClick={confirmar}>{labelConfirmar}</Button>
       </DialogActions>
     </Dialog>
   );

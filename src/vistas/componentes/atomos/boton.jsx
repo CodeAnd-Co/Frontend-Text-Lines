@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MUIButton from '@mui/material/Button';
+import { tokens } from '../../../theme';
 
 /** Botón personalizado usando Material UI */
 const Boton = ({
@@ -15,9 +16,11 @@ const Boton = ({
   onClick, // Función que se ejecuta al hacer clic
   ...props
 }) => {
+  const tema = themeSettings(theme.palette.mode);
+  const colores = tokens(tema.palette.mode);
   // Estilo para outlined personalizado
-  const outlinedStyle
-    = variant === 'outlined' && outlineColor
+  const outlinedStyle =
+    variant === 'outlined' && outlineColor
       ? {
           border: `1.5px solid ${outlineColor}`,
           color: outlineColor,
@@ -25,16 +28,16 @@ const Boton = ({
       : {};
 
   // Estilo adicional si el botón está seleccionado
-  const selectedStyle
-    = selected && variant === 'contained'
+  const selectedStyle =
+    selected && variant === 'contained'
       ? {
-          backgroundColor: 'rgba(24, 50, 165, 0.7)', // azul con 70% opacidad
-          color: '#fff', // asegura contraste del texto
+          backgroundColor: colores.altertex[3], // azul con 70% opacidad
+          color: colores.menu[2], // asegura contraste del texto
         }
       : selected && variant === 'outlined'
       ? {
-          backgroundColor: 'rgba(24, 50, 165, 0.5)', // azul con 50% opacidad
-          color: '#1832A5',
+          backgroundColor: colores.altertex[2], // azul con 50% opacidad
+          color: colores.altertex[1],
         }
       : {};
 

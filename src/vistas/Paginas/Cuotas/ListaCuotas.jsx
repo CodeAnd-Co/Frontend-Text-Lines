@@ -1,9 +1,10 @@
+import Texto from '../../componentes/atomos/Texto';
 import ModalCrearCuotaSet from '../../componentes/organismos/ModalCrearCuotaSet';
 
 const ListaCuotas = () => {
   return (
     <>
-      <h1>Cuotas</h1>
+      <Texto variant='h3'>Cuotas</Texto>
       <ModalCrearCuotaSet />
     </>
   );

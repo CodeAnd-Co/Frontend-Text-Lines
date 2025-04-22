@@ -33,7 +33,7 @@ const ModalCrearCuotaSet = ({}) => {
 
   return (
     <>
-      <Boton label={'Añadir'} variant={'contained'} onClick={handleAbrir} />
+      <Boton label={'Añadir'} variant={'contained'} onClick={handleAbrir} size='large' />
       <ModalFlotante
         open={mostrarFormulario}
         onClose={handleCerrar}

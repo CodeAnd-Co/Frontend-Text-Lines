@@ -39,13 +39,13 @@ const ListaUsuarios = () => {
           mensaje={alerta.mensaje}
           cerrable
           duracion={4000}
-          // centradoInferior
+          centradoInferior
           onClose={() => setAlerta(null)}
         />
       )}
 
       <Button variant='contained' color='primary' onClick={handleOpen}>
-        Añadir Usuario
+        Añadir
       </Button>
 
       <ModalFlotante

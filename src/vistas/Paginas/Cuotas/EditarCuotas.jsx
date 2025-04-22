@@ -107,7 +107,12 @@ const EditarCuotas = () => {
         ]}
       />
 
-      <PopUpEliminar abrir={abrirConfirmacion} cerrar={cerrarPopup} confirmar={confirmarSalida} />
+      <PopUpEliminar
+        abrir={abrirConfirmacion}
+        cerrar={cerrarPopup}
+        confirmar={confirmarSalida}
+        dialogo={'¿Estás seguro de que deseas salir sin guardar?'}
+      />
     </>
   );
 };

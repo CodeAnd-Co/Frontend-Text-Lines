@@ -22,8 +22,9 @@ export const RUTAS_API = {
   ROLES: {
     BASE: BASE_ROLES,
     CONSULTAR_LISTA: `${BASE_ROLES}/consultar-lista`,
+  },
   EMPLEADOS: {
     BASE: BASE_EMPLEADOS,
     CONSULTAR_GRUPOS: `${BASE_EMPLEADOS}/consultar-grupo`,
   },
-};
+}

@@ -11,6 +11,7 @@ import EditarCuotas from '../vistas/Paginas/Cuotas/EditarCuotas';
 import  ListaRoles  from '../vistas/Paginas/Roles/ListaRoles'; 
 import  ListaUsuarios  from '../Vistas/Paginas/Usuarios/ListaUsuarios';
 import RutaProtegida from './RutaProtegida';
+import ListaCategorias from '../Vistas/Paginas/Categorias/ListaCategorias';
 import VerificarClienteSeleccionado from './VerificarClienteSeleccionado';
 
 const RutasSistemaAdministrativo = () => {
@@ -61,10 +62,6 @@ const RutasSistemaAdministrativo = () => {
         </RutaProtegida>
       }
     />
-
-      >
-        <Route path='empleados/consultar-grupos' element={<ListaGrupoEmpleados />} />
-      </Route>
     </Routes>
   );
 };

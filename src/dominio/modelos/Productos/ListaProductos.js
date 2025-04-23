@@ -1,5 +1,5 @@
 //RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
-import { Producto } from '../producto';
+import { Producto } from './Producto';
 
 /**
  * Convierte una lista del backend en instancias del modelo Categoria

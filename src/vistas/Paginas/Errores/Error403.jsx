@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Imagen from '../../Componentes/Atomos/Imagen';
 import Texto from '../../Componentes/Atomos/Texto';
-import Boton from '../../Componentes/Atomos/Boton';
+import Boton from '../../componentes/atomos/Boton';
 
 const estilosContenedor = {
   display: 'flex',
@@ -11,7 +11,6 @@ const estilosContenedor = {
   alignItems: 'center',
   minHeight: '100vh',
   textAlign: 'center',
-  backgroundColor: '#f8f9fa',
   padding: 4,
 };
 

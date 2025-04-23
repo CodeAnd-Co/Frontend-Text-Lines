@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import 'react-pro-sidebar/dist/css/styles.css';
+import { useState, React } from 'react';
 import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import { Box, IconButton, useTheme } from '@mui/material';
-import 'react-pro-sidebar/dist/css/styles.css';
+import { Link, useNavigate } from 'react-router-dom';
 import { tokens } from '../../../theme';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
@@ -13,9 +14,10 @@ import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOu
 import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import TemaIcono from '../Atomos/temaIcono';
-import { Link } from 'react-router-dom';
 import IconoMenu from '../Atomos/iconoMenu';
 import TextoMenu from '../Atomos/textoMenu';
+
+import { RUTAS } from '../../../Utilidades/Constantes/rutas';
 
 const ElementoMenu = ({ titulo, ruta, icono, seleccionado, setSeleccionado }) => {
   const theme = useTheme();
@@ -38,10 +40,11 @@ const ElementoMenu = ({ titulo, ruta, icono, seleccionado, setSeleccionado }) =>
 };
 
 const BarraLateral = () => {
-  const [colapsado, setColapsado] = useState(false);
-  const [seleccionado, setSeleccionado] = useState('Inicio');
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
+  const [colapsado, setColapsado] = useState(false);
+  const [seleccionado, setSeleccionado] = useState('Inicio');
   const [productosAbierto, setProductosAbierto] = useState(false);
   const [empleadosAbierto, setEmpleadosAbierto] = useState(false);
 
@@ -89,8 +92,8 @@ const BarraLateral = () => {
           </MenuItem>
           <Box>
             <ElementoMenu
-              titulo='Inicio'
-              ruta='/admin'
+              titulo='Tablero'
+              ruta={RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO}
               icono={<HomeOutlinedIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}
@@ -103,13 +106,23 @@ const BarraLateral = () => {
             >
               <ElementoMenu
                 titulo='Lista de Empleados'
-                ruta='/admin/empleados'
+                ruta={
+                  RUTAS.SISTEMA_ADMINISTRATIVO.BASE
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.EMPLEADOS.BASE
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.EMPLEADOS.CONSULTAR_EMPLEADOS
+                }
                 seleccionado={seleccionado}
                 setSeleccionado={setSeleccionado}
               />
               <ElementoMenu
                 titulo='Grupos de Empleados'
-                ruta='/admin/grupoEmpleados'
+                ruta={
+                  RUTAS.SISTEMA_ADMINISTRATIVO.BASE
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.EMPLEADOS.BASE
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.EMPLEADOS.CONSULTAR_GRUPOS
+                }
                 seleccionado={seleccionado}
                 setSeleccionado={setSeleccionado}
               />
@@ -122,47 +135,74 @@ const BarraLateral = () => {
             >
               <ElementoMenu
                 titulo='Lista de Productos'
-                ruta='/admin/productos'
+                ruta={
+                  RUTAS.SISTEMA_ADMINISTRATIVO.BASE
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.BASE
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_PRODUCTOS
+                }
                 seleccionado={seleccionado}
                 setSeleccionado={setSeleccionado}
               />
               <ElementoMenu
                 titulo='Sets de Productos'
-                ruta='/admin/setsProductos'
+                ruta={
+                  RUTAS.SISTEMA_ADMINISTRATIVO.BASE
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.BASE
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_SETS
+                }
                 seleccionado={seleccionado}
                 setSeleccionado={setSeleccionado}
               />
               <ElementoMenu
                 titulo='Categorías'
-                ruta='/admin/categorias'
+                ruta={
+                  RUTAS.SISTEMA_ADMINISTRATIVO.BASE
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.BASE
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_CATEGORIAS
+                }
                 seleccionado={seleccionado}
                 setSeleccionado={setSeleccionado}
               />
             </SubMenu>
             <ElementoMenu
               titulo='Pedidos'
-              ruta='/admin/pedidos'
+              ruta={RUTAS.SISTEMA_ADMINISTRATIVO.PEDIDOS}
               icono={<InboxOutlinedIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}
             />
             <ElementoMenu
               titulo='Cuotas'
-              ruta='/admin/cuotas'
+              ruta={
+                RUTAS.SISTEMA_ADMINISTRATIVO.BASE
+                + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO
+                + RUTAS.SISTEMA_ADMINISTRATIVO.CUOTAS.BASE
+              }
               icono={<CurrencyExchangeOutlinedIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}
             />
             <ElementoMenu
               titulo='Eventos'
-              ruta='/admin/eventos'
+              ruta={
+                RUTAS.SISTEMA_ADMINISTRATIVO.BASE
+                + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO
+                + RUTAS.SISTEMA_ADMINISTRATIVO.EVENTOS
+              }
               icono={<EditCalendarOutlinedIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}
             />
             <ElementoMenu
               titulo='Configuración'
-              ruta='/admin/configuracion'
+              ruta={
+                RUTAS.SISTEMA_ADMINISTRATIVO.BASE
+                + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO
+                + RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION
+              }
               icono={<SettingsOutlinedIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}
@@ -180,7 +220,7 @@ const BarraLateral = () => {
             width='100%'
           >
             <TemaIcono />
-            <LogoutOutlinedIcon />
+            <LogoutOutlinedIcon onClick={() => navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE)} />
           </Box>
         </Box>
       </ProSidebar>

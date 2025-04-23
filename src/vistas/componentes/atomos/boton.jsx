@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useTheme } from '@mui/material';
 import MUIButton from '@mui/material/Button';
 import { tokens } from '../../../theme';
 
@@ -16,7 +17,7 @@ const Boton = ({
   onClick, // Función que se ejecuta al hacer clic
   ...props
 }) => {
-  const tema = themeSettings(theme.palette.mode);
+  const tema = useTheme();
   const colores = tokens(tema.palette.mode);
   // Estilo para outlined personalizado
   const outlinedStyle =

@@ -13,6 +13,30 @@ import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOu
 import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import TemaIcono from '../Atomos/temaIcono';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import IconoMenu from '../Atomos/iconoMenu';
+import TextoMenu from '../Atomos/textoMenu';
+
+const ElementoMenu = ({ titulo, ruta, icono, seleccionado, setSeleccionado }) => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
+  return (
+    <Box sx={{ padding: '0px 8px' }}>
+      <MenuItem
+        active={seleccionado === titulo}
+        onClick={() => setSeleccionado(titulo)}
+        icon={<IconoMenu icono={icono} />}
+        style={{ color: colors.primario[4] }}
+      >
+        <Link to={ruta} style={{ textDecoration: 'none', color: 'inherit', width: '100%' }}>
+          <TextoMenu>{titulo}</TextoMenu>
+        </Link>
+      </MenuItem>
+    </Box>
+  );
+};
 
 const BarraLateral = () => {
   const [colapsado, setColapsado] = useState(false);
@@ -67,7 +91,7 @@ const BarraLateral = () => {
           <Box>
             <ElementoMenu
               titulo='Inicio'
-              ruta='/'
+              ruta='/admin'
               icono={<HomeOutlinedIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}
@@ -80,13 +104,13 @@ const BarraLateral = () => {
             >
               <ElementoMenu
                 titulo='Lista de Empleados'
-                ruta='/empleados'
+                ruta='/admin/empleados'
                 seleccionado={seleccionado}
                 setSeleccionado={setSeleccionado}
               />
               <ElementoMenu
                 titulo='Grupos de Empleados'
-                ruta='/grupoEmpleados'
+                ruta='/admin/grupoEmpleados'
                 seleccionado={seleccionado}
                 setSeleccionado={setSeleccionado}
               />
@@ -99,47 +123,47 @@ const BarraLateral = () => {
             >
               <ElementoMenu
                 titulo='Lista de Productos'
-                ruta='/productos'
+                ruta='/admin/productos'
                 seleccionado={seleccionado}
                 setSeleccionado={setSeleccionado}
               />
               <ElementoMenu
                 titulo='Sets de Productos'
-                ruta='/setsProductos'
+                ruta='/admin/setsProductos'
                 seleccionado={seleccionado}
                 setSeleccionado={setSeleccionado}
               />
               <ElementoMenu
                 titulo='Categorías'
-                ruta='/categorias'
+                ruta='/admin/categorias'
                 seleccionado={seleccionado}
                 setSeleccionado={setSeleccionado}
               />
             </SubMenu>
             <ElementoMenu
               titulo='Pedidos'
-              ruta='/pedidos'
+              ruta='/admin/pedidos'
               icono={<InboxOutlinedIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}
             />
             <ElementoMenu
               titulo='Cuotas'
-              ruta='/cuotas'
+              ruta='/admin/cuotas'
               icono={<CurrencyExchangeOutlinedIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}
             />
             <ElementoMenu
               titulo='Eventos'
-              ruta='/eventos'
+              ruta='/admin/eventos'
               icono={<EditCalendarOutlinedIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}
             />
             <ElementoMenu
               titulo='Configuración'
-              ruta='/configuracion'
+              ruta='/admin/configuracion'
               icono={<SettingsOutlinedIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}

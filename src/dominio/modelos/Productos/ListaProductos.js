@@ -10,7 +10,7 @@ import { Producto } from '../producto';
  * }}
  */
 
-export function ListaProductos(respuestaJson) {
+export function listaProductos(respuestaJson) {
   const { mensaje, listaProductos } = respuestaJson;
 
   if (!listaProductos) return { productos: [], mensaje: mensaje || '' };

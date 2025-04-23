@@ -7,7 +7,7 @@ import { tokens } from '../../../theme';
 
 const Productos = () => {
   // Hook que obtiene los productos desde el repositorio
-  const { productos, cargando, error } = useConsultarProductos();
+  const { productos, cargando } = useConsultarProductos();
   const tema = useTheme();
   const colores = tokens(tema.palette.mode);
 

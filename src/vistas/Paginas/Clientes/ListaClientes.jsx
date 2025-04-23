@@ -44,7 +44,7 @@ const ListaClientes = () => {
   const navigate = useNavigate();
   const { cerrarSesion } = useAuth();
 
-  const { clientes, mensaje, cargando, error } = useConsultarClientes();
+  const { clientes, cargando, error } = useConsultarClientes();
   const { seleccionarCliente } = useSeleccionarCliente();
 
   const manejarCerrarSesion = async () => {

@@ -1,16 +1,6 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { RepositorioConsultarGrupos } from '../../Dominio/repositorios/Empleados/RepositorioConsultarGrupos';
 
-/**
- * Hook para consultar la lista de grupos de empleados.
- * @returns {{
- *   grupos: GrupoEmpleado[],
- *   cargando: boolean,
- *   error: string | null,
- *   mensaje: string,
- *   recargar: () => void
- * }}
- */
 export function useConsultarGrupos() {
   const [grupos, setGrupos] = useState([]);
   const [mensaje, setMensaje] = useState('');

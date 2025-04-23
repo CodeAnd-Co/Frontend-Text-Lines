@@ -20,11 +20,7 @@ export class RepositorioListaProductos {
         },
       });
 
-<<<<<<< HEAD
-      return new ListaProductos(respuesta.data);
-=======
       return listaProductos(respuesta.data);
->>>>>>> db0aaf0ec49dd396c3caf3ae25be1ffb28d85054
     } catch (error) {
       const mensaje = error.response?.data?.mensaje || 'Error al obtener productos';
       throw new Error(mensaje);

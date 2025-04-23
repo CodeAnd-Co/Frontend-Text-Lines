@@ -10,21 +10,12 @@ import { Producto } from './Producto';
  * }}
  */
 
-<<<<<<< HEAD
-export function ListaProductos(respuestaJson) {
-  const { mensaje, productos } = respuestaJson;
-
-  if (!productos) return { productos: [], mensaje: mensaje || '' };
-
-  const listaProductos = productos.map((prod) => new Producto(prod));
-=======
 export function listaProductos(respuestaJson) {
   const { mensaje, listaProductos } = respuestaJson;
 
   if (!listaProductos) return { productos: [], mensaje: mensaje || '' };
 
   const productos = listaProductos.map((prod) => new Producto(prod));
->>>>>>> db0aaf0ec49dd396c3caf3ae25be1ffb28d85054
 
   return { listaProductos, mensaje };
 }

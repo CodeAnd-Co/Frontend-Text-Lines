@@ -1,26 +1,13 @@
-<<<<<<< HEAD
-// RF[27] Consulta Lista de Productos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27
-
-import React from 'react';
-import { Box, Typography, useTheme } from '@mui/material';
-import CustomDataGrid from '../../Componentes/Organismos/DataGrid';
-import { useConsultarProductos } from '../../../hooks/Productos/useConsultarProductos';
-import { tokens } from '../../../theme';
-
-const ListaProductos = () => {
-  const { productos = [], cargando, error } = useConsultarProductos();
-=======
 //RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
 import React from 'react';
 import CustomDataGrid from '../../Componentes/Organismos/dataGrid';
+import Texto from '../../Componentes/Atomos/Texto';
 import { useConsultarProductos } from '../../../hooks/Productos/useConsultarProductos';
 import { useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
 
-const Productos = () => {
-  // Hook que obtiene los productos desde el repositorio
+const ListaProductos = () => {
   const { productos, cargando } = useConsultarProductos();
->>>>>>> db0aaf0ec49dd396c3caf3ae25be1ffb28d85054
   const tema = useTheme();
   const colores = tokens(tema.palette.mode);
 
@@ -86,7 +73,7 @@ const Productos = () => {
   return (
     <>
       <Box sx={{ mt: '70px', ml: '50px' }}>
-        <Typography variant='h4'>Productos</Typography>
+        <Texto variant='h4'>Productos</Texto>
       </Box>
 
       <Box sx={{ mt: '40px', ml: '40px' }}>

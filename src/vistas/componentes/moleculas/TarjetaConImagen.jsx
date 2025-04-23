@@ -44,7 +44,7 @@ const TarjetaConImagen = ({
       sx={{
         position: 'relative',
         borderRadius: bordeRedondeado,
-        p: 1,
+        padding: 1,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -64,7 +64,7 @@ const TarjetaConImagen = ({
       />
     </Box>
 
-    <Box sx={{ p: 2 }}>
+    <Box sx={{ padding: 2 }}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         {titulo && (
           <Texto variant='h6' gutterBottom sx={{ flexGrow: 1 }}>

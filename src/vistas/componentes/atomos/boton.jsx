@@ -16,19 +16,33 @@ const Boton = ({
   onClick,
   ...props
 }) => {
+<<<<<<< HEAD
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   const outlinedStyle =
     variant === 'outlined' && outlineColor
+=======
+  const tema = useTheme();
+  const colors = tokens(tema.palette.mode);
+  // Estilo para outlined personalizado
+  const outlinedStyle
+    = variant === 'outlined' && outlineColor
+>>>>>>> db0aaf0ec49dd396c3caf3ae25be1ffb28d85054
       ? {
           border: `1.5px solid ${outlineColor}`,
           color: outlineColor,
         }
       : {};
 
+<<<<<<< HEAD
   const selectedStyle =
     selected && variant === 'contained'
+=======
+  // Estilo adicional si el botón está seleccionado
+  const selectedStyle
+    = selected && variant === 'contained'
+>>>>>>> db0aaf0ec49dd396c3caf3ae25be1ffb28d85054
       ? {
           backgroundColor: colors.altertex[2],
           color: colors.primario[4],

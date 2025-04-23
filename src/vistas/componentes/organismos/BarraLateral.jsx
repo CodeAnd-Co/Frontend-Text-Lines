@@ -14,6 +14,10 @@ import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOu
 import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import TemaIcono from '../Atomos/temaIcono';
+<<<<<<< HEAD
+=======
+import { Link } from 'react-router-dom';
+>>>>>>> db0aaf0ec49dd396c3caf3ae25be1ffb28d85054
 import IconoMenu from '../Atomos/iconoMenu';
 import TextoMenu from '../Atomos/textoMenu';
 

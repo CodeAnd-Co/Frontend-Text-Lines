@@ -1,6 +1,6 @@
 //RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
 import axios from 'axios';
-import { ListaProductos } from '../../modelos/Productos/ListaProductos';
+import { listaProductos } from '../../modelos/Productos/ListaProductos';
 import { RUTAS_API } from '../../../Utilidades/Constantes/rutasAPI';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -20,7 +20,11 @@ export class RepositorioListaProductos {
         },
       });
 
+<<<<<<< HEAD
       return new ListaProductos(respuesta.data);
+=======
+      return listaProductos(respuesta.data);
+>>>>>>> db0aaf0ec49dd396c3caf3ae25be1ffb28d85054
     } catch (error) {
       const mensaje = error.response?.data?.mensaje || 'Error al obtener productos';
       throw new Error(mensaje);

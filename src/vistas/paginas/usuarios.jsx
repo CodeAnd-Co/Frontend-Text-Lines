@@ -93,8 +93,8 @@ export default function Usuarios() {
       handleClose();
     } catch (error) {
       console.error("Error al crear usuario:", error);
-      const mensaje =
-        error.response?.data?.mensaje || "Hubo un error al crear el usuario";
+      const mensaje
+        = error.response?.data?.mensaje || "Hubo un error al crear el usuario";
       alert("Error: ", mensaje);
     }
   };

@@ -1,5 +1,3 @@
-import React from 'react';
-import { fn } from '@storybook/test';
 import Chip from '../componentes/atomos/Chip';
 
 export default {

@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
 import { useAuth } from '../../../hooks/AuthProvider';
@@ -8,20 +7,8 @@ import Texto from '../../Componentes/Atomos/Texto';
 import NavegadorAdministrador from '../../Componentes/Organismos/NavegadorAdministrador';
 import TarjetaConImagen from '../../Componentes/Moleculas/TarjetaConImagen';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';
-
-const CLIENTES_SIMULADOS = [
-  {
-    id: 1,
-    nombre: 'Toyota',
-    imagen: 'https://1000marcas.net/wp-content/uploads/2019/12/logo-Toyota.png',
-  },
-  {
-    id: 2,
-    nombre: 'La Esquina Gourmet',
-    imagen:
-      'https://img.freepik.com/vector-premium/logo-restaurante-retro_23-2148474404.jpg?semt=ais_hybrid&w=740',
-  },
-];
+import { useConsultarClientes } from '../../../hooks/Clientes/useConsultarClientes';
+import { useSeleccionarCliente } from '../../../hooks/Clientes/useSeleccionarCliente';
 
 const estiloImagenLogo = { marginRight: '1rem' };
 
@@ -56,20 +43,12 @@ const estiloTarjetaAgregar = {
 const ListaClientes = () => {
   const navigate = useNavigate();
   const { cerrarSesion } = useAuth();
-  const [clientes, setClientes] = useState([]);
-  const [cargando, setCargando] = useState(true);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setClientes(CLIENTES_SIMULADOS);
-      setCargando(false);
-    }, 1500);
-    return () => clearTimeout(timeout);
-  }, []);
+  const { clientes, cargando, error } = useConsultarClientes();
+  const { seleccionarCliente } = useSeleccionarCliente();
 
   const manejarCerrarSesion = async () => {
     await cerrarSesion();
-    navigate(RUTAS.INICIO_SESION);
   };
 
   const redirigirATienda = () => {
@@ -103,15 +82,16 @@ const ListaClientes = () => {
   ];
 
   const handleClickCliente = (clienteId) => {
-    console.log('Cliente clickeado ID:', clienteId);
+    const idCliente = parseInt(clienteId, 10);
+    seleccionarCliente(idCliente);
   };
 
   const renderTarjetaCliente = (cliente) => (
-    <Box key={cliente.id} sx={estiloTarjeta}>
+    <Box key={cliente.idCliente} sx={estiloTarjeta}>
       <TarjetaConImagen
-        src={cliente.imagen}
-        alt={cliente.nombre}
-        titulo={cliente.nombre}
+        src={cliente.urlImagen}
+        alt={cliente.nombreComercial}
+        titulo={cliente.nombreComercial}
         nombreIcono='Info'
         varianteIcono='outlined'
         tamanoIcono='large'
@@ -120,11 +100,11 @@ const ListaClientes = () => {
         ajuste='contain'
         anchoImagen='100%'
         alturaImagen='250px'
-        tooltipIcono={`Ver información de ${cliente.nombre}`}
+        tooltipIcono={`Ver información de ${cliente.nombreComercial}`}
         clickeableImagen={true}
-        elevacion={4}
-        alClicImagen={() => handleClickCliente(cliente.id)}
-        alClicIcono={() => handleClickCliente(cliente.id)}
+        elevacion={3}
+        alClicImagen={() => handleClickCliente(cliente.idCliente)}
+        alClicIcono={() => handleClickCliente(cliente.idCliente)}
       />
     </Box>
   );
@@ -177,8 +157,11 @@ const ListaClientes = () => {
         <Texto variant='h1' align='center' sx={estiloTitulo}>
           ¡Bienvenid@!
         </Texto>
+
         {cargando ? (
           <Cargador />
+        ) : error ? (
+          <Texto variant='body1' color='error'>{`Error: ${error}`}</Texto>
         ) : (
           <Box
             display='grid'

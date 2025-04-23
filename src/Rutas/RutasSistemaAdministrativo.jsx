@@ -2,6 +2,10 @@ import { Routes, Route } from 'react-router-dom';
 import { RUTAS } from '../Utilidades/Constantes/rutas';
 import { PERMISOS } from '../Utilidades/Constantes/permisos';
 import ListaClientes from '../Vistas/Paginas/Clientes/ListaClientes';
+// import ListaProductos from '../Vistas/Paginas/Productos/ListaProductos';
+import ListaCuotas from '../vistas/Paginas/Cuotas/ListaCuotas';
+import EditarCuotas from '../vistas/Paginas/Cuotas/EditarCuotas';
+import ListaGrupoEmpleados from '../Vistas/Paginas/Empleados/ListaGrupoEmpleados';
 import SistemaAdministrativo from '../Vistas/Paginas/SistemaAdministrativo';
 import Configuracion from '../Vistas/Paginas/Configuracion/ConfiguracionGeneral';
 import Error404 from '../Vistas/Paginas/Errores/Error404';
@@ -27,13 +31,17 @@ const RutasSistemaAdministrativo = () => {
       <Route
         path={RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO}
         element={
-          <RutaProtegida permiso={PERMISOS.CONSULTAR_SISTEMA_ADMINISTRATIVO}>
-            {/* <VerificarClienteSeleccionado> */}
-            <SistemaAdministrativo />
-            {/* </VerificarClienteSeleccionado> */}
-          </RutaProtegida>
+          <VerificarClienteSeleccionado>
+            <RutaProtegida permiso={PERMISOS.CONSULTAR_SISTEMA_ADMINISTRATIVO}>
+              <SistemaAdministrativo />
+            </RutaProtegida>
+          </VerificarClienteSeleccionado>
         }
-      />
+      >
+        <Route path='empleados/consultar-grupos' element={<ListaGrupoEmpleados />} />
+        <Route path='cuotas' element={<ListaCuotas />} />
+        <Route path='cuotas/editar-cuotas' element={<EditarCuotas />} />
+      </Route>
     </Routes>
   );
 };

@@ -11,20 +11,6 @@ export const AuthProvider = ({ children }) => {
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    const verificarSesion = async () => {
-      try {
-        const res = await axios.get(`${API_URL}/api/autenticacion/autenticar`, {
-          headers: { 'x-api-key': API_KEY },
-          withCredentials: true,
-        });
-        setUsuario(res.data.user);
-      } catch {
-        setUsuario(null);
-      } finally {
-        setCargando(false);
-      }
-    };
-
     verificarSesion();
   }, []);
 
@@ -45,8 +31,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const verificarSesion = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/api/autenticacion/autenticar`, {
+        headers: { 'x-api-key': API_KEY },
+        withCredentials: true,
+      });
+      setUsuario(res.data.user);
+    } catch {
+      setUsuario(null);
+    } finally {
+      setCargando(false);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ usuario, setUsuario, cargando, cerrarSesion }}>
+    <AuthContext.Provider value={{ usuario, setUsuario, cargando, cerrarSesion, verificarSesion }}>
       {children}
     </AuthContext.Provider>
   );

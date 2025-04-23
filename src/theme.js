@@ -80,6 +80,8 @@ export const tokens = (mode) => ({
         },
         altertex: {
           1: 'rgba(24, 50, 165, 1)',
+          2: 'rgba(24, 50, 165, 0.7)',
+          3: 'rgba(24, 50, 165, 0.5)',
         },
       }),
 });

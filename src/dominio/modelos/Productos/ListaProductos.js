@@ -17,5 +17,5 @@ export function listaProductos(respuestaJson) {
 
   const productos = listaProductos.map((prod) => new Producto(prod));
 
-  return { listaProductos, mensaje };
+  return { productos, mensaje };
 }

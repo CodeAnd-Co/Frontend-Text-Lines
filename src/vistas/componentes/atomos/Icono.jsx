@@ -40,8 +40,8 @@ const Icono = ({
 
   const isCustomColor = !muiColors.includes(color);
 
-  const customColor =
-    isCustomColor && colores[color] ? colores[color][500] || colores[color][0] || color : color;
+  const customColor
+    = isCustomColor && colores[color] ? colores[color][500] || colores[color][0] || color : color;
 
   const icon = (
     <IconComponent

@@ -2,6 +2,8 @@
 import React from 'react';
 import CustomDataGrid from '../../Componentes/Organismos/dataGrid';
 import { useConsultarProductos } from '../../../hooks/Productos/useConsultarProductos';
+import { useTheme } from '@mui/material';
+import { tokens } from '../../../theme';
 
 const Productos = () => {
   // Hook que obtiene los productos desde el repositorio

@@ -1,20 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Paper from '@mui/material/Paper';
+import { useTheme } from '@mui/material/styles';
+import { tokens } from '../../../theme'; // ajusta la ruta según tu estructura
 
-const Contenedor = ({
-  children,
-  elevation = 1,
-  background = 'white',
-  borderLeft,
-  sx = {},
-  ...props
-}) => {
+const Contenedor = ({ children, elevation = 1, background, borderLeft, sx = {}, ...props }) => {
+  const theme = useTheme();
+  const colores = tokens(theme.palette.mode);
+
   return (
     <Paper
       elevation={elevation}
       sx={{
-        backgroundColor: background,
+        backgroundColor: background || colores.menu[2],
         borderLeft: borderLeft ? `6px solid ${borderLeft}` : 'none',
         padding: 2,
         ...sx,

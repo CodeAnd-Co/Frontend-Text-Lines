@@ -5,12 +5,21 @@ export const RUTAS = {
   SISTEMA_ADMINISTRATIVO: {
     BASE: '/admin',
     TABLERO: '/tablero',
-    CONFIGURACION: '/configuracion',
+    EMPLEADOS: {
+      BASE: '/empleados',
+      CONSULTAR_EMPLEADOS: '/consultar-lista',
+      CONSULTAR_GRUPOS: '/consultar-grupos',
+    },
+    PRODUCTOS: {
+      BASE: '/productos',
+      CONSULTAR_PRODUCTOS: '/consultar-lista',
+      CONSULTAR_SETS: '/consultar-sets',
+      CONSULTAR_CATEGORIAS: '/consultar-categorias',
+    },
+    PEDIDOS: '/pedidos',
     CUOTAS: { BASE: '/cuotas', EDITAR_CUOTAS: '/editar-cuotas' },
-    EMPLEADOS: '/empleados',
     EVENTOS: '/eventos',
-    PRODUCTOS: '/productos',
-    CATEGORIAS: '/categorias',
+    CONFIGURACION: '/configuracion',
     USUARIOS: {
       BASE: '/usuarios',
       CONSULTAR_ROLES: '/consultar-roles',

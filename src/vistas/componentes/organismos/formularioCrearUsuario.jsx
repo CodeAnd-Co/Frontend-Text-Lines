@@ -1,17 +1,14 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import { DateField } from '@mui/x-date-pickers/DateField';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Box, Grid } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import Grid from '@mui/material/Grid';
-import constantes from '../../../utilidades/constantes/constantesUsuarios';
+import { DateField } from '@mui/x-date-pickers/DateField';
 
-export default function FormularioCrearUsuario({ datosUsuario, setDatosUsuario }) {
+import CampoTexto from '../../Componentes/atomos/CampoTexto';
+import CampoSelect from '../../Componentes/atomos/CampoSelect';
+
+const FormularioCrearUsuario = ({ datosUsuario, setDatosUsuario, errores = {} }) => {
   const gridStyles = {
     display: 'flex',
     justifyContent: 'center',
@@ -28,6 +25,7 @@ export default function FormularioCrearUsuario({ datosUsuario, setDatosUsuario }
       fechaNacimiento: nuevaFecha,
     }));
   };
+  const CAMPO_OBLIGATORIO = 'Este campo es obligatorio';
 
   return (
     <Box
@@ -42,149 +40,177 @@ export default function FormularioCrearUsuario({ datosUsuario, setDatosUsuario }
     >
       <Grid container columns={12}>
         <Grid size={6} sx={gridStyles}>
-          <TextField
-            required
-            id={constantes.NOMBRE}
-            name='nombreCompleto'
+          <CampoTexto
             label='Nombre'
+            name='nombreCompleto'
             value={datosUsuario.nombreCompleto}
             onChange={handleChange}
+            required
+            size='medium'
+            error={!!errores.nombreCompleto}
+            helperText={errores.nombreCompleto && CAMPO_OBLIGATORIO}
           />
         </Grid>
         <Grid size={6} sx={gridStyles}>
-          <TextField
-            required
-            id={constantes.APELLIDO}
-            name='apellido'
+          <CampoTexto
             label='Apellido'
+            name='apellido'
             value={datosUsuario.apellido}
             onChange={handleChange}
+            required
+            size='medium'
+            error={!!errores.apellido}
+            helperText={errores.apellido && CAMPO_OBLIGATORIO}
           />
         </Grid>
         <Grid size={6} sx={gridStyles}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateField
+              required
               label='Fecha de nacimiento'
               value={datosUsuario.fechaNacimiento}
               onChange={handleFechaNacimiento}
-              sx={gridStyles}
+              sx={{ width: '30ch' }}
+              slotProps={{
+                textField: {
+                  error: !!errores.fechaNacimiento,
+                  helperText:
+                    errores.fechaNacimiento === true
+                      ? CAMPO_OBLIGATORIO
+                      : errores.fechaNacimiento || '',
+                },
+              }}
             />
           </LocalizationProvider>
         </Grid>
         <Grid size={6} sx={gridStyles}>
-          <FormControl sx={gridStyles}>
-            <InputLabel id={constantes.GENERO}>Género</InputLabel>
-            <Select
-              labelId='seleccion-genero'
-              id={constantes.GENERO}
-              name='genero'
-              label='Género'
-              value={datosUsuario.genero}
-              onChange={handleChange}
-            >
-              <MenuItem value='Hombre'>Hombre</MenuItem>
-              <MenuItem value='Mujer'>Mujer</MenuItem>
-              <MenuItem value='Otro'>Otro</MenuItem>
-            </Select>
-          </FormControl>
+          <CampoSelect
+            required
+            error={!!errores.genero}
+            helperText={errores.genero && CAMPO_OBLIGATORIO}
+            label='Género'
+            name='genero'
+            size='medium'
+            value={datosUsuario.genero}
+            onChange={handleChange}
+            options={[
+              { value: 'Hombre', label: 'Hombre' },
+              { value: 'Mujer', label: 'Mujer' },
+              { value: 'Otro', label: 'Otro' },
+            ]}
+          />
         </Grid>
         <Grid size={6} sx={gridStyles}>
-          <TextField
-            required
-            id={constantes.CORREO}
-            name='correoElectronico'
+          <CampoTexto
             label='Correo Electrónico'
+            name='correoElectronico'
             value={datosUsuario.correoElectronico}
             onChange={handleChange}
+            required
+            size='medium'
+            error={!!errores.correoElectronico}
+            helperText={errores.correoElectronico && CAMPO_OBLIGATORIO}
           />
         </Grid>
         <Grid size={6} sx={gridStyles}>
-          <TextField
-            required
-            id={constantes.TELEFONO}
-            name='numeroTelefono'
+          <CampoTexto
             label='Número de Teléfono'
+            name='numeroTelefono'
             value={datosUsuario.numeroTelefono}
             onChange={handleChange}
+            required
+            size='medium'
+            error={!!errores.numeroTelefono}
+            helperText={errores.numeroTelefono && CAMPO_OBLIGATORIO}
           />
         </Grid>
         <Grid size={6} sx={gridStyles}>
-          <TextField
-            id={constantes.DIRECCION}
-            name='direccion'
+          <CampoTexto
+            required
             label='Dirección'
+            name='direccion'
             value={datosUsuario.direccion}
             onChange={handleChange}
+            size='medium'
+            error={!!errores.direccion}
+            helperText={errores.direccion && CAMPO_OBLIGATORIO}
           />
         </Grid>
         <Grid size={6} sx={gridStyles}>
-          <TextField
-            id={constantes.CODIGO_POSTAL}
-            name='codigoPostal'
-            label='Código Postal'
-            value={datosUsuario.codigoPostal}
+          <CampoSelect
+            label='Cliente'
+            name='cliente'
+            size='medium'
+            value={datosUsuario.cliente}
             onChange={handleChange}
+            required
+            error={!!errores.cliente}
+            helperText={errores.cliente && CAMPO_OBLIGATORIO}
+            options={[
+              { value: 'Toyota', label: 'Toyota' },
+              { value: 'Otro', label: 'Otro' },
+            ]}
           />
         </Grid>
         <Grid size={6} sx={gridStyles}>
-          <FormControl required sx={gridStyles}>
-            <InputLabel id={constantes.CLIENTE}>Cliente</InputLabel>
-            <Select
-              labelId='seleccion-cliente'
-              id={constantes.CLIENTE}
-              name='cliente'
-              label='Cliente'
-              value={datosUsuario.cliente}
-              onChange={handleChange}
-            >
-              <MenuItem value='Toyota'>Toyota</MenuItem>
-              <MenuItem value='Otro'>Otro</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid size={6} sx={gridStyles}>
-          <FormControl required sx={gridStyles}>
-            <InputLabel id={constantes.ROL}>Rol</InputLabel>
-            <Select
-              labelId='seleccion-rol'
-              id={constantes.ROL}
-              name='rol'
-              label='Rol'
-              value={datosUsuario.rol}
-              onChange={handleChange}
-            >
-              <MenuItem value='Super Administrador'>Super Administrador</MenuItem>
-              <MenuItem value='Administrador'>Administrador</MenuItem>
-              <MenuItem value='Supervisor'>Supervisor</MenuItem>
-              <MenuItem value='Nada'>Nada</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid size={6} sx={gridStyles}>
-          <TextField
+          <CampoSelect
+            label='Rol'
+            name='rol'
+            size='medium'
+            value={datosUsuario.rol}
+            onChange={handleChange}
             required
-            id={constantes.CONTRASENA}
-            name='contrasenia'
+            error={!!errores.rol}
+            helperText={errores.rol && CAMPO_OBLIGATORIO}
+            options={[
+              { value: 'Super Administrador', label: 'Super Administrador' },
+              { value: 'Administrador', label: 'Administrador' },
+              { value: 'Supervisor', label: 'Supervisor' },
+              { value: 'Nada', label: 'Nada' },
+            ]}
+          />
+        </Grid>
+        <Grid size={6} sx={gridStyles}>
+          <CampoTexto
             label='Contraseña'
+            name='contrasenia'
             type='password'
-            autoComplete='new-password'
             value={datosUsuario.contrasenia}
             onChange={handleChange}
+            required
+            size='medium'
+            error={!!errores.contrasenia}
+            helperText={
+              errores.contrasenia === true ? CAMPO_OBLIGATORIO : errores.contrasenia || ''
+            }
           />
         </Grid>
         <Grid size={6} sx={gridStyles}>
-          <TextField
-            required
-            id={constantes.CONFIRMAR_CONTRASENA}
-            name='confirmarContrasenia'
+          <CampoTexto
             label='Confirmar contraseña'
+            name='confirmarContrasenia'
             type='password'
-            autoComplete='new-password'
             value={datosUsuario.confirmarContrasenia}
             onChange={handleChange}
+            required
+            size='medium'
+            error={!!errores.confirmarContrasenia}
+            helperText={
+              errores.confirmarContrasenia === true
+                ? CAMPO_OBLIGATORIO
+                : errores.confirmarContrasenia || ''
+            }
           />
         </Grid>
       </Grid>
     </Box>
   );
-}
+};
+
+FormularioCrearUsuario.propTypes = {
+  datosUsuario: PropTypes.object.isRequired,
+  setDatosUsuario: PropTypes.func.isRequired,
+  errores: PropTypes.object,
+};
+
+export default FormularioCrearUsuario;

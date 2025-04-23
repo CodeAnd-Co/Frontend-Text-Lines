@@ -98,9 +98,9 @@ export const useCrearUsuario = () => {
       handleClose();
       return { exito: true, mensaje: 'Usuario creado correctamente' };
     } catch (error) {
-      const mensaje =
-        error.response?.data?.mensaje ||
-        'Hubo un error al crear el usuario. Verifica que no exista.';
+      const mensaje
+        = error.response?.data?.mensaje
+        || 'Hubo un error al crear el usuario. Verifica que no exista.';
       handleClose();
       return { exito: false, mensaje };
     }

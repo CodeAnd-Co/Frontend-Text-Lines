@@ -1,3 +1,5 @@
+//RF02 Super Administrador Consulta Lista de Usuarios - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF2
+
 import { Button } from '@mui/material';
 import ModalFlotante from '../../componentes/organismos/ModalFlotante';
 import FormularioCrearUsuario from '../../componentes/organismos/FormularioCrearUsuario';
@@ -110,9 +112,15 @@ const ListaUsuarios = () => {
         />
       </ModalFlotante>
 
-      <div style={{ marginTop: 20, height: 400, width: '100%' }}>
+      <div style={{ marginTop: 20, height: 650, width: '100%' }}>
         {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-        <CustomDataGrid columns={columns} rows={rows} loading={cargando} checkboxSelection />
+        <CustomDataGrid
+          columns={columns}
+          rows={rows}
+          loading={cargando}
+          checkboxSelection
+          pageSize={10}
+        />
       </div>
     </div>
   );

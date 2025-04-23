@@ -1,3 +1,5 @@
+//RF02 Super Administrador Consulta Lista de Usuarios - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF2
+
 import { useEffect, useState } from 'react';
 import { RepositorioConsultarListaUsuarios } from '../../dominio/repositorios/Usuarios/repositorioConsultarListaUsuarios';
 

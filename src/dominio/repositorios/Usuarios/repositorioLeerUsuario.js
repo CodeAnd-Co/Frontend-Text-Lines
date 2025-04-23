@@ -39,8 +39,8 @@ export class RepositorioUsuarios {
       };
     } catch (error) {
       console.error("❌ [RepositorioUsuarios] Error al obtener usuario:", error);
-      const mensaje =
-        error.response?.data?.mensaje || "Error al obtener datos del usuario.";
+      const mensaje
+        = error.response?.data?.mensaje || "Error al obtener datos del usuario.";
       throw new Error(mensaje);
     }
   }

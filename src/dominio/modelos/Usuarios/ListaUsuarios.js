@@ -1,3 +1,5 @@
+//RF02 Super Administrador Consulta Lista de Usuarios - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF2
+
 import { Usuario } from './Usuario';
 
 /**
@@ -8,12 +10,12 @@ import { Usuario } from './Usuario';
  *   mensaje: string
  * }}
  */
-export function ListaUsuarios(respuestaJson) {
-  const { mensaje, lista_usuarios } = respuestaJson;
+export function listaUsuarios(respuestaJson) {
+  const { mensaje, listaUsuarios } = respuestaJson;
 
-  if (!lista_usuarios) return { usuarios: [], mensaje: mensaje || '' };
+  if (!listaUsuarios) return { usuarios: [], mensaje: mensaje || '' };
 
-  const usuarios = lista_usuarios.map((cat) => new Usuario(cat));
+  const usuarios = listaUsuarios.map((cat) => new Usuario(cat));
 
   return { usuarios, mensaje };
 }

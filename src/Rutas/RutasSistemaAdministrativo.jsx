@@ -2,13 +2,11 @@ import { Routes, Route } from 'react-router-dom';
 import { RUTAS } from '../Utilidades/Constantes/rutas';
 import { PERMISOS } from '../Utilidades/Constantes/permisos';
 import ListaClientes from '../Vistas/Paginas/Clientes/ListaClientes';
-<<<<<<< HEAD
-import Productos from '../vistas/paginas/Productos/ListaProductos';
-import ListaCategorias from '../vistas/Paginas/Categorias/ListaCategorias';
-=======
+import ListaProductos from '../vistas/paginas/Productos/ListaProductos';
 // import ListaProductos from '../Vistas/Paginas/Productos/ListaProductos';
+import ListaCuotas from '../vistas/Paginas/Cuotas/ListaCuotas';
+import EditarCuotas from '../vistas/Paginas/Cuotas/EditarCuotas';
 import ListaGrupoEmpleados from '../Vistas/Paginas/Empleados/ListaGrupoEmpleados';
->>>>>>> e2af3dd7800d87c260b73292ce168bcefd59b580
 import SistemaAdministrativo from '../Vistas/Paginas/SistemaAdministrativo';
 import Configuracion from '../Vistas/Paginas/Configuracion/ConfiguracionGeneral';
 import Error404 from '../Vistas/Paginas/Errores/Error404';
@@ -33,6 +31,9 @@ const RutasSistemaAdministrativo = () => {
         }
       >
         <Route path='empleados/consultar-grupos' element={<ListaGrupoEmpleados />} />
+        <Route path='cuotas' element={<ListaCuotas />} />
+        <Route path='cuotas/editar-cuota' element={<EditarCuotas />} />
+        <Route path='productos/consultar-lista' element={<ListaProductos />} />
       </Route>
     </Routes>
   );

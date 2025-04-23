@@ -3,11 +3,7 @@ import React from 'react';
 import CustomDataGrid from '../../Componentes/Organismos/dataGrid';
 import Texto from '../../Componentes/Atomos/Texto';
 import { useConsultarProductos } from '../../../hooks/Productos/useConsultarProductos';
-<<<<<<< HEAD
-import { Box, Typography, useTheme } from '@mui/material';
-=======
-import { useTheme } from '@mui/material';
->>>>>>> e2af3dd7800d87c260b73292ce168bcefd59b580
+import { Box, useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
 
 const ListaProductos = () => {
@@ -48,11 +44,10 @@ const ListaProductos = () => {
       headerName: 'Disponibilidad en stock',
       flex: 1,
       cellClassName: 'estado-row--cell',
-<<<<<<< HEAD
       renderCell: ({ row: { estado } }) => {
         return (
           <Box
-            width='25%'
+            width='110px'
             height='50%'
             m='10px auto'
             p='15px'
@@ -67,22 +62,6 @@ const ListaProductos = () => {
           </Box>
         );
       },
-=======
-      renderCell: ({ row: { estado } }) => (
-        <Box
-          width='100px'
-          p='8px'
-          display='flex'
-          justifyContent='center'
-          alignItems='center'
-          color={colores.primario[4]}
-          bgcolor={estado === 1 ? colores.altertex[1] : colores.acciones[1]}
-          borderRadius='4px'
-        >
-          {estado === 1 ? 'Disponible' : 'No disponible'}
-        </Box>
-      ),
->>>>>>> e2af3dd7800d87c260b73292ce168bcefd59b580
     },
   ];
 
@@ -108,7 +87,6 @@ const ListaProductos = () => {
             },
           }}
         >
-<<<<<<< HEAD
           <CustomDataGrid
             columns={columnas}
             rows={filas}
@@ -116,9 +94,6 @@ const ListaProductos = () => {
             checkboxSelection
             rowHeight={80}
           />
-=======
-          <CustomDataGrid columns={columnas} rows={filas} loading={cargando} checkboxSelection />
->>>>>>> e2af3dd7800d87c260b73292ce168bcefd59b580
         </Box>
       </Box>
     </>

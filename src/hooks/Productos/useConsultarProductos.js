@@ -18,17 +18,14 @@ export function useConsultarProductos() {
   const [mensaje, setMensaje] = useState('');
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
-  const [recargarToken, setRecargarToken] = useState(0);
 
   useEffect(() => {
     const cargar = async () => {
       setCargando(true);
       setError(null);
-
       try {
-        const { productos, mensaje } = await RepositorioListaProductos.obtenerLista();
-        console.log(productos, mensaje);
-        setProductos(productos);
+        const { mensaje, listaProductos } = await RepositorioListaProductos.obtenerLista();
+        setProductos(listaProductos);
         setMensaje(mensaje);
       } catch (err) {
         setProductos([]);
@@ -40,10 +37,7 @@ export function useConsultarProductos() {
     };
 
     cargar();
-  }, [recargarToken]);
-  const recargar = () => {
-    setRecargarToken((prev) => prev + 1);
-  };
+  }, []);
 
-  return { productos, mensaje, cargando, error, recargar };
+  return { productos, mensaje, cargando, error };
 }

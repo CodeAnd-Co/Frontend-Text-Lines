@@ -3,7 +3,6 @@ import { RUTAS } from '../Utilidades/Constantes/rutas';
 import { PERMISOS } from '../Utilidades/Constantes/permisos';
 import ListaClientes from '../Vistas/Paginas/Clientes/ListaClientes';
 import ListaEmpleados from '../Vistas/Paginas/Empleados/ListaEmpleados';
-import ListaUsuarios from '../vistas/Paginas/Usuarios/ListaUsuarios';
 import ListaCategorias from '../vistas/Paginas/Categorias/ListaCategorias';
 import SistemaAdministrativo from '../Vistas/Paginas/SistemaAdministrativo';
 import Configuracion from '../Vistas/Paginas/Configuracion/ConfiguracionGeneral';
@@ -40,14 +39,6 @@ const RutasSistemaAdministrativo = () => {
         element={
           <RutaProtegida permiso={PERMISOS.CONSULTAR_CATEGORIAS_PRODUCTOS}>
             <ListaCategorias />
-          </RutaProtegida>
-        }
-      />
-      <Route
-        path={RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE}
-        element={
-          <RutaProtegida permiso={PERMISOS.LEER_USUARIO}>
-            <ListaUsuarios />
           </RutaProtegida>
         }
       />

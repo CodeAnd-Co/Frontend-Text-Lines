@@ -10,6 +10,6 @@ export function listaRoles(respuestaJson) {
 
   if (!roles) return { roles: [], mensaje: mensaje || '' };
 
-  const lista = roles.map((r) => new Rol(r));
+  const lista = roles.map((rol) => new Rol(rol));
   return { roles: lista, mensaje };
 }

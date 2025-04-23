@@ -10,14 +10,13 @@ import { useConsultarRoles } from "../../../hooks/Roles/useConsultarRoles";
 
 const ListaRoles = () => {
   // Hook para obtener los roles desde el backend
-  const { roles, mensaje, cargando, error } = useConsultarRoles({ limit: 5, offset: 0 });
+  const { roles, cargando, error } = useConsultarRoles({ limit: 5, offset: 0 });
 
   const [busqueda, setBusqueda] = useState('');
 
   const rolesFiltrados = roles.filter((rol) =>
-    rol.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-    rol.descripcion.toLowerCase().includes(busqueda.toLowerCase())
-  );
+    rol.nombre.toLowerCase().includes(busqueda.toLowerCase())
+    || rol.descripcion.toLowerCase().includes(busqueda.toLowerCase()));
 
   // Columnas que se mostrarán en el DataGrid
   const columns = [
@@ -60,7 +59,7 @@ const ListaRoles = () => {
         type="text"
         placeholder="nombre, rol, etc..."
         value={busqueda}
-        onChange={(e) => setBusqueda(e.target.value)}
+        onChange={(evento) => setBusqueda(evento.target.value)}
         style={{
           width: '250px',
           padding: '0.5rem',

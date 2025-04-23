@@ -14,7 +14,9 @@ const ListaCuotas = () => {
 
   return (
     <>
-      <Texto variant='h3'>Cuotas</Texto>
+      <Texto variant='h4' sx={{ margin: 7 }}>
+        Cuotas
+      </Texto>
       <ModalCrearCuotaSet />
     </>
   );

@@ -56,6 +56,8 @@ const EditarCuotas = () => {
       )}
 
       <CuerpoPrincipal
+        periodoRenovacion={periodoRenovacion}
+        renovacionActiva={renovacionActiva}
         setPeriodoRenovacion={setPeriodoRenovacion}
         setRenovacionActiva={setRenovacionActiva}
         setAbrirConfirmacion={setAbrirConfirmacion}

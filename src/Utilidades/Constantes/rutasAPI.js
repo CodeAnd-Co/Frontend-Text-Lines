@@ -5,7 +5,7 @@ const BASE_CATEGORIAS = `${BASE_URL}/api/categorias`;
 export const RUTAS_API = {
   USUARIOS: {
     BASE: BASE_USUARIOS,
-    CONSULTAR_LISTA: `${BASE_USUARIOS}/consultar-usuario`,
+    CONSULTAR_LISTA: `${BASE_USUARIOS}/consultar-lista-usuarios`,
   },
   CATEGORIAS: {
     BASE: BASE_CATEGORIAS,

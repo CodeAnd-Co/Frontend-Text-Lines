@@ -4,6 +4,8 @@ import FormularioCrearUsuario from '../../componentes/organismos/FormularioCrear
 import { useCrearUsuario } from '../../../hooks/useCrearUsuario';
 import Alerta from '../../componentes/moleculas/Alerta';
 import { useState } from 'react';
+import CustomDataGrid from '../../componentes/organismos/dataGrid';
+import { useConsultarListaUsuarios } from '../../../hooks/Usuarios/useConsultarListaUsuarios'; // Asegúrate de tener este hook
 
 const ListaUsuarios = () => {
   const {
@@ -18,6 +20,8 @@ const ListaUsuarios = () => {
 
   const [alerta, setAlerta] = useState(null);
 
+  const { usuarios, cargando, error } = useConsultarListaUsuarios({ limit: 10, offset: 0 });
+
   const handleConfirm = async () => {
     const resultado = await handleGuardarUsuario();
 
@@ -29,6 +33,27 @@ const ListaUsuarios = () => {
     }
   };
 
+  const columns = [
+    { field: 'idUsuario', headerName: 'ID Usuario', flex: 1 },
+    { field: 'nombre', headerName: 'Nombre', flex: 1 },
+    { field: 'rol', headerName: 'Rol', flex: 1 },
+    { field: 'cliente', headerName: 'Cliente', flex: 1 },
+    { field: 'estatus', headerName: 'Estatus', flex: 1 },
+    { field: 'correo', headerName: 'Correo electrónico', flex: 1 },
+    { field: 'telefono', headerName: 'Telefono', flex: 1 },
+  ];
+
+  const rows = usuarios.map((usuario) => ({
+    id: usuario.idUsuario,
+    idUsuario: usuario.idUsuario,
+    nombre: usuario.nombre,
+    rol: usuario.rol?.nombre || 'Sin rol',
+    cliente: usuario.cliente,
+    estatus: usuario.estatus,
+    correo: usuario.correo,
+    telefono: usuario.telefono,
+  }));
+
   return (
     <div>
       <h1>Usuarios</h1>
@@ -39,7 +64,6 @@ const ListaUsuarios = () => {
           mensaje={alerta.mensaje}
           cerrable
           duracion={4000}
-          // centradoInferior
           onClose={() => setAlerta(null)}
         />
       )}
@@ -60,6 +84,11 @@ const ListaUsuarios = () => {
           errores={errores}
         />
       </ModalFlotante>
+
+      <div style={{ marginTop: 20, height: 400, width: '100%' }}>
+        {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+        <CustomDataGrid columns={columns} rows={rows} loading={cargando} checkboxSelection />
+      </div>
     </div>
   );
 };

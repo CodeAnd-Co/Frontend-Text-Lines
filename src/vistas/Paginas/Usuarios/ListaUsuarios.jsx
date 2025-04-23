@@ -20,7 +20,7 @@ const ListaUsuarios = () => {
 
   const [alerta, setAlerta] = useState(null);
 
-  const { usuarios, cargando, error } = useConsultarListaUsuarios({ limit: 10, offset: 0 });
+  const { usuarios, cargando, error } = useConsultarListaUsuarios();
 
   const handleConfirm = async () => {
     const resultado = await handleGuardarUsuario();
@@ -43,16 +43,23 @@ const ListaUsuarios = () => {
     { field: 'telefono', headerName: 'Telefono', flex: 1 },
   ];
 
-  const rows = usuarios.map((usuario) => ({
-    id: usuario.idUsuario,
-    idUsuario: usuario.idUsuario,
-    nombre: usuario.nombre,
-    rol: usuario.rol?.nombre || 'Sin rol',
-    cliente: usuario.cliente,
-    estatus: usuario.estatus,
-    correo: usuario.correo,
-    telefono: usuario.telefono,
-  }));
+  const rows = [
+    ...new Map(
+      usuarios.map((usuario) => [
+        usuario.idUsuario,
+        {
+          id: usuario.idUsuario,
+          idUsuario: usuario.idUsuario,
+          nombre: usuario.nombre,
+          rol: usuario.rol?.nombre || 'Sin rol',
+          cliente: usuario.cliente,
+          estatus: usuario.estatus,
+          correo: usuario.correo,
+          telefono: usuario.telefono,
+        },
+      ])
+    ).values(),
+  ];
 
   return (
     <div>

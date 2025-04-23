@@ -3,7 +3,6 @@ import { RepositorioConsultarListaUsuarios } from '../../dominio/repositorios/Us
 
 /**
  * Hook para consultar la lista de usuarios.
- * @param {Object} opciones - Parámetros como { limit, offset }
  * @returns {{
  *   usuarios: Usuario[],
  *   cargando: boolean,
@@ -12,7 +11,7 @@ import { RepositorioConsultarListaUsuarios } from '../../dominio/repositorios/Us
  *   recargar: () => void
  * }}
  */
-export function useConsultarListaUsuarios({ limit = 10, offset = 0 } = {}) {
+export function useConsultarListaUsuarios() {
   const [usuarios, setUsuarios] = useState([]);
   const [mensaje, setMensaje] = useState('');
   const [cargando, setCargando] = useState(true);
@@ -27,7 +26,7 @@ export function useConsultarListaUsuarios({ limit = 10, offset = 0 } = {}) {
       setError(null);
 
       try {
-        const { usuarios, mensaje } = await repositorio.obtenerLista({ limit, offset });
+        const { usuarios, mensaje } = await repositorio.obtenerLista();
         setUsuarios(usuarios);
         setMensaje(mensaje);
       } catch (err) {
@@ -40,7 +39,7 @@ export function useConsultarListaUsuarios({ limit = 10, offset = 0 } = {}) {
     };
 
     cargar();
-  }, [limit, offset, recargarToken]);
+  }, [recargarToken]);
 
   const recargar = () => {
     setRecargarToken((prev) => prev + 1);

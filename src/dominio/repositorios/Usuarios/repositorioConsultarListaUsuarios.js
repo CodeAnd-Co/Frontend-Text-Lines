@@ -7,14 +7,13 @@ const API_KEY = import.meta.env.VITE_API_KEY;
 export class RepositorioConsultarListaUsuarios {
   /**
    * Obtiene la lista de usuarios desde la API
-   * @param {Object} filtros - Parámetros opcionales como { limit, offset }
    * @returns {Promise<{usuarios: Usuario[], mensaje: string}>}
    */
-  async obtenerLista({ limit = 10, offset = 0 } = {}) {
+  async obtenerLista() {
     try {
       const respuesta = await axios.post(
         RUTAS_API.USUARIOS.CONSULTAR_LISTA,
-        { limit, offset },
+        {},
         {
           withCredentials: true,
           headers: {

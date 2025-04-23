@@ -2,8 +2,11 @@ import { Routes, Route } from 'react-router-dom';
 import { RUTAS } from '../Utilidades/Constantes/rutas';
 import { PERMISOS } from '../Utilidades/Constantes/permisos';
 import ListaClientes from '../Vistas/Paginas/Clientes/ListaClientes';
+<<<<<<< HEAD
 import ListaEmpleados from '../Vistas/Paginas/Empleados/ListaEmpleados';
 import Productos from '../vistas/paginas/productos';
+=======
+>>>>>>> 8453987a3a961b338a6a147838fdb4e80c136593
 import ListaCategorias from '../vistas/Paginas/Categorias/ListaCategorias';
 import SistemaAdministrativo from '../Vistas/Paginas/SistemaAdministrativo';
 import Configuracion from '../Vistas/Paginas/Configuracion/ConfiguracionGeneral';
@@ -22,9 +25,17 @@ const RutasSistemaAdministrativo = () => {
       <Route
         path={RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO}
         element={
+<<<<<<< HEAD
           <RutaProtegida permiso={PERMISOS.CONSULTAR_SISTEMA_ADMINISTRATIVO}>
             <SistemaAdministrativo />
           </RutaProtegida>
+=======
+          <VerificarClienteSeleccionado>
+            <RutaProtegida permiso={PERMISOS.CONSULTAR_SISTEMA_ADMINISTRATIVO}>
+              <SistemaAdministrativo />
+            </RutaProtegida>
+          </VerificarClienteSeleccionado>
+>>>>>>> 8453987a3a961b338a6a147838fdb4e80c136593
         }
       />
       <Route

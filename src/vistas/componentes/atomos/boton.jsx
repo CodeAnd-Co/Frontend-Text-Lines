@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material';
 import MUIButton from '@mui/material/Button';
 import { tokens } from '../../../theme';
+import { useTheme } from '@mui/material';
 
 /** Botón personalizado usando Material UI */
 const Boton = ({
@@ -20,6 +21,7 @@ const Boton = ({
   const tema = useTheme();
   const colores = tokens(tema.palette.mode);
   // Estilo para outlined personalizado
+  const outlinedStyle = variant === 'outlined' && outlineColor;
   const outlinedStyle =
     variant === 'outlined' && outlineColor
       ? {
@@ -32,13 +34,13 @@ const Boton = ({
   const selectedStyle =
     selected && variant === 'contained'
       ? {
-          backgroundColor: colores.altertex[3], // azul con 70% opacidad
-          color: colores.menu[2], // asegura contraste del texto
+          backgroundColor: colors.altertex[2], // azul con 70% opacidad
+          color: colors.primario[4], // asegura contraste del texto
         }
       : selected && variant === 'outlined'
       ? {
-          backgroundColor: colores.altertex[2], // azul con 50% opacidad
-          color: colores.altertex[1],
+          backgroundColor: colors.altertex[3], // azul con 50% opacidad
+          color: colors.altertex[1],
         }
       : {};
 

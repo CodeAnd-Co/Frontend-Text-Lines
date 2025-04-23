@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import CuotaSetModelo from '../dominio/modelos/Cuotas/CuotaSetModelo';
+import { RUTAS_API } from '../Utilidades/Constantes/rutasAPI';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -46,9 +47,8 @@ export const useCrearCuotaSet = ({
       productos,
       limites: cuotas,
     });
-
     try {
-      const respuesta = await axios.post(`${API_URL}/api/cuotas/crear-cuota`, modelo, {
+      const respuesta = await axios.post(RUTAS_API.CUOTAS.CREAR_CUOTA, modelo, {
         headers: { 'x-api-key': API_KEY },
         withCredentials: true,
       });

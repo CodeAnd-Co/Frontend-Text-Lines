@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
 const iconoMenuEstilo = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 };
 
 const IconoMenu = ({ icono }) => {

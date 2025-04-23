@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
-import { IconButton, useTheme } from "@mui/material";
-import { ColorModeContext, tokens } from "../../../theme";
-import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import React, { useContext } from 'react';
+import { IconButton, useTheme } from '@mui/material';
+import { ColorModeContext, tokens } from '../../../theme';
+import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
+import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 
 const TemaIcono = () => {
   const theme = useTheme();
@@ -11,7 +11,7 @@ const TemaIcono = () => {
 
   return (
     <IconButton onClick={colorMode.toggleColorMode}>
-      {theme.palette.mode === "dark" ? (
+      {theme.palette.mode === 'dark' ? (
         <LightModeOutlinedIcon />
       ) : (
         <DarkModeOutlinedIcon sx={{ color: colors.primario[4] }} />

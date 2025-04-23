@@ -17,7 +17,7 @@ export const RUTAS = {
       CONSULTAR_CATEGORIAS: '/consultar-categorias',
     },
     PEDIDOS: '/pedidos',
-    CUOTAS: { BASE: '/cuotas', EDITAR_CUOTAS: '/editar-cuotas' },
+    CUOTAS: { BASE: '/cuotas', EDITAR_CUOTAS: '/cuotas/editar-cuotas' },
     EVENTOS: '/eventos',
     CONFIGURACION: '/configuracion',
     USUARIOS: {

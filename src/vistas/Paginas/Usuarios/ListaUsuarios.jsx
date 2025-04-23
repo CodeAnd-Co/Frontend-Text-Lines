@@ -5,7 +5,8 @@ import { useCrearUsuario } from '../../../hooks/useCrearUsuario';
 import Alerta from '../../componentes/moleculas/Alerta';
 import { useState } from 'react';
 import CustomDataGrid from '../../componentes/organismos/dataGrid';
-import { useConsultarListaUsuarios } from '../../../hooks/Usuarios/useConsultarListaUsuarios'; // Asegúrate de tener este hook
+import { useConsultarListaUsuarios } from '../../../hooks/Usuarios/useConsultarListaUsuarios';
+import Chip from '../../componentes/atomos/Chip';
 
 const ListaUsuarios = () => {
   const {
@@ -37,8 +38,25 @@ const ListaUsuarios = () => {
     { field: 'idUsuario', headerName: 'ID Usuario', flex: 1 },
     { field: 'nombre', headerName: 'Nombre', flex: 1 },
     { field: 'rol', headerName: 'Rol', flex: 1 },
-    { field: 'cliente', headerName: 'Cliente', flex: 1 },
-    { field: 'estatus', headerName: 'Estatus', flex: 1 },
+    {
+      field: 'cliente',
+      headerName: 'Cliente',
+      flex: 1,
+      renderCell: (params) => {
+        const isSuspendido = params.row.estatus === 0;
+
+        return (
+          <Chip
+            label={isSuspendido ? 'Suspendido' : params.value || 'N/A'}
+            variant='filled'
+            size='medium'
+            shape='circular'
+            backgroundColor={isSuspendido ? '#ffa726' : '#f0f0f0'} // naranja o gris claro
+            textColor={isSuspendido ? '#ffffff' : '#000000'}
+          />
+        );
+      },
+    },
     { field: 'correo', headerName: 'Correo electrónico', flex: 1 },
     { field: 'telefono', headerName: 'Telefono', flex: 1 },
   ];

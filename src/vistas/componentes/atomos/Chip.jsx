@@ -4,9 +4,13 @@ import MUIChip from '@mui/material/Chip';
 import { styled } from '@mui/material/styles';
 
 /** Chip personalizado usando Material UI */
-const StyledChip = styled(MUIChip)(({ shape, backgroundColor }) => ({
+const StyledChip = styled(MUIChip, {
+  shouldForwardProp: (prop) =>
+    prop !== 'shape' && prop !== 'backgroundColor' && prop !== 'textColor',
+})(({ shape, backgroundColor, textColor }) => ({
   borderRadius: shape === 'circular' ? '16px' : '4px',
   backgroundColor: backgroundColor || undefined,
+  color: textColor || undefined,
 }));
 
 const Chip = ({
@@ -16,6 +20,7 @@ const Chip = ({
   label,
   shape = 'cuadrada',
   backgroundColor = null,
+  textColor = null,
   ...props
 }) => {
   return (
@@ -26,6 +31,7 @@ const Chip = ({
       size={size}
       shape={shape}
       backgroundColor={backgroundColor}
+      textColor={textColor}
       {...props}
     />
   );
@@ -38,6 +44,7 @@ Chip.propTypes = {
   label: PropTypes.string.isRequired,
   shape: PropTypes.oneOf(['cuadrada', 'circular']),
   backgroundColor: PropTypes.string,
+  textColor: PropTypes.string,
 };
 
 export default Chip;

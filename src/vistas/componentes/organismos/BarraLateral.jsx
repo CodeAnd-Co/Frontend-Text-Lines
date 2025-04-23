@@ -1,49 +1,49 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
-import { Box, IconButton, Tooltip, useTheme } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Box, IconButton, useTheme } from '@mui/material';
 import 'react-pro-sidebar/dist/css/styles.css';
-import { ColorModeContext, tokens } from '../../../theme';
-import {
-  MenuOutlined as MenuOutlinedIcon,
-  HomeOutlined as HomeOutlinedIcon,
-  GroupsOutlined as GroupsOutlinedIcon,
-  InboxOutlined as InboxOutlinedIcon,
-  SettingsOutlined as SettingsOutlinedIcon,
-  LocalOfferOutlined as LocalOfferOutlinedIcon,
-  CurrencyExchangeOutlined as CurrencyExchangeOutlinedIcon,
-  EditCalendarOutlined as EditCalendarOutlinedIcon,
-  LogoutOutlined as LogoutOutlinedIcon,
-  LightModeOutlined as LightModeOutlinedIcon,
-  DarkModeOutlined as DarkModeOutlinedIcon,
-} from '@mui/icons-material';
-import { RUTAS } from '../../../Utilidades/Constantes/rutas';
+import { tokens } from '../../../theme';
+import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
+import InboxOutlinedIcon from '@mui/icons-material/InboxOutlined';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
+import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined';
+import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import TemaIcono from '../Atomos/temaIcono';
+import { Link } from 'react-router-dom';
+import IconoMenu from '../Atomos/iconoMenu';
+import TextoMenu from '../Atomos/textoMenu';
 
-const ItemMenu = ({ titulo, ruta, icono, seleccionado, setSeleccionado }) => (
-  <MenuItem
-    active={seleccionado === titulo}
-    onClick={() => setSeleccionado(titulo)}
-    icon={icono}
-    component={<Link to={ruta} />}
-  >
-    {titulo}
-  </MenuItem>
-);
+const ElementoMenu = ({ titulo, ruta, icono, seleccionado, setSeleccionado }) => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
+  return (
+    <Box sx={{ padding: '0px 8px' }}>
+      <MenuItem
+        active={seleccionado === titulo}
+        onClick={() => setSeleccionado(titulo)}
+        icon={<IconoMenu icono={icono} />}
+        style={{ color: colors.primario[4] }}
+      >
+        <Link to={ruta} style={{ textDecoration: 'none', color: 'inherit', width: '100%' }}>
+          <TextoMenu>{titulo}</TextoMenu>
+        </Link>
+      </MenuItem>
+    </Box>
+  );
+};
 
 const BarraLateral = () => {
   const [colapsado, setColapsado] = useState(false);
   const [seleccionado, setSeleccionado] = useState('Inicio');
-  const [productosAbierto, setProductosAbierto] = useState(false);
-  const [empleadosAbierto, setEmpleadosAbierto] = useState(false);
-
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const colorMode = useContext(ColorModeContext);
-  const navigate = useNavigate();
-
-  const handleExit = () => {
-    navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE);
-  };
+  const [productosAbierto, setProductosAbierto] = useState(false);
+  const [empleadosAbierto, setEmpleadosAbierto] = useState(false);
 
   return (
     <Box
@@ -87,115 +87,100 @@ const BarraLateral = () => {
               </Box>
             )}
           </MenuItem>
-
-          <ItemMenu
-            titulo='Inicio'
-            ruta='/'
-            icono={<HomeOutlinedIcon />}
-            seleccionado={seleccionado}
-            setSeleccionado={setSeleccionado}
-          />
-
-          <SubMenu
-            title='Empleados'
-            icon={<GroupsOutlinedIcon />}
-            open={!colapsado && empleadosAbierto}
-            onOpenChange={() => setEmpleadosAbierto(!empleadosAbierto)}
-          >
-            <ItemMenu
-              titulo='Lista de Empleados'
-              ruta='/empleados'
+          <Box>
+            <ElementoMenu
+              titulo='Inicio'
+              ruta='/admin'
+              icono={<HomeOutlinedIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}
             />
-            <ItemMenu
-              titulo='Grupos de Empleados'
-              ruta='/grupoEmpleados'
+            <SubMenu
+              title='Empleados'
+              icon={<GroupsOutlinedIcon />}
+              open={colapsado ? false : empleadosAbierto}
+              onOpenChange={() => setEmpleadosAbierto(!empleadosAbierto)}
+            >
+              <ElementoMenu
+                titulo='Lista de Empleados'
+                ruta='/admin/empleados'
+                seleccionado={seleccionado}
+                setSeleccionado={setSeleccionado}
+              />
+              <ElementoMenu
+                titulo='Grupos de Empleados'
+                ruta='/admin/grupoEmpleados'
+                seleccionado={seleccionado}
+                setSeleccionado={setSeleccionado}
+              />
+            </SubMenu>
+            <SubMenu
+              title='Productos'
+              icon={<LocalOfferOutlinedIcon />}
+              open={colapsado ? false : productosAbierto}
+              onOpenChange={() => setProductosAbierto(!productosAbierto)}
+            >
+              <ElementoMenu
+                titulo='Lista de Productos'
+                ruta='/admin/productos'
+                seleccionado={seleccionado}
+                setSeleccionado={setSeleccionado}
+              />
+              <ElementoMenu
+                titulo='Sets de Productos'
+                ruta='/admin/setsProductos'
+                seleccionado={seleccionado}
+                setSeleccionado={setSeleccionado}
+              />
+              <ElementoMenu
+                titulo='Categorías'
+                ruta='/admin/categorias'
+                seleccionado={seleccionado}
+                setSeleccionado={setSeleccionado}
+              />
+            </SubMenu>
+            <ElementoMenu
+              titulo='Pedidos'
+              ruta='/admin/pedidos'
+              icono={<InboxOutlinedIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}
             />
-          </SubMenu>
-
-          <SubMenu
-            title='Productos'
-            icon={<LocalOfferOutlinedIcon />}
-            open={!colapsado && productosAbierto}
-            onOpenChange={() => setProductosAbierto(!productosAbierto)}
-          >
-            <ItemMenu
-              titulo='Lista de Productos'
-              ruta='/productos'
+            <ElementoMenu
+              titulo='Cuotas'
+              ruta='/admin/cuotas'
+              icono={<CurrencyExchangeOutlinedIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}
             />
-            <ItemMenu
-              titulo='Sets de Productos'
-              ruta='/setsProductos'
+            <ElementoMenu
+              titulo='Eventos'
+              ruta='/admin/eventos'
+              icono={<EditCalendarOutlinedIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}
             />
-            <ItemMenu
-              titulo='Categorías'
-              ruta='/categorias'
+            <ElementoMenu
+              titulo='Configuración'
+              ruta='/admin/configuracion'
+              icono={<SettingsOutlinedIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}
             />
-          </SubMenu>
-
-          <ItemMenu
-            titulo='Pedidos'
-            ruta='/pedidos'
-            icono={<InboxOutlinedIcon />}
-            seleccionado={seleccionado}
-            setSeleccionado={setSeleccionado}
-          />
-          <ItemMenu
-            titulo='Cuotas'
-            ruta='/cuotas'
-            icono={<CurrencyExchangeOutlinedIcon />}
-            seleccionado={seleccionado}
-            setSeleccionado={setSeleccionado}
-          />
-          <ItemMenu
-            titulo='Eventos'
-            ruta='/eventos'
-            icono={<EditCalendarOutlinedIcon />}
-            seleccionado={seleccionado}
-            setSeleccionado={setSeleccionado}
-          />
-          <ItemMenu
-            titulo='Configuración'
-            ruta='/configuracion'
-            icono={<SettingsOutlinedIcon />}
-            seleccionado={seleccionado}
-            setSeleccionado={setSeleccionado}
-          />
+          </Box>
         </Menu>
-
         <Box position='relative' height='200px'>
           <Box
             display='flex'
             justifyContent='center'
-            gap={2}
+            gap={10}
             alignItems='center'
             position='absolute'
             bottom={1}
             width='100%'
           >
-            <Tooltip title='Cambiar tema'>
-              <IconButton onClick={colorMode.toggleColorMode}>
-                {theme.palette.mode === 'dark' ? (
-                  <LightModeOutlinedIcon />
-                ) : (
-                  <DarkModeOutlinedIcon />
-                )}
-              </IconButton>
-            </Tooltip>
-            <Tooltip title='Salir del tablero'>
-              <IconButton onClick={handleExit} color='error'>
-                <LogoutOutlinedIcon />
-              </IconButton>
-            </Tooltip>
+            <TemaIcono />
+            <LogoutOutlinedIcon />
           </Box>
         </Box>
       </ProSidebar>

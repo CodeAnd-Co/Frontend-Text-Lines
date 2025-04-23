@@ -21,14 +21,13 @@ export function useConsultarProductos() {
   const [recargarToken, setRecargarToken] = useState(0);
 
   useEffect(() => {
-    const repositorio = new RepositorioListaProductos();
-
     const cargar = async () => {
       setCargando(true);
       setError(null);
 
       try {
-        const { productos, mensaje } = await repositorio.obtenerLista({});
+        const { productos, mensaje } = await RepositorioListaProductos.obtenerLista();
+        console.log(productos, mensaje);
         setProductos(productos);
         setMensaje(mensaje);
       } catch (err) {

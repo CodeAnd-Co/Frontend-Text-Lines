@@ -5,7 +5,7 @@ import CampoTexto from '../../Atomos/CampoTexto';
 import Contenedor from '../../Atomos/Contenedor';
 import Imagen from '../../Atomos/Imagen';
 import Cargador from '../../Atomos/Cargador';
-import Boton from '../../Atomos/Boton';
+import Boton from '../../atomos/Boton';
 import Alerta from '../../Moleculas/Alerta';
 
 const estilosContenedorFormulario = {
@@ -15,7 +15,7 @@ const estilosContenedorFormulario = {
   flexDirection: 'column',
   alignItems: 'center',
   borderRadius: '10px',
-  p: 10,
+  padding: 10,
 };
 
 const estilosFormulario = {

@@ -2,9 +2,8 @@ import { Routes, Route } from 'react-router-dom';
 import { RUTAS } from '../Utilidades/Constantes/rutas';
 import { PERMISOS } from '../Utilidades/Constantes/permisos';
 import ListaClientes from '../Vistas/Paginas/Clientes/ListaClientes';
-import Productos from '../vistas/paginas/productos';
-import ListaCategorias from '../vistas/Paginas/Categorias/ListaCategorias';
-import ListaCuotas from '../vistas/Paginas/Cuotas/ListaCuotas';
+// import ListaProductos from '../Vistas/Paginas/Productos/ListaProductos';
+import ListaGrupoEmpleados from '../Vistas/Paginas/Empleados/ListaGrupoEmpleados';
 import SistemaAdministrativo from '../Vistas/Paginas/SistemaAdministrativo';
 import Configuracion from '../Vistas/Paginas/Configuracion/ConfiguracionGeneral';
 import Error404 from '../Vistas/Paginas/Errores/Error404';
@@ -20,9 +19,6 @@ const RutasSistemaAdministrativo = () => {
       <Route path={RUTAS.RAIZ} element={<Error404 />} />
       <Route path={RUTAS.INICIO} element={<ListaClientes />} />
       <Route path={RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION} element={<Configuracion />} />
-      <Route path={RUTAS.SISTEMA_ADMINISTRATIVO.CUOTAS.BASE} element={<ListaCuotas />} />
-      <Route path={RUTAS.SISTEMA_ADMINISTRATIVO.CUOTAS.EDITAR_CUOTAS} element={<EditarCuotas />} />
-      <Route path={RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS} element={<Productos />} />
       <Route
         path={RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO}
         element={
@@ -65,6 +61,10 @@ const RutasSistemaAdministrativo = () => {
         </RutaProtegida>
       }
     />
+
+      >
+        <Route path='empleados/consultar-grupos' element={<ListaGrupoEmpleados />} />
+      </Route>
     </Routes>
   );
 };

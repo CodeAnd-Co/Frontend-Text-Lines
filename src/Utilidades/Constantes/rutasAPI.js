@@ -3,6 +3,7 @@ const BASE_CATEGORIAS = `${BASE_URL}/api/categorias`;
 const BASE_PRODUCTOS = `${BASE_URL}/api/productos`;
 const BASE_CLIENTES = `${BASE_URL}/api/clientes`;
 const BASE_ROLES = `${BASE_URL}/api/roles`;
+const BASE_EMPLEADOS = `${BASE_URL}/api/empleados`;
 
 export const RUTAS_API = {
   CATEGORIAS: {
@@ -21,5 +22,8 @@ export const RUTAS_API = {
   ROLES: {
     BASE: BASE_ROLES,
     CONSULTAR_LISTA: `${BASE_ROLES}/consultar-lista`,
+  EMPLEADOS: {
+    BASE: BASE_EMPLEADOS,
+    CONSULTAR_GRUPOS: `${BASE_EMPLEADOS}/consultar-grupo`,
   },
 };

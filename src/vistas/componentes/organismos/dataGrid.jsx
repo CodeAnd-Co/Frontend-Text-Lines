@@ -4,9 +4,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { tokens, themeSettings } from '../../../theme';
 import { styled } from '@mui/material/styles';
 
-/** Data grid personalizado usando Material UI */
 const spanishLocaleText = {
-  // Ya tenías estos
   noRowsLabel: 'No hay filas',
   columnMenuSortAsc: 'Ordenar ascendente',
   columnMenuSortDesc: 'Ordenar descendente',
@@ -73,7 +71,7 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => {
       fontFamily: tema.typography.subtitulo2.fontFamily,
     },
     '& .MuiDataGrid-columnHeaderTitleContainer': {
-      justifyContent: 'center', // ✅ Centra el contenedor del título
+      justifyContent: 'center',
     },
     '& .MuiDataGrid-columnHeaderCheckbox': {
       display: 'none',

@@ -22,7 +22,7 @@ const TarjetaConImagen = ({
   ajuste = 'cover',
   clickeableImagen = false,
   estiloImagen = {},
-  colorFondo = 'white',
+  colorFondo = 'transparent',
   elevacion = 2,
   bordeRedondeado = '10px',
   alClicImagen,
@@ -49,7 +49,6 @@ const TarjetaConImagen = ({
         justifyContent: 'center',
         alignItems: 'center',
         height: alturaImagen,
-        background: '#fff',
         boxShadow: 'inset 0 0 8px rgba(0,0,0,0.1)',
       }}
     >
@@ -110,6 +109,17 @@ TarjetaConImagen.propTypes = {
   bordeRedondeado: PropTypes.string,
   alClicImagen: PropTypes.func,
   alClicIcono: PropTypes.func,
+};
+
+TarjetaConImagen.defaultProps = {
+  colorFondo: 'transparent',
+  elevacion: 2,
+  bordeRedondeado: '10px',
+  alturaImagen: 'auto',
+  anchoImagen: '200px',
+  ajuste: 'cover',
+  clickeableImagen: false,
+  estiloImagen: {},
 };
 
 export default TarjetaConImagen;

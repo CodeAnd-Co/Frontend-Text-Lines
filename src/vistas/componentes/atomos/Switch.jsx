@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import MuiSwitch from '@mui/material/Switch';
+import { useTheme } from '@mui/material/styles';
+import { tokens } from '../../../theme';
 
-/**
- * Componente Switch personalizado usando Material UI.
- */
 const CustomSwitch = ({
   label,
   required = false,
@@ -17,6 +16,9 @@ const CustomSwitch = ({
   color = 'primary',
   ...props
 }) => {
+  const theme = useTheme();
+  const colores = tokens(theme.palette.mode);
+
   return (
     <FormGroup>
       <FormControlLabel
@@ -26,6 +28,14 @@ const CustomSwitch = ({
             onChange={onChange}
             size={size}
             color={color}
+            sx={{
+              '& .MuiSwitch-thumb': {
+                backgroundColor: checked ? colores[color][3] : colores[color][1],
+              },
+              '& .MuiSwitch-track': {
+                backgroundColor: checked ? colores[color][2] : colores[color][0],
+              },
+            }}
             {...props}
           />
         }
@@ -43,14 +53,7 @@ CustomSwitch.propTypes = {
   checked: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   size: PropTypes.oneOf(['small', 'medium']),
-  color: PropTypes.oneOf([
-    'primary',
-    'secondary',
-    'error',
-    'info',
-    'success',
-    'warning',
-  ]),
+  color: PropTypes.oneOf(['primary', 'secondary', 'error', 'info', 'success', 'warning']),
 };
 
 export default CustomSwitch;

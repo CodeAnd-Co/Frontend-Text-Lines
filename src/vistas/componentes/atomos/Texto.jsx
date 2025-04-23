@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
+import { useTheme } from '@mui/material/styles';
+import { tokens } from '../../../theme'; // Asegúrate de que la ruta es correcta
 
 const Texto = ({
   variant = 'body1',
@@ -11,10 +13,15 @@ const Texto = ({
   children,
   ...props
 }) => {
+  const theme = useTheme();
+  const colores = tokens(theme.palette.mode);
+
+  const colorFinal = color === 'text.primary' ? colores.texto[0] : color || colores.texto[0];
+
   return (
     <Typography
       variant={variant}
-      color={color}
+      color={colorFinal}
       align={align}
       gutterBottom={gutterBottom}
       noWrap={noWrap}

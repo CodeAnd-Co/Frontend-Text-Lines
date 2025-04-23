@@ -2,7 +2,6 @@ import { Routes, Route } from 'react-router-dom';
 import { RUTAS } from '../Utilidades/Constantes/rutas';
 import { PERMISOS } from '../Utilidades/Constantes/permisos';
 import ListaClientes from '../Vistas/Paginas/Clientes/ListaClientes';
-import ListaCategorias from '../vistas/Paginas/Categorias/ListaCategorias';
 import SistemaAdministrativo from '../Vistas/Paginas/SistemaAdministrativo';
 import Configuracion from '../Vistas/Paginas/Configuracion/ConfiguracionGeneral';
 import Error404 from '../Vistas/Paginas/Errores/Error404';
@@ -17,21 +16,13 @@ const RutasSistemaAdministrativo = () => {
       <Route path={RUTAS.INICIO} element={<ListaClientes />} />
       <Route path={RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION} element={<Configuracion />} />
       <Route
-        path={RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO}
+        path={RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO + RUTAS.RAIZ}
         element={
           <VerificarClienteSeleccionado>
             <RutaProtegida permiso={PERMISOS.CONSULTAR_SISTEMA_ADMINISTRATIVO}>
               <SistemaAdministrativo />
             </RutaProtegida>
           </VerificarClienteSeleccionado>
-        }
-      />
-      <Route
-        path={RUTAS.SISTEMA_ADMINISTRATIVO.CATEGORIAS}
-        element={
-          <RutaProtegida permiso={PERMISOS.CONSULTAR_CATEGORIAS_PRODUCTOS}>
-            <ListaCategorias />
-          </RutaProtegida>
         }
       />
     </Routes>

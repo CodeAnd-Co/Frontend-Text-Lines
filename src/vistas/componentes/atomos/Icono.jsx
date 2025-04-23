@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import * as MuiIcons from '@mui/icons-material';
+import { useTheme } from '@mui/material/styles';
+import { tokens } from '../../../theme';
 
 const Icono = ({
   nombre,
@@ -14,6 +16,9 @@ const Icono = ({
   onClick,
   ...props
 }) => {
+  const theme = useTheme();
+  const colores = tokens(theme.palette.mode);
+
   const iconKey = `${nombre}${variant[0].toUpperCase()}${variant.slice(1)}`;
   const IconComponent = MuiIcons[iconKey] || MuiIcons[nombre];
 
@@ -21,7 +26,7 @@ const Icono = ({
     return null;
   }
 
-  const isCustomColor = ![
+  const muiColors = [
     'inherit',
     'primary',
     'secondary',
@@ -31,13 +36,18 @@ const Icono = ({
     'info',
     'success',
     'warning',
-  ].includes(color);
+  ];
+
+  const isCustomColor = !muiColors.includes(color);
+
+  const customColor =
+    isCustomColor && colores[color] ? colores[color][500] || colores[color][0] || color : color;
 
   const icon = (
     <IconComponent
       fontSize={size}
       color={isCustomColor ? 'inherit' : color}
-      style={isCustomColor ? { color } : undefined}
+      style={isCustomColor ? { color: customColor } : undefined}
       {...props}
     />
   );
@@ -46,7 +56,7 @@ const Icono = ({
     <IconButton
       onClick={onClick}
       size={size}
-      style={isCustomColor ? { color } : undefined}
+      style={isCustomColor ? { color: customColor } : undefined}
       color={isCustomColor ? 'inherit' : color}
     >
       {icon}

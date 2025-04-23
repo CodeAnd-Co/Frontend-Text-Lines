@@ -1,13 +1,11 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import ProductosConCuotas from '../../componentes/organismos/ProductosConCuotas';
-import TarjetaRenovacion from '../../componentes/organismos/TarjetaRenovacion';
-import { Box } from '@mui/material';
 import Texto from '../../componentes/atomos/Texto';
 import Alerta from '../../componentes/moleculas/Alerta';
 import { useCrearCuotaSet } from '../../../hooks/useCrearCuotaSet'; // Asegúrate de ajustar la ruta
-import GrupoBotones from '../../componentes/moleculas/GrupoBotones';
-import PopUpEliminar from '../../componentes/moleculas/popUpEliminar';
+import CuerpoPrincipal from '../../componentes/organismos/Cuotas/CuerpoPrincipal';
+import { useAuth } from '../../../hooks/AuthProvider';
+import { RUTAS } from '../../../Utilidades/Constantes/rutas';
 
 const EditarCuotas = () => {
   const ubicacion = useLocation();
@@ -23,6 +21,8 @@ const EditarCuotas = () => {
   );
   const [abrirConfirmacion, setAbrirConfirmacion] = useState(false);
 
+  const { usuario, cargandoHook } = useAuth();
+
   const { enviarCuota, exito, error, mensaje, cargando, setError } = useCrearCuotaSet({
     nombreCuotaSet,
     descripcion,
@@ -31,46 +31,12 @@ const EditarCuotas = () => {
     productos,
     cuotas,
     redirectPath: '/admin/cuotas', // Especificamos la ruta de redirección
-    idCliente: 102, // Si necesitas personalizar el ID del cliente
   });
 
-  const manejarCancelar = () => {
-    setAbrirConfirmacion(true);
-  };
-
-  const confirmarSalida = () => {
-    setAbrirConfirmacion(false);
-    navegar('/admin/cuotas');
-  };
-
-  const cerrarPopup = () => {
-    setAbrirConfirmacion(false);
-  };
-
-  const botonesEnviarCancelar = [
-    {
-      label: 'Cancelar',
-      onClick: manejarCancelar, // o navigate(-1) si usas useNavigate
-      variant: 'outlined',
-      color: 'secondary',
-      sx: { width: '120px', height: '52px' },
-    },
-    {
-      label: cargando ? 'Enviando...' : 'Enviar',
-      onClick: enviarCuota,
-      disabled: cargando,
-      variant: 'contained',
-      color: 'primary',
-      sx: { width: '120px', height: '52px' },
-    },
-  ];
-
-  const manejarCambioCuota = (id, valor) => {
-    setCuotas((prev) => ({
-      ...prev,
-      [id.toString()]: valor,
-    }));
-  };
+  //si no hay un cliente seleccionado te manda a seleccionar cliente
+  if (!usuario.clienteSeleccionado) {
+    navegar(RUTAS.SISTEMA_ADMINISTRATIVO.BASE);
+  }
 
   return (
     <>
@@ -89,35 +55,15 @@ const EditarCuotas = () => {
         />
       )}
 
-      <TarjetaRenovacion
-        periodoRenovacion={periodoRenovacion}
+      <CuerpoPrincipal
         setPeriodoRenovacion={setPeriodoRenovacion}
-        renovacionActiva={renovacionActiva}
         setRenovacionActiva={setRenovacionActiva}
-      />
-      <Box
-        sx={{
-          maxHeight: '60vh',
-          overflowY: 'auto',
-          marginY: 2,
-          borderRadius: 2,
-          margin: 1,
-        }}
-      >
-        <ProductosConCuotas productos={productos} manejarCambioCuota={manejarCambioCuota} />
-      </Box>
-
-      <Box sx={{ display: 'flex', width: '95%', justifyContent: 'flex-end', margin: 5 }}>
-        <GrupoBotones buttons={botonesEnviarCancelar} />
-      </Box>
-
-      <PopUpEliminar
-        abrir={abrirConfirmacion}
-        cerrar={cerrarPopup}
-        confirmar={confirmarSalida}
-        dialogo={'¿Estás seguro de que deseas salir sin crear la cuota?'}
-        labelConfirmar={'Confirmar'}
-        labelCancelar={'Seguir Editando'}
+        setAbrirConfirmacion={setAbrirConfirmacion}
+        abrirConfirmacion={abrirConfirmacion}
+        enviarCuota={enviarCuota}
+        cargando={cargando}
+        setCuotas={setCuotas}
+        productos={productos}
       />
     </>
   );

@@ -1,6 +1,5 @@
 class CuotaSetModelo {
   constructor({
-    idCliente,
     nombreCuotaSet,
     descripcion,
     periodoRenovacion,
@@ -8,7 +7,6 @@ class CuotaSetModelo {
     productos = [],
     limites = {},
   }) {
-    this.idCliente = idCliente;
     this.nombre = nombreCuotaSet || '';
     this.descripcion = descripcion || '';
     this.periodoRenovacion = periodoRenovacion || 6;

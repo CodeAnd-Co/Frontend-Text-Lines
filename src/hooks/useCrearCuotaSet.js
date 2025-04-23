@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import CuotaSetModelo from '../dominio/modelos/Cuotas/CuotaSetModelo';
@@ -13,19 +13,32 @@ export const useCrearCuotaSet = ({
   renovacionActiva,
   productos,
   cuotas,
-  redirectPath = '/admin/cuotas', // Ruta de redirección por defecto
-  idCliente = 102,
+  redirectPath = '/admin/cuotas',
 }) => {
   const [exito, setExito] = useState(false);
   const [error, setError] = useState(false);
   const [mensaje, setMensaje] = useState('');
   const [cargando, setCargando] = useState(false);
-  const navigate = useNavigate(); // Hook para navegación
+
+  const navigate = useNavigate();
+
+  // Control de errores y tiempo
+  const erroresRef = useRef(0);
+  const ultimoErrorRef = useRef(null);
+  const bloqueadoRef = useRef(false);
 
   const enviarCuota = async () => {
+    // Verifica si está bloqueado
+    const ahora = Date.now();
+    if (bloqueadoRef.current) {
+      setError(true);
+      setMensaje('Demasiados intentos fallidos. Intenta más tarde.');
+      return;
+    }
+
     setCargando(true);
+
     const modelo = new CuotaSetModelo({
-      idCliente,
       nombreCuotaSet,
       descripcion,
       periodoRenovacion,
@@ -36,9 +49,8 @@ export const useCrearCuotaSet = ({
 
     try {
       const respuesta = await axios.post(`${API_URL}/api/cuotas/crear-cuota`, modelo, {
-        headers: {
-          'x-api-key': API_KEY,
-        },
+        headers: { 'x-api-key': API_KEY },
+        withCredentials: true,
       });
 
       if (respuesta.data.exito) {
@@ -46,19 +58,46 @@ export const useCrearCuotaSet = ({
         setError(false);
         setMensaje(respuesta.data.exito);
 
-        // Redirección después de mostrar el mensaje de éxito
+        erroresRef.current = 0; // resetear errores en éxito
+        bloqueadoRef.current = false;
+
         setTimeout(() => {
           navigate(redirectPath);
-        }, 2000); // Espera 2 segundos para que el usuario pueda ver el mensaje
-      } else if (respuesta.data.error) {
-        setError(true);
-        setExito(false);
-        setMensaje(respuesta.data.error);
+        }, 2000);
+      } else {
+        throw new Error(respuesta.data?.error || 'Error desconocido');
       }
-    } catch (error) {
+    } catch (err) {
       setError(true);
       setExito(false);
-      setMensaje(error instanceof Error ? error.message : String(error));
+
+      let mensajeError = 'Ocurrió un error, intenta más tarde.';
+
+      if (axios.isAxiosError(err)) {
+        if (err.response?.data?.error) {
+          mensajeError = err.response.data.error;
+        } else if (err.message === 'Network Error') {
+          mensajeError = 'No se pudo conectar con el servidor. Verifica tu conexión.';
+        }
+      } else if (err instanceof Error) {
+        mensajeError = err.message || mensajeError;
+      }
+
+      setMensaje(mensajeError);
+
+      // Aumentar contador de errores
+      erroresRef.current += 1;
+      ultimoErrorRef.current = ahora;
+
+      if (erroresRef.current >= 10) {
+        bloqueadoRef.current = true;
+
+        // Desbloquear después de 10 segundos
+        setTimeout(() => {
+          erroresRef.current = 0;
+          bloqueadoRef.current = false;
+        }, 10000);
+      }
     } finally {
       setCargando(false);
     }

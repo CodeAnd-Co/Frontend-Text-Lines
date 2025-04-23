@@ -1,8 +1,8 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
-import TarjetaBasica from '../moleculas/TarjetaBasica';
-import { NumeroInput } from '../atomos/NumeroInput';
-import Switch from '../atomos/Switch';
+import { Box } from '@mui/material';
+import TarjetaBasica from '../../moleculas/TarjetaBasica';
+import { NumeroInput } from '../../atomos/NumeroInput';
+import Switch from '../../atomos/Switch';
 
 const TarjetaRenovacion = ({
   periodoRenovacion,
@@ -13,12 +13,10 @@ const TarjetaRenovacion = ({
   return (
     <TarjetaBasica tituloPrincipal='Configuración de Renovación' sx={{ margin: 3 }}>
       <Box display='flex' justifyContent='space-between' alignItems='center'>
-        {/* Título a la izquierda */}
         <div>
           <h3>Tiempo de renovación: </h3>
         </div>
 
-        {/* Controles a la derecha */}
         <Box display='flex' alignItems='center' gap={1} sx={{ margin: 2 }}>
           <NumeroInput
             label='Meses'
@@ -37,9 +35,6 @@ const TarjetaRenovacion = ({
             gap: '16px',
           }}
         >
-          {/* Texto + input de meses */}
-
-          {/* Switch */}
           <Box display='flex' alignItems='center'>
             <Switch
               label='Renovación activa'

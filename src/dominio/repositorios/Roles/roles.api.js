@@ -1,6 +1,6 @@
-import { Rol } from '../modelos/rol.modelo'; // Importa el modelo de Rol
+import { Rol } from '../../modelos/Roles/Rol'; // Importa el modelo de Rol
 import axios from 'axios'; // HTTP para peticiones a la API
-import { RUTAS_API } from '../../Utilidades/Constantes/rutasAPI'; // Rutas de la API
+import { RUTAS_API } from '../../../Utilidades/Constantes/rutasAPI'; // Rutas de la API
 
 /**
  * RF7 - Consultar lista de roles - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF7

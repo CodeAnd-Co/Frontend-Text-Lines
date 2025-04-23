@@ -2,6 +2,7 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 const BASE_CATEGORIAS = `${BASE_URL}/api/categorias`;
 const BASE_PRODUCTOS = `${BASE_URL}/api/productos`;
 const BASE_CLIENTES = `${BASE_URL}/api/clientes`;
+const BASE_ROLES = `${BASE_URL}/api/roles`;
 
 export const RUTAS_API = {
   CATEGORIAS: {
@@ -18,7 +19,7 @@ export const RUTAS_API = {
     CONSULTAR_SISTEMA: `${BASE_CLIENTES}/consultar-sistema`,
   },
   ROLES: {
-    BASE: `${BASE_URL}/api/roles`,
-    CONSULTAR_LISTA: `${BASE_URL}/api/roles/consultar-lista`,
+    BASE: BASE_ROLES,
+    CONSULTAR_LISTA: `${BASE_ROLES}/consultar-lista`,
   },
 };

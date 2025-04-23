@@ -1,8 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Texto from '../../componentes/atomos/Texto';
 import Alerta from '../../componentes/moleculas/Alerta';
-import { useCrearCuotaSet } from '../../../hooks/useCrearCuotaSet'; // Asegúrate de ajustar la ruta
+import { useCrearCuotaSet } from '../../../hooks/useCrearCuotaSet';
 import CuerpoPrincipal from '../../componentes/organismos/Cuotas/CuerpoPrincipal';
 import { useAuth } from '../../../hooks/AuthProvider';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';
@@ -10,18 +10,27 @@ import { RUTAS } from '../../../Utilidades/Constantes/rutas';
 const EditarCuotas = () => {
   const ubicacion = useLocation();
   const navegar = useNavigate();
-  const { nombreCuotaSet, descripcion, productos } = ubicacion.state;
+  const { usuario } = useAuth();
+
+  // Use useEffect to handle client selection check
+  useEffect(() => {
+    if (!usuario?.clienteSeleccionado) {
+      navegar(RUTAS.SISTEMA_ADMINISTRATIVO.BASE);
+    }
+  }, [usuario, navegar]);
+
+  // Check if location state exists before destructuring
+  const { nombreCuotaSet, descripcion, productos } = ubicacion.state || {};
+
   const [periodoRenovacion, setPeriodoRenovacion] = useState(6);
   const [renovacionActiva, setRenovacionActiva] = useState(true);
   const [cuotas, setCuotas] = useState(
-    productos.reduce((acc, producto) => {
+    productos?.reduce((acc, producto) => {
       acc[producto.id.toString()] = 1;
       return acc;
-    }, {})
+    }, {}) || {}
   );
   const [abrirConfirmacion, setAbrirConfirmacion] = useState(false);
-
-  const { usuario, cargandoHook } = useAuth();
 
   const { enviarCuota, exito, error, mensaje, cargando, setError } = useCrearCuotaSet({
     nombreCuotaSet,
@@ -30,12 +39,12 @@ const EditarCuotas = () => {
     renovacionActiva,
     productos,
     cuotas,
-    redirectPath: '/admin/cuotas', // Especificamos la ruta de redirección
+    redirectPath: '/admin/cuotas',
   });
 
-  //si no hay un cliente seleccionado te manda a seleccionar cliente
-  if (!usuario.clienteSeleccionado) {
-    navegar(RUTAS.SISTEMA_ADMINISTRATIVO.BASE);
+  // Return early to avoid rendering the rest of the component when redirecting
+  if (!usuario?.clienteSeleccionado || !productos) {
+    return null; // Or a loading indicator if preferred
   }
 
   return (
@@ -43,7 +52,6 @@ const EditarCuotas = () => {
       <Texto variant='h4' sx={{ margin: 7 }}>
         {nombreCuotaSet}
       </Texto>
-
       {(exito || error) && (
         <Alerta
           tipo={exito ? 'success' : 'error'}
@@ -54,7 +62,6 @@ const EditarCuotas = () => {
           onClose={error ? () => setError(false) : undefined}
         />
       )}
-
       <CuerpoPrincipal
         periodoRenovacion={periodoRenovacion}
         renovacionActiva={renovacionActiva}

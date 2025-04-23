@@ -33,11 +33,9 @@ const spanishLocaleText = {
   filterPanelAddFilter: 'Agregar filtro',
   filterPanelDeleteIconLabel: 'Eliminar',
 
-  // Paginación
   footerRowSelected: (count) => `${count.toLocaleString()} fila(s) seleccionada(s)`,
   footerTotalRows: 'Filas Totales:',
 
-  // Otros opcionales
   toolbarColumns: 'Columnas',
   toolbarFilters: 'Filtros',
   toolbarDensity: 'Densidad',

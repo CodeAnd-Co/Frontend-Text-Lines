@@ -11,7 +11,6 @@ const estilosContenedor = {
   alignItems: 'center',
   minHeight: '100vh',
   textAlign: 'center',
-  backgroundColor: '#f8f9fa',
   padding: 4,
 };
 

@@ -2,10 +2,10 @@ import { Routes, Route } from 'react-router-dom';
 import { RUTAS } from '../Utilidades/Constantes/rutas';
 import { PERMISOS } from '../Utilidades/Constantes/permisos';
 import ListaClientes from '../Vistas/Paginas/Clientes/ListaClientes';
+import ListaProductos from '../Vistas/Paginas/Productos/ListaProductos';
 import SistemaAdministrativo from '../Vistas/Paginas/SistemaAdministrativo';
 import Configuracion from '../Vistas/Paginas/Configuracion/ConfiguracionGeneral';
 import Error404 from '../Vistas/Paginas/Errores/Error404';
-
 import RutaProtegida from './RutaProtegida';
 import VerificarClienteSeleccionado from './VerificarClienteSeleccionado';
 
@@ -24,7 +24,9 @@ const RutasSistemaAdministrativo = () => {
             </RutaProtegida>
           </VerificarClienteSeleccionado>
         }
-      />
+      >
+        <Route path='productos' element={<ListaProductos />} />
+      </Route>
     </Routes>
   );
 };

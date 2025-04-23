@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { RUTAS } from '../Utilidades/Constantes/rutas';
 import { PERMISOS } from '../Utilidades/Constantes/permisos';
 import ListaClientes from '../Vistas/Paginas/Clientes/ListaClientes';
-import Productos from '../vistas/paginas/productos';
+import Productos from '../vistas/paginas/Productos/ListaProductos';
 import ListaCategorias from '../vistas/Paginas/Categorias/ListaCategorias';
 import SistemaAdministrativo from '../Vistas/Paginas/SistemaAdministrativo';
 import Configuracion from '../Vistas/Paginas/Configuracion/ConfiguracionGeneral';

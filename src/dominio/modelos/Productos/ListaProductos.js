@@ -1,5 +1,5 @@
 //RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
-import { Producto } from '../producto';
+import { Producto } from './producto';
 
 /**
  * Convierte una lista del backend en instancias del modelo Categoria
@@ -10,12 +10,12 @@ import { Producto } from '../producto';
  * }}
  */
 
-export function ListaProductos(respuestaJson) {
-  const { mensaje, lista_productos } = respuestaJson;
+export function listaProductos(respuestaJson) {
+  const { mensaje, listaProductos } = respuestaJson;
 
-  if (!lista_productos) return { productos: [], mensaje: mensaje || '' };
+  if (!listaProductos) return { productos: [], mensaje: mensaje || '' };
 
-  const productos = lista_productos.map((prod) => new Producto(prod));
+  const productos = listaProductos.map((prod) => new Producto(prod));
 
   return { productos, mensaje };
 }

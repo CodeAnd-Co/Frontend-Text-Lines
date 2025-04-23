@@ -19,6 +19,7 @@ export function useConsultarProductos() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
   const [recargarToken, setRecargarToken] = useState(0);
+  console.log('Entro repositorio:');
 
   useEffect(() => {
     const repositorio = new RepositorioListaProductos();

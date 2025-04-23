@@ -2,6 +2,8 @@
 import React from 'react';
 import CustomDataGrid from '../../Componentes/Organismos/dataGrid';
 import { useConsultarProductos } from '../../../hooks/Productos/useConsultarProductos';
+import { Box, Typography, useTheme } from '@mui/material';
+import { tokens } from '../../../theme';
 
 const Productos = () => {
   // Hook que obtiene los productos desde el repositorio
@@ -13,7 +15,7 @@ const Productos = () => {
     {
       field: 'imagen',
       headerName: 'Imagen',
-      flex: 0.7,
+      flex: 0.5,
       renderCell: (params) => (
         <img src={params.row.urlImagen} alt='Producto' style={{ width: 50, height: 50 }} />
       ),
@@ -22,13 +24,14 @@ const Productos = () => {
       field: 'nombreComun',
       headerName: 'Nombre',
       flex: 1,
+
       cellClassName: 'name-column--cell',
     },
     {
       field: 'precioVenta',
       headerName: 'Precio Venta',
       type: 'number',
-      flex: 0.5,
+      flex: 0.7,
       headerAlign: 'center',
       align: 'center',
     },
@@ -36,20 +39,18 @@ const Productos = () => {
       field: 'estado',
       headerName: 'Disponibilidad en stock',
       flex: 1,
-      headerAlign: 'center',
-      align: 'center',
       cellClassName: 'estado-row--cell',
       renderCell: ({ row: { estado } }) => {
         return (
           <Box
-            width='30%'
+            width='25%'
             height='50%'
-            m='20px auto'
+            m='10px auto'
             p='15px'
             display='flex'
             justifyContent='center'
             alignItems='center'
-            textcolor={colores.primario[4]}
+            color={estado === 1 ? colores.primario[4] : colores.texto[1]}
             backgroundColor={estado === 1 ? colores.altertex[1] : colores.acciones[1]}
             borderRadius='4px'
           >
@@ -94,7 +95,7 @@ const Productos = () => {
             rows={filas}
             loading={cargando}
             checkboxSelection
-            //   rowHeight={80}
+            rowHeight={80}
           />
         </Box>
       </Box>

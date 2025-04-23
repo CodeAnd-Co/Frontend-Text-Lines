@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material';
 import MUIButton from '@mui/material/Button';
 import { tokens } from '../../../theme';
-import { useTheme } from '@mui/material';
 
 /** Botón personalizado usando Material UI */
 const Boton = ({
@@ -19,9 +18,8 @@ const Boton = ({
   ...props
 }) => {
   const tema = useTheme();
-  const colores = tokens(tema.palette.mode);
+  const colors = tokens(tema.palette.mode);
   // Estilo para outlined personalizado
-  const outlinedStyle = variant === 'outlined' && outlineColor;
   const outlinedStyle =
     variant === 'outlined' && outlineColor
       ? {

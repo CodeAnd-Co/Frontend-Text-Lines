@@ -1,5 +1,4 @@
 //RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
-
 import React from 'react';
 import CustomDataGrid from '../../Componentes/Organismos/dataGrid';
 import { useConsultarProductos } from '../../../hooks/Productos/useConsultarProductos';

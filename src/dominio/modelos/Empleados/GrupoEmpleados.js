@@ -1,6 +1,4 @@
-/**
- * Modelo de un grupo de empleados
- */
+//RF22 - Consulta Lista de Grupo Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF22
 export class GrupoEmpleados {
   constructor({ idGrupo, geNombre, descripcion, idSetProducto, spNombre, totalEmpleados }) {
     this.idGrupo = idGrupo;

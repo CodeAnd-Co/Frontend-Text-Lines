@@ -1,8 +1,6 @@
+//RF22 - Consulta Lista de Grupo Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF22
 import { GrupoEmpleados } from './GrupoEmpleados';
 
-/**
- * Modelo de la respuesta que contiene una lista de grupos de empleados
- */
 export class ListaGrupoEmpleados {
   constructor({ mensaje, grupoEmpleados }) {
     this.mensaje = mensaje;

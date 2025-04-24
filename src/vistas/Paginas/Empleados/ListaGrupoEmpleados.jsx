@@ -14,10 +14,20 @@ const ListaGrupoEmpleados = () => {
       flex: 2,
     },
     {
+      field: 'descripcion',
+      headerName: 'Descripción',
+      flex: 3,
+    },
+    {
       field: 'idSetProducto',
-      headerName: 'ID Set Producto',
+      headerName: 'ID Set de Productos',
       type: 'number',
       flex: 1,
+    },
+    {
+      field: 'setProducto',
+      headerName: 'Nombre del Set de Productos',
+      flex: 2,
     },
     {
       field: 'totalEmpleados',
@@ -29,8 +39,10 @@ const ListaGrupoEmpleados = () => {
 
   const rows = grupos.map((grupo) => ({
     id: grupo.idGrupo,
-    nombre: grupo.nombre,
+    nombre: grupo.geNombre,
+    descripcion: grupo.descripcion,
     idSetProducto: grupo.idSetProducto,
+    setProducto: grupo.spNombre,
     totalEmpleados: grupo.totalEmpleados,
   }));
 

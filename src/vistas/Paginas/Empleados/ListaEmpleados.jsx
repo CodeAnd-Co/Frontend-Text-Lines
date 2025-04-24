@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import CustomDataGrid from '../../Componentes/Organismos/dataGrid';
-import ContenedorLista from '../../Componentes/organismos/ContenedorLista';
+import Tabla from '../../Componentes/Organismos/Tabla';
+import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 
 const ListaGrupoEmpleados = () => {
   const columns = [];
@@ -33,7 +33,7 @@ const ListaGrupoEmpleados = () => {
       informacionBotones={botones}
     >
       <Box width={'100%'}>
-        <CustomDataGrid columns={columns} rows={rows} loading={true} checkboxSelection />
+        <Tabla columns={columns} rows={rows} loading={true} checkboxSelection />
       </Box>
     </ContenedorLista>
   );

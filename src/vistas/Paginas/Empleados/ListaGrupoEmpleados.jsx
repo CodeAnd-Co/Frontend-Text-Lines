@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import CustomDataGrid from '../../Componentes/Organismos/dataGrid';
-import ContenedorLista from '../../Componentes/organismos/ContenedorLista';
+import Tabla from '../../Componentes/Organismos/Tabla';
+import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import { useConsultarGrupos } from '../../../hooks/Empleados/useConsultarGrupos';
 
 const ListaGrupoEmpleados = () => {
@@ -72,7 +72,7 @@ const ListaGrupoEmpleados = () => {
     >
       <Box width={'100%'}>
         {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-        <CustomDataGrid columns={columns} rows={rows} loading={cargando} checkboxSelection />
+        <Tabla columns={columns} rows={rows} loading={cargando} checkboxSelection />
       </Box>
     </ContenedorLista>
   );

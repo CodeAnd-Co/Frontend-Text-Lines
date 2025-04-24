@@ -1,9 +1,9 @@
 //RF[47] Consulta lista de categorías - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF47]
 
-import React from "react";
-import CustomDataGrid from "../../componentes/organismos/dataGrid";
-import { useConsultarCategorias } from "../../../hooks/Categorias/useConsultarCategorias";
-import Alerta from "../../componentes/moleculas/Alerta"; 
+import React from 'react';
+import CustomDataGrid from '../../Componentes/Organismos/Tabla';
+import { useConsultarCategorias } from '../../../hooks/Categorias/useConsultarCategorias';
+import Alerta from '../../componentes/moleculas/Alerta';
 
 const ListaCategorias = () => {
   // Hook que obtiene las categorías desde el repositorio
@@ -35,26 +35,13 @@ const ListaCategorias = () => {
     nombreCategoria: cat.nombreCategoria,
     descripcion: cat.descripcion,
     cantidadProductos: cat.cantidadProductos,
-    idCliente: cat.idCliente
+    idCliente: cat.idCliente,
   }));
 
   return (
-    <div style={{ height: 400, width: "100%" }}>
-      {error && (
-        <Alerta
-          tipo="error"
-          mensaje={error}
-          icono
-          cerrable
-          centradoInferior
-        />
-      )}
-      <CustomDataGrid
-        columns={columns}
-        rows={rows}
-        loading={cargando}
-        checkboxSelection
-      />
+    <div style={{ height: 400, width: '100%' }}>
+      {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}
+      <CustomDataGrid columns={columns} rows={rows} loading={cargando} checkboxSelection />
     </div>
   );
 };

@@ -43,47 +43,78 @@ const spanishLocaleText = {
 const StyledDataGrid = styled(DataGrid)(({ theme }) => {
   const colores = tokens(theme.palette.mode);
   const tema = themeSettings(theme.palette.mode);
+
   return {
+    boxShadow: theme.shadows[1],
+    border: 'none',
+    backgroundColor: theme.palette.background.paper,
+    fontFamily: tema.typography.body1.fontFamily,
+    fontSize: tema.typography.body1.fontSize,
+
+    width: '100%',
+    maxWidth: '100%',
+    maxHeight: '600px',
+    overflow: 'auto',
+
     '& .MuiDataGrid-root': {
-      border: 'none',
+      overflow: 'auto',
     },
+
+    '& .MuiDataGrid-virtualScroller': {
+      overflowY: 'auto',
+      overflowX: 'hidden',
+    },
+
     '& .MuiDataGrid-cell': {
-      borderBottom: 'none',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
     },
+
     '& .MuiDataGrid-columnHeaders': {
-      backgroundColor: colores.menu[2],
-      borderBottom: 'none',
+      backgroundColor: colores.menu[1],
+      color: colores.texto[0],
+      borderBottom: `1px solid ${theme.palette.divider}`,
+      textAlign: 'center',
     },
+
+    '& .MuiDataGrid-row': {
+      transition: 'background-color 0.2s ease',
+      '&:hover': {
+        backgroundColor: theme.palette.action.hover,
+      },
+    },
+
     '& .MuiDataGrid-footerContainer': {
-      borderTop: 'none',
       backgroundColor: colores.menu[2],
+      borderTop: `1px solid ${theme.palette.divider}`,
+      padding: '0 8px',
     },
+
+    '& .MuiDataGrid-toolbarContainer': {
+      padding: '8px',
+      backgroundColor: colores.menu[0],
+    },
+
     '& .MuiDataGrid-toolbarContainer .MuiButton-text': {
       color: colores.texto[1],
     },
-    '& .MuiDataGrid-columnHeaderTitle': {
-      fontSize: tema.typography.subtitulo2.fontSize,
-      fontWeight: tema.typography.subtitulo2.fontWeight,
-      fontFamily: tema.typography.subtitulo2.fontFamily,
+
+    '& .MuiDataGrid-checkboxInput': {
+      color: theme.palette.primary.main,
     },
-    '& .MuiDataGrid-columnHeaderTitleContainer': {
-      justifyContent: 'center',
+
+    '& .MuiDataGrid-selectedRowCount': {
+      visibility: 'hidden',
     },
-    '& .MuiDataGrid-columnHeaderCheckbox': {
-      display: 'none',
-    },
-    '& .MuiDataGrid-cell--textRight': {
-      justifyContent: 'flex-start',
-      textAlign: 'center',
-    },
-    '& .MuiDataGrid-columnHeader--textRight': {
-      justifyContent: 'flex-start',
-      textAlign: 'left',
+
+    '& .MuiDataGrid-columnHeader, & .MuiDataGrid-cell': {
+      outline: 'none',
     },
   };
 });
 
-const CustomDataGrid = ({ columns, rows, loading, pageSize, onRowClick, checkboxSelection }) => {
+const Tabla = ({ columns, rows, loading, pageSize, onRowClick, checkboxSelection }) => {
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: pageSize || 5,
@@ -107,7 +138,7 @@ const CustomDataGrid = ({ columns, rows, loading, pageSize, onRowClick, checkbox
   );
 };
 
-CustomDataGrid.propTypes = {
+Tabla.propTypes = {
   columns: PropTypes.arrayOf(
     PropTypes.shape({
       field: PropTypes.string.isRequired,
@@ -126,11 +157,11 @@ CustomDataGrid.propTypes = {
   checkboxSelection: PropTypes.bool,
 };
 
-CustomDataGrid.defaultProps = {
+Tabla.defaultProps = {
   loading: false,
   pageSize: 5,
   onRowClick: () => {},
   checkboxSelection: false,
 };
 
-export default CustomDataGrid;
+export default Tabla;

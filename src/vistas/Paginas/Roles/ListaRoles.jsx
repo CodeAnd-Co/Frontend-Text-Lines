@@ -3,8 +3,7 @@ import React from 'react';
 import CustomDataGrid from '../../componentes/organismos/dataGrid';
 import Texto from '../../Componentes/Atomos/Texto';
 import { useConsultarRoles } from '../../../hooks/Roles/useConsultarRoles';
-import { Box } from '@mui/material';
-import { useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
 
 const ListaRoles = () => {

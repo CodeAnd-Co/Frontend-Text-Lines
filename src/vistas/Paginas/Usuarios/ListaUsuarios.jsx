@@ -7,7 +7,8 @@ const ListaUsuarios = () => {
   const navigate = useNavigate();
 
   const irARoles = () => {
-    navigate(`/admin/usuarios${RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.CONSULTAR_ROLES}`);  };
+    navigate(`/admin/usuarios${RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.CONSULTAR_ROLES}`);  
+};
 
   return (
     <Box sx={{ padding: '2rem', textAlign: 'center' }}>

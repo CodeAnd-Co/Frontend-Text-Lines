@@ -83,7 +83,7 @@ const BarraLateral = () => {
           >
             {!colapsado && (
               <Box display='flex' justifyContent='space-between' alignItems='center' ml='15px'>
-                <img src='/logoAltertex.svg' style={{ width: '150px' }} />
+                <img src='/logoAltertexDark.svg' style={{ width: '150px' }} />
                 <IconButton onClick={() => setColapsado(!colapsado)}>
                   <MenuOutlinedIcon sx={{ color: colors.primario[4] }} />
                 </IconButton>

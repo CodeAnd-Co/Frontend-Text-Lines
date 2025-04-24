@@ -19,8 +19,15 @@ const estiloTarjeta = {
 };
 
 const estiloTitulo = {
-  margin: { xs: '2rem 0', sm: '4rem 0', md: '6rem 0' },
+  marginTop: { xs: '2rem', sm: '4rem', md: '6rem' },
   fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem', lg: '3.5rem' },
+  textTransform: 'uppercase',
+};
+
+const estiloSubtitulo = {
+  marginBottom: { xs: '1.5rem', sm: '2rem', md: '2.5rem' },
+  fontSize: { xs: '1.2rem', sm: '1.5rem', md: '1.8rem' },
+  fontWeight: 500,
 };
 
 const estiloTarjetaAgregar = {
@@ -126,7 +133,7 @@ const ListaClientes = () => {
   return (
     <>
       <NavegadorAdministrador
-        src='/logoAltertexLogin.svg'
+        src='/logoAltertexLight.svg'
         alt='Logo empresa'
         nombreIcono='ShoppingCart'
         varianteIcono='outlined'
@@ -155,7 +162,10 @@ const ListaClientes = () => {
         pb={6}
       >
         <Texto variant='h1' align='center' sx={estiloTitulo}>
-          ¡Bienvenid@!
+          Bienvenid⭐
+        </Texto>
+        <Texto variant='h4' align='center' color='text.secondary' sx={estiloSubtitulo}>
+          Selecciona un cliente para gestionar su sistema o crea uno nuevo
         </Texto>
 
         {cargando ? (

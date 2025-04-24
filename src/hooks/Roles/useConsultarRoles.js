@@ -3,10 +3,9 @@ import { RepositorioListaRoles } from '../../dominio/repositorios/Roles/reposito
 
 /**
  * Hook para consultar la lista de roles.
- * @param {Object} opciones - Parámetros como { limit, offset }
  * @returns {{ roles: Rol[], cargando: boolean, error: string | null, mensaje: string, recargar: () => void }}
  */
-export function useConsultarRoles({ limit = 10, offset = 0 } = {}) {
+export function useConsultarRoles() {
   const [roles, setRoles] = useState([]);
   const [mensaje, setMensaje] = useState('');
   const [cargando, setCargando] = useState(true);
@@ -21,7 +20,7 @@ export function useConsultarRoles({ limit = 10, offset = 0 } = {}) {
       setError(null);
 
       try {
-        const { roles, mensaje } = await repositorio.obtenerLista({ limit, offset });
+        const { roles, mensaje } = await repositorio.obtenerLista();
         setRoles(roles);
         setMensaje(mensaje);
         console.log('Datos recibidos:', roles);
@@ -36,7 +35,7 @@ export function useConsultarRoles({ limit = 10, offset = 0 } = {}) {
     };
 
     cargar();
-  }, [limit, offset, recargarToken]);
+  }, [recargarToken]);
 
   const recargar = () => {
     setRecargarToken((prev) => prev + 1);

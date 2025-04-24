@@ -6,11 +6,11 @@ import { RUTAS_API } from '../../../Utilidades/Constantes/rutasAPI';
 const API_KEY = import.meta.env.VITE_API_KEY;
 
 export class RepositorioListaRoles {
-  static async obtenerLista({ limit = 10, offset = 0 } = {}) {
+  static async obtenerLista() {
     try {
         const respuesta = await axios.post(
             RUTAS_API.ROLES.CONSULTAR_LISTA,
-            { limit, offset },
+            {},
             {
               withCredentials: true,
               headers: {

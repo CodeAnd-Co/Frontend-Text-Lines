@@ -19,6 +19,7 @@ const Boton = ({
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  // Estilo para outlined personalizado
   const outlinedStyle
     = variant === 'outlined' && outlineColor
       ? {
@@ -27,6 +28,7 @@ const Boton = ({
         }
       : {};
 
+  // Estilo adicional si el botón está seleccionado
   const selectedStyle
     = selected && variant === 'contained'
       ? {

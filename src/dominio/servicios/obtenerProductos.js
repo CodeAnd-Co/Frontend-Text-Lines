@@ -1,13 +1,20 @@
 import axios from 'axios';
 
-const obtenerProductos = async (API_URL, API_KEY) => {
+const API_URL = import.meta.env.VITE_API_URL;
+const API_KEY = import.meta.env.VITE_API_KEY;
+
+const obtenerProductos = async (clienteSeleccionado) => {
   try {
-    const respuesta = await axios.get(`${API_URL}/api/cuotas/obtener-opciones`, {
-      params: { idCliente: 102 }, //TODO: id del cliente esta hardcodeado
-      headers: {
-        'x-api-key': API_KEY,
-      },
-    });
+    const respuesta = await axios.post(
+      `${API_URL}/api/cuotas/obtener-opciones`,
+      { clienteSeleccionado },
+      {
+        headers: {
+          'x-api-key': API_KEY,
+        },
+        withCredentials: true,
+      }
+    );
 
     const filasFormateadas = respuesta.data.resultado.map((producto) => ({
       id: producto.id,

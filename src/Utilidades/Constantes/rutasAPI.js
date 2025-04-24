@@ -4,6 +4,7 @@ const BASE_PRODUCTOS = `${BASE_URL}/api/productos`;
 const BASE_CLIENTES = `${BASE_URL}/api/clientes`;
 const BASE_ROLES = `${BASE_URL}/api/roles`;
 const BASE_EMPLEADOS = `${BASE_URL}/api/empleados`;
+const BASE_CUOTAS = `${BASE_URL}/api/cuotas`;
 
 export const RUTAS_API = {
   CATEGORIAS: {
@@ -27,4 +28,8 @@ export const RUTAS_API = {
     BASE: BASE_EMPLEADOS,
     CONSULTAR_GRUPOS: `${BASE_EMPLEADOS}/consultar-grupo`,
   },
-}
+  CUOTAS: {
+    BASE: BASE_CUOTAS,
+    CREAR_CUOTA: `${BASE_CUOTAS}/crear-cuota`,
+  },
+};

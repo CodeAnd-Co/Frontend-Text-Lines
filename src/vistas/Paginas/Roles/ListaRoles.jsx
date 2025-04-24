@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import CustomDataGrid from '../../../vistas/componentes/organismos/dataGrid';
+import CustomDataGrid from '../../../Vistas/Componentes/Organismos/dataGrid';
 import { useConsultarRoles } from "../../../hooks/Roles/useConsultarRoles";
+import { Snackbar, Alert } from "@mui/material";
 
 
 /**
@@ -10,7 +11,7 @@ import { useConsultarRoles } from "../../../hooks/Roles/useConsultarRoles";
 
 const ListaRoles = () => {
   // Hook para obtener los roles desde el backend
-  const { roles, cargando, error } = useConsultarRoles({ limit: 5, offset: 0 });
+  const { roles, cargando, error } = useConsultarRoles();
 
   const [busqueda, setBusqueda] = useState('');
 
@@ -49,7 +50,11 @@ const ListaRoles = () => {
       }}
     >
       <div style={{ height: 400, width: '100%' }}>
-  {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+  <Snackbar open={!!error} autoHideDuration={600} onClose={() => {}}>
+    <Alert severity="error" sx={{ width: '100%' }}>
+      {error}
+    </Alert>
+  </Snackbar>
   <h1 style={{ textAlign: 'center', fontSize: '2rem', marginBottom: '1rem' }}>ROLES</h1>
   <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-start' }}>
     <div style={{ display: 'flex', flexDirection: 'column' }}>

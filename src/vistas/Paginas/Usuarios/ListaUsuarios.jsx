@@ -1,14 +1,15 @@
 //RF02 Super Administrador Consulta Lista de Usuarios - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF2
-
-import { Button } from '@mui/material';
 import ModalFlotante from '../../componentes/organismos/ModalFlotante';
 import FormularioCrearUsuario from '../../componentes/organismos/FormularioCrearUsuario';
 import { useCrearUsuario } from '../../../hooks/useCrearUsuario';
 import Alerta from '../../componentes/moleculas/Alerta';
 import { useState } from 'react';
-import CustomDataGrid from '../../componentes/organismos/dataGrid';
+import CustomDataGrid from '../../componentes/organismos/Tabla';
 import { useConsultarListaUsuarios } from '../../../hooks/Usuarios/useConsultarListaUsuarios';
 import Chip from '../../componentes/atomos/Chip';
+import GrupoBotones from '../../componentes/moleculas/GrupoBotones';
+import { tokens } from '../../../theme';
+import { useTheme } from '@mui/material/styles';
 
 const ListaUsuarios = () => {
   const {
@@ -53,7 +54,7 @@ const ListaUsuarios = () => {
             variant='filled'
             size='medium'
             shape='circular'
-            backgroundColor={isSuspendido ? '#ffa726' : '#f0f0f0'} // naranja o gris claro
+            backgroundColor={isSuspendido ? '#ffa726' : '#f0f0f0'}
             textColor={isSuspendido ? '#ffffff' : '#000000'}
           />
         );
@@ -81,6 +82,9 @@ const ListaUsuarios = () => {
     ).values(),
   ];
 
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
   return (
     <div>
       <h1>Usuarios</h1>
@@ -96,9 +100,37 @@ const ListaUsuarios = () => {
         />
       )}
 
-      <Button variant='contained' color='primary' onClick={handleOpen}>
-        Añadir
-      </Button>
+      <GrupoBotones
+        align='end'
+        buttons={[
+          {
+            backgroundColor: colors.verde[1],
+            color: 'primary',
+            label: 'Roles',
+            onClick: () => {},
+            size: 'medium',
+            variant: 'contained',
+          },
+          {
+            backgroundColor: 'rgba(24, 50, 165, 1)',
+            color: 'primary',
+            label: 'Añadir',
+            onClick: () => handleOpen(),
+            size: 'medium',
+            variant: 'contained',
+          },
+          {
+            backgroundColor: 'rgba(24, 50, 165, 1)',
+            color: 'primary',
+            label: 'Eliminar',
+            onClick: () => {},
+            size: 'medium',
+            variant: 'contained',
+          },
+        ]}
+        direction='row'
+        spacing={1}
+      />
 
       <ModalFlotante
         open={open}

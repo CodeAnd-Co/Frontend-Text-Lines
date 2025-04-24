@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
 import { useAuth } from '../../../hooks/AuthProvider';
-import Icono from '../../Componentes/Atomos/Icono';
-import Cargador from '../../Componentes/Atomos/Cargador';
-import Texto from '../../Componentes/Atomos/Texto';
+import Icono from '../../componentes/Atomos/Icono';
+import Cargador from '../../componentes/Atomos/Cargador';
+import Texto from '../../componentes/Atomos/Texto';
 import NavegadorAdministrador from '../../Componentes/Organismos/NavegadorAdministrador';
-import TarjetaConImagen from '../../Componentes/Moleculas/TarjetaConImagen';
+import TarjetaConImagen from '../../componentes/Moleculas/TarjetaConImagen';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';
 import { useConsultarClientes } from '../../../hooks/Clientes/useConsultarClientes';
 import { useSeleccionarCliente } from '../../../hooks/Clientes/useSeleccionarCliente';
@@ -28,14 +28,14 @@ const estiloTarjetaAgregar = {
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  border: '2px dashed #90CAF9',
-  backgroundColor: '#E3F2FD',
+  border: '2px dashed rgba(15, 140, 241, 0.18)',
+  backgroundColor: 'rgba(15, 140, 241, 0.18)',
   color: '#1976D2',
   borderRadius: '10px',
   cursor: 'pointer',
   transition: 'all 0.2s ease-in-out',
   '&:hover': {
-    backgroundColor: '#BBDEFB',
+    backgroundColor: 'rgba(15, 139, 241, 0.38)',
     transform: 'scale(1.03)',
   },
 };

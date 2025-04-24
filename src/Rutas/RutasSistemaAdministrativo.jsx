@@ -32,7 +32,7 @@ const RutasSistemaAdministrativo = () => {
         <Route path='empleados/consultar-lista' element={<LIstaEmpleados />} />
         <Route path='empleados/consultar-grupos' element={<ListaGrupoEmpleados />} />
         <Route path='cuotas' element={<ListaCuotas />} />
-        <Route path='cuotas/editar-cuota' element={<EditarCuotas />} />
+        <Route path='cuotas/editar-cuotas' element={<EditarCuotas />} />
       </Route>
     </Routes>
   );

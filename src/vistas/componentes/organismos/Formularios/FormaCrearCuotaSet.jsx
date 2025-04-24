@@ -3,15 +3,13 @@ import CampoTexto from '../../atomos/CampoTexto';
 import { useState, useEffect } from 'react';
 import obtenerProductos from '../../../../dominio/servicios/obtenerProductos';
 import ProductosCuotaSet from '../ProductosCuotaSet';
+import { useAuth } from '../../../../hooks/AuthProvider';
 
 const columns = [
   { field: 'id', headerName: 'Id', width: 100 },
   { field: 'nombreProducto', headerName: 'Nombre', width: 220 },
   { field: 'tipo', headerName: 'Tipo', width: 100 },
 ];
-
-const API_URL = import.meta.env.VITE_API_URL;
-const API_KEY = import.meta.env.VITE_API_KEY;
 
 const FormaCrearCuotaSet = ({
   nombreCuotaSet,
@@ -24,15 +22,17 @@ const FormaCrearCuotaSet = ({
   setMostrarAlerta,
 }) => {
   const [rows, setRows] = useState([]);
+  const { usuario } = useAuth();
+  const clienteSeleccionado = usuario.clienteSeleccionado;
 
   useEffect(() => {
-    const obtenerDatosProductos = async () => {
-      const productos = await obtenerProductos(API_URL, API_KEY);
+    const obtenerDatosProductos = async (clienteSeleccionado) => {
+      const productos = await obtenerProductos(clienteSeleccionado);
       setRows(productos);
     };
 
-    obtenerDatosProductos();
-  }, []);
+    obtenerDatosProductos(clienteSeleccionado);
+  }, [clienteSeleccionado]);
 
   const handleClickFila = (evento) => {
     const productoSeleccionado = evento.row;

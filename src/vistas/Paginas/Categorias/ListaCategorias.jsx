@@ -1,12 +1,13 @@
-// src/ui/pages/Categorias/PaginaCategorias.jsx
+//RF[47] Consulta lista de categorías - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF47]
 
 import React from "react";
-import CustomDataGrid from "../../../vistas/componentes/organismos/dataGrid";
+import CustomDataGrid from "../../componentes/organismos/DataGrid";
 import { useConsultarCategorias } from "../../../hooks/Categorias/useConsultarCategorias";
+import Alerta from "../../componentes/moleculas/Alerta"; 
 
 const ListaCategorias = () => {
   // Hook que obtiene las categorías desde el repositorio
-  const { categorias, cargando, error } = useConsultarCategorias({ limit: 5, offset: 0 });
+  const { categorias, cargando, error } = useConsultarCategorias();
 
   // Columnas para el DataGrid
   const columns = [
@@ -34,11 +35,20 @@ const ListaCategorias = () => {
     nombreCategoria: cat.nombreCategoria,
     descripcion: cat.descripcion,
     cantidadProductos: cat.cantidadProductos,
+    idCliente: cat.idCliente
   }));
 
   return (
     <div style={{ height: 400, width: "100%" }}>
-      {error && <p style={{ color: "red" }}>Error: {error}</p>}
+      {error && (
+        <Alerta
+          tipo="error"
+          mensaje={error}
+          icono
+          cerrable
+          centradoInferior
+        />
+      )}
       <CustomDataGrid
         columns={columns}
         rows={rows}

@@ -11,7 +11,12 @@ export const validarDatosCrearUsuario = (datos) => {
 
   if (!datos.nombreCompleto) errores.nombreCompleto = true;
   if (!datos.apellido) errores.apellido = true;
-  if (!datos.correoElectronico) errores.correoElectronico = true;
+  const correoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!datos.correoElectronico) {
+    errores.correoElectronico = true;
+  } else if (!correoValido.test(datos.correoElectronico)) {
+    errores.correoElectronico = 'Correo electrónico no válido';
+  }
   if (!datos.numeroTelefono) errores.numeroTelefono = true;
   if (!datos.direccion) errores.direccion = true;
   if (!datos.genero) errores.genero = true;

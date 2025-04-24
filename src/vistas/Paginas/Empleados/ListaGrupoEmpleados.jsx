@@ -1,7 +1,8 @@
 import React from 'react';
+import { Box } from '@mui/material';
 import CustomDataGrid from '../../Componentes/Organismos/dataGrid';
-import { useConsultarGrupos } from '../../../hooks/Empleados/useConsultarGrupos';
 import ContenedorLista from '../../Componentes/organismos/ContenedorLista';
+import { useConsultarGrupos } from '../../../hooks/Empleados/useConsultarGrupos';
 
 const ListaGrupoEmpleados = () => {
   const { grupos, cargando, error } = useConsultarGrupos();
@@ -57,10 +58,10 @@ const ListaGrupoEmpleados = () => {
       descripcion='Gestiona y organiza los grupos de empleados registrados en el sistema.'
       informacionBotones={botones}
     >
-      <div style={{ height: 400, width: '100%' }}>
+      <Box width={'100%'}>
         {error && <p style={{ color: 'red' }}>Error: {error}</p>}
         <CustomDataGrid columns={columns} rows={rows} loading={cargando} checkboxSelection />
-      </div>
+      </Box>
     </ContenedorLista>
   );
 };

@@ -5,11 +5,7 @@ import { tokens, themeSettings } from '../../../theme';
 import { styled } from '@mui/material/styles';
 
 const spanishLocaleText = {
-<<<<<<< HEAD
   noRowsLabel: 'No hay filas',
-=======
-  noRowsLabel: 'No hay registros disponibles.',
->>>>>>> 6a3a16784903b928bf8ee15703c02451312a44e3
   columnMenuSortAsc: 'Ordenar ascendente',
   columnMenuSortDesc: 'Ordenar descendente',
   columnMenuUnsort: 'Restablecer orden',

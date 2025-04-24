@@ -6,14 +6,14 @@ import { styled } from '@mui/material/styles';
 
 /** Data grid personalizado usando Material UI */
 const spanishLocaleText = {
-  // Ya tenías estos
-  noRowsLabel: 'No hay filas',
+  noRowsLabel: 'No hay registros disponibles.',
   columnMenuSortAsc: 'Ordenar ascendente',
   columnMenuSortDesc: 'Ordenar descendente',
   columnMenuUnsort: 'Restablecer orden',
   columnMenuFilter: 'Filtrar',
   columnMenuHideColumn: 'Ocultar columna',
   columnMenuManageColumns: 'Mostrar columnas',
+  noResultsOverlayLabel: 'No se encontraron resultados.',
   filterOperatorContains: 'Contiene',
   filterOperatorEquals: 'Es igual a',
   filterOperatorStartsWith: 'Empieza con',
@@ -29,17 +29,12 @@ const spanishLocaleText = {
   filterOperatorIsAnyOf: 'Es cualquiera de',
   filterOperatorDoesNotContain: 'No contiene',
   filterOperatorDoesNotEqual: 'No es igual a',
-
   filterPanelOperator: 'Operador',
   filterPanelColumns: 'Columnas',
   filterPanelAddFilter: 'Agregar filtro',
   filterPanelDeleteIconLabel: 'Eliminar',
-
-  // Paginación
   footerRowSelected: (count) => `${count.toLocaleString()} fila(s) seleccionada(s)`,
   footerTotalRows: 'Filas Totales:',
-
-  // Otros opcionales
   toolbarColumns: 'Columnas',
   toolbarFilters: 'Filtros',
   toolbarDensity: 'Densidad',
@@ -73,10 +68,18 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => {
       fontFamily: tema.typography.subtitulo2.fontFamily,
     },
     '& .MuiDataGrid-columnHeaderTitleContainer': {
-      justifyContent: 'center', // ✅ Centra el contenedor del título
+      justifyContent: 'center',
     },
     '& .MuiDataGrid-columnHeaderCheckbox': {
       display: 'none',
+    },
+    '& .MuiDataGrid-cell--textRight': {
+      justifyContent: 'flex-start',
+      textAlign: 'center',
+    },
+    '& .MuiDataGrid-columnHeader--textRight': {
+      justifyContent: 'flex-start',
+      textAlign: 'left',
     },
   };
 });
@@ -124,7 +127,6 @@ CustomDataGrid.propTypes = {
   checkboxSelection: PropTypes.bool,
 };
 
-// Default props
 CustomDataGrid.defaultProps = {
   loading: false,
   pageSize: 5,

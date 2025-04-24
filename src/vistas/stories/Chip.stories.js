@@ -9,6 +9,7 @@ export default {
   tags: ['autodocs'],
   argTypes: {
     backgroundColor: { control: 'color' },
+    textColor: { control: 'color' },
     variant: {
       control: { type: 'select' },
       options: ['filled', 'outlined'],
@@ -65,5 +66,15 @@ export const CustomBackground = {
     color: 'primary',
     shape: 'cuadrada',
     backgroundColor: '#f06292',
+  },
+};
+
+export const CustomTextColor = {
+  args: {
+    label: 'Texto Negro',
+    variant: 'filled',
+    shape: 'cuadrada',
+    backgroundColor: '#e0e0e0',
+    textColor: '#000000',
   },
 };

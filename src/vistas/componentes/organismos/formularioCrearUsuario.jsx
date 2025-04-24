@@ -109,11 +109,7 @@ const FormularioCrearUsuario = ({ datosUsuario, setDatosUsuario, errores = {} })
             required
             size='medium'
             error={!!errores.correoElectronico}
-            helperText={
-              errores.correoElectronico === true
-                ? CAMPO_OBLIGATORIO
-                : errores.correoElectronico || ''
-            }
+            helperText={errores.correoElectronico && CAMPO_OBLIGATORIO}
           />
         </Grid>
         <Grid size={6} sx={gridStyles}>

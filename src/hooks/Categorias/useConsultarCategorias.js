@@ -1,9 +1,10 @@
+//RF[47] Consulta lista de categorías - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF47]
+
 import { useEffect, useState } from "react";
-import { RepositorioListaCategorias } from "../../dominio/repositorios/Categorias/repositorioListaCategorias";
+import { RepositorioListaCategorias } from "../../dominio/repositorios/Categorias/RepositorioListaCategorias";
 
 /**
  * Hook para consultar la lista de categorías.
- * @param {Object} opciones - Parámetros como { limit, offset }
  * @returns {{
  *   categorias: Categoria[],
  *   cargando: boolean,
@@ -12,7 +13,7 @@ import { RepositorioListaCategorias } from "../../dominio/repositorios/Categoria
  *   recargar: () => void
  * }}
  */
-export function useConsultarCategorias({ limit = 10, offset = 0 } = {}) {
+export function useConsultarCategorias() {
   const [categorias, setCategorias] = useState([]);
   const [mensaje, setMensaje] = useState("");
   const [cargando, setCargando] = useState(true);
@@ -20,14 +21,12 @@ export function useConsultarCategorias({ limit = 10, offset = 0 } = {}) {
   const [recargarToken, setRecargarToken] = useState(0);
 
   useEffect(() => {
-    const repositorio = new RepositorioListaCategorias();
-
     const cargar = async () => {
       setCargando(true);
       setError(null);
 
       try {
-        const { categorias, mensaje } = await repositorio.obtenerLista({ limit, offset });
+        const { categorias, mensaje } = await RepositorioListaCategorias.obtenerLista();
         setCategorias(categorias);
         setMensaje(mensaje);
       } catch (err) {
@@ -40,7 +39,7 @@ export function useConsultarCategorias({ limit = 10, offset = 0 } = {}) {
     };
 
     cargar();
-  }, [limit, offset, recargarToken]);
+  }, [recargarToken]);
 
   const recargar = () => {
     setRecargarToken((prev) => prev + 1);

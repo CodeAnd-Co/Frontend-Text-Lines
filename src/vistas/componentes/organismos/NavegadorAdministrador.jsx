@@ -22,7 +22,7 @@ const NavegadorAdministrador = ({
   alClicIcono,
   informacionBotones = [],
 }) => {
-  const theme = useTheme(); // Usar el tema actual
+  const theme = useTheme();
 
   return (
     <Box
@@ -33,7 +33,7 @@ const NavegadorAdministrador = ({
       justifyContent='space-between'
       padding='0.5rem 1rem'
       boxShadow={2}
-      bgcolor={theme.palette.background.paper} // Usar color de fondo del tema
+      bgcolor={theme.palette.background.paper}
       gap={{ xs: 1, sm: 0 }}
     >
       <Imagen
@@ -60,7 +60,7 @@ const NavegadorAdministrador = ({
           nombre={nombreIcono}
           variant={varianteIcono}
           size={tamanoIcono}
-          color={colorIcono || theme.palette.text.primary} // Si no hay color, usar el color de texto del tema
+          color={colorIcono || theme.palette.text.primary}
           clickable={iconoClickeable}
           tooltip={tooltipIcono}
           onClick={alClicIcono}

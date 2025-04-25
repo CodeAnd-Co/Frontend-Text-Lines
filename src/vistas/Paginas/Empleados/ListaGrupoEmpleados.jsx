@@ -1,7 +1,8 @@
-// src/ui/pages/GrupoEmpleados/PaginaGrupoEmpleados.jsx
-
+//RF22 - Consulta Lista de Grupo Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF22
 import React from 'react';
-import CustomDataGrid from '../../Componentes/Organismos/dataGrid';
+import { Box } from '@mui/material';
+import Tabla from '../../Componentes/Organismos/Tabla';
+import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import { useConsultarGrupos } from '../../../hooks/Empleados/useConsultarGrupos';
 
 const ListaGrupoEmpleados = () => {
@@ -14,10 +15,20 @@ const ListaGrupoEmpleados = () => {
       flex: 2,
     },
     {
+      field: 'descripcion',
+      headerName: 'Descripción',
+      flex: 3,
+    },
+    {
       field: 'idSetProducto',
-      headerName: 'ID Set Producto',
+      headerName: 'ID Set de Productos',
       type: 'number',
       flex: 1,
+    },
+    {
+      field: 'setProducto',
+      headerName: 'Nombre del Set de Productos',
+      flex: 2,
     },
     {
       field: 'totalEmpleados',
@@ -27,19 +38,44 @@ const ListaGrupoEmpleados = () => {
     },
   ];
 
-  // Las filas deben tener un campo `id`, usamos `idGrupo`
   const rows = grupos.map((grupo) => ({
     id: grupo.idGrupo,
-    nombre: grupo.nombre,
+    nombre: grupo.geNombre,
+    descripcion: grupo.descripcion,
     idSetProducto: grupo.idSetProducto,
+    setProducto: grupo.spNombre,
     totalEmpleados: grupo.totalEmpleados,
   }));
 
+  const botones = [
+    { label: 'Añadir', onClick: () => console.log('Añadir'), size: 'large' },
+    {
+      variant: 'outlined',
+      label: 'Importar',
+      onClick: () => console.log('Importar'),
+      size: 'large',
+    },
+    {
+      variant: 'outlined',
+      label: 'Exportar',
+      onClick: () => console.log('Exportar'),
+      size: 'large',
+    },
+    { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large' },
+    { label: 'Eliminar', onClick: () => console.log('Eliminar'), size: 'large' },
+  ];
+
   return (
-    <div style={{ height: 400, width: '100%' }}>
-      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-      <CustomDataGrid columns={columns} rows={rows} loading={cargando} checkboxSelection />
-    </div>
+    <ContenedorLista
+      titulo='Grupos de Empleados'
+      descripcion='Gestiona y organiza los grupos de empleados registrados en el sistema.'
+      informacionBotones={botones}
+    >
+      <Box width={'100%'}>
+        {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+        <Tabla columns={columns} rows={rows} loading={cargando} checkboxSelection />
+      </Box>
+    </ContenedorLista>
   );
 };
 

@@ -3,19 +3,16 @@ import React from 'react';
 import CustomDataGrid from '../../componentes/organismos/Tabla';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import { useConsultarRoles } from '../../../hooks/Roles/useConsultarRoles';
-import { Box, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';
 
-
-
 const ListaRoles = () => {
-  const { roles, cargando } = useConsultarRoles();
+  const { roles, cargando, error } = useConsultarRoles(); // Include the error state
   const tema = useTheme();
   const colores = tokens(tema.palette.mode);
-  const navigate = useNavigate(); 
-
+  const navigate = useNavigate();
 
   const columnas = [
     {
@@ -32,6 +29,7 @@ const ListaRoles = () => {
       align: 'center',
     },
   ];
+
   const redirigirAUsuarios = () => {
     const path = `${RUTAS.SISTEMA_ADMINISTRATIVO.BASE}${RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE}`;
     console.log('Navigating to:', path);
@@ -46,70 +44,69 @@ const ListaRoles = () => {
     urlImagen: roles.urlImagen,
   }));
 
-    const botones = [     
-      {
-        label: 'ATRAS',
-        onClick: () => redirigirAUsuarios(),
-        variant: 'outlined',
-        color: colores.primario[2], 
-        size: 'large',
-      },
-    ];
+  const botones = [
+    {
+      label: 'ATRAS',
+      onClick: () => redirigirAUsuarios(),
+      variant: 'outlined',
+      color: colores.primario[2],
+      size: 'large',
+    },
+  ];
 
-    return (
-      <ContenedorLista
-        titulo={
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-            }}
-          >
-            <Box>
-              {botones.map((boton, index) => (
-                <button
-                  key={index}
-                  onClick={boton.onClick}
-                  style={{
-                    padding: '10px 20px',
-                    backgroundColor: boton.variant === 'outlined' ? 'transparent' : boton.color,
-                    color: boton.variant === 'outlined' ? boton.color : '#fff',
-                    border: boton.variant === 'outlined' ? `1px solid ${boton.color}` : 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {boton.label}
-                </button>
-              ))}
-            </Box>
-    
-            <Box sx={{ textAlign: 'center', flexGrow: 1 }}>
-              Roles
-            </Box>
+  return (
+    <ContenedorLista
+      titulo={
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+          }}
+        >
+          <Box>
+            {botones.map((boton, index) => (
+              <button
+                key={index}
+                onClick={boton.onClick}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: boton.variant === 'outlined' ? 'transparent' : boton.color,
+                  color: boton.variant === 'outlined' ? boton.color : '#fff',
+                  border: boton.variant === 'outlined' ? `1px solid ${boton.color}` : 'none',
+                  borderRadius: '5px',
+                  cursor: 'pointer',
+                }}
+              >
+                {boton.label}
+              </button>
+            ))}
           </Box>
-        }
-      >
-        <Box sx={{ mt: '20px' }}>
-          <Box
-            sx={{
-              '& .estado-row--cell': {
-                color: colores.primario[4],
-              },
-            }}
-          >
-            <CustomDataGrid
-              columns={columnas}
-              rows={filas}
-              loading={cargando}
-              checkboxSelection
-            />
-          </Box>
+
+          <Box sx={{ textAlign: 'center', flexGrow: 1 }}>Roles</Box>
         </Box>
-      </ContenedorLista>
-    );
+      }
+    >
+      <Box sx={{ mt: '20px' }}>
+        {error && (
+          <Typography
+            variant="h6"
+            color="error"
+            sx={{ textAlign: 'center', marginBottom: '20px' }}
+          >
+            Error: {error}
+          </Typography>
+        )}
+
+        <CustomDataGrid
+          columns={columnas}
+          rows={filas}
+          loading={cargando}
+          checkboxSelection
+        />
+      </Box>
+    </ContenedorLista>
+  );
 };
 
 export default ListaRoles;
-

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Stack } from '@mui/material';
-import Boton from '../atomos/Boton';
+import Boton from '../Atomos/Boton';
 
 /** Molécula: grupo de botones */
 const GrupoBotones = ({ buttons, spacing = 1, direction = 'row', align = 'center' }) => {

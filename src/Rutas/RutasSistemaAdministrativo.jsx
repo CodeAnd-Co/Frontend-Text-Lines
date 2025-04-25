@@ -14,7 +14,6 @@ import ListaUsuarios from '../vistas/Paginas/Usuarios/ListaUsuarios';
 
 import RutaProtegida from './RutaProtegida';
 import VerificarClienteSeleccionado from './VerificarClienteSeleccionado';
-import ListaUsuarios from '../vistas/Paginas/Usuarios/ListaUsuarios';
 
 const RutasSistemaAdministrativo = () => {
   return (

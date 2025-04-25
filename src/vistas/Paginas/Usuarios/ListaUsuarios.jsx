@@ -10,8 +10,11 @@ import Chip from '../../componentes/atomos/Chip';
 import { useConsultarListaUsuarios } from '../../../hooks/Usuarios/useConsultarListaUsuarios';
 import { useCrearUsuario } from '../../../hooks/useCrearUsuario';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';
+import { useMode, tokens } from '../../../theme';
 
 const ListaUsuarios = () => {
+  const [theme] = useMode();
+  const colores = tokens(theme.palette.mode);
   const [alerta, setAlerta] = useState(null);
   const { usuarios, cargando, error } = useConsultarListaUsuarios();
   const navigate = useNavigate();
@@ -86,6 +89,23 @@ const ListaUsuarios = () => {
   ];
 
   const botones = [
+    {
+      label: 'Roles',
+      onClick: () =>
+        navigate(
+          `${RUTAS.SISTEMA_ADMINISTRATIVO.BASE}${RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE}${RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.CONSULTAR_ROLES}`
+        ),
+      variant: 'contained',
+      size: 'large',
+      sx: {
+        backgroundColor: colores.verde[1], 
+        color: '#fff', 
+        '&:hover': {
+          backgroundColor: colores.verde[1],
+          opacity: 0.9, 
+        },
+      },
+    },
     { label: 'Añadir Usuario', onClick: () => handleOpen(), size: 'large' },
     {
       label: 'Ir Atrás',

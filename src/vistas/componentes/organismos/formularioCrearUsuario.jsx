@@ -5,7 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
 
-import CampoTexto from '../../Componentes/atomos/CampoTexto';
+import CampoTexto from '../../componentes/atomos/CampoTexto';
 import CampoSelect from '../../Componentes/atomos/CampoSelect';
 
 const FormularioCrearUsuario = ({ datosUsuario, setDatosUsuario, errores = {} }) => {

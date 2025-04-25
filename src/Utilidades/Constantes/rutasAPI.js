@@ -6,7 +6,6 @@ const BASE_CLIENTES = `${BASE_URL}/api/clientes`;
 const BASE_EMPLEADOS = `${BASE_URL}/api/empleados`;
 const BASE_CUOTAS = `${BASE_URL}/api/cuotas`;
 const BASE_ROLES = `${BASE_URL}/api/roles`;
-const BASE_USUARIOS = `${BASE_URL}/api/usuarios`;
 
 export const RUTAS_API = {
   USUARIOS: {

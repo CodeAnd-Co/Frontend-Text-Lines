@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { RUTAS } from '../Utilidades/Constantes/rutas';
 import { PERMISOS } from '../Utilidades/Constantes/permisos';
 import ListaClientes from '../Vistas/Paginas/Clientes/ListaClientes';
+import ListaProductos from '../vistas/paginas/Productos/ListaProductos';
 import ListaCuotas from '../vistas/Paginas/Cuotas/ListaCuotas';
 import LIstaEmpleados from '../vistas/Paginas/Empleados/ListaEmpleados';
 import EditarCuotas from '../vistas/Paginas/Cuotas/EditarCuotas';
@@ -43,6 +44,7 @@ const RutasSistemaAdministrativo = () => {
         <Route path='empleados/consultar-grupos' element={<ListaGrupoEmpleados />} />
         <Route path='cuotas' element={<ListaCuotas />} />
         <Route path='cuotas/editar-cuotas' element={<EditarCuotas />} />
+        <Route path='productos/consultar-lista' element={<ListaProductos />} />
       </Route>
       <Route
         path={RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE}
@@ -53,7 +55,7 @@ const RutasSistemaAdministrativo = () => {
         }
       />
       <Route
-        path="/usuarios/consultar-roles"
+        path='/usuarios/consultar-roles'
         element={
           <RutaProtegida permiso={PERMISOS.CONSULTAR_SISTEMA_ADMINISTRATIVO}>
             <ListaRoles />

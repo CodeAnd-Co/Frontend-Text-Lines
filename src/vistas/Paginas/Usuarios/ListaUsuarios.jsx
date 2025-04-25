@@ -2,7 +2,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import ModalFlotante from '../../componentes/organismos/ModalFlotante';
-import FormularioCrearUsuario from '../../componentes/organismos/FormularioCrearUsuario';
+import FormularioCrearUsuario from '../../componentes/organismos/Formularios/formularioCrearUsuario';
 import Alerta from '../../componentes/moleculas/Alerta';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import Tabla from '../../componentes/organismos/Tabla';

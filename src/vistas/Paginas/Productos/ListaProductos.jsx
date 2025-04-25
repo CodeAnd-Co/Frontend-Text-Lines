@@ -1,7 +1,7 @@
 //RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
 import React from 'react';
-import CustomDataGrid from '../../Componentes/Organismos/Tabla';
-import Texto from '../../Componentes/Atomos/Texto';
+import Tabla from '../../Componentes/Organismos/Tabla';
+import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import { useConsultarProductos } from '../../../hooks/Productos/useConsultarProductos';
 import { Box, useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
@@ -73,30 +73,40 @@ const ListaProductos = () => {
     urlImagen: prod.urlImagen,
   }));
 
-  return (
-    <>
-      <Box sx={{ mt: '70px', ml: '50px' }}>
-        <Texto variant='h4'>Productos</Texto>
-      </Box>
+  const botones = [
+    { label: 'Añadir', onClick: () => console.log('Añadir'), size: 'large' },
+    {
+      variant: 'outlined',
+      label: 'Importar',
+      onClick: () => console.log('Importar'),
+      size: 'large',
+    },
+    {
+      variant: 'outlined',
+      label: 'Exportar',
+      onClick: () => console.log('Exportar'),
+      size: 'large',
+    },
+    { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large' },
+    { label: 'Eliminar', onClick: () => console.log('Eliminar'), size: 'large' },
+  ];
 
-      <Box sx={{ mt: '40px', ml: '40px' }}>
-        <Box
-          sx={{
-            '& .estado-row--cell': {
-              color: colores.primario[4],
-            },
-          }}
-        >
-          <CustomDataGrid
-            columns={columnas}
-            rows={filas}
-            loading={cargando}
-            checkboxSelection
-            rowHeight={80}
-          />
-        </Box>
+  return (
+    <ContenedorLista
+      titulo='Lista de Productos'
+      descripcion='Gestiona y organiza los productos registrados en el sistema.'
+      informacionBotones={botones}
+    >
+      <Box width={'100%'}>
+        <Tabla
+          columns={columnas}
+          rows={filas}
+          loading={cargando}
+          checkboxSelection
+          rowHeight={80}
+        />
       </Box>
-    </>
+    </ContenedorLista>
   );
 };
 

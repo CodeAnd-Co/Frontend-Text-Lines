@@ -2,7 +2,7 @@ import TarjetaRenovacion from '../Cuotas/TarjetaRenovacion';
 import ProductosConCuotas from '../Cuotas/ProductosConCuotas';
 import { Box } from '@mui/material';
 import GrupoBotones from '../../moleculas/GrupoBotones';
-import PopUpEliminar from '../../moleculas/popUpEliminar';
+import PopUp from '../../moleculas/PopUp';
 import { useNavigate } from 'react-router-dom';
 
 const CuerpoPrincipal = ({
@@ -80,7 +80,7 @@ const CuerpoPrincipal = ({
         <GrupoBotones buttons={botonesEnviarCancelar} />
       </Box>
 
-      <PopUpEliminar
+      <PopUp
         abrir={abrirConfirmacion}
         cerrar={cerrarPopup}
         confirmar={confirmarSalida}

@@ -9,6 +9,8 @@ import { useState } from 'react';
 import CustomDataGrid from '../../componentes/organismos/dataGrid';
 import { useConsultarListaUsuarios } from '../../../hooks/Usuarios/useConsultarListaUsuarios';
 import Chip from '../../componentes/atomos/Chip';
+import PopUp from '../../componentes/moleculas/PopUp';
+import Boton from '../../componentes/atomos/boton';
 
 const ListaUsuarios = () => {
   const {
@@ -24,6 +26,20 @@ const ListaUsuarios = () => {
   const [alerta, setAlerta] = useState(null);
 
   const { usuarios, cargando, error } = useConsultarListaUsuarios();
+
+  const [abrirPopUp, setAbrirPopUp] = useState(false);
+
+  const manejarAbrirPopUp = () => {
+    setAbrirPopUp(true);
+  };
+  const manejarCerrarPopUp = () => {
+    setAbrirPopUp(false);
+  };
+
+  const manejarEliminarUsuario = () => {
+    console.log('Confirmando eliminar usuario');
+    setAbrirPopUp(false);
+  };
 
   const handleConfirm = async () => {
     const resultado = await handleGuardarUsuario();
@@ -98,6 +114,16 @@ const ListaUsuarios = () => {
       <Button variant='contained' color='primary' onClick={handleOpen}>
         Añadir Usuario
       </Button>
+
+      <Boton variant='contained' label='eliminar' onClick={manejarAbrirPopUp}></Boton>
+      <PopUp
+        abrir={abrirPopUp}
+        cerrar={manejarCerrarPopUp}
+        confirmar={manejarEliminarUsuario}
+        dialogo='¿Estás seguro de que deseas eliminar este usuario?'
+        labelCancelar='Cancelar'
+        labelConfirmar='Eliminar'
+      />
 
       <ModalFlotante
         open={open}

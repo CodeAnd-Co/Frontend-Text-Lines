@@ -12,6 +12,7 @@ const Boton = ({
   size = 'medium',
   backgroundColor = null,
   outlineColor = null,
+  align,
   label,
   onClick,
   ...props
@@ -19,16 +20,16 @@ const Boton = ({
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const outlinedStyle
-    = variant === 'outlined' && outlineColor
+  const outlinedStyle =
+    variant === 'outlined' && outlineColor
       ? {
           border: `1.5px solid ${outlineColor}`,
           color: outlineColor,
         }
       : {};
 
-  const selectedStyle
-    = selected && variant === 'contained'
+  const selectedStyle =
+    selected && variant === 'contained'
       ? {
           backgroundColor: colors.altertex[2],
           color: colors.primario[4],
@@ -67,6 +68,7 @@ Boton.propTypes = {
   size: PropTypes.oneOf(['small', 'medium', 'large']),
   backgroundColor: PropTypes.string,
   outlineColor: PropTypes.string,
+  align: PropTypes.string,
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func,
 };

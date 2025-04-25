@@ -1,17 +1,20 @@
 //RF02 Super Administrador Consulta Lista de Usuarios - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF2
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import ModalFlotante from '../../componentes/organismos/ModalFlotante';
 import FormularioCrearUsuario from '../../componentes/organismos/FormularioCrearUsuario';
-import { useCrearUsuario } from '../../../hooks/useCrearUsuario';
 import Alerta from '../../componentes/moleculas/Alerta';
-import { useState } from 'react';
-import CustomDataGrid from '../../componentes/organismos/Tabla';
-import { useConsultarListaUsuarios } from '../../../hooks/Usuarios/useConsultarListaUsuarios';
+import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
+import Tabla from '../../componentes/organismos/Tabla';
 import Chip from '../../componentes/atomos/Chip';
-import GrupoBotones from '../../componentes/moleculas/GrupoBotones';
-import { tokens } from '../../../theme';
-import { useTheme } from '@mui/material/styles';
+import { useConsultarListaUsuarios } from '../../../hooks/Usuarios/useConsultarListaUsuarios';
+import { useCrearUsuario } from '../../../hooks/useCrearUsuario';
+import { RUTAS } from '../../../Utilidades/Constantes/rutas';
 
 const ListaUsuarios = () => {
+  const [alerta, setAlerta] = useState(null);
+  const { usuarios, cargando, error } = useConsultarListaUsuarios();
+  const navigate = useNavigate();
   const {
     open,
     datosUsuario,
@@ -22,11 +25,7 @@ const ListaUsuarios = () => {
     handleGuardarUsuario,
   } = useCrearUsuario();
 
-  const [alerta, setAlerta] = useState(null);
-
-  const { usuarios, cargando, error } = useConsultarListaUsuarios();
-
-  const handleConfirm = async () => {
+  const manejarConfirmacion = async () => {
     const resultado = await handleGuardarUsuario();
 
     if (resultado?.mensaje) {
@@ -35,6 +34,10 @@ const ListaUsuarios = () => {
         mensaje: resultado.mensaje,
       });
     }
+  };
+
+  const redirigirAInicio = () => {
+    navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE, { replace: true });
   };
 
   const columns = [
@@ -72,7 +75,7 @@ const ListaUsuarios = () => {
           id: usuario.idUsuario,
           idUsuario: usuario.idUsuario,
           nombre: usuario.nombre,
-          rol: usuario.rol?.nombre || 'Sin rol',
+          rol: usuario.rol || 'Sin rol',
           cliente: usuario.cliente,
           estatus: usuario.estatus,
           correo: usuario.correo,
@@ -82,13 +85,23 @@ const ListaUsuarios = () => {
     ).values(),
   ];
 
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const botones = [
+    { label: 'Añadir Usuario', onClick: () => handleOpen(), size: 'large' },
+    {
+      label: 'Ir Atrás',
+      onClick: () => redirigirAInicio(),
+      variant: 'outlined',
+      color: 'error',
+      size: 'large',
+    },
+  ];
 
   return (
-    <div>
-      <h1>Usuarios</h1>
-
+    <ContenedorLista
+      titulo='Lista de Usuarios'
+      descripcion='Gestiona y organiza los usuarios registrados en el sistema.'
+      informacionBotones={botones}
+    >
       {alerta && (
         <Alerta
           tipo={alerta.tipo}
@@ -100,42 +113,10 @@ const ListaUsuarios = () => {
         />
       )}
 
-      <GrupoBotones
-        align='end'
-        buttons={[
-          {
-            backgroundColor: colors.verde[1],
-            color: 'primary',
-            label: 'Roles',
-            onClick: () => {},
-            size: 'medium',
-            variant: 'contained',
-          },
-          {
-            backgroundColor: 'rgba(24, 50, 165, 1)',
-            color: 'primary',
-            label: 'Añadir',
-            onClick: () => handleOpen(),
-            size: 'medium',
-            variant: 'contained',
-          },
-          {
-            backgroundColor: 'rgba(24, 50, 165, 1)',
-            color: 'primary',
-            label: 'Eliminar',
-            onClick: () => {},
-            size: 'medium',
-            variant: 'contained',
-          },
-        ]}
-        direction='row'
-        spacing={1}
-      />
-
       <ModalFlotante
         open={open}
         onClose={handleClose}
-        onConfirm={handleConfirm}
+        onConfirm={manejarConfirmacion}
         titulo='Crear nuevo usuario'
       >
         <FormularioCrearUsuario
@@ -147,15 +128,9 @@ const ListaUsuarios = () => {
 
       <div style={{ marginTop: 20, height: 650, width: '100%' }}>
         {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-        <CustomDataGrid
-          columns={columns}
-          rows={rows}
-          loading={cargando}
-          checkboxSelection
-          pageSize={10}
-        />
+        <Tabla columns={columns} rows={rows} loading={cargando} checkboxSelection pageSize={10} />
       </div>
-    </div>
+    </ContenedorLista>
   );
 };
 

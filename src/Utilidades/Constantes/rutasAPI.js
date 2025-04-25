@@ -18,6 +18,7 @@ export const RUTAS_API = {
   PRODUCTOS: {
     BASE: BASE_PRODUCTOS,
     CONSULTAR_LISTA: `${BASE_PRODUCTOS}/consultar-lista`,
+    CONSULTAR_USUARIO: `${BASE_USUARIOS}/consultar-usuario`,
   },
   CLIENTES: {
     BASE: BASE_CLIENTES,

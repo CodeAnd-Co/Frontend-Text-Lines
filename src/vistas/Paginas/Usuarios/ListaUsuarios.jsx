@@ -105,11 +105,8 @@ const ListaUsuarios = () => {
       sx: {
         backgroundColor: colores.verde[1],
         color: '#fff',
-        backgroundColor: colores.verde[1],
-        color: '#fff',
         '&:hover': {
           backgroundColor: colores.verde[1],
-          opacity: 0.9,
           opacity: 0.9,
         },
       },

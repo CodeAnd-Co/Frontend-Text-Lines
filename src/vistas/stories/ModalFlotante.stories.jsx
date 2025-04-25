@@ -99,6 +99,12 @@ const TemplateConInfoUsuario = (args) => {
         datosAdicionales={baseUsuario.datosAdicionales}
         opcionesRol={baseUsuario.opcionesRol}
         onChange={handleChange}
+        estadoUsuario={{
+          label: 'Activo',
+          color: 'primary',
+          shape: 'circular',
+          backgroundColor: 'rgba(24, 50, 165, 1)',
+        }}
       />
     </ModalFlotante>
   );

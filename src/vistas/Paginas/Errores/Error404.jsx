@@ -32,7 +32,7 @@ const Error404 = () => {
 
   return (
     <Box sx={estilosContenedor}>
-      <Imagen src='/logoAltertexLogin.svg' alt='Logo de la aplicación' width='350px' />
+      <Imagen src='/logoAltertexLight.svg' alt='Logo de la aplicación' width='350px' />
 
       <Texto variant='h1' color='error'>
         404

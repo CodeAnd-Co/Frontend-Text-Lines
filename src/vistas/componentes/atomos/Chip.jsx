@@ -1,20 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MUIChip from '@mui/material/Chip';
-import { styled, useTheme } from '@mui/material/styles';
-import { tokens } from '../../../theme';
+import { styled } from '@mui/material/styles';
 
-const StyledChip = styled(MUIChip)(({ shape, backgroundColor, theme }) => {
-  const colores = tokens(theme.palette.mode);
-  return {
-    borderRadius: shape === 'circular' ? '16px' : '4px',
-    backgroundColor: backgroundColor
-      ? colores[backgroundColor]
-        ? colores[backgroundColor][500] || colores[backgroundColor][0]
-        : backgroundColor
-      : undefined,
-  };
-});
+/** Chip personalizado usando Material UI */
+const StyledChip = styled(MUIChip, {
+  shouldForwardProp: (prop) =>
+    prop !== 'shape' && prop !== 'backgroundColor' && prop !== 'textColor',
+})(({ shape, backgroundColor, textColor }) => ({
+  borderRadius: shape === 'circular' ? '16px' : '4px',
+  backgroundColor: backgroundColor || undefined,
+  color: textColor || undefined,
+}));
 
 const Chip = ({
   variant = 'filled',
@@ -23,10 +20,9 @@ const Chip = ({
   label,
   shape = 'cuadrada',
   backgroundColor = null,
+  textColor = null,
   ...props
 }) => {
-  const theme = useTheme();
-
   return (
     <StyledChip
       label={label}
@@ -35,7 +31,7 @@ const Chip = ({
       size={size}
       shape={shape}
       backgroundColor={backgroundColor}
-      theme={theme}
+      textColor={textColor}
       {...props}
     />
   );
@@ -48,6 +44,7 @@ Chip.propTypes = {
   label: PropTypes.string.isRequired,
   shape: PropTypes.oneOf(['cuadrada', 'circular']),
   backgroundColor: PropTypes.string,
+  textColor: PropTypes.string,
 };
 
 export default Chip;

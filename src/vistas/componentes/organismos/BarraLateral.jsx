@@ -12,7 +12,7 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined';
 import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
-import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import Icono from '../Atomos/Icono';
 import TemaIcono from '../Atomos/temaIcono';
 import IconoMenu from '../Atomos/iconoMenu';
 import TextoMenu from '../Atomos/textoMenu';
@@ -83,7 +83,7 @@ const BarraLateral = () => {
           >
             {!colapsado && (
               <Box display='flex' justifyContent='space-between' alignItems='center' ml='15px'>
-                <img src='/logoAltertex.svg' style={{ width: '150px' }} />
+                <img src='/logoAltertexDark.svg' style={{ width: '150px' }} />
                 <IconButton onClick={() => setColapsado(!colapsado)}>
                   <MenuOutlinedIcon sx={{ color: colors.primario[4] }} />
                 </IconButton>
@@ -220,7 +220,13 @@ const BarraLateral = () => {
             width='100%'
           >
             <TemaIcono />
-            <LogoutOutlinedIcon onClick={() => navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE)} />
+            <Icono
+              nombre='LogoutOutlined'
+              color='#fff'
+              clickable={true}
+              tooltip='Volver a Clientes'
+              onClick={() => navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE)}
+            />
           </Box>
         </Box>
       </ProSidebar>

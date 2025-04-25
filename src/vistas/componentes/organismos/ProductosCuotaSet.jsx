@@ -1,5 +1,5 @@
 import Contenedor from '../atomos/Contenedor';
-import CustomDataGrid from './dataGrid';
+import CustomDataGrid from './Tabla';
 
 const ProductosCuotaSet = ({
   elevacion,

@@ -71,7 +71,7 @@ const ListaUsuarios = () => {
           id: usuario.idUsuario,
           idUsuario: usuario.idUsuario,
           nombre: usuario.nombre,
-          rol: usuario.rol?.nombre || 'Sin rol',
+          rol: usuario.rol || 'Sin rol',
           cliente: usuario.cliente,
           estatus: usuario.estatus,
           correo: usuario.correo,

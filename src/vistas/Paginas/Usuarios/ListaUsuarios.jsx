@@ -1,6 +1,6 @@
 //RF02 Super Administrador Consulta Lista de Usuarios - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF2
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ModalFlotante from '../../componentes/organismos/ModalFlotante';
 import FormularioCrearUsuario from '../../componentes/organismos/FormularioCrearUsuario';
 import Alerta from '../../componentes/moleculas/Alerta';
@@ -12,7 +12,6 @@ import { useCrearUsuario } from '../../../hooks/useCrearUsuario';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';
 import { useMode, tokens } from '../../../theme';
 import PopUp from '../../componentes/moleculas/PopUp';
-import Boton from '../../componentes/atomos/boton';
 
 const ListaUsuarios = () => {
   const [theme] = useMode();
@@ -32,15 +31,30 @@ const ListaUsuarios = () => {
 
   const [abrirPopUp, setAbrirPopUp] = useState(false);
 
+  const [idsSeleccionados, setIdsSeleccionados] = useState([]);
+
+  const selecciones = [];
+
   const manejarAbrirPopUp = () => {
-    setAbrirPopUp(true);
+    console.log('idsSeleccionados', idsSeleccionados); //borrar
+    //console.log(usuarios[0]?.idUsuario); //borrar
+    if (idsSeleccionados.length === 0) {
+      setAlerta({
+        tipo: 'error',
+        mensaje: 'Por favor selecciona un usuario para eliminar.',
+      });
+    } else {
+      setAbrirPopUp(true);
+    }
   };
+
   const manejarCerrarPopUp = () => {
     setAbrirPopUp(false);
   };
 
   const manejarEliminarUsuario = () => {
-    console.log('Confirmando eliminar usuario');
+    console.log('Usuarios a eliminar:', idsSeleccionados);
+    //console.log('Confirmando eliminar usuario', usuarios[0]?.idUsuario); //borrar
     setAbrirPopUp(false);
   };
 
@@ -124,6 +138,11 @@ const ListaUsuarios = () => {
     },
     { label: 'Añadir Usuario', onClick: () => handleOpen(), size: 'large' },
     {
+      label: 'Eliminar',
+      onClick: () => manejarAbrirPopUp(),
+      size: 'large',
+    },
+    {
       label: 'Ir Atrás',
       onClick: () => redirigirAInicio(),
       variant: 'outlined',
@@ -147,21 +166,14 @@ const ListaUsuarios = () => {
           onClose={() => setAlerta(null)}
         />
       )}
-
-      <Button variant='contained' color='primary' onClick={handleOpen}>
-        Añadir Usuario
-      </Button>
-
-      <Boton variant='contained' label='eliminar' onClick={manejarAbrirPopUp}></Boton>
       <PopUp
         abrir={abrirPopUp}
         cerrar={manejarCerrarPopUp}
         confirmar={manejarEliminarUsuario}
-        dialogo='¿Estás seguro de que deseas eliminar este usuario?'
+        dialogo='¿Estás seguro de que deseas eliminar a los usuarios seleccionados?'
         labelCancelar='Cancelar'
         labelConfirmar='Eliminar'
       />
-
       <ModalFlotante
         open={open}
         onClose={handleClose}
@@ -174,7 +186,6 @@ const ListaUsuarios = () => {
           errores={errores}
         />
       </ModalFlotante>
-
       <div style={{ marginTop: 20, height: 650, width: '100%' }}>
         {error && <p style={{ color: 'red' }}>Error: {error}</p>}
         <Tabla columns={columns} rows={rows} loading={cargando} checkboxSelection pageSize={10} />

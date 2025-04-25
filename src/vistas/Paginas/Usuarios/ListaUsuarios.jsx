@@ -1,149 +1,136 @@
+//RF02 Super Administrador Consulta Lista de Usuarios - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF2
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { Button, Modal, Box, Paper } from '@mui/material';
-import FormularioCrearUsuario from '../../Componentes/Organismos/FormularioCrearUsuario';
-import Stack from '@mui/material/Stack';
-import axios from 'axios';
+import ModalFlotante from '../../componentes/organismos/ModalFlotante';
+import FormularioCrearUsuario from '../../componentes/organismos/FormularioCrearUsuario';
+import Alerta from '../../componentes/moleculas/Alerta';
+import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
+import Tabla from '../../componentes/organismos/Tabla';
+import Chip from '../../componentes/atomos/Chip';
+import { useConsultarListaUsuarios } from '../../../hooks/Usuarios/useConsultarListaUsuarios';
+import { useCrearUsuario } from '../../../hooks/useCrearUsuario';
+import { RUTAS } from '../../../Utilidades/Constantes/rutas';
 
-const API_URL = import.meta.env.VITE_API_URL;
-const API_KEY = import.meta.env.VITE_API_KEY;
+const ListaUsuarios = () => {
+  const [alerta, setAlerta] = useState(null);
+  const { usuarios, cargando, error } = useConsultarListaUsuarios();
+  const navigate = useNavigate();
+  const {
+    open,
+    datosUsuario,
+    errores,
+    setDatosUsuario,
+    handleOpen,
+    handleClose,
+    handleGuardarUsuario,
+  } = useCrearUsuario();
 
-export default function Usuarios() {
-  const [open, setOpen] = useState(false);
+  const manejarConfirmacion = async () => {
+    const resultado = await handleGuardarUsuario();
 
-  const [datosUsuario, setDatosUsuario] = useState({
-    nombreCompleto: '',
-    apellido: '',
-    correoElectronico: '',
-    contrasenia: '',
-    confirmarContrasenia: '',
-    numeroTelefono: '',
-    direccion: '',
-    codigoPostal: '',
-    fechaNacimiento: null,
-    genero: '',
-    cliente: '',
-    rol: '',
-  });
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    setOpen(false);
-    setDatosUsuario({
-      nombreCompleto: '',
-      apellido: '',
-      correoElectronico: '',
-      contrasenia: '',
-      confirmarContrasenia: '',
-      numeroTelefono: '',
-      direccion: '',
-      codigoPostal: '',
-      fechaNacimiento: null,
-      genero: '',
-      cliente: '',
-      rol: '',
-    });
-  };
-
-  const handleGuardarUsuario = async () => {
-    if (datosUsuario.contrasenia !== datosUsuario.confirmarContrasenia) {
-      alert('Las contraseñas no coinciden');
-      return;
-    }
-
-    const rolMap = {
-      'Super Administrador': 1,
-      Administrador: 2,
-      Supervisor: 3,
-      Nada: 4,
-    };
-
-    const clienteMap = {
-      Toyota: 101,
-      Otro: 102,
-    };
-
-    const datosParaEnviar = {
-      nombreCompleto: `${datosUsuario.nombreCompleto} ${datosUsuario.apellido}`,
-      correoElectronico: datosUsuario.correoElectronico,
-      contrasenia: datosUsuario.contrasenia,
-      numeroTelefono: datosUsuario.numeroTelefono,
-      direccion: datosUsuario.direccion,
-      fechaNacimiento: datosUsuario.fechaNacimiento
-        ? datosUsuario.fechaNacimiento.format('YYYY-MM-DD')
-        : null,
-      genero: datosUsuario.genero,
-      estatus: true,
-      idRol: rolMap[datosUsuario.rol],
-      idCliente: clienteMap[datosUsuario.cliente],
-    };
-
-    console.log('Datos que se enviarán:', datosParaEnviar);
-
-    try {
-      const response = await axios.post(`${API_URL}/api/usuarios/crear`, datosParaEnviar, {
-        withCredentials: true,
-        headers: { 'x-api-key': `${API_KEY}` },
+    if (resultado?.mensaje) {
+      setAlerta({
+        tipo: resultado.exito ? 'success' : 'error',
+        mensaje: resultado.mensaje,
       });
-
-      alert(response.data?.mensaje || 'Usuario creado correctamente');
-      handleClose();
-    } catch (error) {
-      console.error('Error al crear usuario:', error);
-      const mensaje = error.response?.data?.mensaje || 'Hubo un error al crear el usuario';
-      alert('Error: ', mensaje);
     }
   };
+
+  const redirigirAInicio = () => {
+    navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE, { replace: true });
+  };
+
+  const columns = [
+    { field: 'idUsuario', headerName: 'ID Usuario', flex: 1 },
+    { field: 'nombre', headerName: 'Nombre', flex: 1 },
+    { field: 'rol', headerName: 'Rol', flex: 1 },
+    {
+      field: 'cliente',
+      headerName: 'Cliente',
+      flex: 1,
+      renderCell: (params) => {
+        const isSuspendido = params.row.estatus === 0;
+
+        return (
+          <Chip
+            label={isSuspendido ? 'Suspendido' : params.value || 'N/A'}
+            variant='filled'
+            size='medium'
+            shape='circular'
+            backgroundColor={isSuspendido ? '#ffa726' : '#f0f0f0'}
+            textColor={isSuspendido ? '#ffffff' : '#000000'}
+          />
+        );
+      },
+    },
+    { field: 'correo', headerName: 'Correo electrónico', flex: 1 },
+    { field: 'telefono', headerName: 'Telefono', flex: 1 },
+  ];
+
+  const rows = [
+    ...new Map(
+      usuarios.map((usuario) => [
+        usuario.idUsuario,
+        {
+          id: usuario.idUsuario,
+          idUsuario: usuario.idUsuario,
+          nombre: usuario.nombre,
+          rol: usuario.rol || 'Sin rol',
+          cliente: usuario.cliente,
+          estatus: usuario.estatus,
+          correo: usuario.correo,
+          telefono: usuario.telefono,
+        },
+      ])
+    ).values(),
+  ];
+
+  const botones = [
+    { label: 'Añadir Usuario', onClick: () => handleOpen(), size: 'large' },
+    {
+      label: 'Ir Atrás',
+      onClick: () => redirigirAInicio(),
+      variant: 'outlined',
+      color: 'error',
+      size: 'large',
+    },
+  ];
 
   return (
-    <div>
-      <h1>Vista de usuarios</h1>
+    <ContenedorLista
+      titulo='Lista de Usuarios'
+      descripcion='Gestiona y organiza los usuarios registrados en el sistema.'
+      informacionBotones={botones}
+    >
+      {alerta && (
+        <Alerta
+          tipo={alerta.tipo}
+          mensaje={alerta.mensaje}
+          cerrable
+          duracion={4000}
+          onClose={() => setAlerta(null)}
+        />
+      )}
 
-      <Button variant='contained' color='primary' size='large' onClick={handleOpen}>
-        Añadir
-      </Button>
-
-      <Modal
+      <ModalFlotante
         open={open}
         onClose={handleClose}
-        slotProps={{
-          backdrop: {
-            sx: {
-              backdropFilter: 'blur(4px)',
-              backgroundColor: 'rgba(255, 255, 255, 0.1)',
-            },
-          },
-        }}
+        onConfirm={manejarConfirmacion}
+        titulo='Crear nuevo usuario'
       >
-        <Paper
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            maxHeight: '80vh',
-            overflowY: 'auto',
-            bgcolor: 'background.paper',
-            boxShadow: 24,
-            borderRadius: 2,
-            padding: 3,
-            outline: 'none',
-            width: 620,
-          }}
-        >
-          <h2>Añadir Usuario</h2>
+        <FormularioCrearUsuario
+          datosUsuario={datosUsuario}
+          setDatosUsuario={setDatosUsuario}
+          errores={errores}
+        />
+      </ModalFlotante>
 
-          <FormularioCrearUsuario datosUsuario={datosUsuario} setDatosUsuario={setDatosUsuario} />
-
-          <Stack spacing={1} direction='row' justifyContent='flex-end' marginTop={2}>
-            <Button variant='outlined' onClick={handleClose}>
-              Cerrar
-            </Button>
-            <Button variant='contained' onClick={handleGuardarUsuario}>
-              Guardar
-            </Button>
-          </Stack>
-        </Paper>
-      </Modal>
-    </div>
+      <div style={{ marginTop: 20, height: 650, width: '100%' }}>
+        {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+        <Tabla columns={columns} rows={rows} loading={cargando} checkboxSelection pageSize={10} />
+      </div>
+    </ContenedorLista>
   );
-}
+};
+
+export default ListaUsuarios;

@@ -11,7 +11,8 @@ export class UsuarioLectura {
     fechaNacimiento,
     genero,
     estatus,
-    rol, // nuevo campo
+    rol,
+    clientes = [], 
   }) {
     console.log("📦 [UsuarioLectura] Datos recibidos para instanciar el modelo:");
     console.log({
@@ -23,7 +24,8 @@ export class UsuarioLectura {
       fechaNacimiento,
       genero,
       estatus,
-      rol, // incluir en log
+      rol,
+      clientes,
     });
 
     this.idUsuario = idUsuario;
@@ -34,7 +36,8 @@ export class UsuarioLectura {
     this.fechaNacimiento = fechaNacimiento;
     this.genero = genero;
     this.estatus = estatus;
-    this.rol = rol; // asignar
+    this.rol = rol;
+    this.clientes = clientes; 
 
     console.log("✅ [UsuarioLectura] Instancia creada:", this);
   }

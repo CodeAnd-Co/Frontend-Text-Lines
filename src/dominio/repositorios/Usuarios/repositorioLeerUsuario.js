@@ -12,16 +12,15 @@ export class RepositorioUsuarios {
    */
   async obtenerPorId(idUsuario) {
     console.log('📤 [RepositorioUsuarios] Enviando solicitud para ID:', idUsuario);
-    this;
     try {
       const respuesta = await axios.post(
-        RUTAS_API.USUARIOS.CONSULTAR_LISTA,
+        RUTAS_API.USUARIOS.CONSULTAR_USUARIO,
         { idUsuario },
         {
-          withCredentials: true,
           headers: {
             'x-api-key': API_KEY,
           },
+          withCredentials: true,
         }
       );
 

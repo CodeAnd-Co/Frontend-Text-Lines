@@ -11,7 +11,7 @@ import { RepositorioUsuarios } from "../../dominio/repositorios/Usuarios/reposit
  *   error: string | null
  * }}
  */
-export const useUsuarioPorId = (idUsuario) => {
+export const useUsuarioId = (idUsuario) => {
   const [usuario, setUsuario] = useState(null);
   const [mensaje, setMensaje] = useState("");
   const [cargando, setCargando] = useState(true);

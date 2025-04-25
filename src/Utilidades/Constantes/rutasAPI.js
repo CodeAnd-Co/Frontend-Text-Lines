@@ -33,10 +33,6 @@ export const RUTAS_API = {
     BASE: BASE_CUOTAS,
     CREAR_CUOTA: `${BASE_CUOTAS}/crear-cuota`,
   },
-  USUARIOS: {
-    BASE: BASE_USUARIOS,
-    CONSULTAR_LISTA: `${BASE_USUARIOS}/consultar-lista`,
-  },
   ROLES: {
     BASE: BASE_ROLES,
     CONSULTAR_LISTA: `${BASE_ROLES}/consultar-lista`,

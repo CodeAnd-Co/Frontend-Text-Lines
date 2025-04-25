@@ -2,6 +2,7 @@
 //RF1 - Crear Usuario - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF1
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useAuth } from '../../../hooks/AuthProvider';
 import ModalFlotante from '../../componentes/organismos/ModalFlotante';
 import FormularioCrearUsuario from '../../componentes/organismos/Formularios/FormularioCrearUsuario';
 import Alerta from '../../componentes/moleculas/Alerta';
@@ -13,6 +14,8 @@ import { useCrearUsuario } from '../../../hooks/Usuarios/useCrearUsuario';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';
 import { useMode, tokens } from '../../../theme';
 import NavegadorAdministrador from '../../Componentes/Organismos/NavegadorAdministrador';
+
+const estiloImagenLogo = { marginRight: '1rem' };
 
 const ListaUsuarios = () => {
   const [theme] = useMode();
@@ -122,9 +125,57 @@ const ListaUsuarios = () => {
       backgroundColor: colores.altertex[1],
     },
   ];
+  const redirigirATienda = () => {
+    navigate(RUTAS.SISTEMA_TIENDA.BASE, { replace: true });
+  };
+  const botonesBarraAdministradora = [
+    {
+      label: 'Atras',
+      variant: 'outlined',
+      color: 'secondary',
+      size: 'large',
+      onClick: () => navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE),
+    },
+    {
+      label: 'Configuración',
+      variant: 'outlined',
+      color: 'secondary',
+      size: 'large',
+      onClick: () =>
+        navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION),
+    },
+    {
+      label: 'Cerrar sesión',
+      variant: 'contained',
+      color: 'error',
+      size: 'large',
+      onClick: () => manejarCerrarSesion(),
+    },
+  ];
+  const manejarCerrarSesion = async () => {
+    await cerrarSesion();
+  };
+  const { cerrarSesion } = useAuth();
 
   return (
     <>
+      <NavegadorAdministrador
+        src='/logoAltertexLight.svg'
+        alt='Logo empresa'
+        nombreIcono='ShoppingCart'
+        varianteIcono='outlined'
+        tamanoIcono='large'
+        colorIcono='primary'
+        iconoClickeable={true}
+        tooltipIcono='Acceder a tienda'
+        alturaImagen='auto'
+        anchoImagen={{ xs: '150px', sm: '250px', md: '400px' }}
+        ajuste='contain'
+        clickeableImagen={false}
+        estiloImagen={estiloImagenLogo}
+        alClicIcono={redirigirATienda}
+        informacionBotones={botonesBarraAdministradora}
+      />
       <ContenedorLista
         titulo={<div style={{ textAlign: 'center' }}>Usuarios</div>}
         descripcion={

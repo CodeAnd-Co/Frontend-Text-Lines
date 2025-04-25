@@ -4,14 +4,18 @@ import { Box, Grid } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
-import CampoTexto from '../../../Componentes/atomos/CampoTexto';
-import CampoSelect from '../../../Componentes/atomos/CampoSelect';
+import CampoTexto from '../../atomos/CampoTexto';
+import CampoSelect from '../../atomos/CampoSelect';
+import { useConsultarRoles } from '../../../../hooks/Roles/useConsultarRoles';
+import { useConsultarClientes } from '../../../../hooks/Clientes/useConsultarClientes';
 
 const FormularioCrearUsuario = ({ datosUsuario, setDatosUsuario, errores = {} }) => {
   const gridStyles = {
     display: 'flex',
     justifyContent: 'center',
   };
+  const { roles, cargando } = useConsultarRoles();
+  const { clientes } = useConsultarClientes();
 
   const handleChange = (evento) => {
     const { name, value } = evento.target;
@@ -149,10 +153,10 @@ const FormularioCrearUsuario = ({ datosUsuario, setDatosUsuario, errores = {} })
             required
             error={!!errores.cliente}
             helperText={errores.cliente && CAMPO_OBLIGATORIO}
-            options={[
-              { value: 'Toyota', label: 'Toyota' },
-              { value: 'Otro', label: 'Otro' },
-            ]}
+            options={clientes.map((cliente) => ({
+              value: cliente.idCliente,
+              label: cliente.nombreComercial,
+            }))}
           />
         </Grid>
         <Grid size={6} sx={gridStyles}>
@@ -165,12 +169,11 @@ const FormularioCrearUsuario = ({ datosUsuario, setDatosUsuario, errores = {} })
             required
             error={!!errores.rol}
             helperText={errores.rol && CAMPO_OBLIGATORIO}
-            options={[
-              { value: 'Super Administrador', label: 'Super Administrador' },
-              { value: 'Administrador', label: 'Administrador' },
-              { value: 'Supervisor', label: 'Supervisor' },
-              { value: 'Nada', label: 'Nada' },
-            ]}
+            options={roles.map((rol) => ({
+              value: rol.idRol,
+              label: rol.nombre,
+            }))}
+            disabled={cargando}
           />
         </Grid>
         <Grid size={6} sx={gridStyles}>

@@ -1,4 +1,4 @@
-// Capa de Dominio: Validaciones puras y reglas de negocio para crear un usuario
+// RF1 - Crear Usuario - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF1
 
 /**
  * Valida los datos del formulario para crear un usuario.

@@ -1,16 +1,18 @@
 //RF02 Super Administrador Consulta Lista de Usuarios - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF2
+//RF1 - Crear Usuario - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF1
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import ModalFlotante from '../../componentes/organismos/ModalFlotante';
-import FormularioCrearUsuario from '../../componentes/organismos/Formularios/formularioCrearUsuario';
+import FormularioCrearUsuario from '../../componentes/organismos/Formularios/FormularioCrearUsuario';
 import Alerta from '../../componentes/moleculas/Alerta';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import Tabla from '../../componentes/organismos/Tabla';
 import Chip from '../../componentes/atomos/Chip';
 import { useConsultarListaUsuarios } from '../../../hooks/Usuarios/useConsultarListaUsuarios';
-import { useCrearUsuario } from '../../../hooks/useCrearUsuario';
+import { useCrearUsuario } from '../../../hooks/Usuarios/useCrearUsuario';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';
 import { useMode, tokens } from '../../../theme';
+import NavegadorAdministrador from '../../Componentes/Organismos/NavegadorAdministrador';
 
 const ListaUsuarios = () => {
   const [theme] = useMode();
@@ -98,59 +100,70 @@ const ListaUsuarios = () => {
       variant: 'contained',
       size: 'large',
       sx: {
-        backgroundColor: colores.verde[1], 
-        color: '#fff', 
+        backgroundColor: colores.verde[1],
+        color: '#fff',
         '&:hover': {
           backgroundColor: colores.verde[1],
-          opacity: 0.9, 
+          opacity: 0.9,
         },
       },
     },
-    { label: 'Añadir Usuario', onClick: () => handleOpen(), size: 'large' },
     {
-      label: 'Ir Atrás',
-      onClick: () => redirigirAInicio(),
-      variant: 'outlined',
-      color: 'error',
+      label: 'Añadir',
+      onClick: () => handleOpen(),
       size: 'large',
+      backgroundColor: colores.altertex[1],
+    },
+    {
+      label: 'Eliminar',
+      onClick: () => redirigirAInicio(),
+      variant: 'contained',
+      size: 'large',
+      backgroundColor: colores.altertex[1],
     },
   ];
 
   return (
-    <ContenedorLista
-      titulo='Lista de Usuarios'
-      descripcion='Gestiona y organiza los usuarios registrados en el sistema.'
-      informacionBotones={botones}
-    >
-      {alerta && (
-        <Alerta
-          tipo={alerta.tipo}
-          mensaje={alerta.mensaje}
-          cerrable
-          duracion={4000}
-          centradoInferior
-          onClose={() => setAlerta(null)}
-        />
-      )}
-
-      <ModalFlotante
-        open={open}
-        onClose={handleClose}
-        onConfirm={manejarConfirmacion}
-        titulo='Crear nuevo usuario'
+    <>
+      <ContenedorLista
+        titulo={<div style={{ textAlign: 'center' }}>Usuarios</div>}
+        descripcion={
+          <div style={{ textAlign: 'center' }}>
+            Gestiona y organiza los usuarios registrados en el sistema.
+          </div>
+        }
+        informacionBotones={botones}
       >
-        <FormularioCrearUsuario
-          datosUsuario={datosUsuario}
-          setDatosUsuario={setDatosUsuario}
-          errores={errores}
-        />
-      </ModalFlotante>
+        {alerta && (
+          <Alerta
+            tipo={alerta.tipo}
+            mensaje={alerta.mensaje}
+            cerrable
+            duracion={4000}
+            centradoInferior
+            onClose={() => setAlerta(null)}
+          />
+        )}
 
-      <div style={{ marginTop: 20, height: 650, width: '100%' }}>
-        {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-        <Tabla columns={columns} rows={rows} loading={cargando} checkboxSelection pageSize={10} />
-      </div>
-    </ContenedorLista>
+        <ModalFlotante
+          open={open}
+          onClose={handleClose}
+          onConfirm={manejarConfirmacion}
+          titulo='Crear nuevo usuario'
+        >
+          <FormularioCrearUsuario
+            datosUsuario={datosUsuario}
+            setDatosUsuario={setDatosUsuario}
+            errores={errores}
+          />
+        </ModalFlotante>
+
+        <div style={{ marginTop: 20, height: 650, width: '100%' }}>
+          {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+          <Tabla columns={columns} rows={rows} loading={cargando} checkboxSelection pageSize={10} />
+        </div>
+      </ContenedorLista>
+    </>
   );
 };
 

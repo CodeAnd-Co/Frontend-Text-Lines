@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { crearUsuario } from '../dominio/repositorios/repositorioCrearUsuario';
-import { validarDatosCrearUsuario } from '../dominio/modelos/modeloCrearUsuario';
+import { crearUsuario } from '../../dominio/repositorios/Usuarios/repositorioCrearUsuario';
+import { validarDatosCrearUsuario } from '../../dominio/modelos/usuarios/modeloCrearUsuario';
 /**
+ * RF1 - Crear Usuario - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF1
  * Hook `useCrearUsuario`
  *
  * Maneja la lógica para crear un nuevo usuario. Este hook realiza:
@@ -66,18 +67,6 @@ export const useCrearUsuario = () => {
     setErrores(erroresValidacion);
     if (Object.keys(erroresValidacion).length > 0) return { exito: false };
 
-    const rolMap = {
-      'Super Administrador': 1,
-      Administrador: 2,
-      Supervisor: 3,
-      Nada: 4,
-    };
-
-    const clienteMap = {
-      Toyota: 101,
-      Otro: 102,
-    };
-
     const datosParaEnviar = {
       nombreCompleto: `${datosUsuario.nombreCompleto} ${datosUsuario.apellido}`,
       correoElectronico: datosUsuario.correoElectronico,
@@ -89,8 +78,8 @@ export const useCrearUsuario = () => {
         : null,
       genero: datosUsuario.genero,
       estatus: true,
-      idRol: rolMap[datosUsuario.rol],
-      idCliente: clienteMap[datosUsuario.cliente],
+      idRol: datosUsuario.rol,
+      idCliente: datosUsuario.cliente,
     };
 
     try {
@@ -98,9 +87,9 @@ export const useCrearUsuario = () => {
       handleClose();
       return { exito: true, mensaje: 'Usuario creado correctamente' };
     } catch (error) {
-      const mensaje
-        = error.response?.data?.mensaje
-        || 'Hubo un error al crear el usuario. Verifica que no exista.';
+      const mensaje =
+        error.response?.data?.mensaje ||
+        'Hubo un error al crear el usuario. Verifica que no exista.';
       handleClose();
       return { exito: false, mensaje };
     }

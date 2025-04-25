@@ -1,7 +1,7 @@
 import TarjetaRenovacion from '../Cuotas/TarjetaRenovacion';
 import ProductosConCuotas from '../Cuotas/ProductosConCuotas';
 import { Box } from '@mui/material';
-import GrupoBotones from '../../moleculas/GrupoBotones';
+import GrupoBotones from '../../Moleculas/GrupoBotones';
 import PopUpEliminar from '../../moleculas/popUpEliminar';
 import { useNavigate } from 'react-router-dom';
 
@@ -25,7 +25,7 @@ const CuerpoPrincipal = ({
 
   const confirmarSalida = () => {
     setAbrirConfirmacion(false);
-    navegar('/admin/cuotas');
+    navegar('/admin/tablero/cuotas');
   };
 
   const cerrarPopup = () => {

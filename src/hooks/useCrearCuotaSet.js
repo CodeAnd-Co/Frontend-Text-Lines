@@ -14,7 +14,7 @@ export const useCrearCuotaSet = ({
   renovacionActiva,
   productos,
   cuotas,
-  redirectPath = '/admin/cuotas',
+  redirectPath = '/admin/tablero/cuotas',
 }) => {
   const [exito, setExito] = useState(false);
   const [error, setError] = useState(false);

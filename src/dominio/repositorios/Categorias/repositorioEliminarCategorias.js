@@ -8,11 +8,10 @@ const API_KEY = import.meta.env.VITE_API_KEY;
 export class RepositorioEliminarCategorias {
   /**
    * Elimina una o más categorías de productos desde la API
-   * @param {array} idsCategoria - ID de la categoría a eliminar
+   * @param {array} idsCategoria - ID de la categoría o categorías a eliminar
    * @returns {Promise<{mensaje: string}>}
    */
   static async eliminarCategoria(idsCategoria) {
-    console.log('repositorio', idsCategoria);
     try {
       const respuesta = await axios.post(
         RUTAS_API.CATEGORIAS.ELIMINAR_CATEGORIA,

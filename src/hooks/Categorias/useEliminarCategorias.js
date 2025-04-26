@@ -17,7 +17,6 @@ export function useEliminarCategorias(idsCategoria) {
   const [mensaje, setMensaje] = useState('');
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
-  console.log('usehook', idsCategoria);
   useEffect(() => {
     const eliminarCategoria = async () => {
       setCargando(true);

@@ -63,7 +63,6 @@ const ListaCategorias = () => {
     {
       label: 'Eliminar',
       onClick: () => {
-        console.log('Tamaño de seleccionados (en onClick):', seleccionados.size);
         if (seleccionados.size === 0 || seleccionados.ids.size === 0) {
           setAlerta({
             tipo: 'error',
@@ -74,7 +73,6 @@ const ListaCategorias = () => {
           });
         } else {
           setIdsCategoria(Array.from(seleccionados.ids));
-          console.log('IDs seleccionados:', idsCategoria);
           setOpenModalEliminar(true);
         }
       },

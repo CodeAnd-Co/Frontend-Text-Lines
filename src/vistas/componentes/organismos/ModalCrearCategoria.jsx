@@ -12,8 +12,8 @@ const ModalCrearCategoria = () => {
   const [productos, setProductos] = useState([]);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
 
-  const { crearCategoria, cargando, exito, error, mensaje, setError, resetEstado } =
-    useCrearCategoria();
+  const { crearCategoria, cargando, exito, error, mensaje, setError, resetEstado }
+    = useCrearCategoria();
 
   const handleAbrir = () => setMostrarFormulario(true);
   const handleCerrar = () => {

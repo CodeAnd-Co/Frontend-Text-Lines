@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback } from 'react';
 import { RepositorioCrearCategoria } from '../../dominio/repositorios/Categorias/repositorioCrearCategorias';
 import { CrearCategoria } from '../../dominio/modelos/Categorias/CrearCategoria';
 

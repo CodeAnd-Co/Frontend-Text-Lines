@@ -1,15 +1,17 @@
-//RF[47] Consulta lista de categorías - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF47]
-
-import React from 'react';
+import React, { useState } from 'react';
 import Tabla from '../../Componentes/Organismos/Tabla';
 import { useConsultarCategorias } from '../../../hooks/Categorias/useConsultarCategorias';
 import Alerta from '../../componentes/moleculas/Alerta';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import { Box } from '@mui/material';
+import ModalEliminarCategoria from '../../Componentes/Organismos/ModalEliminarCategoria';
 
 const ListaCategorias = () => {
-  // Hook que obtiene las categorías desde el repositorio
-  const { categorias, cargando, error } = useConsultarCategorias();
+  const { categorias, cargando, error, recargar } = useConsultarCategorias();
+  const [seleccionados, setSeleccionados] = useState(new Set());
+  const [openModalEliminar, setOpenModalEliminar] = useState(false);
+  const [alerta, setAlerta] = useState(null);
+  const [idsCategoria, setIdsCategoria] = useState([]);
 
   // Columnas para el DataGrid
   const columns = [
@@ -31,7 +33,6 @@ const ListaCategorias = () => {
     },
   ];
 
-  // Las filas deben tener un campo `id`, usamos `idCategoria`
   const rows = categorias.map((cat) => ({
     id: cat.idCategoria,
     nombreCategoria: cat.nombreCategoria,
@@ -41,7 +42,11 @@ const ListaCategorias = () => {
   }));
 
   const botones = [
-    { label: 'Añadir', onClick: () => console.log('Añadir'), size: 'large' },
+    {
+      label: 'Añadir',
+      onClick: () => console.log('Añadir'),
+      size: 'large',
+    },
     {
       variant: 'outlined',
       label: 'Importar',
@@ -55,20 +60,67 @@ const ListaCategorias = () => {
       size: 'large',
     },
     { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large' },
-    { label: 'Eliminar', onClick: () => console.log('Eliminar'), size: 'large' },
+    {
+      label: 'Eliminar',
+      onClick: () => {
+        console.log('Tamaño de seleccionados (en onClick):', seleccionados.size);
+        if (seleccionados.size === 0 || seleccionados.ids.size === 0) {
+          setAlerta({
+            tipo: 'error',
+            mensaje: 'Selecciona al menos una categoría para eliminar.',
+            icono: true,
+            cerrable: true,
+            centradoInferior: true,
+          });
+        } else {
+          setIdsCategoria(Array.from(seleccionados.ids));
+          console.log('IDs seleccionados:', idsCategoria);
+          setOpenModalEliminar(true);
+        }
+      },
+      size: 'large',
+    },
   ];
 
   return (
-    <ContenedorLista
-      titulo='Categorías'
-      descripcion='Gestiona y organiza las categorías registradas en el sistema.'
-      informacionBotones={botones}
-    >
-      <Box style={{ height: 400, width: '100%' }}>
-        {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}
-        <Tabla columns={columns} rows={rows} loading={cargando} checkboxSelection />
-      </Box>
-    </ContenedorLista>
+    <>
+      <ContenedorLista
+        titulo='Categorías'
+        descripcion='Gestiona y organiza las categorías registradas en el sistema.'
+        informacionBotones={botones}
+      >
+        <Box style={{ height: 400, width: '100%' }}>
+          {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}
+          <Tabla
+            columns={columns}
+            rows={rows}
+            loading={cargando}
+            checkboxSelection
+            onRowSelectionModelChange={(newSelection) => {
+              setSeleccionados(newSelection);
+            }}
+          />
+        </Box>
+      </ContenedorLista>
+      <ModalEliminarCategoria
+        open={openModalEliminar}
+        onClose={() => setOpenModalEliminar(false)}
+        idsCategoria={idsCategoria}
+        setAlerta={setAlerta}
+        refrescarPagina={recargar}
+      />
+      {alerta && (
+        <Alerta
+          tipo={alerta.tipo}
+          mensaje={alerta.mensaje}
+          icono={alerta.icono}
+          cerrable={alerta.cerrable}
+          duracion={2500}
+          centradoInferior={alerta.centradoInferior}
+          onClose={() => setAlerta(null)}
+        />
+      )}
+    </>
   );
 };
 

@@ -49,8 +49,6 @@ const ListaGrupoEmpleados = () => {
     { label: 'Eliminar', onClick: () => console.log('Eliminar'), size: 'large' },
   ];
 
-  console.log(empleados);
-
   return (
     <ContenedorLista
       titulo='Lista de Empleados'

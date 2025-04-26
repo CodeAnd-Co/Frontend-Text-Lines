@@ -9,7 +9,7 @@ const ListaGrupoEmpleados = () => {
   const { empleados, cargando, error } = useConsultarEmpleados();
 
   const columnas = [
-    { field: 'nombreCompleto', headerName: 'Nombre', flex: 1 },
+    { field: 'nombreCompleto', headerName: 'Nombre del Empleado', flex: 1 },
     { field: 'correoElectronico', headerName: 'Correo Electrónico', flex: 1 },
     { field: 'numeroEmergencia', headerName: 'Número de Emergencia', width: 180 },
     { field: 'areaTrabajo', headerName: 'Área de Trabajo', flex: 1 },

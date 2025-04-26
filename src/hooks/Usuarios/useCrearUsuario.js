@@ -24,45 +24,9 @@ import { validarDatosCrearUsuario } from '../../dominio/modelos/usuarios/modeloC
  * Retorna todo el estado y funciones necesarios para usar el formulario de creación de usuario.
  */
 export const useCrearUsuario = () => {
-  const [open, setOpen] = useState(false);
   const [errores, setErrores] = useState({});
 
-  const [datosUsuario, setDatosUsuario] = useState({
-    nombreCompleto: '',
-    apellido: '',
-    correoElectronico: '',
-    contrasenia: '',
-    confirmarContrasenia: '',
-    numeroTelefono: '',
-    direccion: '',
-    codigoPostal: '',
-    fechaNacimiento: null,
-    genero: '',
-    cliente: '',
-    rol: '',
-  });
-
-  const handleOpen = () => setOpen(true);
-
-  const handleClose = () => {
-    setOpen(false);
-    setDatosUsuario({
-      nombreCompleto: '',
-      apellido: '',
-      correoElectronico: '',
-      contrasenia: '',
-      confirmarContrasenia: '',
-      numeroTelefono: '',
-      direccion: '',
-      fechaNacimiento: null,
-      genero: '',
-      cliente: '',
-      rol: '',
-    });
-    setErrores({});
-  };
-
-  const handleGuardarUsuario = async () => {
+  const handleGuardarUsuario = async (datosUsuario) => {
     const erroresValidacion = validarDatosCrearUsuario(datosUsuario);
     setErrores(erroresValidacion);
     if (Object.keys(erroresValidacion).length > 0) return { exito: false };
@@ -84,24 +48,17 @@ export const useCrearUsuario = () => {
 
     try {
       await crearUsuario(datosParaEnviar);
-      handleClose();
       return { exito: true, mensaje: 'Usuario creado correctamente' };
     } catch (error) {
       const mensaje =
         error.response?.data?.mensaje ||
         'Hubo un error al crear el usuario. Verifica que no exista.';
-      handleClose();
       return { exito: false, mensaje };
     }
   };
 
   return {
-    open,
-    datosUsuario,
     errores,
-    setDatosUsuario,
-    handleOpen,
-    handleClose,
     handleGuardarUsuario,
   };
 };

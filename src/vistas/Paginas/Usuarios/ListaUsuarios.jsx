@@ -1,16 +1,12 @@
 //RF02 Super Administrador Consulta Lista de Usuarios - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF2
-//RF1 - Crear Usuario - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF1
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../hooks/AuthProvider';
-import ModalFlotante from '../../componentes/organismos/ModalFlotante';
-import FormularioCrearUsuario from '../../componentes/organismos/Formularios/FormularioCrearUsuario';
-import Alerta from '../../componentes/moleculas/Alerta';
+import FormularioCrearUsuario from '../../Componentes/organismos/Formularios/FormularioCrearUsuario';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import Tabla from '../../componentes/organismos/Tabla';
 import Chip from '../../componentes/atomos/Chip';
 import { useConsultarListaUsuarios } from '../../../hooks/Usuarios/useConsultarListaUsuarios';
-import { useCrearUsuario } from '../../../hooks/Usuarios/useCrearUsuario';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';
 import { useMode, tokens } from '../../../theme';
 import NavegadorAdministrador from '../../Componentes/Organismos/NavegadorAdministrador';
@@ -20,33 +16,22 @@ const estiloImagenLogo = { marginRight: '1rem' };
 const ListaUsuarios = () => {
   const [theme] = useMode();
   const colores = tokens(theme.palette.mode);
-  const [alerta, setAlerta] = useState(null);
-  const { usuarios, cargando, error } = useConsultarListaUsuarios();
   const navigate = useNavigate();
-  const {
-    open,
-    datosUsuario,
-    errores,
-    setDatosUsuario,
-    handleOpen,
-    handleClose,
-    handleGuardarUsuario,
-  } = useCrearUsuario();
+  const { cerrarSesion } = useAuth();
+  const { usuarios, cargando, error } = useConsultarListaUsuarios();
 
-  const manejarConfirmacion = async () => {
-    const resultado = await handleGuardarUsuario();
-
-    if (resultado?.mensaje) {
-      setAlerta({
-        tipo: resultado.exito ? 'success' : 'error',
-        mensaje: resultado.mensaje,
-      });
-    }
-  };
+  const [modalCrearUsuarioAbierto, setModalCrearUsuarioAbierto] = useState(false);
 
   const redirigirAInicio = () => {
     navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE, { replace: true });
   };
+
+  const manejarCerrarSesion = async () => {
+    await cerrarSesion();
+  };
+
+  const handleOpen = () => setModalCrearUsuarioAbierto(true);
+  const handleClose = () => setModalCrearUsuarioAbierto(false);
 
   const columns = [
     { field: 'idUsuario', headerName: 'ID Usuario', flex: 1 },
@@ -113,28 +98,30 @@ const ListaUsuarios = () => {
     },
     {
       label: 'Añadir',
-      onClick: () => handleOpen(),
+      onClick: handleOpen,
       size: 'large',
       backgroundColor: colores.altertex[1],
     },
     {
       label: 'Eliminar',
-      onClick: () => redirigirAInicio(),
+      onClick: redirigirAInicio,
       variant: 'contained',
       size: 'large',
       backgroundColor: colores.altertex[1],
     },
   ];
+
   const redirigirATienda = () => {
     navigate(RUTAS.SISTEMA_TIENDA.BASE, { replace: true });
   };
+
   const botonesBarraAdministradora = [
     {
       label: 'Atras',
       variant: 'outlined',
       color: 'secondary',
       size: 'large',
-      onClick: () => navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE),
+      onClick: redirigirAInicio,
     },
     {
       label: 'Configuración',
@@ -149,13 +136,9 @@ const ListaUsuarios = () => {
       variant: 'contained',
       color: 'error',
       size: 'large',
-      onClick: () => manejarCerrarSesion(),
+      onClick: manejarCerrarSesion,
     },
   ];
-  const manejarCerrarSesion = async () => {
-    await cerrarSesion();
-  };
-  const { cerrarSesion } = useAuth();
 
   return (
     <>
@@ -166,7 +149,7 @@ const ListaUsuarios = () => {
         varianteIcono='outlined'
         tamanoIcono='large'
         colorIcono='primary'
-        iconoClickeable={true}
+        iconoClickeable
         tooltipIcono='Acceder a tienda'
         alturaImagen='auto'
         anchoImagen={{ xs: '150px', sm: '250px', md: '400px' }}
@@ -176,6 +159,7 @@ const ListaUsuarios = () => {
         alClicIcono={redirigirATienda}
         informacionBotones={botonesBarraAdministradora}
       />
+
       <ContenedorLista
         titulo={<div style={{ textAlign: 'center' }}>Usuarios</div>}
         descripcion={
@@ -185,29 +169,9 @@ const ListaUsuarios = () => {
         }
         informacionBotones={botones}
       >
-        {alerta && (
-          <Alerta
-            tipo={alerta.tipo}
-            mensaje={alerta.mensaje}
-            cerrable
-            duracion={4000}
-            centradoInferior
-            onClose={() => setAlerta(null)}
-          />
+        {modalCrearUsuarioAbierto && (
+          <FormularioCrearUsuario open={modalCrearUsuarioAbierto} onClose={handleClose} />
         )}
-
-        <ModalFlotante
-          open={open}
-          onClose={handleClose}
-          onConfirm={manejarConfirmacion}
-          titulo='Crear nuevo usuario'
-        >
-          <FormularioCrearUsuario
-            datosUsuario={datosUsuario}
-            setDatosUsuario={setDatosUsuario}
-            errores={errores}
-          />
-        </ModalFlotante>
 
         <div style={{ marginTop: 20, height: 650, width: '100%' }}>
           {error && <p style={{ color: 'red' }}>Error: {error}</p>}

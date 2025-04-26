@@ -16,17 +16,7 @@ const ListaGrupoEmpleados = () => {
     { field: 'areaTrabajo', headerName: 'Área de Trabajo', flex: 1 },
     { field: 'posicion', headerName: 'Posición', flex: 1 },
     { field: 'cantidadPuntos', headerName: 'Puntos', width: 100 },
-    {
-      field: 'antiguedad',
-      headerName: 'Antigüedad',
-      flex: 1,
-      valueFormatter: (params) =>
-        new Date(params.value).toLocaleDateString('es-MX', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        }),
-    },
+    { field: 'antiguedad', headerName: 'Antigüedad', flex: 1 },
   ];
 
   const filas = empleados.map((empleado) => ({
@@ -58,6 +48,8 @@ const ListaGrupoEmpleados = () => {
     { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large' },
     { label: 'Eliminar', onClick: () => console.log('Eliminar'), size: 'large' },
   ];
+
+  console.log(empleados);
 
   return (
     <ContenedorLista

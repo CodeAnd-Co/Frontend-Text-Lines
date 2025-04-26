@@ -21,6 +21,18 @@ export class Empleado {
     this.areaTrabajo = areaTrabajo;
     this.posicion = posicion;
     this.cantidadPuntos = parseFloat(cantidadPuntos);
-    this.antiguedad = new Date(antiguedad);
+    this.antiguedad = this.formatearFecha(antiguedad);
+  }
+
+  static formatearFecha(fecha) {
+    const fechaObj = new Date(fecha);
+    if (fechaObj instanceof Date && !isNaN(fechaObj)) {
+      return fechaObj.toLocaleDateString('es-MX', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+    }
+    return '';
   }
 }

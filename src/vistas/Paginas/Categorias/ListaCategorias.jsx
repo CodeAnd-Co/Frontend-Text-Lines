@@ -4,6 +4,7 @@ import React from 'react';
 import CustomDataGrid from '../../Componentes/Organismos/Tabla';
 import { useConsultarCategorias } from '../../../hooks/Categorias/useConsultarCategorias';
 import Alerta from '../../componentes/moleculas/Alerta';
+import ModalCrearCategoria from '../../componentes/organismos/ModalCrearCategoria';
 
 const ListaCategorias = () => {
   // Hook que obtiene las categorías desde el repositorio
@@ -40,6 +41,7 @@ const ListaCategorias = () => {
 
   return (
     <div style={{ height: 400, width: '100%' }}>
+      <ModalCrearCategoria />
       {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}
       <CustomDataGrid columns={columns} rows={rows} loading={cargando} checkboxSelection />
     </div>

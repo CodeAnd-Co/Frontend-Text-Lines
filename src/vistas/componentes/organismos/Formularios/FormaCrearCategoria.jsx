@@ -1,8 +1,9 @@
-import Alerta from '../../componentes/moleculas/Alerta';
-import CampoTexto from '../atomos/CampoTexto';
+import Alerta from '../../moleculas/Alerta';
+import CampoTexto from '../../atomos/CampoTexto';
 import { useState, useEffect } from 'react';
-import obtenerProductos from '../../../dominio/servicios/obtenerProductos';
-import ProductosModal from './ProductosModal';
+import obtenerProductos from '../../../../dominio/servicios/obtenerProductos';
+import ProductosModal from '../ProductosModal';
+import { useAuth } from '../../../../hooks/AuthProvider';
 
 const columns = [
   { field: 'id', headerName: 'Id', width: 100 },
@@ -10,29 +11,28 @@ const columns = [
   { field: 'tipo', headerName: 'Tipo', width: 100 },
 ];
 
-const API_URL = import.meta.env.VITE_API_URL;
-const API_KEY = import.meta.env.VITE_API_KEY;
-
-const FormaCrearCuotaSet = ({
-  nombreCuotaSet,
-  setNombreCuotaSet,
-  descripcionCuotaSet,
-  setDescripcionCuotaSet,
+const FormaCrearCategorias = ({
+  nombreCategoria,
+  setNombreCategoria,
+  descripcionCategoria,
+  setDescripcionCategoria,
   productos,
   setProductos,
   mostrarAlerta,
   setMostrarAlerta,
 }) => {
   const [rows, setRows] = useState([]);
+  const { usuario } = useAuth();
+  const clienteSeleccionado = usuario.clienteSeleccionado;
 
   useEffect(() => {
-    const obtenerDatosProductos = async () => {
-      const productos = await obtenerProductos(API_URL, API_KEY);
+    const obtenerDatosProductos = async (clienteSeleccionado) => {
+      const productos = await obtenerProductos(clienteSeleccionado);
       setRows(productos);
     };
 
-    obtenerDatosProductos();
-  }, []);
+    obtenerDatosProductos(clienteSeleccionado);
+  }, [clienteSeleccionado]);
 
   const handleClickFila = (evento) => {
     const productoSeleccionado = evento.row;
@@ -49,8 +49,8 @@ const FormaCrearCuotaSet = ({
         label={'Nombre'}
         fullWidth
         type={'text'}
-        value={nombreCuotaSet}
-        onChange={(evento) => setNombreCuotaSet(evento.target.value)}
+        value={nombreCategoria}
+        onChange={(evento) => setNombreCategoria(evento.target.value)}
       />
 
       <ProductosModal
@@ -67,14 +67,14 @@ const FormaCrearCuotaSet = ({
         label={'Descripción'}
         fullWidth
         type={'text'}
-        value={descripcionCuotaSet}
-        onChange={(evento) => setDescripcionCuotaSet(evento.target.value)}
+        value={descripcionCategoria}
+        onChange={(evento) => setDescripcionCategoria(evento.target.value)}
       />
 
       {mostrarAlerta && (
         <Alerta
           tipo='warning'
-          mensaje={'Completa todos los campos y selecciona al menos un producto.'}
+          mensaje={'Ingresa el nombre y selecciona al menos un producto.'}
           cerrable
           duracion={10000}
           onClose={() => setMostrarAlerta(false)}
@@ -85,4 +85,4 @@ const FormaCrearCuotaSet = ({
   );
 };
 
-export default FormaCrearCuotaSet;
+export default FormaCrearCategorias;

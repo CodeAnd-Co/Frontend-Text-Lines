@@ -30,6 +30,7 @@ const RutasSistemaAdministrativo = () => {
         }
       />
       <Route path={RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION} element={<Configuracion />} />
+      {/* Rutas del tablero */}
       <Route
         path={RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO}
         element={
@@ -40,12 +41,30 @@ const RutasSistemaAdministrativo = () => {
           </VerificarClienteSeleccionado>
         }
       >
-        <Route path='empleados/consultar-lista' element={<LIstaEmpleados />} />
-        <Route path='empleados/consultar-grupos' element={<ListaGrupoEmpleados />} />
-        <Route path='cuotas' element={<ListaCuotas />} />
-        <Route path='cuotas/editar-cuotas' element={<EditarCuotas />} />
-        <Route path='productos/consultar-lista' element={<ListaProductos />} />
+        {/* Empleados */}
+        <Route
+          path={RUTAS.SISTEMA_ADMINISTRATIVO.EMPLEADOS.CONSULTAR_EMPLEADOS}
+          element={<LIstaEmpleados />}
+        />
+        <Route
+          path={RUTAS.SISTEMA_ADMINISTRATIVO.EMPLEADOS.CONSULTAR_GRUPOS}
+          element={<ListaGrupoEmpleados />}
+        />
+
+        {/* Cuotas */}
+        <Route path={RUTAS.SISTEMA_ADMINISTRATIVO.CUOTAS.BASE} element={<ListaCuotas />} />
+        <Route
+          path={RUTAS.SISTEMA_ADMINISTRATIVO.CUOTAS.EDITAR_CUOTAS}
+          element={<EditarCuotas />}
+        />
+
+        {/* Productos */}
+        <Route
+          path={RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_PRODUCTOS}
+          element={<ListaProductos />}
+        />
       </Route>
+      {/* Rutas fuera del tablero */}
       <Route
         path={RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE}
         element={

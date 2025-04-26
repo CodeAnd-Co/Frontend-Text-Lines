@@ -109,7 +109,6 @@ const BarraLateral = () => {
                 ruta={
                   RUTAS.SISTEMA_ADMINISTRATIVO.BASE +
                   RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO +
-                  RUTAS.SISTEMA_ADMINISTRATIVO.EMPLEADOS.BASE +
                   RUTAS.SISTEMA_ADMINISTRATIVO.EMPLEADOS.CONSULTAR_EMPLEADOS
                 }
                 seleccionado={seleccionado}
@@ -120,7 +119,6 @@ const BarraLateral = () => {
                 ruta={
                   RUTAS.SISTEMA_ADMINISTRATIVO.BASE +
                   RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO +
-                  RUTAS.SISTEMA_ADMINISTRATIVO.EMPLEADOS.BASE +
                   RUTAS.SISTEMA_ADMINISTRATIVO.EMPLEADOS.CONSULTAR_GRUPOS
                 }
                 seleccionado={seleccionado}
@@ -138,7 +136,6 @@ const BarraLateral = () => {
                 ruta={
                   RUTAS.SISTEMA_ADMINISTRATIVO.BASE +
                   RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO +
-                  RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.BASE +
                   RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_PRODUCTOS
                 }
                 seleccionado={seleccionado}
@@ -149,7 +146,6 @@ const BarraLateral = () => {
                 ruta={
                   RUTAS.SISTEMA_ADMINISTRATIVO.BASE +
                   RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO +
-                  RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.BASE +
                   RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_SETS
                 }
                 seleccionado={seleccionado}
@@ -160,7 +156,6 @@ const BarraLateral = () => {
                 ruta={
                   RUTAS.SISTEMA_ADMINISTRATIVO.BASE +
                   RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO +
-                  RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.BASE +
                   RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_CATEGORIAS
                 }
                 seleccionado={seleccionado}

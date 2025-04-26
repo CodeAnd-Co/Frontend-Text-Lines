@@ -9,7 +9,6 @@ const ListaEmpleados = () => {
   const { grupos, cargando, error } = useConsultarGrupos();
 
   const columnas = [
-    { field: 'id', headerName: 'ID Grupo', width: 120 },
     {
       field: 'nombre',
       headerName: 'Nombre del Grupo',

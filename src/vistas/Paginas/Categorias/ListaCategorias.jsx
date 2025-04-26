@@ -1,9 +1,11 @@
 //RF[47] Consulta lista de categorías - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF47]
 
 import React from 'react';
-import CustomDataGrid from '../../Componentes/Organismos/Tabla';
+import Tabla from '../../Componentes/Organismos/Tabla';
 import { useConsultarCategorias } from '../../../hooks/Categorias/useConsultarCategorias';
 import Alerta from '../../componentes/moleculas/Alerta';
+import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
+import { Box } from '@mui/material';
 
 const ListaCategorias = () => {
   // Hook que obtiene las categorías desde el repositorio
@@ -38,11 +40,35 @@ const ListaCategorias = () => {
     idCliente: cat.idCliente,
   }));
 
+  const botones = [
+    { label: 'Añadir', onClick: () => console.log('Añadir'), size: 'large' },
+    {
+      variant: 'outlined',
+      label: 'Importar',
+      onClick: () => console.log('Importar'),
+      size: 'large',
+    },
+    {
+      variant: 'outlined',
+      label: 'Exportar',
+      onClick: () => console.log('Exportar'),
+      size: 'large',
+    },
+    { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large' },
+    { label: 'Eliminar', onClick: () => console.log('Eliminar'), size: 'large' },
+  ];
+
   return (
-    <div style={{ height: 400, width: '100%' }}>
-      {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}
-      <CustomDataGrid columns={columns} rows={rows} loading={cargando} checkboxSelection />
-    </div>
+    <ContenedorLista
+      titulo='Categorías'
+      descripcion='Gestiona y organiza las categorías registradas en el sistema.'
+      informacionBotones={botones}
+    >
+      <Box style={{ height: 400, width: '100%' }}>
+        {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}
+        <Tabla columns={columns} rows={rows} loading={cargando} checkboxSelection />
+      </Box>
+    </ContenedorLista>
   );
 };
 

@@ -21,7 +21,7 @@ export class Empleado {
     this.areaTrabajo = areaTrabajo;
     this.posicion = posicion;
     this.cantidadPuntos = parseFloat(cantidadPuntos);
-    this.antiguedad = this.formatearFecha(antiguedad);
+    this.antiguedad = Empleado.formatearFecha(antiguedad);
   }
 
   static formatearFecha(fecha) {

@@ -22,13 +22,16 @@ const ModalCrearCuotaSet = () => {
       return;
     }
 
-    navegar(`/admin/tablero${RUTAS.SISTEMA_ADMINISTRATIVO.CUOTAS.EDITAR_CUOTAS}`, {
-      state: {
-        nombreCuotaSet,
-        descripcion: descripcionCuotaSet,
-        productos,
-      },
-    });
+    navegar(
+      `${RUTAS.SISTEMA_ADMINISTRATIVO.BASE_TABLERO}${RUTAS.SISTEMA_ADMINISTRATIVO.CUOTAS.EDITAR_CUOTAS}`,
+      {
+        state: {
+          nombreCuotaSet,
+          descripcion: descripcionCuotaSet,
+          productos,
+        },
+      }
+    );
   };
 
   return (

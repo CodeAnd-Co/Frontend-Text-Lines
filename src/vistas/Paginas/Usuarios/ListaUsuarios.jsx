@@ -29,7 +29,7 @@ const ListaUsuarios = () => {
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
 
   const { usuarios, cargando, error } = useConsultarListaUsuarios();
-  const { usuario, mensaje, cargando: cargandoDetalle, error: errorDetalle } =
+  const { usuario, cargando: cargandoDetalle, error: errorDetalle } =
     useUsuarioId(modalDetalleAbierto ? idUsuarioSeleccionado : null);
 
   const handleConfirm = async () => {
@@ -197,7 +197,6 @@ const ListaUsuarios = () => {
         </ModalFlotante>
       )}
 
-      {/* 🔔 Alerta fuera del modal */}
       {errorDetalle && (
         <div style={{ marginTop: "2rem" }}>
           <Alerta

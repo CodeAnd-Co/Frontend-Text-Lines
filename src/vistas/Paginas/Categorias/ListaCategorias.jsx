@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import Tabla from '../../Componentes/Organismos/Tabla';
 import { useConsultarCategorias } from '../../../hooks/Categorias/useConsultarCategorias';
-import Alerta from '../../componentes/moleculas/Alerta';
+import Alerta from '../../Componentes/moleculas/Alerta';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
+import ModalEliminarCategoria from '../../componentes/Organismos/ModalEliminarCategoria';
 import { Box } from '@mui/material';
-import ModalEliminarCategoria from '../../Componentes/Organismos/ModalEliminarCategoria';
 
 const ListaCategorias = () => {
   const { categorias, cargando, error, recargar } = useConsultarCategorias();

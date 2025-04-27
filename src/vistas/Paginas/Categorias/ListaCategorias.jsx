@@ -1,9 +1,16 @@
-//RF[47] Consulta lista de categorías - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF47]
-
 import React from "react";
 import CustomDataGrid from "../../componentes/organismos/DataGrid";
 import { useConsultarCategorias } from "../../../hooks/Categorias/useConsultarCategorias";
 import Alerta from "../../componentes/moleculas/Alerta"; 
+
+/**
+ * Página para consultar y mostrar la lista de categorías en una tabla.
+ *
+ * Muestra los resultados en un `CustomDataGrid`, incluyendo
+ * nombre, descripción y número de productos de cada categoría.
+ *
+ * @see [RF[47] Consulta lista de categorías](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF47)
+ */
 
 const ListaCategorias = () => {
   // Hook que obtiene las categorías desde el repositorio

@@ -6,6 +6,7 @@ import ListaCuotas from '../vistas/Paginas/Cuotas/ListaCuotas';
 import LIstaEmpleados from '../vistas/Paginas/Empleados/ListaEmpleados';
 import EditarCuotas from '../vistas/Paginas/Cuotas/EditarCuotas';
 import ListaGrupoEmpleados from '../Vistas/Paginas/Empleados/ListaGrupoEmpleados';
+import ListaCategorias from '../vistas/Paginas/Categorias/ListaCategorias';
 import SistemaAdministrativo from '../Vistas/Paginas/SistemaAdministrativo';
 import Configuracion from '../Vistas/Paginas/Configuracion/ConfiguracionGeneral';
 import Error404 from '../Vistas/Paginas/Errores/Error404';
@@ -33,21 +34,8 @@ const RutasSistemaAdministrativo = () => {
         <Route path='empleados/consultar-grupos' element={<ListaGrupoEmpleados />} />
         <Route path='cuotas' element={<ListaCuotas />} />
         <Route path='cuotas/editar-cuota' element={<EditarCuotas />} />
+        <Route path='productos/consultar-categorias' element={<ListaCategorias />} />
       </Route>
-      <Route
-        path={
-            RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO +
-            RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.BASE +
-            RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_CATEGORIAS
-          }
-        element={
-          <VerificarClienteSeleccionado>
-            <RutaProtegida permiso={PERMISOS.CONSULTAR_CATEGORIAS_PRODUCTOS}>
-              <ListaCategorias />
-            </RutaProtegida>
-          </VerificarClienteSeleccionado>
-        }
-      />
     </Routes>
   );
 };

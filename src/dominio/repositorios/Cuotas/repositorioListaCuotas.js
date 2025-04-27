@@ -9,7 +9,7 @@ export class RepositorioListaCuotas {
       console.log('API URL:', RUTAS_API.CUOTAS.CONSULTAR_LISTA);
       const respuesta = await axios.post(
         RUTAS_API.CUOTAS.CONSULTAR_LISTA,
-        {}, // ← Aquí mandamos un body vacío porque el backend usa req.user.clienteSeleccionado, no necesitas enviar datos manualmente
+        {}, 
         {
           withCredentials: true,
           headers: {

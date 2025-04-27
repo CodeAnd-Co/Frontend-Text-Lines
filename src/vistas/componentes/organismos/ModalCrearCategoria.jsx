@@ -16,6 +16,7 @@ const ModalCrearCategoria = () => {
     = useCrearCategoria();
 
   const handleAbrir = () => setMostrarFormulario(true);
+
   const handleCerrar = () => {
     setMostrarFormulario(false);
     setNombreCategoria('');
@@ -26,14 +27,17 @@ const ModalCrearCategoria = () => {
   };
 
   const handleConfirmar = async () => {
-    if (!nombreCategoria || productos.length === 0) {
+    // Validar que el nombre de categoría no esté vacío después de eliminar espacios
+    // y que haya al menos un producto seleccionado
+    if (!nombreCategoria.trim() || productos.length === 0) {
       setMostrarAlerta(true);
       return;
     }
 
+    // Enviar datos con nombres limpios (sin espacios innecesarios)
     const fueCreada = await crearCategoria({
-      nombreCategoria,
-      descripcion: descripcionCategoria,
+      nombreCategoria: nombreCategoria.trim(),
+      descripcion: descripcionCategoria.trim(),
       productos,
     });
 

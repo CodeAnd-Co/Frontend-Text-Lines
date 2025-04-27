@@ -49,7 +49,8 @@ export const validarDatosCrearUsuario = (datos) => {
     if (datos.contrasenia.length < 8) {
       errores.contrasenia = 'La contraseña debe tener al menos 8 caracteres';
     } else if (!tieneCaracterEspecial.test(datos.contrasenia)) {
-      errores.contrasenia = 'Debe contener al menos un carácter especial';
+      errores.contrasenia =
+        'Debe contener al menos uno de estos caracteres: ! @ # $ % ^ & * ( ) , . ? " : { } | < >';
     }
   }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useConsultarCategorias } from '../../../hooks/Categorias/useConsultarCategorias';
 import CustomDataGrid from '../../Componentes/Organismos/Tabla';
 import Alerta from '../../componentes/moleculas/Alerta';
@@ -6,7 +6,6 @@ import ModalCrearCategoria from '../../componentes/organismos/ModalCrearCategori
 import ContenedorLista from '../../componentes/organismos/ContenedorLista';
 import { useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
-
 /**
  * Página para consultar y mostrar la lista de categorías en una tabla.
  *
@@ -14,13 +13,16 @@ import { tokens } from '../../../theme';
  * nombre, descripción y número de productos de cada categoría.
  *
  * @see [RF[47] Consulta lista de categorías](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF47)
+ * @see [RF[46] Consulta lista de categorías](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF46)
  */
-
 const ListaCategorias = () => {
   // Hook que obtiene las categorías desde el repositorio
   const { categorias, cargando, error } = useConsultarCategorias();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  // Estado para controlar la visualización del modal
+  const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
 
   // Columnas para el DataGrid
   const columns = [
@@ -33,7 +35,6 @@ const ListaCategorias = () => {
       flex: 1,
     },
   ];
-
   // Las filas deben tener un campo `id`, usamos `idCategoria`
   const rows = categorias.map((cat) => ({
     id: cat.idCategoria,
@@ -43,6 +44,16 @@ const ListaCategorias = () => {
     idCliente: cat.idCliente,
   }));
 
+  // Manejador para abrir el modal
+  const handleAbrirModalCrear = () => {
+    setModalCrearAbierto(true);
+  };
+
+  // Manejador para cerrar el modal
+  const handleCerrarModalCrear = () => {
+    setModalCrearAbierto(false);
+  };
+
   const botones = [
     {
       label: 'Añadir',
@@ -50,7 +61,7 @@ const ListaCategorias = () => {
       color: 'primary',
       size: 'large',
       backgroundColor: colors.altertex[1],
-      onClick: () => console.log('Añadir'),
+      onClick: handleAbrirModalCrear, // Ahora abre el modal de crear
     },
     {
       label: 'Editar',
@@ -71,16 +82,27 @@ const ListaCategorias = () => {
   ];
 
   return (
-    <ContenedorLista
-      titulo='Categorías'
-      descripcion='Gestiona las categorías de productos disponibles.'
-      informacionBotones={botones}
-    >
-      <div style={{ height: 400, width: '100%' }}>
-        {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}
-        <CustomDataGrid columns={columns} rows={rows} loading={cargando} checkboxSelection />
-      </div>
-    </ContenedorLista>
+    <>
+      <ContenedorLista
+        titulo='Categorías'
+        descripcion='Gestiona las categorías de productos disponibles.'
+        informacionBotones={botones}
+      >
+        <div style={{ height: 400, width: '100%' }}>
+          {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}
+          <CustomDataGrid columns={columns} rows={rows} loading={cargando} checkboxSelection />
+        </div>
+      </ContenedorLista>
+
+      {/* Modal para crear una nueva categoria */}
+      <ModalCrearCategoria
+        abierto={modalCrearAbierto}
+        onCerrar={handleCerrarModalCrear}
+        onCreado={() => {
+          handleCerrarModalCrear();
+        }}
+      />
+    </>
   );
 };
 

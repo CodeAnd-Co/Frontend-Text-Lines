@@ -11,6 +11,9 @@ const columns = [
   { field: 'tipo', headerName: 'Tipo', width: 100 },
 ];
 
+/**
+ * @see [RF[46] Consulta lista de categorías](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF46)
+ */
 const FormaCrearCategorias = ({
   nombreCategoria,
   setNombreCategoria,

@@ -1,7 +1,9 @@
-import React from "react";
-import CustomDataGrid from "../../componentes/organismos/DataGrid";
-import { useConsultarCategorias } from "../../../hooks/Categorias/useConsultarCategorias";
-import Alerta from "../../componentes/moleculas/Alerta"; 
+//RF[47] Consulta lista de categorías - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF47]
+
+import React from 'react';
+import CustomDataGrid from '../../Componentes/Organismos/Tabla';
+import { useConsultarCategorias } from '../../../hooks/Categorias/useConsultarCategorias';
+import Alerta from '../../componentes/moleculas/Alerta';
 
 /**
  * Página para consultar y mostrar la lista de categorías en una tabla.
@@ -19,19 +21,19 @@ const ListaCategorias = () => {
   // Columnas para el DataGrid
   const columns = [
     {
-      field: "nombreCategoria",
-      headerName: "Nombre",
+      field: 'nombreCategoria',
+      headerName: 'Nombre',
       flex: 1,
     },
     {
-      field: "descripcion",
-      headerName: "Descripción",
+      field: 'descripcion',
+      headerName: 'Descripción',
       flex: 2,
     },
     {
-      field: "cantidadProductos",
-      headerName: "Número de productos asociados",
-      type: "number",
+      field: 'cantidadProductos',
+      headerName: 'Número de productos asociados',
+      type: 'number',
       flex: 1,
     },
   ];
@@ -42,26 +44,13 @@ const ListaCategorias = () => {
     nombreCategoria: cat.nombreCategoria,
     descripcion: cat.descripcion,
     cantidadProductos: cat.cantidadProductos,
-    idCliente: cat.idCliente
+    idCliente: cat.idCliente,
   }));
 
   return (
-    <div style={{ height: 400, width: "100%" }}>
-      {error && (
-        <Alerta
-          tipo="error"
-          mensaje={error}
-          icono
-          cerrable
-          centradoInferior
-        />
-      )}
-      <CustomDataGrid
-        columns={columns}
-        rows={rows}
-        loading={cargando}
-        checkboxSelection
-      />
+    <div style={{ height: 400, width: '100%' }}>
+      {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}
+      <CustomDataGrid columns={columns} rows={rows} loading={cargando} checkboxSelection />
     </div>
   );
 };

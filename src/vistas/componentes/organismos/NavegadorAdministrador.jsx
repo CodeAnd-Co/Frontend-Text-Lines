@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import Imagen from '../Atomos/Imagen';
 import Icono from '../Atomos/Icono';
 import GrupoBotones from '../Moleculas/GrupoBotones';
@@ -22,6 +22,8 @@ const NavegadorAdministrador = ({
   alClicIcono,
   informacionBotones = [],
 }) => {
+  const theme = useTheme();
+
   return (
     <Box
       component='nav'
@@ -31,7 +33,7 @@ const NavegadorAdministrador = ({
       justifyContent='space-between'
       padding='0.5rem 1rem'
       boxShadow={2}
-      bgcolor='white'
+      bgcolor={theme.palette.background.paper}
       gap={{ xs: 1, sm: 0 }}
     >
       <Imagen
@@ -58,7 +60,7 @@ const NavegadorAdministrador = ({
           nombre={nombreIcono}
           variant={varianteIcono}
           size={tamanoIcono}
-          color={colorIcono}
+          color={colorIcono || theme.palette.text.primary}
           clickable={iconoClickeable}
           tooltip={tooltipIcono}
           onClick={alClicIcono}

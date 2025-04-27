@@ -1,19 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Paper } from '@mui/material';
+import { Modal, Paper, useTheme } from '@mui/material';
 import Texto from '../Atomos/Texto';
-import GrupoBotones from '../moleculas/GrupoBotones';
+import GrupoBotones from '../Moleculas/GrupoBotones';
 
-/**
- * Modal reutilizable para envolver cualquier formulario u organismo.
- *
- * Recibe:
- * - `open`: si el modal está visible
- * - `onClose`: función para cerrar el modal
- * - `onConfirm`: función al hacer clic en el botón principal
- * - `titulo`: título opcional del formulario
- * - `children`: el contenido interno (ej. formulario)
- */
 const ModalFlotante = ({
   open,
   onClose,
@@ -25,7 +15,8 @@ const ModalFlotante = ({
   botones = null,
   children,
 }) => {
-  // Botones por defecto si no se proporcionan
+  const theme = useTheme();
+
   const defaultBotones = [
     { label: cancelLabel, variant: 'outlined', onClick: onClose },
     { label: confirmLabel, variant: 'contained', onClick: onConfirm },
@@ -52,7 +43,7 @@ const ModalFlotante = ({
           transform: 'translate(-50%, -50%)',
           maxHeight: '80vh',
           overflowY: 'auto',
-          bgcolor: 'background.paper',
+          bgcolor: theme.palette.background.paper,
           boxShadow: 24,
           borderRadius: 2,
           padding: 3,
@@ -61,7 +52,7 @@ const ModalFlotante = ({
         }}
       >
         {titulo && (
-          <Texto variant={tituloVariant} gutterBottom>
+          <Texto variant={tituloVariant} gutterBottom sx={{ color: theme.palette.text.primary }}>
             {titulo}
           </Texto>
         )}

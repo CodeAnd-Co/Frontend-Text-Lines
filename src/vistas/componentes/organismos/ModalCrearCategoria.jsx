@@ -1,12 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import ModalFlotante from '../organismos/ModalFlotante';
 import FormaCrearCategorias from './Formularios/FormaCrearCategoria';
 import useCrearCategoria from '../../../hooks/Categorias/useCrearCategoria';
 import Alerta from '../moleculas/Alerta';
-
-/**
- * @see [RF[46] Consulta lista de categorías](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF46)
- */
 
 const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
   const [nombreCategoria, setNombreCategoria] = useState('');
@@ -14,28 +10,41 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
   const [productos, setProductos] = useState([]);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
 
-  const { crearCategoria, cargando, exito, error, mensaje, setError, resetEstado } =
-    useCrearCategoria();
+  const { crearCategoria, cargando, exito, error, mensaje, setError, resetEstado }
+    = useCrearCategoria();
+
+  const resetForm = useCallback(() => {
+    setNombreCategoria('');
+    setDescripcionCategoria('');
+    setProductos([]);
+    setMostrarAlerta(false);
+    resetEstado();
+  }, [resetEstado]);
+
+  const handleCerrar = useCallback(() => {
+    resetForm();
+    onCerrar();
+  }, [resetForm, onCerrar]);
 
   // Resetea el estado cuando se cierra el modal
   useEffect(() => {
     if (!abierto) {
       resetForm();
     }
-  }, [abierto]);
+  }, [abierto, resetForm]);
 
-  const resetForm = () => {
-    setNombreCategoria('');
-    setDescripcionCategoria('');
-    setProductos([]);
-    setMostrarAlerta(false);
-    resetEstado();
-  };
-
-  const handleCerrar = () => {
-    resetForm();
-    onCerrar();
-  };
+  // Efecto para detectar cuando la creación es exitosa
+  useEffect(() => {
+    if (exito) {
+      setTimeout(() => {
+        if (onCreado) {
+          onCreado();
+        } else {
+          handleCerrar();
+        }
+      }, 2000);
+    }
+  }, [exito, onCreado, handleCerrar]);
 
   const handleConfirmar = async () => {
     // Validar que el nombre de categoría no esté vacío después de eliminar espacios
@@ -46,18 +55,14 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
     }
 
     // Enviar datos con nombres limpios (sin espacios innecesarios)
-    const fueCreada = await crearCategoria({
+    await crearCategoria({
       nombreCategoria: nombreCategoria.trim(),
       descripcion: descripcionCategoria.trim(),
       productos,
     });
 
-    if (fueCreada) {
-      setTimeout(() => {
-        if (onCreado) onCreado();
-        handleCerrar();
-      }, 2000);
-    }
+    // No necesitamos hacer nada más aquí, el useEffect para exito se encargará
+    // de llamar a onCreado cuando sea necesario
   };
 
   return (

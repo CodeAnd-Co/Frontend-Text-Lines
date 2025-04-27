@@ -6,6 +6,7 @@ import ModalCrearCategoria from '../../componentes/organismos/ModalCrearCategori
 import ContenedorLista from '../../componentes/organismos/ContenedorLista';
 import { useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
+
 /**
  * Página para consultar y mostrar la lista de categorías en una tabla.
  *
@@ -13,11 +14,10 @@ import { tokens } from '../../../theme';
  * nombre, descripción y número de productos de cada categoría.
  *
  * @see [RF[47] Consulta lista de categorías](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF47)
- * @see [RF[46] Consulta lista de categorías](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF46)
  */
 const ListaCategorias = () => {
   // Hook que obtiene las categorías desde el repositorio
-  const { categorias, cargando, error } = useConsultarCategorias();
+  const { categorias, cargando, error, recargar } = useConsultarCategorias();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -54,6 +54,13 @@ const ListaCategorias = () => {
     setModalCrearAbierto(false);
   };
 
+  // Manejador para cuando se crea una nueva categoría
+  const handleCategoriaCreadaExitosamente = () => {
+    handleCerrarModalCrear();
+    // Recarga la lista de categorías
+    recargar();
+  };
+
   const botones = [
     {
       label: 'Añadir',
@@ -61,7 +68,7 @@ const ListaCategorias = () => {
       color: 'primary',
       size: 'large',
       backgroundColor: colors.altertex[1],
-      onClick: handleAbrirModalCrear, // Ahora abre el modal de crear
+      onClick: handleAbrirModalCrear, // Ahora abre el modal para crear
     },
     {
       label: 'Editar',
@@ -94,13 +101,11 @@ const ListaCategorias = () => {
         </div>
       </ContenedorLista>
 
-      {/* Modal para crear una nueva categoria */}
+      {/* Modal para crear categoria */}
       <ModalCrearCategoria
         abierto={modalCrearAbierto}
         onCerrar={handleCerrarModalCrear}
-        onCreado={() => {
-          handleCerrarModalCrear();
-        }}
+        onCreado={handleCategoriaCreadaExitosamente}
       />
     </>
   );

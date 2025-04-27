@@ -1,16 +1,6 @@
 import { useEffect, useState } from 'react';
 import { RepositorioListaCuotas } from '../../Dominio/repositorios/Cuotas/repositorioListaCuotas';
 
-/**
- * Hook para consultar la lista de cuotas.
- * @returns {{
- *   cuotas: Cuota[],
- *   cargando: boolean,
- *   error: string | null,
- *   mensaje: string,
- *   recargar: () => void
- * }}
- */
 export function useConsultarCuotas() {
   const [cuotas, setCuotas] = useState([]);
   const [mensaje, setMensaje] = useState('');
@@ -24,9 +14,11 @@ export function useConsultarCuotas() {
 
       try {
         const { cuotas, mensaje } = await RepositorioListaCuotas.obtenerLista();
+        console.log('Cuotas fetched:', cuotas); // Debugging
         setCuotas(cuotas);
         setMensaje(mensaje);
       } catch (err) {
+        console.error('Error fetching cuotas:', err); // Debugging
         setCuotas([]);
         setMensaje('');
         setError(err.message);
@@ -34,7 +26,6 @@ export function useConsultarCuotas() {
         setCargando(false);
       }
     };
-
     cargar();
   }, []);
 

@@ -1,27 +1,27 @@
-
 import axios from 'axios';
-import { ListaCuotas } from '../../modelos/Cuotas/ListaCuotas';
 import { RUTAS_API } from '../../../Utilidades/Constantes/rutasAPI';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-export class RepositorioListaCuotas{
-  /**
-   * Obtiene la lista de cuotas desde la API
-   * @returns {Promise<{cuotas: Cuota[], mensaje: string}>}
-   */
+export class RepositorioListaCuotas {
   static async obtenerLista() {
     try {
-      const respuesta = await axios.get(RUTAS_API.CUOTAS.CONSULTAR_LISTA, {
-        withCredentials: true,
-        headers: {
-          'x-api-key': API_KEY,
-        },
-      });
-
-      return new ListaCuotas(respuesta.data);
+      console.log('API URL:', RUTAS_API.CUOTAS.CONSULTAR_LISTA);
+      const respuesta = await axios.post(
+        RUTAS_API.CUOTAS.CONSULTAR_LISTA,
+        {}, // ← Aquí mandamos un body vacío porque el backend usa req.user.clienteSeleccionado, no necesitas enviar datos manualmente
+        {
+          withCredentials: true,
+          headers: {
+            'x-api-key': API_KEY,
+          },
+        }
+      );
+      console.log('API Response:', respuesta.data);
+      return respuesta.data;
     } catch (error) {
       const mensaje = error.response?.data?.mensaje || 'Error al obtener cuotas';
+      console.error('Error fetching cuotas:', error);
       throw new Error(mensaje);
     }
   }

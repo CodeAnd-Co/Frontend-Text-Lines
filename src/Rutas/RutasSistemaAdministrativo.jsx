@@ -7,6 +7,7 @@ import ListaCuotas from '../vistas/Paginas/Cuotas/ListaCuotas';
 import LIstaEmpleados from '../vistas/Paginas/Empleados/ListaEmpleados';
 import EditarCuotas from '../vistas/Paginas/Cuotas/EditarCuotas';
 import ListaGrupoEmpleados from '../Vistas/Paginas/Empleados/ListaGrupoEmpleados';
+import ListaCategorias from '../vistas/Paginas/Categorias/ListaCategorias';
 import SistemaAdministrativo from '../Vistas/Paginas/SistemaAdministrativo';
 import Configuracion from '../Vistas/Paginas/Configuracion/ConfiguracionGeneral';
 import Error404 from '../Vistas/Paginas/Errores/Error404';
@@ -43,8 +44,8 @@ const RutasSistemaAdministrativo = () => {
         <Route path='empleados/consultar-lista' element={<LIstaEmpleados />} />
         <Route path='empleados/consultar-grupos' element={<ListaGrupoEmpleados />} />
         <Route path='cuotas' element={<ListaCuotas />} />
-        <Route path='cuotas/editar-cuotas' element={<EditarCuotas />} />
-        <Route path='productos/consultar-lista' element={<ListaProductos />} />
+        <Route path='cuotas/editar-cuota' element={<EditarCuotas />} />
+        <Route path='productos/consultar-categorias' element={<ListaCategorias />} />
       </Route>
       <Route
         path={RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE}

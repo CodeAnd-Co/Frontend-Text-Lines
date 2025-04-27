@@ -1,12 +1,14 @@
 import { Box, useTheme } from '@mui/material';
 import Imagen from '../Atomos/Imagen';
 import Icono from '../Atomos/Icono';
+import Texto from '../Atomos/Texto';
 import GrupoBotones from '../Moleculas/GrupoBotones';
 import PropTypes from 'prop-types';
 
 const NavegadorAdministrador = ({
   src,
   alt,
+  titulo,
   nombreIcono,
   varianteIcono,
   tamanoIcono,
@@ -22,7 +24,7 @@ const NavegadorAdministrador = ({
   alClicIcono,
   informacionBotones = [],
 }) => {
-  const theme = useTheme(); // Usar el tema actual
+  const theme = useTheme();
 
   return (
     <Box
@@ -33,19 +35,26 @@ const NavegadorAdministrador = ({
       justifyContent='space-between'
       padding='0.5rem 1rem'
       boxShadow={2}
-      bgcolor={theme.palette.background.paper} // Usar color de fondo del tema
+      bgcolor={theme.palette.background.paper}
       gap={{ xs: 1, sm: 0 }}
     >
-      <Imagen
-        src={src}
-        alt={alt}
-        height={alturaImagen}
-        width={anchoImagen}
-        fit={ajuste}
-        clickable={clickeableImagen}
-        onClick={alClicImagen}
-        style={{ height: '40px', marginRight: '1rem', ...estiloImagen }}
-      />
+      <Box display='flex' alignItems='center' gap={2} width={{ xs: '100%', sm: 'auto' }}>
+        <Imagen
+          src={src}
+          alt={alt}
+          height={alturaImagen}
+          width={anchoImagen}
+          fit={ajuste}
+          clickable={clickeableImagen}
+          onClick={alClicImagen}
+          style={{ height: '40px', ...estiloImagen }}
+        />
+        {titulo && (
+          <Texto variant='h6' color='text.secondary'>
+            {titulo}
+          </Texto>
+        )}
+      </Box>
 
       <Box flexGrow={1} minWidth={{ xs: '100%', sm: 'auto' }} />
 
@@ -60,7 +69,7 @@ const NavegadorAdministrador = ({
           nombre={nombreIcono}
           variant={varianteIcono}
           size={tamanoIcono}
-          color={colorIcono || theme.palette.text.primary} // Si no hay color, usar el color de texto del tema
+          color={colorIcono || theme.palette.text.primary}
           clickable={iconoClickeable}
           tooltip={tooltipIcono}
           onClick={alClicIcono}
@@ -74,6 +83,7 @@ const NavegadorAdministrador = ({
 NavegadorAdministrador.propTypes = {
   src: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
+  titulo: PropTypes.string,
   nombreIcono: PropTypes.string.isRequired,
   varianteIcono: PropTypes.oneOf(['filled', 'outlined', 'rounded', 'sharp', 'twoTone']),
   tamanoIcono: PropTypes.oneOf(['small', 'medium', 'large']),

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Boton from '../atomos/boton';
+import Boton from '../Atomos/Boton';
 import FormaCrearCuotaSet from '../organismos/Formularios/FormaCrearCuotaSet';
 import ModalFlotante from '../organismos/ModalFlotante';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';
@@ -22,13 +22,16 @@ const ModalCrearCuotaSet = () => {
       return;
     }
 
-    navegar(`/admin/tablero${RUTAS.SISTEMA_ADMINISTRATIVO.CUOTAS.EDITAR_CUOTAS}`, {
-      state: {
-        nombreCuotaSet,
-        descripcion: descripcionCuotaSet,
-        productos,
-      },
-    });
+    navegar(
+      `${RUTAS.SISTEMA_ADMINISTRATIVO.BASE_TABLERO}${RUTAS.SISTEMA_ADMINISTRATIVO.CUOTAS.EDITAR_CUOTAS}`,
+      {
+        state: {
+          nombreCuotaSet,
+          descripcion: descripcionCuotaSet,
+          productos,
+        },
+      }
+    );
   };
 
   return (

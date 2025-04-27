@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
 import { useAuth } from '../../../hooks/AuthProvider';
-import Icono from '../../Componentes/Atomos/Icono';
-import Cargador from '../../Componentes/Atomos/Cargador';
-import Texto from '../../Componentes/Atomos/Texto';
+import Icono from '../../componentes/Atomos/Icono';
+import Cargador from '../../componentes/Atomos/Cargador';
+import Texto from '../../componentes/Atomos/Texto';
 import NavegadorAdministrador from '../../Componentes/Organismos/NavegadorAdministrador';
-import TarjetaConImagen from '../../Componentes/Moleculas/TarjetaConImagen';
+import TarjetaConImagen from '../../componentes/Moleculas/TarjetaConImagen';
+import Cookies from 'js-cookie';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';
 import { useConsultarClientes } from '../../../hooks/Clientes/useConsultarClientes';
 import { useSeleccionarCliente } from '../../../hooks/Clientes/useSeleccionarCliente';
@@ -19,8 +20,15 @@ const estiloTarjeta = {
 };
 
 const estiloTitulo = {
-  margin: { xs: '2rem 0', sm: '4rem 0', md: '6rem 0' },
+  marginTop: { xs: '2rem', sm: '4rem', md: '6rem' },
   fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem', lg: '3.5rem' },
+  textTransform: 'uppercase',
+};
+
+const estiloSubtitulo = {
+  marginBottom: { xs: '1.5rem', sm: '2rem', md: '2.5rem' },
+  fontSize: { xs: '1.2rem', sm: '1.5rem', md: '1.8rem' },
+  fontWeight: 500,
 };
 
 const estiloTarjetaAgregar = {
@@ -28,14 +36,14 @@ const estiloTarjetaAgregar = {
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  border: '2px dashed #90CAF9',
-  backgroundColor: '#E3F2FD',
+  border: '2px dashed rgba(15, 140, 241, 0.18)',
+  backgroundColor: 'rgba(15, 140, 241, 0.18)',
   color: '#1976D2',
   borderRadius: '10px',
   cursor: 'pointer',
   transition: 'all 0.2s ease-in-out',
   '&:hover': {
-    backgroundColor: '#BBDEFB',
+    backgroundColor: 'rgba(15, 139, 241, 0.38)',
     transform: 'scale(1.03)',
   },
 };
@@ -81,9 +89,11 @@ const ListaClientes = () => {
     },
   ];
 
-  const handleClickCliente = (clienteId) => {
+  const handleClickCliente = (clienteId, urlImagen, nombreComercial) => {
     const idCliente = parseInt(clienteId, 10);
     seleccionarCliente(idCliente);
+    Cookies.set('imagenClienteSeleccionado', urlImagen, { expires: 1 });
+    Cookies.set('nombreClienteSeleccionado', nombreComercial, { expires: 1 });
   };
 
   const renderTarjetaCliente = (cliente) => (
@@ -103,8 +113,10 @@ const ListaClientes = () => {
         tooltipIcono={`Ver información de ${cliente.nombreComercial}`}
         clickeableImagen={true}
         elevacion={3}
-        alClicImagen={() => handleClickCliente(cliente.idCliente)}
-        alClicIcono={() => handleClickCliente(cliente.idCliente)}
+        alClicImagen={() =>
+          handleClickCliente(cliente.idCliente, cliente.urlImagen, cliente.nombreComercial)
+        }
+        alClicIcono={() => {}}
       />
     </Box>
   );
@@ -126,14 +138,8 @@ const ListaClientes = () => {
   return (
     <>
       <NavegadorAdministrador
-        src='/logoAltertexLogin.svg'
+        src='/logoAltertexLight.svg'
         alt='Logo empresa'
-        nombreIcono='ShoppingCart'
-        varianteIcono='outlined'
-        tamanoIcono='large'
-        colorIcono='primary'
-        iconoClickeable={true}
-        tooltipIcono='Acceder a tienda'
         alturaImagen='auto'
         anchoImagen={{ xs: '150px', sm: '250px', md: '400px' }}
         ajuste='contain'
@@ -155,7 +161,10 @@ const ListaClientes = () => {
         pb={6}
       >
         <Texto variant='h1' align='center' sx={estiloTitulo}>
-          ¡Bienvenid@!
+          Bienvenid⭐
+        </Texto>
+        <Texto variant='h4' align='center' color='text.secondary' sx={estiloSubtitulo}>
+          Selecciona un cliente para gestionar su sistema o crea uno nuevo
         </Texto>
 
         {cargando ? (

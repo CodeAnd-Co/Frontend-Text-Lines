@@ -30,10 +30,10 @@ const CustomSwitch = ({
             color={color}
             sx={{
               '& .MuiSwitch-thumb': {
-                backgroundColor: checked ? colores[color][3] : colores[color][1],
+                backgroundColor: checked ? colores.primario[3] : colores.primario[4],
               },
               '& .MuiSwitch-track': {
-                backgroundColor: checked ? colores[color][2] : colores[color][0],
+                backgroundColor: checked ? colores.primario[3] : colores.texto[3],
               },
             }}
             {...props}

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Paper, useTheme } from '@mui/material';
 import Texto from '../Atomos/Texto';
-import GrupoBotones from '../moleculas/GrupoBotones';
+import GrupoBotones from '../Moleculas/GrupoBotones';
 
 const ModalFlotante = ({
   open,

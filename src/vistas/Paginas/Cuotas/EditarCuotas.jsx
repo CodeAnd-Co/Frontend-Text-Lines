@@ -39,7 +39,7 @@ const EditarCuotas = () => {
     renovacionActiva,
     productos,
     cuotas,
-    redirectPath: '/admin/cuotas',
+    redirectPath: '/admin/tablero/cuotas',
   });
 
   // Return early to avoid rendering the rest of the component when redirecting

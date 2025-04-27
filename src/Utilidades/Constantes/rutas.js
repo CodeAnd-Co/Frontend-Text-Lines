@@ -9,8 +9,10 @@ export const RUTAS = {
     CUOTAS: '/cuotas',
     EMPLEADOS: '/empleados',
     EVENTOS: '/eventos',
-    PRODUCTOS: '/productos',
-    CATEGORIAS: '/categorias',
+    PRODUCTOS: {
+      BASE: '/productos',
+      CATEGORIAS: '/categorias',
+    },
     USUARIOS: {
       BASE: '/usuarios',
       CONSULTAR_ROLES: '/consultar-roles',

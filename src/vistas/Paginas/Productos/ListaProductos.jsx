@@ -1,15 +1,20 @@
 //RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
-import React from 'react';
+import { useState } from 'react';
 import Tabla from '../../Componentes/Organismos/Tabla';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
+import FormularioCrearProducto from '../../Componentes/organismos/Formularios/FormularioCrearProducto';
 import { useConsultarProductos } from '../../../hooks/Productos/useConsultarProductos';
 import { Box, useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
 
 const ListaProductos = () => {
   const { productos, cargando } = useConsultarProductos();
+  const [modalCrearProducto, setModalCrearProducto] = useState(false);
   const tema = useTheme();
   const colores = tokens(tema.palette.mode);
+
+  const handleOpen = () => setModalCrearProducto(true);
+  const handleClose = () => setModalCrearProducto(false);
 
   const columnas = [
     {
@@ -74,7 +79,7 @@ const ListaProductos = () => {
   }));
 
   const botones = [
-    { label: 'Añadir', onClick: () => console.log('Añadir'), size: 'large' },
+    { label: 'Añadir', onClick: handleOpen },
     {
       variant: 'outlined',
       label: 'Importar',
@@ -97,6 +102,9 @@ const ListaProductos = () => {
       descripcion='Gestiona y organiza los productos registrados en el sistema.'
       informacionBotones={botones}
     >
+      {modalCrearProducto && (
+        <FormularioCrearProducto open={modalCrearProducto} onClose={handleClose} />
+      )}
       <Box width={'100%'}>
         <Tabla
           columns={columnas}

@@ -145,12 +145,6 @@ const ListaUsuarios = () => {
       <NavegadorAdministrador
         src='/logoAltertexLight.svg'
         alt='Logo empresa'
-        nombreIcono='ShoppingCart'
-        varianteIcono='outlined'
-        tamanoIcono='large'
-        colorIcono='primary'
-        iconoClickeable
-        tooltipIcono='Acceder a tienda'
         alturaImagen='auto'
         anchoImagen={{ xs: '150px', sm: '250px', md: '400px' }}
         ajuste='contain'

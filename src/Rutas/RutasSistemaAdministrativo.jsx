@@ -7,6 +7,7 @@ import ListaCuotas from '../vistas/Paginas/Cuotas/ListaCuotas';
 import LIstaEmpleados from '../vistas/Paginas/Empleados/ListaEmpleados';
 import EditarCuotas from '../vistas/Paginas/Cuotas/EditarCuotas';
 import ListaGrupoEmpleados from '../Vistas/Paginas/Empleados/ListaGrupoEmpleados';
+import ListaCategorias from '../vistas/Paginas/Categorias/ListaCategorias';
 import SistemaAdministrativo from '../Vistas/Paginas/SistemaAdministrativo';
 import Configuracion from '../Vistas/Paginas/Configuracion/ConfiguracionGeneral';
 import Error404 from '../Vistas/Paginas/Errores/Error404';
@@ -30,6 +31,7 @@ const RutasSistemaAdministrativo = () => {
         }
       />
       <Route path={RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION} element={<Configuracion />} />
+      {/* Rutas del tablero */}
       <Route
         path={RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO}
         element={
@@ -40,12 +42,31 @@ const RutasSistemaAdministrativo = () => {
           </VerificarClienteSeleccionado>
         }
       >
-        <Route path='empleados/consultar-lista' element={<LIstaEmpleados />} />
-        <Route path='empleados/consultar-grupos' element={<ListaGrupoEmpleados />} />
-        <Route path='cuotas' element={<ListaCuotas />} />
-        <Route path='cuotas/editar-cuotas' element={<EditarCuotas />} />
-        <Route path='productos/consultar-lista' element={<ListaProductos />} />
+        {/* Empleados */}
+        <Route
+          path={RUTAS.SISTEMA_ADMINISTRATIVO.EMPLEADOS.CONSULTAR_EMPLEADOS}
+          element={<LIstaEmpleados />}
+        />
+        <Route
+          path={RUTAS.SISTEMA_ADMINISTRATIVO.EMPLEADOS.CONSULTAR_GRUPOS}
+          element={<ListaGrupoEmpleados />}
+        />
+
+        {/* Cuotas */}
+        <Route path={RUTAS.SISTEMA_ADMINISTRATIVO.CUOTAS.BASE} element={<ListaCuotas />} />
+        <Route
+          path={RUTAS.SISTEMA_ADMINISTRATIVO.CUOTAS.EDITAR_CUOTAS}
+          element={<EditarCuotas />}
+        />
+
+        {/* Productos */}
+        <Route
+          path={RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_PRODUCTOS}
+          element={<ListaProductos />}
+        />
+        <Route path='productos/consultar-categorias' element={<ListaCategorias />} />
       </Route>
+      {/* Rutas fuera del tablero */}
       <Route
         path={RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE}
         element={

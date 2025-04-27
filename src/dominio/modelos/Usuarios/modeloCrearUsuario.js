@@ -17,7 +17,14 @@ export const validarDatosCrearUsuario = (datos) => {
   } else if (!correoValido.test(datos.correoElectronico)) {
     errores.correoElectronico = 'Correo electrónico no válido';
   }
-  if (!datos.numeroTelefono) errores.numeroTelefono = true;
+  const telefonoValido = /^\d{10}$/;
+
+  if (!datos.numeroTelefono) {
+    errores.numeroTelefono = true;
+  } else if (!telefonoValido.test(datos.numeroTelefono)) {
+    errores.numeroTelefono = 'El número de teléfono debe tener exactamente 10 dígitos';
+  }
+
   if (!datos.direccion) errores.direccion = true;
   if (!datos.genero) errores.genero = true;
   if (!datos.cliente) errores.cliente = true;

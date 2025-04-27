@@ -41,14 +41,7 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
     if (resultado?.mensaje) {
       if (resultado.exito) {
         const resumenUsuario = `
-          Usuario creado exitosamente:
-          • Nombre: ${datosUsuario.nombreCompleto} ${datosUsuario.apellido}
-          • Correo: ${datosUsuario.correoElectronico}
-          • Cliente: ${
-            clientes.find((cliente) => cliente.idCliente === datosUsuario.cliente)
-              ?.nombreComercial || 'N/A'
-          }
-          • Rol: ${roles.find((rol) => rol.idRol === datosUsuario.rol)?.nombre || 'N/A'}
+          Usuario ${datosUsuario.nombreCompleto} ${datosUsuario.apellido} creado exitosamente.
         `;
 
         setAlerta({
@@ -95,6 +88,10 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
       fechaNacimiento: nuevaFecha,
     }));
   };
+  const estiloCuadricula = {
+    display: 'flex',
+    justifyContent: 'center',
+  };
 
   return (
     <ModalFlotante
@@ -115,7 +112,7 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
         autoComplete='off'
       >
         <Grid container columns={12}>
-          <Grid item xs={12} sm={6}>
+          <Grid size={6} sx={estiloCuadricula}>
             <CampoTexto
               label='Nombre'
               name='nombreCompleto'
@@ -125,10 +122,13 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
               size='medium'
               error={!!errores.nombreCompleto}
               helperText={errores.nombreCompleto && CAMPO_OBLIGATORIO}
+              inputProps={{
+                maxLength: 50,
+              }}
             />
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid size={6} sx={estiloCuadricula}>
             <CampoTexto
               label='Apellido'
               name='apellido'
@@ -138,10 +138,13 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
               size='medium'
               error={!!errores.apellido}
               helperText={errores.apellido && CAMPO_OBLIGATORIO}
+              inputProps={{
+                maxLength: 50,
+              }}
             />
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid size={6} sx={estiloCuadricula}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateField
                 required
@@ -162,7 +165,7 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
             </LocalizationProvider>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid size={6} sx={estiloCuadricula}>
             <CampoSelect
               required
               label='Género'
@@ -180,7 +183,7 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid size={6} sx={estiloCuadricula}>
             <CampoTexto
               label='Correo Electrónico'
               name='correoElectronico'
@@ -197,7 +200,7 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid size={6} sx={estiloCuadricula}>
             <CampoTexto
               label='Número de Teléfono'
               name='numeroTelefono'
@@ -206,11 +209,13 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
               required
               size='medium'
               error={!!errores.numeroTelefono}
-              helperText={errores.numeroTelefono && CAMPO_OBLIGATORIO}
+              helperText={
+                errores.numeroTelefono === true ? CAMPO_OBLIGATORIO : errores.numeroTelefono || ''
+              }
             />
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid size={6} sx={estiloCuadricula}>
             <CampoTexto
               label='Dirección'
               name='direccion'
@@ -220,10 +225,13 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
               size='medium'
               error={!!errores.direccion}
               helperText={errores.direccion && CAMPO_OBLIGATORIO}
+              inputProps={{
+                maxLength: 100,
+              }}
             />
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid size={6} sx={estiloCuadricula}>
             <CampoSelect
               label='Cliente'
               name='cliente'
@@ -240,7 +248,7 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid size={6} sx={estiloCuadricula}>
             <CampoSelect
               label='Rol'
               name='rol'
@@ -258,7 +266,7 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid size={6} sx={estiloCuadricula}>
             <CampoTexto
               label='Contraseña'
               name='contrasenia'
@@ -268,13 +276,14 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
               required
               size='medium'
               error={!!errores.contrasenia}
+              autoComplete='new-password'
               helperText={
                 errores.contrasenia === true ? CAMPO_OBLIGATORIO : errores.contrasenia || ''
               }
             />
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid size={6} sx={estiloCuadricula}>
             <CampoTexto
               label='Confirmar contraseña'
               name='confirmarContrasenia'
@@ -284,6 +293,7 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
               required
               size='medium'
               error={!!errores.confirmarContrasenia}
+              autoComplete='new-password'
               helperText={
                 errores.confirmarContrasenia === true
                   ? CAMPO_OBLIGATORIO

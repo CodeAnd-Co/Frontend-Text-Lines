@@ -1,26 +1,44 @@
-//RF02 Super Administrador Consulta Lista de Usuarios - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF2}
-//RF[03] Leer usuario - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF3]
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import ModalFlotante from '../../componentes/organismos/ModalFlotante';
-// import FormularioCrearUsuario from '../../componentes/organismos/FormularioCrearUsuario';
+//import FormularioCrearUsuario from '../../componentes/organismos/FormularioCrearUsuario';
 import Alerta from '../../componentes/moleculas/Alerta';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import Tabla from '../../componentes/organismos/Tabla';
 import Chip from '../../componentes/atomos/Chip';
 import { useConsultarListaUsuarios } from '../../../hooks/Usuarios/useConsultarListaUsuarios';
-import { useCrearUsuario } from '../../../hooks/useCrearUsuario';
+//import { useCrearUsuario } from '../../../hooks/useCrearUsuario';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';
 import { useMode, tokens } from '../../../theme';
 import { useUsuarioId } from '../../../hooks/Usuarios/useLeerUsuario';
 import InfoUsuario from '../../componentes/moleculas/UsuarioInfo';
+
+/**
+ * Página para consultar y mostrar la lista de usuarios en una tabla.
+ *
+ * Muestra los resultados en un `Tabla`, incluyendo
+ * nombre, rol, cliente asociado, correo y teléfono de cada usuario.
+ * 
+ * Además, permite consultar la información detallada de un usuario individual 
+ * al hacer clic en una fila de la tabla.
+ *
+ * @see [RF02 Super Administrador Consulta Lista de Usuarios](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF2)
+ * @see [RF03 Leer usuario](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF3)
+ */
 
 const ListaUsuarios = () => {
   const [theme] = useMode();
   const colores = tokens(theme.palette.mode);
   const [alerta, setAlerta] = useState(null);
   const { usuarios, cargando, error } = useConsultarListaUsuarios();
+  const [idUsuarioSeleccionado, setIdUsuarioSeleccionado] = useState(null);
+  const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
+  const { usuario, cargando: cargandoDetalle, error: errorDetalle }
+    = useUsuarioId(modalDetalleAbierto ? idUsuarioSeleccionado : null);
   const navigate = useNavigate();
+  
+  /*
+  // Código relacionado a crear usuario comentado:
   const {
     open,
     datosUsuario,
@@ -31,15 +49,8 @@ const ListaUsuarios = () => {
     handleGuardarUsuario,
   } = useCrearUsuario();
 
-  const [alerta, setAlerta] = useState(null);
-  const [idUsuarioSeleccionado, setIdUsuarioSeleccionado] = useState(null);
-  const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
 
-  const { usuarios, cargando, error } = useConsultarListaUsuarios();
-  const { usuario, cargando: cargandoDetalle, error: errorDetalle } =
-    useUsuarioId(modalDetalleAbierto ? idUsuarioSeleccionado : null);
-
-  const handleConfirm = async () => {
+  const manejarConfirmacion = async () => {
     const resultado = await handleGuardarUsuario();
 
     if (resultado?.mensaje) {
@@ -49,6 +60,7 @@ const ListaUsuarios = () => {
       });
     }
   };
+  */
 
   const redirigirAInicio = () => {
     navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE, { replace: true });
@@ -117,7 +129,9 @@ const ListaUsuarios = () => {
         },
       },
     },
+    /*
     { label: 'Añadir Usuario', onClick: () => handleOpen(), size: 'large' },
+    */
     {
       label: 'Ir Atrás',
       onClick: () => redirigirAInicio(),
@@ -143,6 +157,7 @@ const ListaUsuarios = () => {
         />
       )}
 
+      {/*
       <ModalFlotante
         open={open}
         onClose={handleClose}
@@ -155,6 +170,7 @@ const ListaUsuarios = () => {
           errores={errores}
         />
       </ModalFlotante>
+      */}
 
       <div style={{ marginTop: 20, height: 650, width: '100%' }}>
         {error && <p style={{ color: 'red' }}>Error: {error}</p>}
@@ -199,10 +215,10 @@ const ListaUsuarios = () => {
             <InfoUsuario
               modoEdicion={false}
               cliente={
-                usuario.clientes?.some((c) => c?.nombreCliente)
+                usuario.clientes?.some((cliente) => cliente?.nombreCliente)
                   ? usuario.clientes
-                      .filter((c) => c?.nombreCliente)
-                      .map((c) => c.nombreCliente)
+                      .filter((cliente) => cliente?.nombreCliente)
+                      .map((cliente) => cliente.nombreCliente)
                       .join(", ")
                   : "Sin cliente asignado"
               }

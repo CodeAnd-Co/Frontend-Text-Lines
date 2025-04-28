@@ -7,12 +7,12 @@ import ListaCuotas from '../vistas/Paginas/Cuotas/ListaCuotas';
 import LIstaEmpleados from '../vistas/Paginas/Empleados/ListaEmpleados';
 import EditarCuotas from '../vistas/Paginas/Cuotas/EditarCuotas';
 import ListaGrupoEmpleados from '../Vistas/Paginas/Empleados/ListaGrupoEmpleados';
-import ListaCategorias from '../vistas/Paginas/Categorias/ListaCategorias';
 import SistemaAdministrativo from '../Vistas/Paginas/SistemaAdministrativo';
 import Configuracion from '../Vistas/Paginas/Configuracion/ConfiguracionGeneral';
 import Error404 from '../Vistas/Paginas/Errores/Error404';
 import ListaRoles from '../Vistas/Paginas/Roles/ListaRoles';
 import ListaUsuarios from '../vistas/Paginas/Usuarios/ListaUsuarios';
+import ListaCategorias from '../vistas/paginas/Categorias/ListaCategorias';
 import ListaSetsProductos from '../vistas/Paginas/Productos/ListaSetsProductos';
 
 import RutaProtegida from './RutaProtegida';
@@ -69,7 +69,10 @@ const RutasSistemaAdministrativo = () => {
           path={RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_SETS_PRODUCTOS}
           element={<ListaSetsProductos />}
         />
-        <Route path='productos/consultar-categorias' element={<ListaCategorias />} />
+        <Route
+          path={RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_CATEGORIAS}
+          element={<ListaCategorias />}
+        />
       </Route>
       {/* Rutas fuera del tablero */}
       <Route

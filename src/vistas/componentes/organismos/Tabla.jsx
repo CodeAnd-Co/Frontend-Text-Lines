@@ -77,6 +77,9 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => {
       borderBottom: `1px solid ${theme.palette.divider}`,
       textAlign: 'center',
     },
+    '& .MuiDataGrid-columnHeaderTitle': {
+      fontWeight: 'bold',
+    },
 
     '& .MuiDataGrid-row': {
       transition: 'background-color 0.2s ease',
@@ -114,7 +117,15 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => {
   };
 });
 
-const Tabla = ({ columns, rows, loading, pageSize, onRowClick, checkboxSelection }) => {
+const Tabla = ({
+  columns,
+  rows,
+  loading,
+  pageSize,
+  onRowClick,
+  checkboxSelection,
+  onRowSelectionModelChange,
+}) => {
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: pageSize || 5,
@@ -129,11 +140,13 @@ const Tabla = ({ columns, rows, loading, pageSize, onRowClick, checkboxSelection
       onRowClick={onRowClick}
       checkboxSelection={checkboxSelection}
       disableSelectionOnClick
+      onRowSelectionModelChange={onRowSelectionModelChange}
       paginationModel={paginationModel}
       onPaginationModelChange={setPaginationModel}
       pageSizeOptions={[5]}
       pagination
       localeText={spanishLocaleText}
+      rowHeight={70}
     />
   );
 };
@@ -155,6 +168,7 @@ Tabla.propTypes = {
   pageSize: PropTypes.number,
   onRowClick: PropTypes.func,
   checkboxSelection: PropTypes.bool,
+  onRowSelectionModelChange: PropTypes.func,
 };
 
 Tabla.defaultProps = {
@@ -162,6 +176,7 @@ Tabla.defaultProps = {
   pageSize: 5,
   onRowClick: () => {},
   checkboxSelection: false,
+  onRowSelectionModelChange: () => {},
 };
 
 export default Tabla;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useConsultarCategorias } from '../../../hooks/Categorias/useConsultarCategorias';
-import CustomDataGrid from '../../Componentes/Organismos/Tabla';
+import CustomDataGrid from '../../componentes/organismos/Tabla';
 import Alerta from '../../componentes/moleculas/Alerta';
 import ContenedorLista from '../../componentes/organismos/ContenedorLista';
 import { useTheme } from '@mui/material';

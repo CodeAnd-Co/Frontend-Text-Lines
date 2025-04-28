@@ -1,6 +1,8 @@
-/**
- * 🧩 Modelo de un usuario
+/*
+ * Modelo de un usuario
+ * RF[03] Leer usuario - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF3]
  */
+
 export class UsuarioLectura {
   constructor({
     idUsuario,
@@ -11,21 +13,9 @@ export class UsuarioLectura {
     fechaNacimiento,
     genero,
     estatus,
-    rol, // nuevo campo
+    rol,
+    clientes = [],
   }) {
-    console.log("📦 [UsuarioLectura] Datos recibidos para instanciar el modelo:");
-    console.log({
-      idUsuario,
-      nombreCompleto,
-      correoElectronico,
-      numeroTelefono,
-      direccion,
-      fechaNacimiento,
-      genero,
-      estatus,
-      rol, // incluir en log
-    });
-
     this.idUsuario = idUsuario;
     this.nombreCompleto = nombreCompleto;
     this.correoElectronico = correoElectronico;
@@ -34,8 +24,7 @@ export class UsuarioLectura {
     this.fechaNacimiento = fechaNacimiento;
     this.genero = genero;
     this.estatus = estatus;
-    this.rol = rol; // asignar
-
-    console.log("✅ [UsuarioLectura] Instancia creada:", this);
+    this.rol = rol;
+    this.clientes = clientes;
   }
 }

@@ -9,36 +9,31 @@ export class RepositorioUsuarios {
    * Consulta los datos de un usuario específico por ID
    * @param {number} idUsuario - ID del usuario a consultar
    * @returns {Promise<{usuario: UsuarioLectura, mensaje: string}>}
+   * 
+   * @see [RF[03] Leer usuario - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF3)
    */
-  async obtenerPorId(idUsuario) {
-    console.log('📤 [RepositorioUsuarios] Enviando solicitud para ID:', idUsuario);
-    this;
+  static async obtenerPorId(idUsuario) {
     try {
       const respuesta = await axios.post(
-        RUTAS_API.USUARIOS.CONSULTAR_LISTA,
+        RUTAS_API.USUARIOS.CONSULTAR_USUARIO,
         { idUsuario },
         {
-          withCredentials: true,
           headers: {
             'x-api-key': API_KEY,
           },
+          withCredentials: true,
         }
       );
-
-      console.log('📬 [RepositorioUsuarios] Respuesta del backend:', respuesta.data);
 
       const { usuario, mensaje } = respuesta.data;
 
       const usuarioInstancia = new UsuarioLectura(usuario);
-
-      console.log('🧱 [RepositorioUsuarios] Usuario instanciado correctamente:', usuarioInstancia);
 
       return {
         usuario: usuarioInstancia,
         mensaje,
       };
     } catch (error) {
-      console.error('❌ [RepositorioUsuarios] Error al obtener usuario:', error);
       const mensaje = error.response?.data?.mensaje || 'Error al obtener datos del usuario.';
       throw new Error(mensaje);
     }

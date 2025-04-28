@@ -74,7 +74,7 @@ const ListaCategorias = () => {
       variant: 'contained',
       color: 'primary',
       size: 'large',
-      backgroundColor: colors.altertex[1],
+      backgroundColor: colores.altertex[1],
       onClick: handleAbrirModalCrear, // Ahora abre el modal para crear
     },
     {

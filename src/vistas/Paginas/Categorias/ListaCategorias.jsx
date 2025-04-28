@@ -4,8 +4,7 @@ import Alerta from '../../Componentes/moleculas/Alerta';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import ModalEliminarCategoria from '../../componentes/Organismos/ModalEliminarCategoria';
 import { useConsultarCategorias } from '../../../hooks/Categorias/useConsultarCategorias';
-import { Box } from '@mui/material';
-import { useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
 
 const ListaCategorias = () => {

@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 import ModalFlotante from '../../organismos/ModalFlotante';
 import FormularioProveedor from './FormularioProveedor';
 import FormularioProducto from './FormularioProducto';
-import FormularioVariante from './FormularioVariante';
+import FormularioVarianteOpcion from './FormularioVarianteOpcion';
 
 const FormularioCrearProducto = ({ open, onClose }) => {
   const [step, setStep] = useState(0);
@@ -107,7 +107,13 @@ const FormularioCrearProducto = ({ open, onClose }) => {
         )}
 
         {step === 2 && (
-          <FormularioVariante variantes={variantes} setVariantes={setVariantes} estados={estados} />
+          <FormularioVarianteOpcion
+            variantes={variantes}
+            setVariantes={setVariantes}
+            estados={estados}
+            imagenes={imagenes}
+            setImagenes={setImagenes}
+          />
         )}
       </Box>
     </ModalFlotante>

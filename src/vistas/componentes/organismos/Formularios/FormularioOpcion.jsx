@@ -1,14 +1,24 @@
-import React from 'react';
-import { Grid } from '@mui/material';
+import { memo } from 'react';
+import { Box, Grid } from '@mui/material';
 import Texto from '../../Atomos/Texto';
+import Icono from '../../Atomos/Icono';
 import CampoTexto from '../../Atomos/CampoTexto';
 import CampoSelect from '../../Atomos/CampoSelect';
 
-const FormularioOpcion = ({ variantes, handleChange, estados }) => {
+const FormularioOpcion = memo(({ variantes, handleChange, estados, onEliminarOpcion }) => {
   return (
     <Grid container spacing={2}>
       <Grid item size={12}>
-        <Texto variant='h6'>Opción de Variante</Texto>
+        <Box display='flex' alignItems='center'>
+          <Texto variant='h6'>Opción de Variante</Texto>
+          <Icono
+            nombre='Cancel'
+            color='error'
+            clickable={true}
+            tooltip='Eliminar Opción'
+            onClick={onEliminarOpcion}
+          />
+        </Box>
       </Grid>
 
       <Grid item size={6}>
@@ -96,6 +106,6 @@ const FormularioOpcion = ({ variantes, handleChange, estados }) => {
       </Grid>
     </Grid>
   );
-};
+});
 
 export default FormularioOpcion;

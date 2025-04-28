@@ -40,7 +40,20 @@ const TarjetaElementoAccion = ({
     >
       <Box display='flex' alignItems='center' gap={1.5}>
         {icono && <Icono nombre={icono} size={iconSize} color={iconColor} />}
-        {texto && <Texto variant={textoVariant}>{texto}</Texto>}
+        {texto && (
+          <Texto
+            variant={textoVariant}
+            sx={{
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              maxWidth: '100px',
+              display: 'block',
+            }}
+          >
+            {texto}
+          </Texto>
+        )}
       </Box>
       {!disabled && onEliminar && (
         <Icono

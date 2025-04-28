@@ -1,33 +1,28 @@
+import { useRef } from 'react';
 import { Grid, TextField } from '@mui/material';
+import Texto from '../../Atomos/Texto';
 import CampoTexto from '../../Atomos/CampoTexto';
 import CampoSelect from '../../Atomos/CampoSelect';
 import TarjetaAccion from '../../moleculas/TarjetaAccion';
 import TarjetaElementoAccion from '../../Moleculas/TarjetaElementoAccion';
 
-const InformacionImagen = () => (
-  <Grid item size={6} key={i}>
-    <TarjetaElementoAccion
-      icono='Image'
-      texto='toyota.png'
-      onEliminar={onEliminar}
-      tooltipEliminar='Eliminar'
-      borderColor='primary.light'
-      backgroundColor='primary.lighter'
-      iconColor='primary'
-      iconSize='large'
-      textoVariant='caption'
-      tabIndex={0}
-      disabled={false}
-    />
-  </Grid>
-);
-
 const FormularioProducto = ({ producto, setProducto, estados, envios, imagenes, setImagenes }) => {
+  const fileInputRef = useRef();
   const handleChange = (evento) => {
     const { name, value } = evento.target;
     setProducto((prevProducto) => ({
       ...prevProducto,
       [name]: value,
+    }));
+  };
+
+  const handleFileSelect = (evento) => {
+    const file = evento.target.files[0];
+    if (!file) return;
+
+    setImagenes((prev) => ({
+      ...prev,
+      imagenProducto: file,
     }));
   };
 
@@ -118,6 +113,7 @@ const FormularioProducto = ({ producto, setProducto, estados, envios, imagenes, 
           name='precioCliente'
           value={producto.precioCliente}
           onChange={handleChange}
+          size='medium'
           required
           placeholder='Ingresa el precio para el cliente'
         />
@@ -188,16 +184,47 @@ const FormularioProducto = ({ producto, setProducto, estados, envios, imagenes, 
           required
         />
       </Grid>
-      <Grid item size={12}>
-        <TarjetaAccion
-          icono='AddPhotoAlternate'
-          texto='Agregar imagen'
-          onClick={() => {
-            console.log('Agregar nueva imagen');
-          }}
-          hoverScale={false}
-        />
-      </Grid>
+      {imagenes.imagenProducto ? (
+        <Grid item size={6}>
+          <TarjetaElementoAccion
+            icono='Image'
+            texto={imagenes.imagenProducto.name}
+            onEliminar={() => {
+              setImagenes((prev) => ({ ...prev, imagenProducto: null }));
+            }}
+            tooltipEliminar='Eliminar'
+            borderColor='primary.light'
+            backgroundColor='primary.lighter'
+            iconColor='primary'
+            iconSize='large'
+            textoVariant='caption'
+            tabIndex={0}
+            disabled={false}
+          />
+        </Grid>
+      ) : (
+        <>
+          <Grid item size={12}>
+            <Texto variant='h6'>Sube la Imagen Principal del Producto Aquí</Texto>
+          </Grid>
+
+          <Grid item size={12}>
+            <TarjetaAccion
+              icono='AddPhotoAlternate'
+              texto='Agregar imagen'
+              onClick={() => fileInputRef.current.click()}
+              hoverScale={false}
+            />
+            <input
+              type='file'
+              accept='image/*'
+              ref={fileInputRef}
+              onChange={handleFileSelect}
+              style={{ display: 'none' }}
+            />
+          </Grid>
+        </>
+      )}
     </Grid>
   );
 };

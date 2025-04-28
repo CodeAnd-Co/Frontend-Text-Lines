@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import ModalFlotante from '../organismos/ModalFlotante';
 import FormaCrearCategorias from './Formularios/FormaCrearCategoria';
 import useCrearCategoria from '../../../hooks/Categorias/useCrearCategoria';
@@ -10,59 +10,68 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
   const [productos, setProductos] = useState([]);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
 
+  // Track if the form has been reset to prevent multiple resets
+  const hasReset = useRef(false);
+
   const { crearCategoria, cargando, exito, error, mensaje, setError, resetEstado }
     = useCrearCategoria();
 
-  const resetForm = useCallback(() => {
-    setNombreCategoria('');
-    setDescripcionCategoria('');
-    setProductos([]);
-    setMostrarAlerta(false);
-    resetEstado();
-  }, [resetEstado]);
-
-  const handleCerrar = useCallback(() => {
-    resetForm();
-    onCerrar();
-  }, [resetForm, onCerrar]);
-
-  // Resetea el estado cuando se cierra el modal
+  // Reset the form only once when the modal closes
   useEffect(() => {
-    if (!abierto) {
-      resetForm();
-    }
-  }, [abierto, resetForm]);
-
-  // Efecto para detectar cuando la creación es exitosa
-  useEffect(() => {
-    if (exito) {
+    if (!abierto && !hasReset.current) {
+      hasReset.current = true;
+      resetEstado();
+      // Delay state updates to prevent render loop
       setTimeout(() => {
+        setNombreCategoria('');
+        setDescripcionCategoria('');
+        setProductos([]);
+        setMostrarAlerta(false);
+      }, 0);
+    } else if (abierto) {
+      // Reset the flag when modal opens
+      hasReset.current = false;
+    }
+  }, [abierto, resetEstado]);
+
+  // Handle successful creation
+  useEffect(() => {
+    let timeoutId;
+    if (exito) {
+      timeoutId = setTimeout(() => {
         if (onCreado) {
           onCreado();
         } else {
-          handleCerrar();
+          onCerrar();
         }
       }, 2000);
     }
-  }, [exito, onCreado, handleCerrar]);
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [exito, onCreado, onCerrar]);
+
+  const handleCerrar = useCallback(() => {
+    onCerrar();
+  }, [onCerrar]);
 
   const handleConfirmar = async () => {
-    // Validar que el nombre de categoría no esté vacío después de eliminar espacios
-    // y que haya al menos un producto seleccionado
+    // Validate that category name is not empty after removing spaces
+    // and that there is at least one selected product
     if (!nombreCategoria.trim() || productos.length === 0) {
       setMostrarAlerta(true);
       return;
     }
 
-    // Enviar datos con nombres limpios (sin espacios innecesarios)
+    // Send data with clean names (without unnecessary spaces)
     await crearCategoria({
       nombreCategoria: nombreCategoria.trim(),
       descripcion: descripcionCategoria.trim(),
       productos,
     });
-
-    // No necesitamos hacer nada más aquí, el useEffect para exito se encargará
-    // de llamar a onCreado cuando sea necesario
   };
 
   return (

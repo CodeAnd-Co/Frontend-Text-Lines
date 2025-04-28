@@ -55,7 +55,7 @@ const ModalFlotante = ({
           transform: 'translate(-50%, -50%)',
           maxHeight: '80vh',
           overflowY: 'auto',
-          bgcolor: theme.palette.background.paper,
+          bgcolor: theme.palette.backgroundColor,
           boxShadow: 24,
           borderRadius: 2,
           padding: 3,
@@ -64,7 +64,7 @@ const ModalFlotante = ({
         }}
       >
         {titulo && (
-          <Texto variant={tituloVariant} gutterBottom sx={{ color: theme.palette.text.primary }}>
+          <Texto variant={tituloVariant} gutterBottom sx={{ color: theme.palette.text }}>
             {titulo}
           </Texto>
         )}

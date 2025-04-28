@@ -1,4 +1,4 @@
-class CuotaSetModelo {
+ export class CuotaSetModelo {
   constructor({
     nombreCuotaSet,
     descripcion,

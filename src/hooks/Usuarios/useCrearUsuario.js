@@ -50,9 +50,9 @@ export const useCrearUsuario = () => {
       await crearUsuario(datosParaEnviar);
       return { exito: true, mensaje: 'Usuario creado correctamente' };
     } catch (error) {
-      const mensaje =
-        error.response?.data?.mensaje ||
-        'Hubo un error al crear el usuario. Verifica que no exista.';
+      const mensaje
+        = error.response?.data?.mensaje
+        || 'Hubo un error al crear el usuario. Verifica que no exista.';
       return { exito: false, mensaje };
     }
   };

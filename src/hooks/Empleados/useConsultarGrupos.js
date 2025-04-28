@@ -35,7 +35,7 @@ export function useConsultarGrupos() {
     };
 
     if (usuario) cargar();
-  }, []);
+  }, [usuario]);
 
   return { grupos, mensaje, cargando, error };
 }

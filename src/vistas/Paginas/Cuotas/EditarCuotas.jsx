@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Texto from '../../componentes/atomos/Texto';
 import Alerta from '../../componentes/moleculas/Alerta';
-import { useCrearCuotaSet } from '../../../hooks/useCrearCuotaSet';
+import { useCrearCuotaSet } from '../../../hooks/Cuotas//useCrearCuotaSet';
 import CuerpoPrincipal from '../../componentes/organismos/Cuotas/CuerpoPrincipal';
 import { useAuth } from '../../../hooks/AuthProvider';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';

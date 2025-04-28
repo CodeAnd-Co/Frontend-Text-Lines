@@ -18,10 +18,10 @@ export class RepositorioConsultarListaUsuarios {
         RUTAS_API.USUARIOS.CONSULTAR_LISTA,
         {},
         {
-          withCredentials: true,
           headers: {
             'x-api-key': API_KEY,
           },
+          withCredentials: true,
         }
       );
 

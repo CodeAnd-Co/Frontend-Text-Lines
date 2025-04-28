@@ -24,7 +24,7 @@ const InfoUsuario = ({
         <Grid item xs={12} sm={6}>
           <Box display='flex' alignItems='center' gap={25} mb={2}>
             <Texto gutterBottom>
-              <strong>Cliente:</strong>{' '}
+              <strong>Cliente(s):</strong>{' '}
               <span style={{ color: theme.palette.primary.main, fontWeight: 500 }}>{cliente}</span>
             </Texto>
 

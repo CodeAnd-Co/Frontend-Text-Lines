@@ -2,7 +2,7 @@ import Alerta from '../../moleculas/Alerta';
 import CampoTexto from '../../atomos/CampoTexto';
 import { useState, useEffect } from 'react';
 import obtenerProductos from '../../../../dominio/servicios/obtenerProductos';
-import ProductosCuotaSet from '../ProductosCuotaSet';
+import ProductosModal from '../ProductosModal';
 import { useAuth } from '../../../../hooks/AuthProvider';
 
 const columns = [
@@ -53,7 +53,7 @@ const FormaCrearCuotaSet = ({
         onChange={(evento) => setNombreCuotaSet(evento.target.value)}
       />
 
-      <ProductosCuotaSet
+      <ProductosModal
         elevacion={1}
         sx={{ width: '100%', height: '350px' }}
         columnas={columns}

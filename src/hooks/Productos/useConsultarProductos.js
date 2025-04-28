@@ -10,7 +10,6 @@ import { RepositorioListaProductos } from '../../dominio/repositorios/Productos/
  *   cargando: boolean,
  *   error: string | null,
  *   mensaje: string,
- *   recargar: () => void
  * }}
  */
 export function useConsultarProductos() {

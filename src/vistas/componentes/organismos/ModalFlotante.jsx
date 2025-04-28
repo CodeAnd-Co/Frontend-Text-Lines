@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Paper, useTheme } from '@mui/material';
+import { Modal, Paper } from '@mui/material';
 import Texto from '../Atomos/Texto';
 import GrupoBotones from '../Moleculas/GrupoBotones';
+import { useMode, tokens } from '../../../theme';
 
 const ModalFlotante = ({
   open,
@@ -15,11 +16,22 @@ const ModalFlotante = ({
   botones = null,
   children,
 }) => {
-  const theme = useTheme();
+  const [theme] = useMode();
+  const colores = tokens(theme.palette.mode);
 
   const defaultBotones = [
-    { label: cancelLabel, variant: 'outlined', onClick: onClose },
-    { label: confirmLabel, variant: 'contained', onClick: onConfirm },
+    {
+      label: cancelLabel,
+      variant: 'outlined',
+      onClick: onClose,
+      outlineColor: colores.altertex[1],
+    },
+    {
+      label: confirmLabel,
+      variant: 'contained',
+      onClick: onConfirm,
+      backgroundColor: colores.altertex[1],
+    },
   ];
 
   return (

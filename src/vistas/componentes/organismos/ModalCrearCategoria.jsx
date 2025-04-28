@@ -13,8 +13,8 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
   // Track if the form has been reset to prevent multiple resets
   const hasReset = useRef(false);
 
-  const { crearCategoria, cargando, exito, error, mensaje, setError, resetEstado } =
-    useCrearCategoria();
+  const { crearCategoria, cargando, exito, error, mensaje, setError, resetEstado }
+    = useCrearCategoria();
 
   // Reset the form only once when the modal closes
   useEffect(() => {

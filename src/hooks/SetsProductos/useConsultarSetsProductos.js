@@ -40,7 +40,6 @@ export function useConsultarSetsProductos() {
       } catch (err) {
         setSetsProductos([]);
         setMensaje('');
-        console.log('Error productos: ', error);
         setError(err.message || 'Error desconocido');
       } finally {
         setCargando(false);

@@ -6,18 +6,30 @@ import ModalEliminarCategoria from '../../componentes/Organismos/ModalEliminarCa
 import { useConsultarCategorias } from '../../../hooks/Categorias/useConsultarCategorias';
 import { Box, useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
+import ModalCrearCategoria from '../../componentes/organismos/ModalCrearCategoria';
+
+/**
+ * Página para consultar y mostrar la lista de categorías en una tabla.
+ *
+ * Muestra los resultados en un CustomDataGrid, incluyendo
+ * nombre, descripción y número de productos de cada categoría.
+ *
+ * @see [RF[47] Consulta lista de categorías](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF47)
+ */
 
 const ListaCategorias = () => {
   const { categorias, cargando, error, recargar } = useConsultarCategorias();
   const [seleccionados, setSeleccionados] = useState(new Set());
-  const [openModalEliminar, setOpenModalEliminar] = useState(false);
   const [alerta, setAlerta] = useState(null);
   const [idsCategoria, setIdsCategoria] = useState([]);
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
 
-  // Estado para controlar la visualización del modal
+  // Estado para controlar la visualización del modal crear
   const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
+
+  // Estado para controlar la visualización del modal eliminar
+  const [openModalEliminar, setOpenModalEliminar] = useState(false);
 
   // Columnas para el DataGrid
   const columns = [
@@ -59,10 +71,11 @@ const ListaCategorias = () => {
   const botones = [
     {
       label: 'Añadir',
-      onClick: () => console.log('Añadir'),
-      size: 'large',
+      variant: 'contained',
       color: 'primary',
-      backgroundColor: colores.altertex[1],
+      size: 'large',
+      backgroundColor: colors.altertex[1],
+      onClick: handleAbrirModalCrear, // Ahora abre el modal para crear
     },
     {
       variant: 'outlined',
@@ -114,6 +127,13 @@ const ListaCategorias = () => {
           />
         </Box>
       </ContenedorLista>
+      {/* Modal para crear categoria */}
+      <ModalCrearCategoria
+        abierto={modalCrearAbierto}
+        onCerrar={handleCerrarModalCrear}
+        onCreado={handleCategoriaCreadaExitosamente}
+      />
+      {/* Modal para eliminar categoria */}
       <ModalEliminarCategoria
         open={openModalEliminar}
         onClose={() => setOpenModalEliminar(false)}
@@ -132,12 +152,6 @@ const ListaCategorias = () => {
           onClose={() => setAlerta(null)}
         />
       )}
-      {/* Modal para crear categoria */}
-      <ModalCrearCategoria
-        abierto={modalCrearAbierto}
-        onCerrar={handleCerrarModalCrear}
-        onCreado={handleCategoriaCreadaExitosamente}
-      />
     </>
   );
 };

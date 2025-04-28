@@ -1,47 +1,37 @@
 //RF02 Super Administrador Consulta Lista de Usuarios - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF2
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import ModalFlotante from '../../componentes/organismos/ModalFlotante';
-// import FormularioCrearUsuario from '../../componentes/organismos/FormularioCrearUsuario';
-import Alerta from '../../componentes/moleculas/Alerta';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../hooks/AuthProvider';
+import FormularioCrearUsuario from '../../Componentes/organismos/Formularios/FormularioCrearUsuario';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import Tabla from '../../componentes/organismos/Tabla';
 import Chip from '../../componentes/atomos/Chip';
 import { useConsultarListaUsuarios } from '../../../hooks/Usuarios/useConsultarListaUsuarios';
-import { useCrearUsuario } from '../../../hooks/useCrearUsuario';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';
 import { useMode, tokens } from '../../../theme';
+import NavegadorAdministrador from '../../Componentes/Organismos/NavegadorAdministrador';
+
+const estiloImagenLogo = { marginRight: '1rem' };
 
 const ListaUsuarios = () => {
   const [theme] = useMode();
   const colores = tokens(theme.palette.mode);
-  const [alerta, setAlerta] = useState(null);
-  const { usuarios, cargando, error } = useConsultarListaUsuarios();
   const navigate = useNavigate();
-  const {
-    open,
-    datosUsuario,
-    errores,
-    setDatosUsuario,
-    handleOpen,
-    handleClose,
-    handleGuardarUsuario,
-  } = useCrearUsuario();
+  const { cerrarSesion } = useAuth();
+  const { usuarios, cargando, error } = useConsultarListaUsuarios();
 
-  const manejarConfirmacion = async () => {
-    const resultado = await handleGuardarUsuario();
-
-    if (resultado?.mensaje) {
-      setAlerta({
-        tipo: resultado.exito ? 'success' : 'error',
-        mensaje: resultado.mensaje,
-      });
-    }
-  };
+  const [modalCrearUsuarioAbierto, setModalCrearUsuarioAbierto] = useState(false);
 
   const redirigirAInicio = () => {
     navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE, { replace: true });
   };
+
+  const manejarCerrarSesion = async () => {
+    await cerrarSesion();
+  };
+
+  const handleOpen = () => setModalCrearUsuarioAbierto(true);
+  const handleClose = () => setModalCrearUsuarioAbierto(false);
 
   const columns = [
     { field: 'idUsuario', headerName: 'ID Usuario', flex: 1 },
@@ -106,50 +96,83 @@ const ListaUsuarios = () => {
         },
       },
     },
-    { label: 'Añadir Usuario', onClick: () => handleOpen(), size: 'large' },
     {
-      label: 'Ir Atrás',
-      onClick: () => redirigirAInicio(),
+      label: 'Añadir',
+      onClick: handleOpen,
+      size: 'large',
+      backgroundColor: colores.altertex[1],
+    },
+    {
+      label: 'Eliminar',
+      onClick: redirigirAInicio,
+      variant: 'contained',
+      size: 'large',
+      backgroundColor: colores.altertex[1],
+    },
+  ];
+
+  const redirigirATienda = () => {
+    navigate(RUTAS.SISTEMA_TIENDA.BASE, { replace: true });
+  };
+
+  const botonesBarraAdministradora = [
+    {
+      label: 'Atras',
       variant: 'outlined',
+      color: 'secondary',
+      size: 'large',
+      onClick: redirigirAInicio,
+    },
+    {
+      label: 'Configuración',
+      variant: 'outlined',
+      color: 'secondary',
+      size: 'large',
+      onClick: () =>
+        navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION),
+    },
+    {
+      label: 'Cerrar sesión',
+      variant: 'contained',
       color: 'error',
       size: 'large',
+      onClick: manejarCerrarSesion,
     },
   ];
 
   return (
-    <ContenedorLista
-      titulo='Lista de Usuarios'
-      descripcion='Gestiona y organiza los usuarios registrados en el sistema.'
-      informacionBotones={botones}
-    >
-      {alerta && (
-        <Alerta
-          tipo={alerta.tipo}
-          mensaje={alerta.mensaje}
-          cerrable
-          duracion={4000}
-          onClose={() => setAlerta(null)}
-        />
-      )}
+    <>
+      <NavegadorAdministrador
+        src='/logoAltertexLight.svg'
+        alt='Logo empresa'
+        alturaImagen='auto'
+        anchoImagen={{ xs: '150px', sm: '250px', md: '400px' }}
+        ajuste='contain'
+        clickeableImagen={false}
+        estiloImagen={estiloImagenLogo}
+        alClicIcono={redirigirATienda}
+        informacionBotones={botonesBarraAdministradora}
+      />
 
-      <ModalFlotante
-        open={open}
-        onClose={handleClose}
-        onConfirm={manejarConfirmacion}
-        titulo='Crear nuevo usuario'
+      <ContenedorLista
+        titulo={<div style={{ textAlign: 'center' }}>Usuarios</div>}
+        descripcion={
+          <div style={{ textAlign: 'center' }}>
+            Gestiona y organiza los usuarios registrados en el sistema.
+          </div>
+        }
+        informacionBotones={botones}
       >
-        <FormularioCrearUsuario
-          datosUsuario={datosUsuario}
-          setDatosUsuario={setDatosUsuario}
-          errores={errores}
-        />
-      </ModalFlotante>
+        {modalCrearUsuarioAbierto && (
+          <FormularioCrearUsuario open={modalCrearUsuarioAbierto} onClose={handleClose} />
+        )}
 
-      <div style={{ marginTop: 20, height: 650, width: '100%' }}>
-        {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-        <Tabla columns={columns} rows={rows} loading={cargando} checkboxSelection pageSize={10} />
-      </div>
-    </ContenedorLista>
+        <div style={{ marginTop: 20, height: 650, width: '100%' }}>
+          {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+          <Tabla columns={columns} rows={rows} loading={cargando} checkboxSelection pageSize={10} />
+        </div>
+      </ContenedorLista>
+    </>
   );
 };
 

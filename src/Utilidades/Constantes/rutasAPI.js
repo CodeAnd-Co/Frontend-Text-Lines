@@ -16,6 +16,8 @@ export const RUTAS_API = {
   CATEGORIAS: {
     BASE: BASE_CATEGORIAS,
     CONSULTAR_LISTA: `${BASE_CATEGORIAS}/consultar-lista-categorias`,
+    CREAR: `${BASE_CATEGORIAS}/crear-categoria`,
+    ELIMINAR_CATEGORIA: `${BASE_CATEGORIAS}/eliminar`,
   },
   PRODUCTOS: {
     BASE: BASE_PRODUCTOS,
@@ -33,6 +35,7 @@ export const RUTAS_API = {
   CUOTAS: {
     BASE: BASE_CUOTAS,
     CREAR_CUOTA: `${BASE_CUOTAS}/crear-cuota`,
+    CONSULTAR_LISTA: `${BASE_CUOTAS}/consultar-lista`,
   },
   ROLES: {
     BASE: BASE_ROLES,

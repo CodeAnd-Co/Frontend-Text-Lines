@@ -10,8 +10,10 @@ import { RepositorioUsuarios } from "../../dominio/repositorios/Usuarios/reposit
  *   cargando: boolean,
  *   error: string | null
  * }}
+ * 
+ * @see [RF[03] Leer usuario - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF3)
  */
-export const useUsuarioPorId = (idUsuario) => {
+export const useUsuarioId = (idUsuario) => {
   const [usuario, setUsuario] = useState(null);
   const [mensaje, setMensaje] = useState("");
   const [cargando, setCargando] = useState(true);
@@ -23,8 +25,7 @@ export const useUsuarioPorId = (idUsuario) => {
       setError(null);
 
       try {
-        const repo = new RepositorioUsuarios();
-        const { usuario, mensaje } = await repo.obtenerPorId(idUsuario);
+        const { usuario, mensaje } = await RepositorioUsuarios.obtenerPorId(idUsuario);
 
         setUsuario(usuario);
         setMensaje(mensaje);

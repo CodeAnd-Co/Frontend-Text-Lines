@@ -11,6 +11,7 @@ export const RUTAS_API = {
   USUARIOS: {
     BASE: BASE_USUARIOS,
     CONSULTAR_LISTA: `${BASE_USUARIOS}/consultar-lista-usuarios`,
+    CONSULTAR_USUARIO: `${BASE_USUARIOS}/consultar-usuario`,
   },
   CATEGORIAS: {
     BASE: BASE_CATEGORIAS,

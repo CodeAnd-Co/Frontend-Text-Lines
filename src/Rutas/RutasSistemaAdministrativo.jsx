@@ -13,7 +13,6 @@ import Configuracion from '../Vistas/Paginas/Configuracion/ConfiguracionGeneral'
 import Error404 from '../Vistas/Paginas/Errores/Error404';
 import ListaRoles from '../Vistas/Paginas/Roles/ListaRoles';
 import ListaUsuarios from '../vistas/Paginas/Usuarios/ListaUsuarios';
-
 import RutaProtegida from './RutaProtegida';
 import VerificarClienteSeleccionado from './VerificarClienteSeleccionado';
 

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useConsultarCategorias } from '../../../hooks/Categorias/useConsultarCategorias';
 import CustomDataGrid from '../../Componentes/Organismos/Tabla';
 import Alerta from '../../componentes/moleculas/Alerta';
+import ModalCrearCategoria from '../../componentes/organismos/ModalCrearCategoria';
 import ContenedorLista from '../../componentes/organismos/ContenedorLista';
 import { useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
@@ -14,20 +15,26 @@ import { tokens } from '../../../theme';
  *
  * @see [RF[47] Consulta lista de categorías](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF47)
  */
-
 const ListaCategorias = () => {
   // Hook que obtiene las categorías desde el repositorio
-  const { categorias, cargando, error } = useConsultarCategorias();
+  const { categorias, cargando, error, recargar } = useConsultarCategorias();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  // Estado para controlar la visualización del modal
+  const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
 
   // Columnas para el DataGrid
   const columns = [
     { field: 'nombreCategoria', headerName: 'Nombre', flex: 1 },
     { field: 'descripcion', headerName: 'Descripción', flex: 2 },
-    { field: 'cantidadProductos', headerName: 'Número de productos asociados', type: 'number', flex: 1 },
+    {
+      field: 'cantidadProductos',
+      headerName: 'Número de productos asociados',
+      type: 'number',
+      flex: 1,
+    },
   ];
-
   // Las filas deben tener un campo `id`, usamos `idCategoria`
   const rows = categorias.map((cat) => ({
     id: cat.idCategoria,
@@ -37,23 +44,70 @@ const ListaCategorias = () => {
     idCliente: cat.idCliente,
   }));
 
+  // Manejador para abrir el modal
+  const handleAbrirModalCrear = () => {
+    setModalCrearAbierto(true);
+  };
+
+  // Manejador para cerrar el modal
+  const handleCerrarModalCrear = () => {
+    setModalCrearAbierto(false);
+  };
+
+  // Manejador para cuando se crea una nueva categoría
+  const handleCategoriaCreadaExitosamente = () => {
+    handleCerrarModalCrear();
+    // Recarga la lista de categorías
+    recargar();
+  };
+
   const botones = [
-    { label: 'Añadir', variant: 'contained', color: 'primary', size: 'large', backgroundColor: colors.altertex[1], onClick: () => console.log('Añadir') },
-    { label: 'Editar', variant: 'outlined', color: 'primary', size: 'large', outlineColor: colors.altertex[1], onClick: () => console.log('Editar') },
-    { label: 'Eliminar', variant: 'contained', color: 'error', size: 'large', backgroundColor: colors.altertex[1], onClick: () => console.log('Eliminar') },
+    {
+      label: 'Añadir',
+      variant: 'contained',
+      color: 'primary',
+      size: 'large',
+      backgroundColor: colors.altertex[1],
+      onClick: handleAbrirModalCrear, // Ahora abre el modal para crear
+    },
+    {
+      label: 'Editar',
+      variant: 'outlined',
+      color: 'primary',
+      size: 'large',
+      outlineColor: colors.altertex[1],
+      onClick: () => console.log('Editar'),
+    },
+    {
+      label: 'Eliminar',
+      variant: 'contained',
+      color: 'error',
+      size: 'large',
+      backgroundColor: colors.altertex[1],
+      onClick: () => console.log('Eliminar'),
+    },
   ];
-  
+
   return (
-    <ContenedorLista
-      titulo="Categorías"
-      descripcion= "Gestiona las categorías de productos disponibles."
-      informacionBotones={botones}
-    >
-      <div style={{ height: 400, width: '100%' }}>
-        {error && <Alerta tipo="error" mensaje={error} icono cerrable centradoInferior />}
-        <CustomDataGrid columns={columns} rows={rows} loading={cargando} checkboxSelection />
-      </div>
-    </ContenedorLista>
+    <>
+      <ContenedorLista
+        titulo='Categorías'
+        descripcion='Gestiona las categorías de productos disponibles.'
+        informacionBotones={botones}
+      >
+        <div style={{ height: 400, width: '100%' }}>
+          {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}
+          <CustomDataGrid columns={columns} rows={rows} loading={cargando} checkboxSelection />
+        </div>
+      </ContenedorLista>
+
+      {/* Modal para crear categoria */}
+      <ModalCrearCategoria
+        abierto={modalCrearAbierto}
+        onCerrar={handleCerrarModalCrear}
+        onCreado={handleCategoriaCreadaExitosamente}
+      />
+    </>
   );
 };
 

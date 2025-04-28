@@ -4,6 +4,7 @@ import { Box } from '@mui/material';
 import Tabla from '../../Componentes/Organismos/Tabla';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import { useConsultarSetsProductos } from '../../../hooks/SetsProductos/useConsultarSetsProductos';
+import Chip from '../../componentes/atomos/Chip';
 
 const ListaSetsProductos = () => {
   const { grupos, cargando, error } = useConsultarSetsProductos(); // <-- usar 'grupos'
@@ -11,7 +12,7 @@ const ListaSetsProductos = () => {
   const columns = [
     {
       field: 'nombre',
-      headerName: 'Nombre del Grupo',
+      headerName: 'Nombre',
       flex: 2,
     },
     {
@@ -21,9 +22,23 @@ const ListaSetsProductos = () => {
     },
     {
       field: 'activo',
-      headerName: 'Estatus',
-      type: 'number',
+      headerName: 'Disponibilidad en stock',
       flex: 1,
+      renderCell: (params) => {
+        const isActivo = params.value === 1;
+
+        return (
+          <Chip
+            label={isActivo ? 'Disponible' : 'No disponible'}
+            variant='filled'
+            color={isActivo ? 'primary' : undefined}
+            size='medium'
+            shape='cuadrada'
+            backgroundColor={isActivo ? undefined : '#f0f0f0'}
+            textColor={isActivo ? undefined : '#000000'}
+          />
+        );
+      },
     },
   ];
 

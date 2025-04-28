@@ -1,15 +1,7 @@
 import Contenedor from '../atomos/Contenedor';
 import CustomDataGrid from './Tabla';
 
-const ProductosCuotaSet = ({
-  elevacion,
-  sx,
-  columnas,
-  filas,
-  paginacion,
-  checkBox,
-  onRowClick,
-}) => {
+const ProductosModal = ({ elevacion, sx, columnas, filas, paginacion, checkBox, onRowClick }) => {
   return (
     <Contenedor elevation={elevacion} sx={sx}>
       <CustomDataGrid
@@ -23,4 +15,4 @@ const ProductosCuotaSet = ({
   );
 };
 
-export default ProductosCuotaSet;
+export default ProductosModal;

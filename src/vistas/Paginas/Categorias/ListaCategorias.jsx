@@ -16,6 +16,9 @@ const ListaCategorias = () => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
 
+  // Estado para controlar la visualización del modal
+  const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
+
   // Columnas para el DataGrid
   const columns = [
     { field: 'nombreCategoria', headerName: 'Nombre', flex: 1 },
@@ -27,7 +30,7 @@ const ListaCategorias = () => {
       flex: 1,
     },
   ];
-
+  // Las filas deben tener un campo `id`, usamos `idCategoria`
   const rows = categorias.map((cat) => ({
     id: cat.idCategoria,
     nombreCategoria: cat.nombreCategoria,
@@ -35,6 +38,23 @@ const ListaCategorias = () => {
     cantidadProductos: cat.cantidadProductos,
     idCliente: cat.idCliente,
   }));
+
+  // Manejador para abrir el modal
+  const handleAbrirModalCrear = () => {
+    setModalCrearAbierto(true);
+  };
+
+  // Manejador para cerrar el modal
+  const handleCerrarModalCrear = () => {
+    setModalCrearAbierto(false);
+  };
+
+  // Manejador para cuando se crea una nueva categoría
+  const handleCategoriaCreadaExitosamente = () => {
+    handleCerrarModalCrear();
+    // Recarga la lista de categorías
+    recargar();
+  };
 
   const botones = [
     {
@@ -112,6 +132,12 @@ const ListaCategorias = () => {
           onClose={() => setAlerta(null)}
         />
       )}
+      {/* Modal para crear categoria */}
+      <ModalCrearCategoria
+        abierto={modalCrearAbierto}
+        onCerrar={handleCerrarModalCrear}
+        onCreado={handleCategoriaCreadaExitosamente}
+      />
     </>
   );
 };

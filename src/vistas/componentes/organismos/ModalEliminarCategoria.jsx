@@ -47,7 +47,7 @@ const ModalEliminarCategoria = ({ open, onClose, idsCategoria, setAlerta, refres
       abrir={open}
       cerrar={handleCancelar}
       confirmar={handleConfirm}
-      dialogo='¿Estás seguro de que deseas eliminar estas categorías?'
+      dialogo='¿Estás seguro de que deseas eliminar las categorías seleccionadas?'
       labelCancelar='Cancelar'
       labelConfirmar='Eliminar'
     />

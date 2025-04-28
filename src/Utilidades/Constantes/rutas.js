@@ -25,7 +25,7 @@ export const RUTAS = {
     PRODUCTOS: {
       BASE: `${BASE_PRODUCTOS}`,
       CONSULTAR_PRODUCTOS: `${BASE_PRODUCTOS}/consultar-lista`,
-      CONSULTAR_SETS: `${BASE_PRODUCTOS}/consultar-sets`,
+      CONSULTAR_SETS_PRODUCTOS: `${BASE_PRODUCTOS}/consultar-sets`,
       CONSULTAR_CATEGORIAS: `${BASE_PRODUCTOS}/consultar-categorias`,
     },
     PEDIDOS: `${BASE_PEDIDOS}`,

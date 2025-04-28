@@ -2,6 +2,7 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 const BASE_USUARIOS = `${BASE_URL}/api/usuarios`;
 const BASE_CATEGORIAS = `${BASE_URL}/api/categorias`;
 const BASE_PRODUCTOS = `${BASE_URL}/api/productos`;
+const BASE_SETS_PRODUCTOS = `${BASE_URL}/api/sets-productos`;
 const BASE_CLIENTES = `${BASE_URL}/api/clientes`;
 const BASE_EMPLEADOS = `${BASE_URL}/api/empleados`;
 const BASE_CUOTAS = `${BASE_URL}/api/cuotas`;
@@ -19,6 +20,10 @@ export const RUTAS_API = {
   PRODUCTOS: {
     BASE: BASE_PRODUCTOS,
     CONSULTAR_LISTA: `${BASE_PRODUCTOS}/consultar-lista`,
+  },
+  SETS_PRODUCTOS: {
+    BASE: BASE_SETS_PRODUCTOS,
+    CONSULTAR_LISTA: `${BASE_SETS_PRODUCTOS}/consultar-lista`,
   },
   CLIENTES: {
     BASE: BASE_CLIENTES,

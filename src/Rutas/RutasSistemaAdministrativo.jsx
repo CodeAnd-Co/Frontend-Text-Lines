@@ -13,6 +13,7 @@ import Configuracion from '../Vistas/Paginas/Configuracion/ConfiguracionGeneral'
 import Error404 from '../Vistas/Paginas/Errores/Error404';
 import ListaRoles from '../Vistas/Paginas/Roles/ListaRoles';
 import ListaUsuarios from '../vistas/Paginas/Usuarios/ListaUsuarios';
+import ListaSetsProductos from '../vistas/Paginas/Productos/ListaSetsProductos';
 
 import RutaProtegida from './RutaProtegida';
 import VerificarClienteSeleccionado from './VerificarClienteSeleccionado';
@@ -63,6 +64,10 @@ const RutasSistemaAdministrativo = () => {
         <Route
           path={RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_PRODUCTOS}
           element={<ListaProductos />}
+        />
+        <Route
+          path={RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_SETS_PRODUCTOS}
+          element={<ListaSetsProductos />}
         />
         <Route path='productos/consultar-categorias' element={<ListaCategorias />} />
       </Route>

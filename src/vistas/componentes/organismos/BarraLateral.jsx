@@ -146,7 +146,7 @@ const BarraLateral = () => {
                 ruta={
                   RUTAS.SISTEMA_ADMINISTRATIVO.BASE
                   + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO
-                  + RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_SETS
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_SETS_PRODUCTOS
                 }
                 seleccionado={seleccionado}
                 setSeleccionado={setSeleccionado}

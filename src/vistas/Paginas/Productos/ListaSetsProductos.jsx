@@ -4,10 +4,11 @@ import { Box } from '@mui/material';
 import Tabla from '../../Componentes/Organismos/Tabla';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import { useConsultarSetsProductos } from '../../../hooks/SetsProductos/useConsultarSetsProductos';
+import Alerta from '../../componentes/moleculas/Alerta'; // Asegúrate de importar Alerta
 import Chip from '../../componentes/atomos/Chip';
 
 const ListaSetsProductos = () => {
-  const { grupos, cargando, error } = useConsultarSetsProductos(); // <-- usar 'grupos'
+  const { setsDeProductos, cargando, error } = useConsultarSetsProductos();
 
   const columns = [
     {
@@ -42,9 +43,9 @@ const ListaSetsProductos = () => {
     },
   ];
 
-  const rows = grupos.map((setProducto, index) => ({
-    id: index, // Le ponemos el index como id temporal (porque tu API no manda id único)
-    nombre: setProducto.nombre, // propiedad correcta (todo minúscula)
+  const rows = setsDeProductos.map((setProducto, index) => ({
+    id: index,
+    nombre: setProducto.nombre,
     descripcion: setProducto.descripcion,
     activo: setProducto.activo,
   }));
@@ -70,11 +71,15 @@ const ListaSetsProductos = () => {
   return (
     <ContenedorLista
       titulo='Sets de productos'
-      descripcion='Gestiona y organiza los sets de productos registrados en el sistema.'
+      descripcion='Gestiona y organiza los sets de productos que se pueden asignar a los grupos de empleados.'
       informacionBotones={botones}
     >
-      <Box width='100%'>
-        {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+      <Box width='100%' mt='20px'>
+        {error && (
+          <Box mb={2}>
+            <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />
+          </Box>
+        )}
         <Tabla columns={columns} rows={rows} loading={cargando} checkboxSelection />
       </Box>
     </ContenedorLista>

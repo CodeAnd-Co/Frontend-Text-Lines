@@ -1,5 +1,3 @@
-//RF[47] Consulta lista de categorías - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF47]
-
 import { useEffect, useState } from "react";
 import { RepositorioListaCategorias } from "../../dominio/repositorios/Categorias/RepositorioListaCategorias";
 
@@ -12,6 +10,7 @@ import { RepositorioListaCategorias } from "../../dominio/repositorios/Categoria
  *   mensaje: string,
  *   recargar: () => void
  * }}
+ * @see [RF[47] Consulta lista de categorías](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF47)
  */
 export function useConsultarCategorias() {
   const [categorias, setCategorias] = useState([]);

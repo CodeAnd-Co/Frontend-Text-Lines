@@ -17,17 +17,20 @@ const ModalCrearCuotaSet = () => {
   const handleCerrar = () => setMostrarFormulario(false);
 
   const handleConfirmar = () => {
-    if (!nombreCuotaSet || !descripcionCuotaSet || productos.length === 0) {
+    // Validar que el nombre y descripción no estén vacíos después de eliminar espacios
+    // y que haya al menos un producto seleccionado
+    if (!nombreCuotaSet.trim() || !descripcionCuotaSet.trim() || productos.length === 0) {
       setMostrarAlerta(true);
       return;
     }
 
+    // Navegar a la siguiente página con datos limpios (sin espacios innecesarios)
     navegar(
       `${RUTAS.SISTEMA_ADMINISTRATIVO.BASE_TABLERO}${RUTAS.SISTEMA_ADMINISTRATIVO.CUOTAS.EDITAR_CUOTAS}`,
       {
         state: {
-          nombreCuotaSet,
-          descripcion: descripcionCuotaSet,
+          nombreCuotaSet: nombreCuotaSet.trim(),
+          descripcion: descripcionCuotaSet.trim(),
           productos,
         },
       }

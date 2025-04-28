@@ -305,7 +305,13 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
       </Box>
 
       {alerta && (
-        <Alerta tipo={alerta.tipo} mensaje={alerta.mensaje} onClose={() => setAlerta(null)} />
+        <Alerta
+          sx={{ marginBottom: 2 }}
+          tipo={alerta.tipo}
+          mensaje={alerta.mensaje}
+          duracion='4000'
+          onClose={() => setAlerta(null)}
+        />
       )}
     </ModalFlotante>
   );

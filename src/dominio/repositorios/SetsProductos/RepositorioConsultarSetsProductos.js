@@ -31,16 +31,10 @@ export class RepositorioConsultarSetsProductos {
         }
       );
 
-      // Verificación de la respuesta para asegurarse de que contiene los datos esperados
-      if (!respuesta.data || !respuesta.data.setsProductos) {
-        throw new Error('Respuesta de la API no contiene los datos esperados');
-      }
-
       // Llama a la función para convertir la respuesta en instancias de SetProductos
       return listaSetsProductos(respuesta.data);
     } catch (error) {
       // Manejo de errores si ocurre un fallo durante la consulta o el procesamiento
-      console.log('error..');
       const mensaje = error.response?.data?.mensaje || 'Error al obtener sets de productos.';
       throw new Error(mensaje);
     }

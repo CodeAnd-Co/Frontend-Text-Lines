@@ -33,5 +33,5 @@ export const useEliminarProductos = (idsProducto) => {
     eliminar();
   }, [idsProducto]);
 
-  return { mensaje, error };
+  return { mensaje, error, cargando };
 };

@@ -40,7 +40,7 @@ const ModalEliminarCategoria = ({ open, onClose, idsCategoria, setAlerta, refres
       }
       setConfirmado(false);
     }
-  }, [confirmado, mensaje, error, setAlerta]);
+  }, [confirmado, mensaje, error, setAlerta, refrescarPagina]);
 
   return (
     <PopUpEliminar

@@ -42,11 +42,13 @@ const ModalEliminarSetProductos = ({
           cerrable: true,
           centradoInferior: true,
         });
-        refrescarPagina();
+        setTimeout(() => {
+          refrescarPagina();
+        }, 500);
       }
       setConfirmado(false);
     }
-  }, [confirmado, mensaje, error, setAlerta]);
+  }, [confirmado, mensaje, error, setAlerta, refrescarPagina]);
 
   return (
     <PopUpEliminar

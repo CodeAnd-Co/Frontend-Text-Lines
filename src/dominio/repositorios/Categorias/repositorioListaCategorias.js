@@ -14,7 +14,7 @@ export class RepositorioListaCategorias {
     try {
       const respuesta = await axios.post(
         RUTAS_API.CATEGORIAS.CONSULTAR_LISTA,
-        { },
+        {},
         {
           headers: {
             'x-api-key': API_KEY,

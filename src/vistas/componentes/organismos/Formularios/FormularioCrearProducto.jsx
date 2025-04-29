@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Box } from '@mui/material';
 import ModalFlotante from '../../organismos/ModalFlotante';
 import FormularioProveedor from './FormularioProveedor';
@@ -44,15 +44,21 @@ const FormularioCrearProducto = ({ open, onClose }) => {
     imagenesVariante: [],
   });
 
-  const estados = [
-    { value: 1, label: 'Activo' },
-    { value: 0, label: 'Inactivo' },
-  ];
+  const estados = useMemo(
+    () => [
+      { value: 1, label: 'Activo' },
+      { value: 0, label: 'Inactivo' },
+    ],
+    []
+  );
 
-  const envios = [
-    { value: 1, label: 'Sí' },
-    { value: 0, label: 'No' },
-  ];
+  const envios = useMemo(
+    () => [
+      { value: 1, label: 'Sí' },
+      { value: 0, label: 'No' },
+    ],
+    []
+  );
 
   const manejarSiguiente = () => {
     setStep((prevStep) => prevStep + 1);
@@ -65,6 +71,39 @@ const FormularioCrearProducto = ({ open, onClose }) => {
   const manejarConfirmacion = async () => {
     // Lógica para enviar los datos del formulario al backend
   };
+
+  // Memoizar los formularios dependiendo del paso actual
+  const formularioProveedor = useMemo(
+    () => <FormularioProveedor proveedor={proveedor} setProveedor={setProveedor} />,
+    [proveedor]
+  );
+
+  const formularioProducto = useMemo(
+    () => (
+      <FormularioProducto
+        producto={producto}
+        setProducto={setProducto}
+        estados={estados}
+        envios={envios}
+        imagenes={imagenes}
+        setImagenes={setImagenes}
+      />
+    ),
+    [producto, estados, envios, imagenes]
+  );
+
+  const formularioVarianteOpcion = useMemo(
+    () => (
+      <FormularioVarianteOpcion
+        variantes={variantes}
+        setVariantes={setVariantes}
+        estados={estados}
+        imagenes={imagenes}
+        setImagenes={setImagenes}
+      />
+    ),
+    [variantes, estados, imagenes]
+  );
 
   return (
     <ModalFlotante
@@ -93,28 +132,9 @@ const FormularioCrearProducto = ({ open, onClose }) => {
         noValidate
         autoComplete='off'
       >
-        {step === 0 && <FormularioProveedor proveedor={proveedor} setProveedor={setProveedor} />}
-
-        {step === 1 && (
-          <FormularioProducto
-            producto={producto}
-            setProducto={setProducto}
-            estados={estados}
-            envios={envios}
-            imagenes={imagenes}
-            setImagenes={setImagenes}
-          />
-        )}
-
-        {step === 2 && (
-          <FormularioVarianteOpcion
-            variantes={variantes}
-            setVariantes={setVariantes}
-            estados={estados}
-            imagenes={imagenes}
-            setImagenes={setImagenes}
-          />
-        )}
+        {step === 0 && formularioProveedor}
+        {step === 1 && formularioProducto}
+        {step === 2 && formularioVarianteOpcion}
       </Box>
     </ModalFlotante>
   );

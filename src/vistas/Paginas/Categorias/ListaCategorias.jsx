@@ -25,13 +25,9 @@ const ListaCategorias = () => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
 
-  // Estado para controlar la visualización del modal crear
   const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
-
-  // Estado para controlar la visualización del modal eliminar
   const [openModalEliminar, setOpenModalEliminar] = useState(false);
 
-  // Columnas para el DataGrid
   const columns = [
     { field: 'nombreCategoria', headerName: 'Nombre', flex: 1 },
     { field: 'descripcion', headerName: 'Descripción', flex: 2 },
@@ -42,7 +38,7 @@ const ListaCategorias = () => {
       flex: 1,
     },
   ];
-  // Las filas deben tener un campo `id`, usamos `idCategoria`
+
   const rows = categorias.map((cat) => ({
     id: cat.idCategoria,
     nombreCategoria: cat.nombreCategoria,
@@ -51,20 +47,16 @@ const ListaCategorias = () => {
     idCliente: cat.idCliente,
   }));
 
-  // Manejador para abrir el modal
   const handleAbrirModalCrear = () => {
     setModalCrearAbierto(true);
   };
 
-  // Manejador para cerrar el modal
   const handleCerrarModalCrear = () => {
     setModalCrearAbierto(false);
   };
 
-  // Manejador para cuando se crea una nueva categoría
   const handleCategoriaCreadaExitosamente = () => {
     handleCerrarModalCrear();
-    // Recarga la lista de categorías
     recargar();
   };
 
@@ -75,7 +67,7 @@ const ListaCategorias = () => {
       color: 'primary',
       size: 'large',
       backgroundColor: colores.altertex[1],
-      onClick: handleAbrirModalCrear, // Ahora abre el modal para crear
+      onClick: handleAbrirModalCrear,
     },
     {
       variant: 'outlined',
@@ -127,13 +119,11 @@ const ListaCategorias = () => {
           />
         </Box>
       </ContenedorLista>
-      {/* Modal para crear categoria */}
       <ModalCrearCategoria
         abierto={modalCrearAbierto}
         onCerrar={handleCerrarModalCrear}
         onCreado={handleCategoriaCreadaExitosamente}
       />
-      {/* Modal para eliminar categoria */}
       <ModalEliminarCategoria
         open={openModalEliminar}
         onClose={() => setOpenModalEliminar(false)}

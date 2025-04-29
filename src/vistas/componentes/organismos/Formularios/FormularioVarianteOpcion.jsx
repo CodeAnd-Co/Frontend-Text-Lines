@@ -1,38 +1,10 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Grid } from '@mui/material';
 import TarjetaAccion from '../../moleculas/TarjetaAccion';
 import FormularioOpcion from './FormularioOpcion';
 import FormularioVariante from './FormularioVariante';
 
-const generarSKUautomatico = (proveedor, producto, varianteNombre = '') => {
-  const clean = (str) =>
-    str
-      .toUpperCase()
-      .replace(/\s+/g, '')
-      .replace(/[^A-Z0-9]/g, '')
-      .substring(0, 4);
-
-  const proveedorParte = clean(proveedor.nombreCompania || proveedor.nombre);
-  const marcaParte = clean(producto.marca);
-  const modeloParte = clean(producto.modelo);
-  const varianteParte = clean(varianteNombre);
-
-  const randomParte = Math.floor(1000 + Math.random() * 9000);
-
-  return `${proveedorParte}-${marcaParte}-${modeloParte}-${varianteParte}-${randomParte}`;
-};
-
-const FormularioVarianteOpcion = ({
-  proveedor,
-  producto,
-  variantes,
-  setVariantes,
-  estados,
-  imagenes,
-  setImagenes,
-}) => {
-  console.log(variantes);
-
+const FormularioVarianteOpcion = ({ variantes, setVariantes, estados, imagenes, setImagenes }) => {
   const handleVarianteChange = useCallback(
     (index, e) => {
       const { name, value } = e.target;
@@ -64,19 +36,24 @@ const FormularioVarianteOpcion = ({
     [setVariantes]
   );
 
-  const agregarOpcion = (varianteIndex) => {
-    const nuevasVariantes = [...variantes];
-    nuevasVariantes[varianteIndex].opciones.push({
-      cantidad: '',
-      valorOpcion: '',
-      SKUautomatico: '',
-      SKUcomercial: '',
-      costoAdicional: '',
-      descuento: '',
-      estado: '',
-    });
-    setVariantes(nuevasVariantes);
-  };
+  const agregarOpcion = useCallback(
+    (varianteIndex) => {
+      setVariantes((prevVariantes) => {
+        const nuevasVariantes = [...prevVariantes];
+        nuevasVariantes[varianteIndex].opciones.push({
+          cantidad: '',
+          valorOpcion: '',
+          SKUautomatico: '',
+          SKUcomercial: '',
+          costoAdicional: '',
+          descuento: '',
+          estado: '',
+        });
+        return nuevasVariantes;
+      });
+    },
+    [setVariantes]
+  );
 
   const agregarVariante = () => {
     setVariantes((prev) => [
@@ -89,79 +66,83 @@ const FormularioVarianteOpcion = ({
     ]);
   };
 
-  const handleEliminarVariante = (index) => {
-    setVariantes((prev) => {
-      const nuevasVariantes = [...prev];
-      nuevasVariantes.splice(index, 1);
-      return nuevasVariantes;
-    });
+  const handleEliminarVariante = useCallback(
+    (index) => {
+      setVariantes((prev) => {
+        const nuevasVariantes = [...prev];
+        nuevasVariantes.splice(index, 1);
+        return nuevasVariantes;
+      });
 
-    setImagenes((prev) => {
-      const nuevasImagenesVariante = [...prev.imagenesVariante];
-      nuevasImagenesVariante.splice(index, 1);
-      return {
-        ...prev,
-        imagenesVariante: nuevasImagenesVariante,
-      };
-    });
-  };
+      setImagenes((prev) => {
+        const nuevasImagenesVariante = [...prev.imagenesVariante];
+        nuevasImagenesVariante.splice(index, 1);
+        return {
+          ...prev,
+          imagenesVariante: nuevasImagenesVariante,
+        };
+      });
+    },
+    [setVariantes, setImagenes]
+  );
 
-  const handleEliminarOpcion = (varianteIndex, opcionIndex) => {
-    const nuevasVariantes = [...variantes];
-    nuevasVariantes[varianteIndex].opciones.splice(opcionIndex, 1);
-    setVariantes(nuevasVariantes);
-  };
+  const handleEliminarOpcion = useCallback(
+    (varianteIndex, opcionIndex) => {
+      setVariantes((prevVariantes) => {
+        const nuevasVariantes = [...prevVariantes];
+        nuevasVariantes[varianteIndex].opciones.splice(opcionIndex, 1);
+        return nuevasVariantes;
+      });
+    },
+    [setVariantes]
+  );
+
+  const tarjetasVariante = useMemo(() => {
+    return variantes.map((variante, varianteIndex) => (
+      <Grid container spacing={2} key={varianteIndex}>
+        <FormularioVariante
+          variante={variante}
+          handleChange={(evento) => handleVarianteChange(varianteIndex, evento)}
+          imagenes={imagenes}
+          setImagenes={setImagenes}
+          varianteIndex={varianteIndex}
+          onEliminarVariante={handleEliminarVariante}
+        />
+        {variante.opciones.map((opcion, opcionIndex) => (
+          <Grid item size={12} key={opcionIndex}>
+            <FormularioOpcion
+              variantes={opcion}
+              handleChange={(evento) => handleOpcionChange(varianteIndex, opcionIndex, evento)}
+              estados={estados}
+              onEliminarOpcion={() => handleEliminarOpcion(varianteIndex, opcionIndex)}
+            />
+          </Grid>
+        ))}
+        <Grid item size={12}>
+          <TarjetaAccion
+            icono='Add'
+            texto='Agregar opción'
+            onClick={() => agregarOpcion(varianteIndex)}
+            hoverScale={false}
+          />
+        </Grid>
+      </Grid>
+    ));
+  }, [
+    variantes,
+    imagenes,
+    setImagenes,
+    handleEliminarVariante,
+    handleVarianteChange,
+    estados,
+    handleOpcionChange,
+    handleEliminarOpcion,
+    agregarOpcion,
+  ]);
 
   return (
     <>
-      {variantes.map((variante, varianteIndex) => (
-        <Grid
-          container
-          spacing={2}
-          sx={{
-            mb: 6,
-            borderTop: '2px solid',
-            borderColor: 'primary.main',
-            pt: 2,
-          }}
-          key={varianteIndex}
-        >
-          <FormularioVariante
-            variante={variante}
-            handleChange={(evento) => handleVarianteChange(varianteIndex, evento)}
-            imagenes={imagenes}
-            setImagenes={setImagenes}
-            varianteIndex={varianteIndex}
-            onEliminarVariante={handleEliminarVariante}
-          />
-
-          {variante.opciones.map((opcion, opcionIndex) => (
-            <Grid item size={12} key={opcionIndex}>
-              <FormularioOpcion
-                variantes={opcion}
-                handleChange={(evento) => handleOpcionChange(varianteIndex, opcionIndex, evento)}
-                estados={estados}
-                onEliminarOpcion={() => handleEliminarOpcion(varianteIndex, opcionIndex)}
-              />
-            </Grid>
-          ))}
-          <Grid
-            item
-            size={12}
-            sx={{
-              mt: 1,
-            }}
-          >
-            <TarjetaAccion
-              icono='Add'
-              texto='Agregar opción'
-              key={varianteIndex}
-              onClick={() => agregarOpcion(varianteIndex)}
-              hoverScale={false}
-            />
-          </Grid>
-        </Grid>
-      ))}
+      {tarjetasVariante}
       <Grid item size={12}>
         <TarjetaAccion
           icono='Add'

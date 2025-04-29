@@ -77,12 +77,8 @@ const RutasSistemaAdministrativo = () => {
       </Route>
       {/* EVENTOS */}
       <Route
-        path={RUTAS.SISTEMA_ADMINISTRATIVO.EVENTOS.BASE}
-        element={
-          <RutaProtegida permiso={PERMISOS.CONSULTAR_EVENTOS}>
-            <ListaEventos />
-          </RutaProtegida>
-        }
+        path={RUTAS.SISTEMA_ADMINISTRATIVO.EVENTOS.CONSULTAR_EVENTOS}
+        element={<ListaEventos />}
       />
       {/* Rutas fuera del tablero */}
       <Route

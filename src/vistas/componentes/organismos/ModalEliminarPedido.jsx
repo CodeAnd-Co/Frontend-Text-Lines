@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useEliminarPedido } from '../../../hooks/Pedidos/useEliminarPedido';
 import PopUpEliminar from '../moleculas/PopUpEliminar';
 
-const ModalEliminarPedido = ({ open, onClose, idsSetProductos, setAlerta, refrescarPagina }) => {
+const ModalEliminarPedido = ({ open, onClose, idsPedido, setAlerta, refrescarPagina }) => {
   const [confirmado, setConfirmado] = useState(false);
   const { mensaje, error } = useEliminarPedido(confirmado ? idsPedido : []);
 

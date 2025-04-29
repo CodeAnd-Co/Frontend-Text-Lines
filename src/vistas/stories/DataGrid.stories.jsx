@@ -1,5 +1,5 @@
 import React from 'react';
-import CustomDataGrid from '../componentes/organismos/dataGrid';
+import CustomDataGrid from '../componentes/organismos/Tabla';
 
 export default {
   title: 'Organismos/CustomDataGrid',

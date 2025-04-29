@@ -14,6 +14,7 @@ import ListaRoles from '../Vistas/Paginas/Roles/ListaRoles';
 import ListaUsuarios from '../vistas/Paginas/Usuarios/ListaUsuarios';
 import ListaCategorias from '../vistas/paginas/Categorias/ListaCategorias';
 import ListaSetsProductos from '../vistas/Paginas/Productos/ListaSetsProductos';
+import ListaEventos from '../vistas/Paginas/Eventos/ListaEventos';
 
 import RutaProtegida from './RutaProtegida';
 import VerificarClienteSeleccionado from './VerificarClienteSeleccionado';
@@ -74,6 +75,15 @@ const RutasSistemaAdministrativo = () => {
           element={<ListaCategorias />}
         />
       </Route>
+      {/* EVENTOS */}
+      <Route
+        path={RUTAS.SISTEMA_ADMINISTRATIVO.EVENTOS.BASE}
+        element={
+          <RutaProtegida permiso={PERMISOS.CONSULTAR_EVENTOS}>
+            <ListaEventos />
+          </RutaProtegida>
+        }
+      />
       {/* Rutas fuera del tablero */}
       <Route
         path={RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE}

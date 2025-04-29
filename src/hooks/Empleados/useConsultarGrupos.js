@@ -4,6 +4,17 @@ import { RepositorioConsultarGrupos } from '../../Dominio/repositorios/Empleados
 import { useAuth } from '../../hooks/AuthProvider';
 import { PERMISOS } from '../../Utilidades/Constantes/permisos';
 
+/**
+ * Hook para consultar la lista de grupos de empleados.
+ * @param void
+ * @returns {{
+ *   grupos: GrupoEmpleados[],
+ *   mensaje: string,
+ *   cargando: boolean,
+ *   error: string | null
+ * }}
+ */
+
 export function useConsultarGrupos() {
   const [grupos, setGrupos] = useState([]);
   const [mensaje, setMensaje] = useState('');

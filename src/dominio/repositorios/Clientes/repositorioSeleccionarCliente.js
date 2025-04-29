@@ -5,6 +5,13 @@ import { RUTAS_API } from '../../../Utilidades/Constantes/rutasAPI';
 const API_KEY = import.meta.env.VITE_API_KEY;
 
 export class RepositorioSeleccionarCliente {
+  /**
+   * Selecciona un cliente en el sistema.
+   *
+   * @param {number} idCliente - Identificador del cliente a seleccionar.
+   * @returns {Promise<string>} Mensaje de éxito o error.
+   * @throws {Error} Si ocurre un error al seleccionar el cliente.
+   */
   static async seleccionarCliente(idCliente) {
     try {
       const respuesta = await axios.post(

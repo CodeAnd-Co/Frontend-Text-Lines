@@ -1,20 +1,20 @@
 //RF22 - Consulta Lista de Grupo Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF22
 import axios from 'axios';
 import { RUTAS_API } from '../../../Utilidades/Constantes/rutasAPI';
-import { ListaGrupoEmpleados } from '../../modelos/Empleados/ListaGrupoEmpleados';
+import { ListaEmpleados } from '../../Modelos/Empleados/ListaEmpleados';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-export class RepositorioConsultarGrupos {
+export class RepositorioConsultarEmpleados {
   /**
-   * Obtiene la lista de gurpos de empleados desde la API
+   * Obtiene la lista de empleados desde la API
    * @param void
-   * @returns {Promise<{grupoEmpleados: GrupoEmpleados[], mensaje: string}>}
+   * @returns {Promise<{empleados: Empleado[], mensaje: string}>}
    */
-  static async consultarGrupos() {
+  static async consultarLista() {
     try {
       const respuesta = await axios.post(
-        RUTAS_API.EMPLEADOS.CONSULTAR_GRUPOS,
+        RUTAS_API.EMPLEADOS.CONSULTAR_LISTA,
         {},
         {
           withCredentials: true,
@@ -24,9 +24,9 @@ export class RepositorioConsultarGrupos {
         }
       );
 
-      return new ListaGrupoEmpleados(respuesta.data);
+      return new ListaEmpleados(respuesta.data);
     } catch (error) {
-      const mensaje = error?.response?.data?.mensaje || 'Error al consultar grupos de empleados';
+      const mensaje = error?.response?.data?.mensaje || 'Error al consultar los empleados';
       throw new Error(mensaje);
     }
   }

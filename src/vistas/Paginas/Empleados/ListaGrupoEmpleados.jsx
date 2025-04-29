@@ -5,10 +5,10 @@ import Tabla from '../../Componentes/Organismos/Tabla';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import { useConsultarGrupos } from '../../../hooks/Empleados/useConsultarGrupos';
 
-const ListaGrupoEmpleados = () => {
+const ListaEmpleados = () => {
   const { grupos, cargando, error } = useConsultarGrupos();
 
-  const columns = [
+  const columnas = [
     {
       field: 'nombre',
       headerName: 'Nombre del Grupo',
@@ -38,7 +38,7 @@ const ListaGrupoEmpleados = () => {
     },
   ];
 
-  const rows = grupos.map((grupo) => ({
+  const filas = grupos.map((grupo) => ({
     id: grupo.idGrupo,
     nombre: grupo.geNombre,
     descripcion: grupo.descripcion,
@@ -73,10 +73,10 @@ const ListaGrupoEmpleados = () => {
     >
       <Box width={'100%'}>
         {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-        <Tabla columns={columns} rows={rows} loading={cargando} checkboxSelection />
+        <Tabla columns={columnas} rows={filas} loading={cargando} checkboxSelection />
       </Box>
     </ContenedorLista>
   );
 };
 
-export default ListaGrupoEmpleados;
+export default ListaEmpleados;

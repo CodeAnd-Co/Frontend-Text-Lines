@@ -1,12 +1,18 @@
-//RF[50] - Elimina categoría de productos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF50
+//RF[45] Elimina set de productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF45]
 
-import { useState, useEffect } from 'react';
-import { useEliminarCategorias } from '../../../hooks/Categorias/useEliminarCategorias';
+import { useEffect, useState } from 'react';
+import { useEliminarSetProductos } from '../../../hooks/SetsProductos/useEliminarSetProductos';
 import PopUpEliminar from '../../componentes/moleculas/PopUpEliminar';
 
-const ModalEliminarCategoria = ({ open, onClose, idsCategoria, setAlerta, refrescarPagina }) => {
+const ModalEliminarSetProductos = ({
+  open,
+  onClose,
+  idsSetProductos,
+  setAlerta,
+  refrescarPagina,
+}) => {
   const [confirmado, setConfirmado] = useState(false);
-  const { mensaje, error } = useEliminarCategorias(confirmado ? idsCategoria : []);
+  const { mensaje, error } = useEliminarSetProductos(confirmado ? idsSetProductos : []);
 
   const handleConfirm = () => {
     setConfirmado(true);
@@ -23,7 +29,7 @@ const ModalEliminarCategoria = ({ open, onClose, idsCategoria, setAlerta, refres
       if (error) {
         setAlerta({
           tipo: 'error',
-          mensaje: `Error al eliminar las categorías: ${error}`,
+          mensaje: `Error al eliminar los sets de productos: ${error}`,
           icono: true,
           cerrable: true,
           centradoInferior: true,
@@ -31,7 +37,7 @@ const ModalEliminarCategoria = ({ open, onClose, idsCategoria, setAlerta, refres
       } else {
         setAlerta({
           tipo: 'success',
-          mensaje: mensaje || 'Categorías eliminadas correctamente.',
+          mensaje: mensaje || 'Sets de productos eliminados correctamente.',
           icono: true,
           cerrable: true,
           centradoInferior: true,
@@ -47,11 +53,11 @@ const ModalEliminarCategoria = ({ open, onClose, idsCategoria, setAlerta, refres
       abrir={open}
       cerrar={handleCancelar}
       confirmar={handleConfirm}
-      dialogo='¿Estás seguro de que deseas eliminar las categorías seleccionadas?'
+      dialogo='¿Estás seguro de que deseas eliminar los sets de productos seleccionados?'
       labelCancelar='Cancelar'
       labelConfirmar='Eliminar'
     />
   );
 };
 
-export default ModalEliminarCategoria;
+export default ModalEliminarSetProductos;

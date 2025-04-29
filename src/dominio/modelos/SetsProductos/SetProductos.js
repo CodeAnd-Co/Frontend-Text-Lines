@@ -6,7 +6,8 @@
  */
 
 export class SetProductos {
-  constructor({ nombre, descripcion, activo }) {
+  constructor({ idSetProducto, nombre, descripcion, activo }) {
+    this.idSetProducto = idSetProducto;
     this.nombre = nombre;
     this.descripcion = descripcion;
     this.activo = activo;

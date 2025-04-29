@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { crearUsuario } from '../dominio/repositorios/repositorioCrearUsuario';
-import { validarDatosCrearUsuario } from '../dominio/modelos/modeloCrearUsuario';
+import { crearUsuario } from '../../dominio/repositorios/Usuarios/repositorioCrearUsuario';
+import { validarDatosCrearUsuario } from '../../dominio/modelos/usuarios/modeloCrearUsuario';
 /**
+ * RF1 - Crear Usuario - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF1
  * Hook `useCrearUsuario`
  *
  * Maneja la lógica para crear un nuevo usuario. Este hook realiza:
@@ -23,60 +24,12 @@ import { validarDatosCrearUsuario } from '../dominio/modelos/modeloCrearUsuario'
  * Retorna todo el estado y funciones necesarios para usar el formulario de creación de usuario.
  */
 export const useCrearUsuario = () => {
-  const [open, setOpen] = useState(false);
   const [errores, setErrores] = useState({});
 
-  const [datosUsuario, setDatosUsuario] = useState({
-    nombreCompleto: '',
-    apellido: '',
-    correoElectronico: '',
-    contrasenia: '',
-    confirmarContrasenia: '',
-    numeroTelefono: '',
-    direccion: '',
-    codigoPostal: '',
-    fechaNacimiento: null,
-    genero: '',
-    cliente: '',
-    rol: '',
-  });
-
-  const handleOpen = () => setOpen(true);
-
-  const handleClose = () => {
-    setOpen(false);
-    setDatosUsuario({
-      nombreCompleto: '',
-      apellido: '',
-      correoElectronico: '',
-      contrasenia: '',
-      confirmarContrasenia: '',
-      numeroTelefono: '',
-      direccion: '',
-      fechaNacimiento: null,
-      genero: '',
-      cliente: '',
-      rol: '',
-    });
-    setErrores({});
-  };
-
-  const handleGuardarUsuario = async () => {
+  const handleGuardarUsuario = async (datosUsuario) => {
     const erroresValidacion = validarDatosCrearUsuario(datosUsuario);
     setErrores(erroresValidacion);
     if (Object.keys(erroresValidacion).length > 0) return { exito: false };
-
-    const rolMap = {
-      'Super Administrador': 1,
-      Administrador: 2,
-      Supervisor: 3,
-      Nada: 4,
-    };
-
-    const clienteMap = {
-      Toyota: 101,
-      Otro: 102,
-    };
 
     const datosParaEnviar = {
       nombreCompleto: `${datosUsuario.nombreCompleto} ${datosUsuario.apellido}`,
@@ -89,30 +42,23 @@ export const useCrearUsuario = () => {
         : null,
       genero: datosUsuario.genero,
       estatus: true,
-      idRol: rolMap[datosUsuario.rol],
-      idCliente: clienteMap[datosUsuario.cliente],
+      idRol: datosUsuario.rol,
+      idCliente: datosUsuario.cliente,
     };
 
     try {
       await crearUsuario(datosParaEnviar);
-      handleClose();
       return { exito: true, mensaje: 'Usuario creado correctamente' };
     } catch (error) {
       const mensaje
         = error.response?.data?.mensaje
         || 'Hubo un error al crear el usuario. Verifica que no exista.';
-      handleClose();
       return { exito: false, mensaje };
     }
   };
 
   return {
-    open,
-    datosUsuario,
     errores,
-    setDatosUsuario,
-    handleOpen,
-    handleClose,
     handleGuardarUsuario,
   };
 };

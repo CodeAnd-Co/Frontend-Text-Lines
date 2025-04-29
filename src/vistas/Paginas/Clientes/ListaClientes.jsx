@@ -6,6 +6,7 @@ import Cargador from '../../componentes/Atomos/Cargador';
 import Texto from '../../componentes/Atomos/Texto';
 import NavegadorAdministrador from '../../Componentes/Organismos/NavegadorAdministrador';
 import TarjetaConImagen from '../../componentes/Moleculas/TarjetaConImagen';
+import Cookies from 'js-cookie';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';
 import { useConsultarClientes } from '../../../hooks/Clientes/useConsultarClientes';
 import { useSeleccionarCliente } from '../../../hooks/Clientes/useSeleccionarCliente';
@@ -88,9 +89,11 @@ const ListaClientes = () => {
     },
   ];
 
-  const handleClickCliente = (clienteId) => {
+  const handleClickCliente = (clienteId, urlImagen, nombreComercial) => {
     const idCliente = parseInt(clienteId, 10);
     seleccionarCliente(idCliente);
+    Cookies.set('imagenClienteSeleccionado', urlImagen, { expires: 1 });
+    Cookies.set('nombreClienteSeleccionado', nombreComercial, { expires: 1 });
   };
 
   const renderTarjetaCliente = (cliente) => (
@@ -110,8 +113,10 @@ const ListaClientes = () => {
         tooltipIcono={`Ver información de ${cliente.nombreComercial}`}
         clickeableImagen={true}
         elevacion={3}
-        alClicImagen={() => handleClickCliente(cliente.idCliente)}
-        alClicIcono={() => handleClickCliente(cliente.idCliente)}
+        alClicImagen={() =>
+          handleClickCliente(cliente.idCliente, cliente.urlImagen, cliente.nombreComercial)
+        }
+        alClicIcono={() => {}}
       />
     </Box>
   );
@@ -135,12 +140,6 @@ const ListaClientes = () => {
       <NavegadorAdministrador
         src='/logoAltertexLight.svg'
         alt='Logo empresa'
-        nombreIcono='ShoppingCart'
-        varianteIcono='outlined'
-        tamanoIcono='large'
-        colorIcono='primary'
-        iconoClickeable={true}
-        tooltipIcono='Acceder a tienda'
         alturaImagen='auto'
         anchoImagen={{ xs: '150px', sm: '250px', md: '400px' }}
         ajuste='contain'

@@ -1,5 +1,3 @@
-//RF[47] Consulta lista de categorías - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF47]
-
 import axios from 'axios';
 import { listaCategorias } from '../../modelos/Categorias/ListaCategorias';
 import { RUTAS_API } from '../../../Utilidades/Constantes/rutasAPI';
@@ -10,6 +8,7 @@ export class RepositorioListaCategorias {
   /**
    * Obtiene la lista de categorías desde la API
    * @returns {Promise<{categorias: Categoria[], mensaje: string}>}
+   * @see [RF[47] Consulta lista de categorías](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF47)
    */
   static async obtenerLista() {
     try {

@@ -1,4 +1,4 @@
-// Capa de Dominio: Validaciones puras y reglas de negocio para crear un usuario
+// RF1 - Crear Usuario - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF1
 
 /**
  * Valida los datos del formulario para crear un usuario.
@@ -11,8 +11,20 @@ export const validarDatosCrearUsuario = (datos) => {
 
   if (!datos.nombreCompleto) errores.nombreCompleto = true;
   if (!datos.apellido) errores.apellido = true;
-  if (!datos.correoElectronico) errores.correoElectronico = true;
-  if (!datos.numeroTelefono) errores.numeroTelefono = true;
+  const correoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!datos.correoElectronico) {
+    errores.correoElectronico = true;
+  } else if (!correoValido.test(datos.correoElectronico)) {
+    errores.correoElectronico = 'Correo electrónico no válido';
+  }
+  const telefonoValido = /^\d{10}$/;
+
+  if (!datos.numeroTelefono) {
+    errores.numeroTelefono = true;
+  } else if (!telefonoValido.test(datos.numeroTelefono)) {
+    errores.numeroTelefono = 'El número de teléfono debe tener exactamente 10 dígitos';
+  }
+
   if (!datos.direccion) errores.direccion = true;
   if (!datos.genero) errores.genero = true;
   if (!datos.cliente) errores.cliente = true;
@@ -37,7 +49,8 @@ export const validarDatosCrearUsuario = (datos) => {
     if (datos.contrasenia.length < 8) {
       errores.contrasenia = 'La contraseña debe tener al menos 8 caracteres';
     } else if (!tieneCaracterEspecial.test(datos.contrasenia)) {
-      errores.contrasenia = 'Debe contener al menos un carácter especial';
+      errores.contrasenia
+        = 'Debe contener al menos uno de estos caracteres: ! @ # $ % ^ & * ( ) , . ? " : { } | < >';
     }
   }
 

@@ -1,4 +1,4 @@
-import { Evento } from './Evento.js';
+import { Evento } from './Eventos.js';
 
 export class ListaEventos {
   constructor({ mensaje, eventos }) {

@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import Tabla from '../../componentes/organismos/Tabla';
 import Alerta from '../../componentes/moleculas/Alerta';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
-import ModalEliminarEvento from '../../componentes/organismos/ModalEliminarEvento';
+//import ModalEliminarEvento from '../../componentes/organismos/ModalEliminarEvento';
 import { useConsultarEventos } from '../../../hooks/Eventos/useConsultarEventos';
 import { Box, useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
-import ModalCrearEvento from '../../componentes/organismos/ModalCrearEvento';
+//import ModalCrearEvento from '../../componentes/organismos/ModalCrearEvento';
 
 /**
  * Página para consultar y mostrar la lista de eventos en una tabla.

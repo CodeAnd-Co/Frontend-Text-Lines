@@ -30,7 +30,9 @@ export const RUTAS = {
     },
     PEDIDOS: `${BASE_PEDIDOS}`,
     CUOTAS: { BASE: `${BASE_CUOTAS}`, EDITAR_CUOTAS: `${BASE_CUOTAS}/editar-cuotas` },
-    EVENTOS: `${BASE_EVENTOS}`,
+    EVENTOS: {
+      BASE: `${BASE_EVENTOS}`,
+    },
     CONFIGURACION: '/configuracion',
     USUARIOS: {
       BASE: '/usuarios',

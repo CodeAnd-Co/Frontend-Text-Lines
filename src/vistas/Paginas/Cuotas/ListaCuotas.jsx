@@ -1,22 +1,33 @@
+
+// RF[32] - Consulta Lista de Cuotas - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF32
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../../hooks/AuthProvider';
-import { useConsultarCuotas } from '../../../hooks/Cuotas/useConsultarCuotas';
-import { Box, Typography, Button } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Typography, useTheme, Button, Box } from '@mui/material';
 import { tokens } from '../../../theme';
+import { useConsultarCuotas } from '../../../hooks/Cuotas/useConsultarCuotas';
+import { useAuth } from '../../../hooks/AuthProvider';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
-import CustomDataGrid from '../../componentes/organismos/Tabla';
+import Tabla from '../../componentes/organismos/Tabla';
 import Chip from '../../componentes/atomos/Chip';
 import ModalCrearCuotaSet from '../../componentes/organismos/ModalCrearCuotaSet';
+import Alerta from '../../Componentes/moleculas/Alerta';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';
+
+/**
+ * Página para consultar y mostrar la lista de cuotas en una tabla.
+ *
+ * Muestra los resultados en un CustomDataGrid, incluyendo
+ * nombre, periodo de renovación y estado de renovación de cada set de cuotas.
+ *
+ * @see [RF[32] Consulta lista de cuotas](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF32)
+ */
 
 const ListaCuotas = () => {
   const navegar = useNavigate();
   const { usuario } = useAuth();
   const { cuotas, cargando, error } = useConsultarCuotas();
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const colores = tokens(theme.palette.mode);
 
   useEffect(() => {
     if (!usuario?.clienteSeleccionado) {
@@ -26,9 +37,9 @@ const ListaCuotas = () => {
 
   const columnas = [
     { field: 'nombre', headerName: 'Nombre', flex: 1 },
-    { 
-      field: 'periodoRenovacion', 
-      headerName: 'Periodo de Renovación (meses)', 
+    {
+      field: 'periodoRenovacion',
+      headerName: 'Periodo de Renovación (meses)',
       flex: 1,
       headerAlign: 'center',
       align: 'center',
@@ -45,7 +56,7 @@ const ListaCuotas = () => {
           shape="circular"
           size="medium"
           variant="filled"
-          backgroundColor={params.value ? colors.primario[2] : colors.texto[3]}  
+          backgroundColor={params.value ? colores.primario[2] : colores.texto[3]}
           textColor="#fff"
         />
       ),
@@ -63,14 +74,13 @@ const ListaCuotas = () => {
 
   const botones = [
     {
-      tipo: 'modal',
       componente: <ModalCrearCuotaSet />
     },
     {
       label: 'Ir Atrás',
-      onClick: () => navegar(RUTAS.SISTEMA_ADMINISTRATIVO.BASE),
       variant: 'outlined',
       size: 'large',
+      onClick: () => navegar(RUTAS.SISTEMA_ADMINISTRATIVO.BASE),
     },
   ];
 
@@ -80,50 +90,60 @@ const ListaCuotas = () => {
 
   return (
     <ContenedorLista
-      titulo={
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <Typography variant="h4">Cuotas</Typography>
-          <Box sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-            {botones.map((boton, index) => (
-              <Box key={index}>
-                {boton.tipo === 'modal' ? (
-                  boton.componente
-                ) : (
-    <Button
-      variant={boton.variant}
-      onClick={boton.onClick}
-      sx={{
-        minWidth: 'auto', 
-        height: '40px',
-        padding: '6px 16px', 
-        textTransform: 'none', 
-        fontSize: '0.875rem', 
-        borderRadius: '8px',
-        color: boton.variant === 'outlined' ? '#1976d2' : '#fff',
-        borderColor: '#1976d2',
-        backgroundColor: boton.variant === 'outlined' ? 'transparent' : '#1976d2',
-        '&:hover': {
-          backgroundColor: boton.variant === 'outlined' ? 'hsla(210, 78.70%, 46.10%, 0.04)' : '#1565c0',
-          borderColor: '#1565c0',
-        },
-      }}
+      titulo="Lista de Sets de Cuotas"
+      descripcion="Consulta y administra los sets de cuotas registrados para cada cliente."
     >
-  {boton.label}
-</Button>
-                )}
-              </Box>
-            ))}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          gap: '10px',
+          mb: '20px',
+        }}
+      >
+        {botones.map((boton, index) => (
+          <Box key={index}>
+            {boton.componente ? (
+              boton.componente
+            ) : (
+              <Button
+                variant={boton.variant}
+                onClick={boton.onClick}
+                sx={{
+                  minWidth: 'auto',
+                  height: '40px',
+                  padding: '6px 16px',
+                  textTransform: 'none',
+                  fontSize: '0.875rem',
+                  borderRadius: '8px',
+                  color: boton.variant === 'outlined' ? '#1976d2' : '#fff',
+                  borderColor: '#1976d2',
+                  backgroundColor: boton.variant === 'outlined' ? 'transparent' : '#1976d2',
+                  '&:hover': {
+                    backgroundColor: boton.variant === 'outlined' ? 'hsla(210, 78.70%, 46.10%, 0.04)' : '#1565c0',
+                    borderColor: '#1565c0',
+                  },
+                }}
+              >
+                {boton.label}
+              </Button>
+            )}
           </Box>
-        </Box>
-      }
-    >
-      <Box sx={{ mt: '20px' }}>
+        ))}
+      </Box>
+
+      <Box width="100%">
         {error && (
-          <Typography variant="h6" color="error" sx={{ textAlign: 'center', marginBottom: '20px' }}>
-            Error: {error}
-          </Typography>
+          <Alerta
+            tipo="error"
+            mensaje={error}
+            icono
+            cerrable
+            centradoInferior
+          />
         )}
-        <CustomDataGrid columns={columnas} rows={filas} loading={cargando} checkboxSelection />
+        <Tabla columns={columnas} rows={filas} loading={cargando} checkboxSelection />
       </Box>
     </ContenedorLista>
   );

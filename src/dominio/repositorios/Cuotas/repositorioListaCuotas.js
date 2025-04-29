@@ -17,7 +17,6 @@ export class RepositorioListaCuotas {
           },
         }
       );
-      console.log('API Response:', respuesta.data);
       return respuesta.data;
     } catch (error) {
       const mensaje = error.response?.data?.mensaje || 'Error al obtener cuotas';
@@ -26,3 +25,5 @@ export class RepositorioListaCuotas {
     }
   }
 }
+
+

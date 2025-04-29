@@ -33,7 +33,6 @@ export function useConsultarSetsProductos() {
 
       try {
         const { setsDeProductos, mensaje } = await RepositorioConsultarSetsProductos.obtenerLista();
-        console.log('try', setsDeProductos, mensaje);
 
         setSetsProductos(setsDeProductos);
         setMensaje(mensaje);

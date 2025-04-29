@@ -32,7 +32,6 @@ export function useConsultarPedidos() {
 
       try {
         const { pedidos, mensaje } = await RepositorioConsultarPedidos.consultarPedidos();
-        console.log(pedidos, mensaje);
         setPedidos(pedidos);
         setMensaje(mensaje);
       } catch (err) {

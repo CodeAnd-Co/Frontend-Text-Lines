@@ -40,7 +40,6 @@ export class RepositorioConsultarSetsProductos {
       return listaSetsProductos(respuesta.data);
     } catch (error) {
       // Manejo de errores si ocurre un fallo durante la consulta o el procesamiento
-      console.log('error..');
       const mensaje = error.response?.data?.mensaje || 'Error al obtener sets de productos.';
       throw new Error(mensaje);
     }

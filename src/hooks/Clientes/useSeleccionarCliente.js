@@ -19,12 +19,9 @@ export const useSeleccionarCliente = () => {
     async (idCliente) => {
       try {
         const mensaje = await RepositorioSeleccionarCliente.seleccionarCliente(idCliente);
-        console.log('Respuesta:', mensaje);
         await verificarSesion();
         navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO);
-      } catch (error) {
-        console.error('Error al seleccionar cliente:', error.message);
-      }
+      } catch (error) {}
     },
     [navigate, verificarSesion]
   );

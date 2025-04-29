@@ -27,7 +27,6 @@ export function useConsultarRoles() {
 
       try {
         const { roles, mensaje } = await RepositorioListaRol.obtenerLista();
-        console.log(roles, mensaje);
         setRoles(roles);
         setMensaje(mensaje);
       } catch (err) {

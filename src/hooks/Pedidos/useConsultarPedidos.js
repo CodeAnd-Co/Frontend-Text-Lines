@@ -1,4 +1,4 @@
-// RFXX - Consulta Lista de Pedidos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RFXX
+// RF60 - Consulta Lista de Pedidos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF60
 import { useEffect, useState } from 'react';
 import { RepositorioConsultarPedidos } from '../../dominio/repositorios/Pedidos/RepositorioConsultarPedidos';
 import { useAuth } from '../../hooks/AuthProvider';

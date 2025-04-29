@@ -52,5 +52,6 @@ export const RUTAS_API = {
   PEDIDOS: {
     BASE: BASE_PEDIDOS,
     CONSULTAR_LISTA: `${BASE_PEDIDOS}/consultar-lista`,
+    ELIMINAR_PEDIDO: `${BASE_PEDIDOS}/eliminar`,
   },
 };

@@ -1,10 +1,22 @@
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography, useTheme } from '@mui/material';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import Tabla from '../../Componentes/Organismos/Tabla';
+import Alerta from '../../Componentes/moleculas/Alerta';
+import ModalEliminarPedido from '../../Componentes/organismos/ModalEliminarPedido';
+import { tokens } from '../../../theme';
 import { useConsultarPedidos } from '../../../hooks/Pedidos/useConsultarPedidos';
 
 const ListaPedidos = () => {
-  const { pedidos, cargando, error } = useConsultarPedidos();
+  const { pedidos, cargando, error, recargar } = useConsultarPedidos();
+  const [seleccionados, setSeleccionados] = useState(new Set());
+  const [alerta, setAlerta] = useState(null);
+  const [idsPedido, setIdsPedido] = useState([]);
+  const theme = useTheme();
+  const colores = tokens(theme.palette.mode);
+
+  // Estado para controlar la visualización del modal eliminar
+  const [openModalEliminar, setOpenModalEliminar] = useState(false);
+
   const columnas = [
     {
       field: 'pedido',
@@ -44,15 +56,42 @@ const ListaPedidos = () => {
   ];
 
   const botones = [
-    { label: 'Añadir', onClick: () => console.log('Añadir'), size: 'large' },
+    {
+      label: 'Añadir',
+      variant: 'contained',
+      color: 'error',
+      size: 'large',
+      backgroundColor: colores.altertex[1],
+      onClick: () => console.log('Añadir'),
+    },
     {
       variant: 'outlined',
-      label: 'Importar',
-      onClick: () => console.log('Importar'),
+      label: 'Editar',
+      onClick: () => console.log('Editar'),
+      color: 'primary',
       size: 'large',
+      outlineColor: colores.primario[3],
     },
-    { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large' },
-    { label: 'Eliminar', onClick: () => console.log('Eliminar'), size: 'large' },
+    {
+      label: 'Eliminar',
+      onClick: () => {
+        if (seleccionados.size === 0 || seleccionados.ids.size === 0) {
+          setAlerta({
+            tipo: 'error',
+            mensaje: 'Selecciona al menos un pedido para eliminar.',
+            icono: true,
+            cerrable: true,
+            centradoInferior: true,
+          });
+        } else {
+          setIdsPedido(Array.from(seleccionados.ids));
+          setOpenModalEliminar(true);
+        }
+      },
+      color: 'error',
+      size: 'large',
+      backgroundColor: colores.altertex[1],
+    },
   ];
 
   const filas = pedidos.map((pedidos) => ({
@@ -67,25 +106,52 @@ const ListaPedidos = () => {
   }));
 
   return (
-    <ContenedorLista
-      titulo='Pedidos'
-      descripcion='Gestiona y organiza los pedidos registrados en el sistema.'
-      informacionBotones={botones}
-    >
-      <Box width={'100%'}>
-        {cargando ? (
-          <Box display='flex' justifyContent='center' py={4}>
-            <CircularProgress />
-          </Box>
-        ) : error ? (
-          <Typography color='error' align='center'>
-            {error}
-          </Typography>
-        ) : (
-          <Tabla columns={columnas} rows={filas} checkboxSelection />
-        )}
-      </Box>
-    </ContenedorLista>
+    <>
+      <ContenedorLista
+        titulo='Pedidos'
+        descripcion='Gestiona y organiza los pedidos registrados en el sistema.'
+        informacionBotones={botones}
+      >
+        <Box width={'100%'}>
+          {cargando ? (
+            <Box display='flex' justifyContent='center' py={4}>
+              <CircularProgress />
+            </Box>
+          ) : error ? (
+            <Typography color='error' align='center'>
+              {error}
+            </Typography>
+          ) : (
+            <Tabla
+              columns={columnas}
+              rows={filas}
+              checkboxSelection
+              onRowSelectionModelChange={(newSelection) => {
+                setSeleccionados(newSelection);
+              }}
+            />
+          )}
+        </Box>
+      </ContenedorLista>
+      <ModalEliminarPedido
+        open={openModalEliminar}
+        onClose={() => setOpenModalEliminar(false)}
+        idsPedido={idsPedido}
+        setAlerta={setAlerta}
+        refrescarPagina={recargar}
+      />
+      {alerta && (
+        <Alerta
+          tipo={alerta.tipo}
+          mensaje={alerta.mensaje}
+          icono={alerta.icono}
+          cerrable={alerta.cerrable}
+          duracion={2500}
+          centradoInferior={alerta.centradoInferior}
+          onClose={() => setAlerta(null)}
+        />
+      )}
+    </>
   );
 };
 

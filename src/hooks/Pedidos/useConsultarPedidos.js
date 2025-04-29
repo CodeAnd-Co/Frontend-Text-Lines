@@ -11,6 +11,7 @@ import { PERMISOS } from '../../Utilidades/Constantes/permisos';
  *   mensaje: string,
  *   cargando: boolean,
  *   error: string | null
+ *   recargar: () => void
  * }}
  */
 export function useConsultarPedidos() {
@@ -19,6 +20,7 @@ export function useConsultarPedidos() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
   const { usuario } = useAuth();
+  const [recargarToken, setRecargarToken] = useState(1);
 
   useEffect(() => {
     const cargar = async () => {
@@ -44,7 +46,16 @@ export function useConsultarPedidos() {
     };
 
     if (usuario) cargar();
-  }, [usuario]);
+  }, [recargarToken]);
 
-  return { pedidos, mensaje, cargando, error };
+  /**
+   * Incrementa el token de recarga para volver a disparar la consulta.
+   */
+  const recargar = () => {
+    setRecargarToken((prev) => {
+      return prev + 1;
+    });
+  };
+
+  return { pedidos, mensaje, cargando, error, recargar };
 }

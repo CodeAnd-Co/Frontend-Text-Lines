@@ -1,12 +1,20 @@
-//RF17 - Consulta Lista Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF17
-import React from 'react';
+// RF17 - Consulta Lista Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF17
+import React, { useState } from 'react'; 
 import { Box } from '@mui/material';
 import Tabla from '../../Componentes/Organismos/Tabla';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import { useConsultarEmpleados } from '../../../hooks/Empleados/useConsultarEmpleados';
+import ModalEliminarEmpleado from '../../componentes/organismos/ModalEliminarEmpleado';
+import Alerta from '../../componentes/moleculas/Alerta';
 
 const ListaGrupoEmpleados = () => {
   const { empleados, cargando, error } = useConsultarEmpleados();
+
+
+  const [openModalEliminar, setOpenModalEliminar] = useState(false);
+  const [seleccionados, setSeleccionados] = useState([]);
+  const [idsEmpleado, setIdsEmpleado] = useState([]);
+  const [alerta, setAlerta] = useState(null);
 
   const columnas = [
     { field: 'nombreCompleto', headerName: 'Nombre del Empleado', flex: 1 },
@@ -45,7 +53,24 @@ const ListaGrupoEmpleados = () => {
       size: 'large',
     },
     { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large' },
-    { label: 'Eliminar', onClick: () => console.log('Eliminar'), size: 'large' },
+    { 
+      label: 'Eliminar',
+      onClick: () => {
+        if (seleccionados.length === 0) {
+          setAlerta({
+            tipo: 'error',
+            mensaje: 'Selecciona al menos un empleado para eliminar.',
+            icono: true,
+            cerrable: true,
+            centradoInferior: true,
+          });
+        } else {
+          setIdsEmpleado(Array.from(seleccionados));
+          setOpenModalEliminar(true);
+        }
+      },
+      size: 'large',
+    },
   ];
 
   return (
@@ -56,8 +81,36 @@ const ListaGrupoEmpleados = () => {
     >
       <Box width={'100%'}>
         {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-        <Tabla columns={columnas} rows={filas} loading={cargando} checkboxSelection />
+        <Tabla 
+          columns={columnas} 
+          rows={filas} 
+          loading={cargando} 
+          checkboxSelection
+          onRowSelectionModelChange={(newSelection) => {
+            setSeleccionados(newSelection);
+        }}
+/>
       </Box>
+
+      <ModalEliminarEmpleado
+        open={openModalEliminar}
+        onClose={() => setOpenModalEliminar(false)}
+        idsEmpleado={idsEmpleado}
+        setAlerta={setAlerta}
+        refrescarPagina={() => window.location.reload()} 
+      />
+
+      {alerta && (
+        <Alerta
+          tipo={alerta.tipo}
+          mensaje={alerta.mensaje}
+          icono={alerta.icono}
+          cerrable={alerta.cerrable}
+          duracion={2500}
+          centradoInferior={alerta.centradoInferior}
+          onClose={() => setAlerta(null)}
+        />
+      )}
     </ContenedorLista>
   );
 };

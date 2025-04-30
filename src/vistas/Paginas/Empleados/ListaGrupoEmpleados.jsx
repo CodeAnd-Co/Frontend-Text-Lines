@@ -4,9 +4,18 @@ import { Box } from '@mui/material';
 import Tabla from '../../Componentes/Organismos/Tabla';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import { useConsultarGrupos } from '../../../hooks/Empleados/useConsultarGrupos';
+import { useMode, tokens } from '../../../theme';
+import { useEliminarGrupoEmpleados } from '../../../hooks/Empleados/useEliminarGrupoEmpleados';
+import { useState } from 'react';
 
 const ListaEmpleados = () => {
   const { grupos, cargando, error } = useConsultarGrupos();
+  const [theme] = useMode();
+  const colores = tokens(theme.palette.mode);
+
+  const [gruposSeleccionados, setGruposSeleccionados] = useState([]);
+  const { eliminar, mensaje, cargando: cargandoEliminacion, error: errorEliminacion } = useEliminarGrupoEmpleados();
+
 
   const columnas = [
     {
@@ -48,21 +57,28 @@ const ListaEmpleados = () => {
   }));
 
   const botones = [
-    { label: 'Añadir', onClick: () => console.log('Añadir'), size: 'large' },
+    { label: 'Añadir', onClick: () => console.log('Añadir'), size: 'large', backgroundColor: colores.altertex[1] },
     {
       variant: 'outlined',
       label: 'Importar',
       onClick: () => console.log('Importar'),
       size: 'large',
+      outlineColor: colores.altertex[1],
     },
     {
       variant: 'outlined',
       label: 'Exportar',
       onClick: () => console.log('Exportar'),
       size: 'large',
+      outlineColor: colores.altertex[1],
     },
-    { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large' },
-    { label: 'Eliminar', onClick: () => console.log('Eliminar'), size: 'large' },
+    { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large',      outlineColor: colores.altertex[1] },
+    { label: cargandoEliminacion ? 'Eliminando...' : 'Eliminar',
+      onClick: () => {
+        console.log('Grupos a eliminar:', gruposSeleccionados);
+        if (gruposSeleccionados.length === 0) return alert('Selecciona al menos un grupo');
+        eliminar(gruposSeleccionados);
+      }, size: 'large', backgroundColor: colores.altertex[1], },
   ];
 
   return (
@@ -73,7 +89,12 @@ const ListaEmpleados = () => {
     >
       <Box width={'100%'}>
         {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-        <Tabla columns={columnas} rows={filas} loading={cargando} checkboxSelection />
+        <Tabla columns={columnas} rows={filas} loading={cargando} checkboxSelection onRowSelectionModelChange={(selectionModel) => {
+    const ids = Array.isArray(selectionModel)
+      ? selectionModel
+      : Array.from(selectionModel?.ids || []);
+    setGruposSeleccionados(ids);
+  }}/>
       </Box>
     </ContenedorLista>
   );

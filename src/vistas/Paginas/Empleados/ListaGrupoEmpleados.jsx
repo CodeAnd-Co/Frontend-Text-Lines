@@ -1,21 +1,51 @@
 //RF22 - Consulta Lista de Grupo Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF22
-import React from 'react';
 import { Box } from '@mui/material';
 import Tabla from '../../Componentes/Organismos/Tabla';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import { useConsultarGrupos } from '../../../hooks/Empleados/useConsultarGrupos';
 import { useMode, tokens } from '../../../theme';
+import Alerta from '../../Componentes/moleculas/Alerta';
 import { useEliminarGrupoEmpleados } from '../../../hooks/Empleados/useEliminarGrupoEmpleados';
-import { useState } from 'react';
+import { useState, React } from 'react';
+import PopUpEliminar from '../../componentes/moleculas/PopUpEliminar';
 
 const ListaEmpleados = () => {
-  const { grupos, cargando, error } = useConsultarGrupos();
+  const { grupos, cargando, error, refetch } = useConsultarGrupos();
   const [theme] = useMode();
   const colores = tokens(theme.palette.mode);
 
   const [gruposSeleccionados, setGruposSeleccionados] = useState([]);
-  const { eliminar, mensaje, cargando: cargandoEliminacion, error: errorEliminacion } = useEliminarGrupoEmpleados();
+  const [alerta, setAlerta] = useState(null);
+  const { eliminar, cargando: cargandoEliminacion } = useEliminarGrupoEmpleados();
+  const [openModalEliminar, setOpenModalEliminar] = useState(false);
+  const manejarCancelarEliminar = () => {
+    setOpenModalEliminar(false);
+  };
 
+  const manejarConfirmarEliminar = async () => {
+    try {
+      await eliminar(gruposSeleccionados);
+      await refetch();
+      setAlerta({
+        tipo: 'success',
+        mensaje: 'Grupos eliminados correctamente.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+      setGruposSeleccionados([]);
+    } catch {
+      setAlerta({
+        tipo: 'error',
+        mensaje: 'Ocurrió un error al eliminar los grupos.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+    } finally {
+      setOpenModalEliminar(false);
+    }
+  };
 
   const columnas = [
     {
@@ -57,7 +87,12 @@ const ListaEmpleados = () => {
   }));
 
   const botones = [
-    { label: 'Añadir', onClick: () => console.log('Añadir'), size: 'large', backgroundColor: colores.altertex[1] },
+    {
+      label: 'Añadir',
+      onClick: () => console.log('Añadir'),
+      size: 'large',
+      backgroundColor: colores.altertex[1],
+    },
     {
       variant: 'outlined',
       label: 'Importar',
@@ -72,31 +107,79 @@ const ListaEmpleados = () => {
       size: 'large',
       outlineColor: colores.altertex[1],
     },
-    { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large',      outlineColor: colores.altertex[1] },
-    { label: cargandoEliminacion ? 'Eliminando...' : 'Eliminar',
+    {
+      variant: 'outlined',
+      label: 'Editar',
+      onClick: () => console.log('Editar'),
+      size: 'large',
+      outlineColor: colores.altertex[1],
+    },
+    {
+      label: cargandoEliminacion ? 'Eliminando...' : 'Eliminar',
       onClick: () => {
         console.log('Grupos a eliminar:', gruposSeleccionados);
-        if (gruposSeleccionados.length === 0) return alert('Selecciona al menos un grupo');
-        eliminar(gruposSeleccionados);
-      }, size: 'large', backgroundColor: colores.altertex[1], },
+        if (gruposSeleccionados.length === 0) {
+          setAlerta({
+            tipo: 'error',
+            mensaje: 'Selecciona al menos un Grupo de empleados para eliminar.',
+            icono: true,
+            cerrable: true,
+            centradoInferior: true,
+          });
+        } else {
+          // TODO: Abrir pop up eliminar
+          setOpenModalEliminar(true); // ✅ Aquí abres el modal
+        }
+      },
+
+      size: 'large',
+      backgroundColor: colores.altertex[1],
+    },
   ];
 
   return (
-    <ContenedorLista
-      titulo='Grupos de Empleados'
-      descripcion='Gestiona y organiza los grupos de empleados registrados en el sistema.'
-      informacionBotones={botones}
-    >
-      <Box width={'100%'}>
-        {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-        <Tabla columns={columnas} rows={filas} loading={cargando} checkboxSelection onRowSelectionModelChange={(selectionModel) => {
-    const ids = Array.isArray(selectionModel)
-      ? selectionModel
-      : Array.from(selectionModel?.ids || []);
-    setGruposSeleccionados(ids);
-  }}/>
-      </Box>
-    </ContenedorLista>
+    <>
+      <ContenedorLista
+        titulo='Grupos de Empleados'
+        descripcion='Gestiona y organiza los grupos de empleados registrados en el sistema.'
+        informacionBotones={botones}
+      >
+        <Box width={'100%'}>
+          {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+          <Tabla
+            columns={columnas}
+            rows={filas}
+            loading={cargando}
+            checkboxSelection
+            onRowSelectionModelChange={(selectionModel) => {
+              const ids = Array.isArray(selectionModel)
+                ? selectionModel
+                : Array.from(selectionModel?.ids || []);
+              setGruposSeleccionados(ids);
+            }}
+          />
+        </Box>
+      </ContenedorLista>
+      {alerta && (
+        <Alerta
+          tipo={alerta.tipo}
+          mensaje={alerta.mensaje}
+          icono={alerta.icono}
+          cerrable={alerta.cerrable}
+          duracion={2500}
+          centradoInferior={alerta.centradoInferior}
+          onClose={() => setAlerta(null)}
+        />
+      )}
+      <PopUpEliminar
+        abrir={openModalEliminar}
+        cerrar={manejarCancelarEliminar}
+        confirmar={manejarConfirmarEliminar}
+        dialogo='¿Estás seguro de que deseas eliminar los grupos seleccionados?'
+        labelCancelar='Cancelar'
+        labelConfirmar='Eliminar'
+      />
+    </>
   );
 };
 

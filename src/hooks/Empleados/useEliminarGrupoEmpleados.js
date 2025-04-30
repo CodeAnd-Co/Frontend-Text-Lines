@@ -14,25 +14,24 @@ import { RepositorioEliminarGrupoEmpleados } from '../../dominio/repositorios/Em
  */
 
 export function useEliminarGrupoEmpleados() {
-    const [mensaje, setMensaje] = useState('');
-    const [cargando, setCargando] = useState(false);
-    const [error, setError] = useState(null);
-  
-    const eliminar = async (idsGrupo) => {
-      setCargando(true);
-      setError(null);
-  
-      try {
-        const { mensaje } = await RepositorioEliminarGrupoEmpleados.eliminarGrupoEmpleados(idsGrupo);
-        setMensaje(mensaje);
-      } catch (err) {
-        setMensaje('');
-        setError(err.message);
-      } finally {
-        setCargando(false);
-      }
-    };
-  
-    return { eliminar, mensaje, cargando, error };
-  }
-  
+  const [mensaje, setMensaje] = useState('');
+  const [cargando, setCargando] = useState(false);
+  const [error, setError] = useState(null);
+
+  const eliminar = async (idsGrupo) => {
+    setCargando(true);
+    setError(null);
+
+    try {
+      const { mensaje } = await RepositorioEliminarGrupoEmpleados.eliminarGrupoEmpleados(idsGrupo);
+      setMensaje(mensaje);
+    } catch (err) {
+      setMensaje('');
+      setError(err.message);
+    } finally {
+      setCargando(false);
+    }
+  };
+
+  return { eliminar, mensaje, cargando, error };
+}

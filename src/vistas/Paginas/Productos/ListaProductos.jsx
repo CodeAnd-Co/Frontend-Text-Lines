@@ -111,7 +111,6 @@ const ListaProductos = () => {
           setOpenModalEliminar(true); // Abre el modal
         }
       },
-      color: 'error',
       size: 'large',
     },
   ];

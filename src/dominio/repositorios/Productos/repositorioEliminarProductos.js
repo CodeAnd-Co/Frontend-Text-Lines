@@ -1,23 +1,38 @@
 // RF[30] - Elimina producto - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF30
+
 import axios from 'axios';
 import { RUTAS_API } from '../../../Utilidades/Constantes/rutasAPI';
 
-/**
- * Repositorio para eliminar productos.
- *
- * @param {Array<number>} idsProducto - Array de IDs de productos a eliminar.
- * @returns {Promise<object>} Respuesta del servidor.
- */
-export const repositorioEliminarProductos = async (idsProducto) => {
-  const respuesta = await axios.delete(
-    RUTAS_API.PRODUCTOS.ELIMINAR_PRODUCTO,
-    {
-      data: { ids: idsProducto },
-      headers: {
-        'x-api-key': import.meta.env.VITE_API_KEY,
-      },
-      withCredentials: true,
+const API_KEY = import.meta.env.VITE_API_KEY;
+
+export class RepositorioEliminarProductos {
+  /**
+   * Elimina una o más productos desde la API
+   * @param {array} idsProducto - ID de los productos a eliminar
+   * @returns {Promise<{mensaje: string}>}
+   */
+  static async eliminarProducto(idsProducto) {
+    try {
+      console.log('Enviando solicitud DELETE con:', {
+        url: RUTAS_API.PRODUCTOS.ELIMINAR_PRODUCTO,
+        data: { ids: idsProducto },
+        headers: {
+          'x-api-key': API_KEY,
+        },
+      });
+  
+      const respuesta = await axios.delete(RUTAS_API.PRODUCTOS.ELIMINAR_PRODUCTO, {
+        data: { ids: idsProducto },
+        headers: {
+          'x-api-key': API_KEY,
+        },
+        withCredentials: true,
+      });
+      return respuesta.data;
+    } catch (error) {
+      console.error('Error al eliminar productos:', error.response || error.message);
+      const mensaje = error.response?.data?.mensaje || 'Error al eliminar los productos';
+      throw new Error(mensaje);
     }
-  );
-  return respuesta.data;
-};
+  }
+}

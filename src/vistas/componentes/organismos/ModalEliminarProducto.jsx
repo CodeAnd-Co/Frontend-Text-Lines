@@ -1,16 +1,14 @@
 // RF[30] - Elimina producto - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF30
+
 import { useState, useEffect } from 'react';
 import { useEliminarProductos } from '../../../hooks/Productos/useEliminarProductos';
 import PopUpEliminar from '../../componentes/moleculas/PopUpEliminar';
 
-/**
- * Modal para confirmar la eliminación de productos.
- */
 const ModalEliminarProducto = ({ open, onClose, idsProducto, setAlerta, refrescarPagina }) => {
   const [confirmado, setConfirmado] = useState(false);
   const { mensaje, error } = useEliminarProductos(confirmado ? idsProducto : []);
 
-  const handleConfirmar = () => {
+  const handleConfirm = () => {
     setConfirmado(true);
     onClose();
     refrescarPagina();
@@ -34,7 +32,7 @@ const ModalEliminarProducto = ({ open, onClose, idsProducto, setAlerta, refresca
       } else {
         setAlerta({
           tipo: 'success',
-          mensaje: mensaje || 'Producto(s) eliminado(s) correctamente.',
+          mensaje: mensaje || 'Productos eliminados correctamente.',
           icono: true,
           cerrable: true,
           centradoInferior: true,
@@ -48,10 +46,10 @@ const ModalEliminarProducto = ({ open, onClose, idsProducto, setAlerta, refresca
     <PopUpEliminar
       abrir={open}
       cerrar={handleCancelar}
-      confirmar={handleConfirmar}
-      dialogo="¿Estás seguro de que deseas eliminar los productos seleccionados?"
-      labelCancelar="Cancelar"
-      labelConfirmar="Eliminar"
+      confirmar={handleConfirm}
+      dialogo='¿Estás seguro de que deseas eliminar los productos seleccionadas?'
+      labelCancelar='Cancelar'
+      labelConfirmar='Eliminar'
     />
   );
 };

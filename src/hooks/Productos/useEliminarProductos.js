@@ -1,37 +1,42 @@
-import { useState, useEffect } from 'react';
-import { repositorioEliminarProductos } from '../../dominio/repositorios/Productos/repositorioEliminarProductos';
+// RF[30] - Elimina producto - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF30
+
+import { useEffect, useState } from 'react';
+import { RepositorioEliminarProductos } from '../../dominio/repositorios/Productos/repositorioEliminarProductos';   
 
 /**
- * Hook para eliminar productos usando el repositorio
- *
- * @param {Array<number>} idsProducto - Array de IDs de productos a eliminar.
- * @returns {Object} { mensaje, error }
+ * Hook para eliminar uno o más productos.
+ * @param {array} idsProducto
+ * @return {{
+ *  mensaje: string,
+ *  cargando: boolean,
+ *  error: string | null,
+ * }}
  */
-export const useEliminarProductos = (idsProducto) => {
+
+export function useEliminarProductos(idsProducto) {
   const [mensaje, setMensaje] = useState('');
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
-
   useEffect(() => {
-    const eliminar = async () => {
-      if (idsProducto.length === 0) return;
-        setCargando(true);
-        setError(null);
+    const eliminarProducto = async () => {
+      setCargando(true);
+      setError(null);
 
       try {
-        const respuesta = await repositorioEliminarProductos(idsProducto);
-        setMensaje(respuesta?.mensaje || 'Productos eliminados correctamente.');
-        setCargando(false);
-      } catch (error) {
-        setError(error.response?.data?.mensaje || 'Error al eliminar productos.');
+        const { mensaje } = await RepositorioEliminarProductos.eliminarProducto(idsProducto);
+        setMensaje(mensaje);
+      } catch (err) {
         setMensaje('');
+        setError(err.message);
+      } finally {
         setCargando(false);
-
       }
     };
 
-    eliminar();
+    if (Array.isArray(idsProducto) && idsProducto.length > 0) {
+      eliminarProducto();
+    }
   }, [idsProducto]);
 
-  return { mensaje, error, cargando };
-};
+  return { mensaje, cargando, error };
+}

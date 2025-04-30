@@ -4,12 +4,16 @@ import { useAuth } from '../../../hooks/AuthProvider';
 import Icono from '../../componentes/Atomos/Icono';
 import Cargador from '../../componentes/Atomos/Cargador';
 import Texto from '../../componentes/Atomos/Texto';
+import Alerta from '../../Componentes/moleculas/Alerta';
 import NavegadorAdministrador from '../../Componentes/Organismos/NavegadorAdministrador';
 import TarjetaConImagen from '../../componentes/Moleculas/TarjetaConImagen';
+import ModalFlotante from '../../componentes/organismos/ModalFlotante';
 import Cookies from 'js-cookie';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';
 import { useConsultarClientes } from '../../../hooks/Clientes/useConsultarClientes';
 import { useSeleccionarCliente } from '../../../hooks/Clientes/useSeleccionarCliente';
+import { useEliminarCliente } from '../../../hooks/Clientes/useEliminarCliente';
+import { useState, useEffect, useRef } from 'react';
 
 const estiloImagenLogo = { marginRight: '1rem' };
 
@@ -51,9 +55,61 @@ const estiloTarjetaAgregar = {
 const ListaClientes = () => {
   const navigate = useNavigate();
   const { cerrarSesion } = useAuth();
-
-  const { clientes, cargando, error } = useConsultarClientes();
+  const { clientes: clientesOriginales, cargando, error } = useConsultarClientes();
+  const [clientes, setClientes] = useState([]);
   const { seleccionarCliente } = useSeleccionarCliente();
+  const [idEliminar, setIdEliminar] = useState(null);
+  const [eliminacionExitosa, setEliminacionExitosa] = useState(false);
+  const { error: errorEliminacion } = useEliminarCliente(
+    idEliminar,
+    setEliminacionExitosa,
+    (idClienteEliminado) => {
+      setClientes(prev => prev.filter(c => c.idCliente !== idClienteEliminado));
+      Cookies.remove('imagenClienteSeleccionado');
+      Cookies.remove('nombreClienteSeleccionado');
+      seleccionarCliente(null); 
+      setIdEliminar(null); 
+    }
+  );
+
+  const [modoEliminacion, setModoEliminacion] = useState(false);
+  const tiempoPresionado = useRef(null);
+  const ignorarPrimerClick = useRef(false);
+  const [clienteEliminar, setClienteEliminar] = useState(null);
+  const [modalAbierto, setModalAbierto] = useState(false);
+
+  const manejarInicioPresionado = () => {
+    tiempoPresionado.current = setTimeout(() => {
+      setModoEliminacion(true);
+      ignorarPrimerClick.current = true;
+    }, 800);
+  };
+
+  const manejarFinPresionado = () => {
+    if (!modoEliminacion) {
+      clearTimeout(tiempoPresionado.current);
+    }
+  };
+
+  useEffect(() => {
+    const manejarClickFuera = () => {
+      if (ignorarPrimerClick.current) {
+        ignorarPrimerClick.current = false;
+        return;
+      }
+      if (modoEliminacion) {
+        setModoEliminacion(false);
+      }
+    };
+    document.addEventListener('click', manejarClickFuera);
+    return () => document.removeEventListener('click', manejarClickFuera);
+  }, [modoEliminacion]);
+
+  useEffect(() => {
+    if (clientesOriginales) {
+      setClientes(clientesOriginales);
+    }
+  }, [clientesOriginales]);
 
   const manejarCerrarSesion = async () => {
     await cerrarSesion();
@@ -96,27 +152,55 @@ const ListaClientes = () => {
     Cookies.set('nombreClienteSeleccionado', nombreComercial, { expires: 1 });
   };
 
+  const abrirModalEliminar = (cliente) => {
+    setClienteEliminar(cliente);
+    setModalAbierto(true);
+  };
+
+  const confirmarEliminacion = () => {
+    if (!clienteEliminar) return;
+    setIdEliminar(clienteEliminar.idCliente);
+    setModalAbierto(false);
+    setClienteEliminar(null);
+  };
+
+  const cancelarEliminacion = () => {
+    setModalAbierto(false);
+    setClienteEliminar(null);
+  };
+
   const renderTarjetaCliente = (cliente) => (
-    <Box key={cliente.idCliente} sx={estiloTarjeta}>
+    <Box 
+      key={cliente.idCliente} 
+      sx={estiloTarjeta}
+      onMouseDown={manejarInicioPresionado}
+      onMouseUp={manejarFinPresionado}
+      onTouchStart={manejarInicioPresionado}
+      onTouchEnd={manejarFinPresionado}
+    >
       <TarjetaConImagen
         src={cliente.urlImagen}
         alt={cliente.nombreComercial}
         titulo={cliente.nombreComercial}
-        nombreIcono='Info'
+        nombreIcono={modoEliminacion ? 'Delete' : 'Info'} // nuevo
         varianteIcono='outlined'
         tamanoIcono='large'
-        colorIcono='action'
+        colorIcono={modoEliminacion ? 'error' : 'action'} //nuevo
         iconoClickeable={true}
         ajuste='contain'
         anchoImagen='100%'
         alturaImagen='250px'
-        tooltipIcono={`Ver información de ${cliente.nombreComercial}`}
+        tooltipIcono={modoEliminacion ? 'Eliminar cliente' : `Ver información de ${cliente.nombreComercial}`} // nuevo
         clickeableImagen={true}
         elevacion={3}
         alClicImagen={() =>
           handleClickCliente(cliente.idCliente, cliente.urlImagen, cliente.nombreComercial)
         }
-        alClicIcono={() => {}}
+        alClicIcono={() => {
+          if (modoEliminacion) {
+            abrirModalEliminar(cliente);
+          }
+        }}
       />
     </Box>
   );
@@ -187,6 +271,40 @@ const ListaClientes = () => {
           </Box>
         )}
       </Box>
+
+      <ModalFlotante
+        open={modalAbierto}
+        onClose={cancelarEliminacion}
+        onConfirm={confirmarEliminacion}
+        titulo={`¿Estás seguro de que deseas eliminar a ${clienteEliminar?.nombreComercial}?`}
+        confirmLabel='Confirmar'
+        cancelLabel='Cancelar'
+      >
+        <Texto>Esta acción no se puede deshacer.</Texto>
+      </ModalFlotante>
+
+      {errorEliminacion && (
+        <Alerta
+          tipo='error'
+          mensaje={errorEliminacion}
+          icono
+          cerrable
+          centradoInferior
+        />
+      )}
+
+      {eliminacionExitosa && (
+        <Alerta
+          tipo='success'
+          mensaje='Cliente eliminado exitosamente.'
+          icono
+          cerrable
+          centradoInferior
+          duracion={3000}
+          onClose={() => setEliminacionExitosa(false)}
+        />
+      )}
+
     </>
   );
 };

@@ -23,7 +23,6 @@ export class RepositorioConsultarEventos {
           },
         }
       );
-
       return new ListaEventos(respuesta.data);
     } catch (error) {
       const mensaje = error?.response?.data?.mensaje || 'Error al consultar los eventos';

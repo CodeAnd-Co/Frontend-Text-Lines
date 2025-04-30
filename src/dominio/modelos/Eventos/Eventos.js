@@ -1,10 +1,10 @@
 export class Evento {
-  constructor({ idEvento, nombre, descripcion, puntos, periodo, renovacion }) {
+  constructor({ idEvento, nombre, descripcion, puntos, periodoRenovacion, renovacion }) {
     this.idEvento = idEvento;
     this.nombre = nombre;
     this.descripcion = descripcion;
     this.puntos = puntos;
-    this.periodo = periodo;
+    this.periodo = periodoRenovacion;
     this.renovacion = renovacion;
   }
 }

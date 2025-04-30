@@ -74,12 +74,13 @@ const RutasSistemaAdministrativo = () => {
           path={RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_CATEGORIAS}
           element={<ListaCategorias />}
         />
+
+        <Route
+          path={RUTAS.SISTEMA_ADMINISTRATIVO.EVENTOS.CONSULTAR_EVENTOS}
+          element={<ListaEventos />}
+        />
       </Route>
       {/* EVENTOS */}
-      <Route
-        path={RUTAS.SISTEMA_ADMINISTRATIVO.EVENTOS.CONSULTAR_EVENTOS}
-        element={<ListaEventos />}
-      />
       {/* Rutas fuera del tablero */}
       <Route
         path={RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE}

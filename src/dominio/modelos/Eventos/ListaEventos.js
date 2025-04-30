@@ -1,8 +1,10 @@
-import { Evento } from './Eventos.js';
+import { Evento } from './Eventos';
 
 export class ListaEventos {
-  constructor({ mensaje, eventos }) {
+  constructor({ mensaje, lista_eventos }) {
     this.mensaje = mensaje;
-    this.eventos = Array.isArray(eventos) ? eventos.map((evento) => new Evento(evento)) : [];
+    this.eventos = Array.isArray(lista_eventos)
+      ? lista_eventos.map((evento) => new Evento(evento))
+      : [];
   }
 }

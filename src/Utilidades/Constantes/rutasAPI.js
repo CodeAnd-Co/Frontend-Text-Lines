@@ -7,6 +7,7 @@ const BASE_CLIENTES = `${BASE_URL}/api/clientes`;
 const BASE_EMPLEADOS = `${BASE_URL}/api/empleados`;
 const BASE_CUOTAS = `${BASE_URL}/api/cuotas`;
 const BASE_ROLES = `${BASE_URL}/api/roles`;
+const BASE_EVENTOS = `${BASE_URL}/api/eventos`;
 
 export const RUTAS_API = {
   USUARIOS: {
@@ -46,5 +47,11 @@ export const RUTAS_API = {
   ROLES: {
     BASE: BASE_ROLES,
     CONSULTAR_LISTA: `${BASE_ROLES}/consultar-lista`,
+  },
+  EVENTOS: {
+    BASE: BASE_EVENTOS,
+    CONSULTAR_LISTA: `${BASE_EVENTOS}/consultar-lista-eventos`,
+    CREAR_EVENTO: `${BASE_EVENTOS}/crear-evento`,
+    ELIMINAR_EVENTO: `${BASE_EVENTOS}/eliminar-evento`,
   },
 };

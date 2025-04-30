@@ -23,6 +23,7 @@ export function useConsultarEventos() {
 
     try {
       const listaEventos = await RepositorioConsultarEventos.consultarLista();
+
       setEventos(listaEventos.eventos);
       setMensaje(listaEventos.mensaje || 'Eventos cargados correctamente');
     } catch (err) {

@@ -1,5 +1,3 @@
-// hooks/Roles/useCrearRol.js
-
 import { useState } from 'react';
 import axios from 'axios';
 import { RUTAS_API } from '../../Utilidades/Constantes/rutasAPI';
@@ -12,7 +10,7 @@ export const useCrearRol = () => {
   const [mensaje, setMensaje] = useState('');
   const [cargando, setCargando] = useState(false);
 
-  const crearRol = async (nombre, permisos, callbackSuccess = () => {}) => {
+  const crearRol = async (nombre, descripcion, permisos, callbackSuccess = () => {}) => {
     setCargando(true);
     setExito(false);
     setError(false);
@@ -20,7 +18,7 @@ export const useCrearRol = () => {
     try {
       const respuesta = await axios.post(
         RUTAS_API.ROLES.CREAR_ROL,
-        { nombre, permisos: permisos.map((permiso) => permiso.id) },
+        { nombre, descripcion, permisos: permisos.map((permiso) => permiso.id) },
         {
           headers: {
             'x-api-key': API_KEY,

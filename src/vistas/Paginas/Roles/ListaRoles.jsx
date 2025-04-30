@@ -10,7 +10,7 @@ import { RUTAS } from '../../../Utilidades/Constantes/rutas';
 import ModalCrearRol from '../../componentes/organismos/ModalCrearRol';
 
 const ListaRoles = () => {
-  const { roles, cargando, error, recargar } = useConsultarRoles(); // Include the error state
+  const { roles, cargando, error, recargar } = useConsultarRoles(); 
   const tema = useTheme();
   const colores = tokens(tema.palette.mode);
   const navigate = useNavigate();
@@ -37,61 +37,41 @@ const ListaRoles = () => {
     navigate(path, { replace: true });
   };
 
-  const filas = roles.map((roles) => ({
-    id: roles.idRol,
-    nombre: roles.nombre,
-    descripcion: roles.descripcion,
-    estado: roles.estado,
-    urlImagen: roles.urlImagen,
+  const filas = roles.map((rol) => ({
+    id: rol.idRol,
+    nombre: rol.nombre,
+    descripcion: rol.descripcion,
+    estado: rol.estado,
+    urlImagen: rol.urlImagen,
   }));
-
-  const botones = [
-    {
-      tipo: 'modal',
-      componente: <ModalCrearRol onRolCreado={recargar}/>
-    },
-    {
-      label: 'ATRAS',
-      onClick: () => redirigirAUsuarios(),
-      variant: 'outlined',
-      color: colores.primario[2],
-      size: 'large',
-    },
-  ];
 
   return (
     <ContenedorLista
-    titulo={
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <Typography variant="h4" sx={{ mb: 0 }}>Roles</Typography>
-        <Box sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-          {botones.map((boton, index) => (
-            <Box key={index}>
-              {boton.tipo === 'modal' ? (
-                boton.componente
-              ) : (
-                <button
-                  onClick={boton.onClick}
-                  style={{
-                    padding: '10px 20px',
-                    backgroundColor: boton.variant === 'outlined' ? 'transparent' : boton.color,
-                    color: boton.variant === 'outlined' ? boton.color : '#fff',
-                    border: boton.variant === 'outlined' ? `1px solid ${boton.color}` : 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {boton.label}
-                </button>
-              )}
-            </Box>
-          ))}
+      titulo={
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+          <Typography variant="h4" sx={{ mb: 0 }}>Roles</Typography>
+
+          {/* 🔧 CAMBIO: Botones alineados horizontal y verticalmente */}
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+            <ModalCrearRol onRolCreado={recargar} />
+            <button
+              onClick={redirigirAUsuarios}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: 'transparent',
+                color: colores.primario[2],
+                border: `1px solid ${colores.primario[2]}`,
+                borderRadius: '5px',
+                height: '40px',
+                cursor: 'pointer',
+              }}
+            >
+              ATRÁS
+            </button>
+          </Box>
         </Box>
-      </Box>
-    }
-    
-    
-  >
+      }
+    >
       <Box sx={{ mt: '20px' }}>
         {error && (
           <Typography

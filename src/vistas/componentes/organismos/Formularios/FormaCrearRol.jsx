@@ -12,6 +12,8 @@ const columns = [
 const FormaCrearRol = ({
   nombreRol,
   setNombreRol,
+  descripcionRol,
+  setDescripcionRol,
   permisosSeleccionados,
   setPermisosSeleccionados,
   mostrarAlerta,
@@ -22,16 +24,15 @@ const FormaCrearRol = ({
   useEffect(() => {
     const cargarPermisos = async () => {
       const permisos = await obtenerPermisos();
-      console.log("🟡 Permisos cargados:", permisos); // 👈 AQUI
-
+      console.log("🟡 Permisos cargados:", permisos);
       setRows(permisos);
     };
-
-    cargarPermisos(); // ← ya no depende de ningún cliente
+    cargarPermisos();
   }, []);
 
   return (
     <>
+      {/* CAMPO: NOMBRE */}
       <CampoTexto
         label="Nombre del Rol"
         fullWidth
@@ -40,32 +41,41 @@ const FormaCrearRol = ({
         onChange={(e) => setNombreRol(e.target.value)}
       />
 
-<CustomDataGrid
-  sx={{ width: '100%', height: '350px' }}
-  columns={columns}
-  rows={rows}
-  pageSize={5}
-  checkboxSelection
-  onRowSelectionModelChange={(selectionModel) => {
-    const idsSeleccionados = Array.from(selectionModel.ids);
-    console.log("🟣 IDs seleccionados:", idsSeleccionados);
-  
-    const seleccionados = rows.filter((permiso) =>
-      idsSeleccionados.includes(permiso.id)
-    );
-    console.log("🟣 Permisos seleccionados:", seleccionados);
-    setPermisosSeleccionados(seleccionados);
-  }}
-  
-/>
+      {/* TABLA PERMISOS */}
+      <CustomDataGrid
+        sx={{ width: '100%', height: '350px', marginTop: 2 }}
+        columns={columns}
+        rows={rows}
+        pageSize={5}
+        checkboxSelection
+        onRowSelectionModelChange={(selectionModel) => {
+          const ids = Array.isArray(selectionModel)
+            ? selectionModel
+            : Array.from(selectionModel?.ids || []);
 
+          console.log("🟣 IDs seleccionados:", ids);
 
+          const seleccionados = rows.filter((permiso) => ids.includes(permiso.id));
+          console.log("🟣 Permisos seleccionados:", seleccionados);
 
+          setPermisosSeleccionados(seleccionados);
+        }}
+      />
 
+      {/* CAMPO: DESCRIPCIÓN */}
+      <CampoTexto
+        label="Descripción"
+        fullWidth
+        type="text"
+        value={descripcionRol}
+        onChange={(e) => setDescripcionRol(e.target.value)}
+      />
+
+      {/* ALERTA */}
       {mostrarAlerta && (
         <Alerta
           tipo="warning"
-          mensaje="Completa el nombre del rol y selecciona al menos un permiso."
+          mensaje="Completa todos los campos y selecciona al menos un permiso."
           cerrable
           duracion={10000}
           onClose={() => setMostrarAlerta(false)}

@@ -50,8 +50,6 @@ const ListaRoles = () => {
       titulo={
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
           <Typography variant="h4" sx={{ mb: 0 }}>Roles</Typography>
-
-          {/* 🔧 CAMBIO: Botones alineados horizontal y verticalmente */}
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
             <ModalCrearRol onRolCreado={recargar} />
             <button

@@ -17,6 +17,7 @@ import ListaSetsProductos from '../vistas/Paginas/SetsProductos/ListaSetsProduct
 
 import RutaProtegida from './RutaProtegida';
 import VerificarClienteSeleccionado from './VerificarClienteSeleccionado';
+import ListaPedidos from '../vistas/Paginas/Pedidos/ListaPedidos';
 
 const RutasSistemaAdministrativo = () => {
   return (
@@ -72,6 +73,12 @@ const RutasSistemaAdministrativo = () => {
         <Route
           path={RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_CATEGORIAS}
           element={<ListaCategorias />}
+        />
+
+        {/* Pedidos */}
+        <Route
+          path={RUTAS.SISTEMA_ADMINISTRATIVO.PEDIDOS.CONSULTAR_PEDIDOS}
+          element={<ListaPedidos />}
         />
       </Route>
       {/* Rutas fuera del tablero */}

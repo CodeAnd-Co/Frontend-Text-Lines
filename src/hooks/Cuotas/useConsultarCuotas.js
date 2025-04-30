@@ -14,11 +14,9 @@ export function useConsultarCuotas() {
 
       try {
         const { cuotas, mensaje } = await RepositorioListaCuotas.obtenerLista();
-        console.log('Cuotas fetched:', cuotas); // Debugging
         setCuotas(cuotas);
         setMensaje(mensaje);
       } catch (err) {
-        console.error('Error fetching cuotas:', err); // Debugging
         setCuotas([]);
         setMensaje('');
         setError(err.message);

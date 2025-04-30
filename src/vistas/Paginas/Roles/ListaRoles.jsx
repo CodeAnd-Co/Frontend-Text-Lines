@@ -33,7 +33,6 @@ const ListaRoles = () => {
 
   const redirigirAUsuarios = () => {
     const path = `${RUTAS.SISTEMA_ADMINISTRATIVO.BASE}${RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE}`;
-    console.log('Navigating to:', path);
     navigate(path, { replace: true });
   };
 
@@ -72,21 +71,12 @@ const ListaRoles = () => {
     >
       <Box sx={{ mt: '20px' }}>
         {error && (
-          <Typography
-            variant="h6"
-            color="error"
-            sx={{ textAlign: 'center', marginBottom: '20px' }}
-          >
+          <Typography variant='h6' color='error' sx={{ textAlign: 'center', marginBottom: '20px' }}>
             Error: {error}
           </Typography>
         )}
 
-        <CustomDataGrid
-          columns={columnas}
-          rows={filas}
-          loading={cargando}
-          checkboxSelection
-        />
+        <CustomDataGrid columns={columnas} rows={filas} loading={cargando} checkboxSelection />
       </Box>
     </ContenedorLista>
   );

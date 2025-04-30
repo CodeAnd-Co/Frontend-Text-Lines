@@ -66,15 +66,44 @@ const ListaUsuarios = () => {
       flex: 1,
       renderCell: (params) => {
         const isSuspendido = params.row.estatus === 0;
-
+        const clientes = Array.isArray(params.value) ? params.value : params.value ? [params.value] : [];
+      
+        if (isSuspendido) {
+          return (
+            <Chip
+              label='Suspendido'
+              variant='filled'
+              size='medium'
+              shape='circular'
+              backgroundColor='#ffa726'
+              textColor='#ffffff'
+            />
+          );
+        }
+      
+        if (clientes.length === 0) {
+          return (
+            <Chip
+              label='N/A'
+              variant='filled'
+              size='medium'
+              shape='circular'
+              backgroundColor='#f0f0f0'
+              textColor='#000000'
+            />
+          );
+        }
+      
+        const clientesConcatenados = clientes.join(', ');
+      
         return (
           <Chip
-            label={isSuspendido ? 'Suspendido' : params.value || 'N/A'}
+            label={clientesConcatenados}
             variant='filled'
             size='medium'
             shape='circular'
-            backgroundColor={isSuspendido ? '#ffa726' : '#f0f0f0'}
-            textColor={isSuspendido ? '#ffffff' : '#000000'}
+            backgroundColor='#f0f0f0'
+            textColor='#000000'
           />
         );
       },
@@ -83,23 +112,28 @@ const ListaUsuarios = () => {
     { field: 'telefono', headerName: 'Telefono', flex: 1 },
   ];
 
-  const rows = [
-    ...new Map(
-      usuarios.map((usuario) => [
-        usuario.idUsuario,
-        {
-          id: usuario.idUsuario,
-          idUsuario: usuario.idUsuario,
+  const rows = Object.values(
+    usuarios.reduce((acc, usuario) => {
+      const id = usuario.idUsuario;
+      if (!acc[id]) {
+        acc[id] = {
+          id: id,
+          idUsuario: id,
           nombre: usuario.nombre,
           rol: usuario.rol || 'Sin rol',
-          cliente: usuario.cliente,
+          cliente: usuario.cliente ? [usuario.cliente] : [],
           estatus: usuario.estatus,
           correo: usuario.correo,
           telefono: usuario.telefono,
-        },
-      ])
-    ).values(),
-  ];
+        };
+      } else {
+        if (usuario.cliente) {
+          acc[id].cliente.push(usuario.cliente);
+        }
+      }
+      return acc;
+    }, {})
+  );
 
   const botones = [
     {

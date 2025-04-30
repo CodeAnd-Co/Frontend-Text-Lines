@@ -23,7 +23,7 @@ const obtenerProductos = async (clienteSeleccionado) => {
     }));
 
     return filasFormateadas;
-  } catch (error) {
+  } catch {
     return [];
   }
 };

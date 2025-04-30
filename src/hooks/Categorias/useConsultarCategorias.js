@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { RepositorioListaCategorias } from "../../dominio/repositorios/Categorias/RepositorioListaCategorias";
+import { useEffect, useState } from 'react';
+import { RepositorioListaCategorias } from '../../dominio/repositorios/Categorias/RepositorioListaCategorias';
 
 /**
  * Hook para consultar la lista de categorías.
@@ -14,7 +14,7 @@ import { RepositorioListaCategorias } from "../../dominio/repositorios/Categoria
  */
 export function useConsultarCategorias() {
   const [categorias, setCategorias] = useState([]);
-  const [mensaje, setMensaje] = useState("");
+  const [mensaje, setMensaje] = useState('');
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
   const [recargarToken, setRecargarToken] = useState(0);
@@ -30,7 +30,7 @@ export function useConsultarCategorias() {
         setMensaje(mensaje);
       } catch (err) {
         setCategorias([]);
-        setMensaje("");
+        setMensaje('');
         setError(err.message);
       } finally {
         setCargando(false);

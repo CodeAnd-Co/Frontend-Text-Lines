@@ -13,11 +13,12 @@ import Error404 from '../Vistas/Paginas/Errores/Error404';
 import ListaRoles from '../Vistas/Paginas/Roles/ListaRoles';
 import ListaUsuarios from '../vistas/Paginas/Usuarios/ListaUsuarios';
 import ListaCategorias from '../vistas/paginas/Categorias/ListaCategorias';
-import ListaSetsProductos from '../vistas/Paginas/Productos/ListaSetsProductos';
+import ListaSetsProductos from '../vistas/Paginas/SetsProductos/ListaSetsProductos';
 import ListaEventos from '../vistas/Paginas/Eventos/ListaEventos';
 
 import RutaProtegida from './RutaProtegida';
 import VerificarClienteSeleccionado from './VerificarClienteSeleccionado';
+import ListaPedidos from '../vistas/Paginas/Pedidos/ListaPedidos';
 
 const RutasSistemaAdministrativo = () => {
   return (
@@ -78,6 +79,12 @@ const RutasSistemaAdministrativo = () => {
         <Route
           path={RUTAS.SISTEMA_ADMINISTRATIVO.EVENTOS.CONSULTAR_EVENTOS}
           element={<ListaEventos />}
+        />
+
+        {/* Pedidos */}
+        <Route
+          path={RUTAS.SISTEMA_ADMINISTRATIVO.PEDIDOS.CONSULTAR_PEDIDOS}
+          element={<ListaPedidos />}
         />
       </Route>
       {/* EVENTOS */}

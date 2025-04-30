@@ -164,7 +164,7 @@ const BarraLateral = () => {
             </SubMenu>
             <ElementoMenu
               titulo='Pedidos'
-              ruta={RUTAS.SISTEMA_ADMINISTRATIVO.PEDIDOS}
+              ruta={RUTAS.SISTEMA_ADMINISTRATIVO.PEDIDOS.CONSULTAR_PEDIDOS}
               icono={<InboxOutlinedIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}

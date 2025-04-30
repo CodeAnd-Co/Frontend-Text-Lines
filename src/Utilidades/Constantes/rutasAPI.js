@@ -7,6 +7,7 @@ const BASE_CLIENTES = `${BASE_URL}/api/clientes`;
 const BASE_EMPLEADOS = `${BASE_URL}/api/empleados`;
 const BASE_CUOTAS = `${BASE_URL}/api/cuotas`;
 const BASE_ROLES = `${BASE_URL}/api/roles`;
+const BASE_PEDIDOS = `${BASE_URL}/api/pedidos`;
 const BASE_EVENTOS = `${BASE_URL}/api/eventos`;
 
 export const RUTAS_API = {
@@ -28,6 +29,7 @@ export const RUTAS_API = {
   SETS_PRODUCTOS: {
     BASE: BASE_SETS_PRODUCTOS,
     CONSULTAR_LISTA: `${BASE_SETS_PRODUCTOS}/consultar-lista`,
+    ELIMINAR_SET_PRODUCTOS: `${BASE_SETS_PRODUCTOS}/eliminar`,
   },
   CLIENTES: {
     BASE: BASE_CLIENTES,
@@ -47,6 +49,10 @@ export const RUTAS_API = {
   ROLES: {
     BASE: BASE_ROLES,
     CONSULTAR_LISTA: `${BASE_ROLES}/consultar-lista`,
+  },
+  PEDIDOS: {
+    BASE: BASE_PEDIDOS,
+    CONSULTAR_LISTA: `${BASE_PEDIDOS}/consultar-lista`,
   },
   EVENTOS: {
     BASE: BASE_EVENTOS,

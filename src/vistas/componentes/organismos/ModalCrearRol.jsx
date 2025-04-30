@@ -8,6 +8,7 @@ import Alerta from '../moleculas/Alerta';
 const ModalCrearRol = ({ onRolCreado }) => {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [nombreRol, setNombreRol] = useState('');
+  const [descripcionRol, setDescripcionRol] = useState('');
   const [permisosSeleccionados, setPermisosSeleccionados] = useState([]);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
 
@@ -21,6 +22,7 @@ const ModalCrearRol = ({ onRolCreado }) => {
   const handleCerrar = () => {
     setMostrarFormulario(false);
     setNombreRol('');
+    setDescripcionRol('');
     setPermisosSeleccionados([]);
     setMostrarAlerta(false);
   };
@@ -31,15 +33,15 @@ const ModalCrearRol = ({ onRolCreado }) => {
       return;
     }
 
-    await crearRol(nombreRol.trim(), permisosSeleccionados, () => {
-      if (onRolCreado) onRolCreado(); // Notifica al padre que debe recargar
-      handleCerrar(); // Cierra el modal
+    await crearRol(nombreRol.trim(), descripcionRol.trim(), permisosSeleccionados, () => {
+      if (onRolCreado) onRolCreado(); 
+      handleCerrar(); 
     });
   };
 
   return (
     <>
-      <Boton label="Añadir Rol" variant="contained" onClick={handleAbrir} size="large" />
+      <Boton label="Crear Rol" variant="contained" onClick={handleAbrir} size="large" />
       <ModalFlotante
         open={mostrarFormulario}
         onClose={handleCerrar}
@@ -51,6 +53,8 @@ const ModalCrearRol = ({ onRolCreado }) => {
         <FormaCrearRol
           nombreRol={nombreRol}
           setNombreRol={setNombreRol}
+          descripcionRol={descripcionRol}
+          setDescripcionRol={setDescripcionRol}
           permisosSeleccionados={permisosSeleccionados}
           setPermisosSeleccionados={setPermisosSeleccionados}
           mostrarAlerta={mostrarAlerta}

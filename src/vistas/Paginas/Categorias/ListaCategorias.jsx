@@ -72,7 +72,7 @@ const ListaCategorias = () => {
     {
       label: 'Añadir',
       variant: 'contained',
-      color: 'primary',
+      color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
       onClick: handleAbrirModalCrear, // Ahora abre el modal para crear
@@ -83,7 +83,7 @@ const ListaCategorias = () => {
       onClick: () => console.log('Importar'),
       color: 'primary',
       size: 'large',
-      outlineColor: colores.altertex[1],
+      outlineColor: colores.primario[3],
     },
     {
       label: 'Eliminar',

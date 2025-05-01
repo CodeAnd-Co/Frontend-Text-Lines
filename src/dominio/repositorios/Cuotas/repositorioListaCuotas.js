@@ -6,10 +6,9 @@ const API_KEY = import.meta.env.VITE_API_KEY;
 export class RepositorioListaCuotas {
   static async obtenerLista() {
     try {
-      console.log('API URL:', RUTAS_API.CUOTAS.CONSULTAR_LISTA);
       const respuesta = await axios.post(
         RUTAS_API.CUOTAS.CONSULTAR_LISTA,
-        {}, 
+        {},
         {
           withCredentials: true,
           headers: {
@@ -20,10 +19,7 @@ export class RepositorioListaCuotas {
       return respuesta.data;
     } catch (error) {
       const mensaje = error.response?.data?.mensaje || 'Error al obtener cuotas';
-      console.error('Error fetching cuotas:', error);
       throw new Error(mensaje);
     }
   }
 }
-
-

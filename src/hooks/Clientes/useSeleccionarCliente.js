@@ -18,8 +18,7 @@ export const useSeleccionarCliente = () => {
   const seleccionarCliente = useCallback(
     async (idCliente) => {
       try {
-        const mensaje = await RepositorioSeleccionarCliente.seleccionarCliente(idCliente);
-        console.log('Respuesta:', mensaje);
+        await RepositorioSeleccionarCliente.seleccionarCliente(idCliente);
         await verificarSesion();
         navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO);
       } catch (error) {

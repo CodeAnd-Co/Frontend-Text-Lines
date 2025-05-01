@@ -13,6 +13,7 @@ export const RUTAS_API = {
     BASE: BASE_USUARIOS,
     CONSULTAR_LISTA: `${BASE_USUARIOS}/consultar-lista-usuarios`,
     CONSULTAR_USUARIO: `${BASE_USUARIOS}/consultar-usuario`,
+    ELIMINAR_USUARIOS: `${BASE_USUARIOS}/eliminar-usuarios`,
   },
   CATEGORIAS: {
     BASE: BASE_CATEGORIAS,

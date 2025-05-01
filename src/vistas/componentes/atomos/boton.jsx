@@ -67,6 +67,7 @@ Boton.propTypes = {
   size: PropTypes.oneOf(['small', 'medium', 'large']),
   backgroundColor: PropTypes.string,
   outlineColor: PropTypes.string,
+  align: PropTypes.string,
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func,
 };

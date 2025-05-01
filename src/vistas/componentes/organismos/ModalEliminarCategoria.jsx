@@ -11,7 +11,6 @@ const ModalEliminarCategoria = ({ open, onClose, idsCategoria, setAlerta, refres
   const handleConfirm = () => {
     setConfirmado(true);
     onClose();
-    refrescarPagina();
   };
 
   const handleCancelar = () => {
@@ -37,10 +36,11 @@ const ModalEliminarCategoria = ({ open, onClose, idsCategoria, setAlerta, refres
           cerrable: true,
           centradoInferior: true,
         });
+        refrescarPagina();
       }
       setConfirmado(false);
     }
-  }, [confirmado, mensaje, error, setAlerta]);
+  }, [confirmado, mensaje, error, setAlerta, refrescarPagina]);
 
   return (
     <PopUp

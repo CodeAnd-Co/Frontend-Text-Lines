@@ -18,8 +18,6 @@ export const crearUsuario = async (datos) => {
     });
     return response.data;
   } catch (error) {
-    console.error('Error en la llamada crearUsuario:', error);
-
     throw new Error(error.response?.data?.mensaje || 'Error al crear usuario en el servidor');
   }
 };

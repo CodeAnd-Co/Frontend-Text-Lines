@@ -64,7 +64,7 @@ const ListaClientes = () => {
     idEliminar,
     setEliminacionExitosa,
     (idClienteEliminado) => {
-      setClientes(prev => prev.filter(c => c.idCliente !== idClienteEliminado));
+      setClientes(prev => prev.filter(cliente => cliente.idCliente !== idClienteEliminado));
       Cookies.remove('imagenClienteSeleccionado');
       Cookies.remove('nombreClienteSeleccionado');
       seleccionarCliente(null); 

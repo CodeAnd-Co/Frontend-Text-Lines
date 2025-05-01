@@ -1,7 +1,7 @@
 // RF17 - Consulta Lista Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF17
 // RF20 - Eliminar empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF20
 import React, { useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import Tabla from '../../Componentes/Organismos/Tabla';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import { useConsultarEmpleados } from '../../../hooks/Empleados/useConsultarEmpleados';
@@ -11,6 +11,7 @@ import { useEliminarEmpleado } from '../../../hooks/Empleados/useEliminarEmplead
 import { useMode, tokens } from '../../../theme';
 import { useAuth } from '../../../hooks/AuthProvider';
 import { PERMISOS } from '../../../Utilidades/Constantes/permisos';
+import { tokens } from '../../../theme';
 
 const ListaGrupoEmpleados = () => {
   const { empleados, cargando, error, refetch } = useConsultarEmpleados();
@@ -53,6 +54,8 @@ const ListaGrupoEmpleados = () => {
       setAbrirPopUpEliminar(false);
     }
   };
+  const theme = useTheme();
+  const colores = tokens(theme.palette.mode);
 
   const columnas = [
     { field: 'nombreCompleto', headerName: 'Nombre del Empleado', flex: 1 },

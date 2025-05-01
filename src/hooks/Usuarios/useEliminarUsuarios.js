@@ -10,13 +10,14 @@ import { RepositorioEliminarUsuarios } from '../../dominio/repositorios/Usuarios
  * @returns {Object} - Funciones y estados para manejar la eliminación
  */
 export function useEliminarUsuarios(onAlerta, onRecarga) {
+  const [abrirPopUp, setAbrirPopUp] = useState(false);
+  const [cargando, setCargando] = useState(false);
+  const [error, setError] = useState(null);
   const [usuariosAEliminar, setUsuariosAEliminar] = useState({
     type: 'include',
     ids: new Set(),
     rol: new Set(),
   });
-  const [abrirPopUp, setAbrirPopUp] = useState(false);
-  const [cargando, setCargando] = useState(false);
 
   const manejarSeleccion = (seleccionados) => {
     setUsuariosAEliminar((prev) => ({

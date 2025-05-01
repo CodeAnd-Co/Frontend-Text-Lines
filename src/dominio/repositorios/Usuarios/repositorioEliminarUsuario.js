@@ -1,7 +1,6 @@
 //RF05 Super Administrador Elimina Usuario - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF5
 
 import axios from 'axios';
-// import { procesarRespuestaEliminacion } from '../../modelos/Usuarios/';
 import { RUTAS_API } from '../../../Utilidades/Constantes/rutasAPI';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -31,12 +30,8 @@ export class RepositorioEliminarUsuarios {
         }
       );
 
-      console.log('✅ Respuesta del servidor:', respuesta);
       return respuesta.data;
     } catch (error) {
-      console.error('❌ Error en el repositorio:', error);
-      console.error('Detalles de respuesta:', error.response?.data);
-      console.error('URL utilizada:', RUTAS_API.USUARIOS.ELIMINAR_USUARIOS);
       const mensaje = error.response?.data?.mensaje || 'Error al eliminar usuarios';
       throw new Error(mensaje);
     }

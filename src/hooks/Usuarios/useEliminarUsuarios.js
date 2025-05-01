@@ -12,7 +12,6 @@ import { RepositorioEliminarUsuarios } from '../../dominio/repositorios/Usuarios
 export function useEliminarUsuarios(onAlerta, onRecarga) {
   const [abrirPopUp, setAbrirPopUp] = useState(false);
   const [cargando, setCargando] = useState(false);
-  const [error, setError] = useState(null);
   const [usuariosAEliminar, setUsuariosAEliminar] = useState({
     type: 'include',
     ids: new Set(),

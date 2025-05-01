@@ -10,7 +10,7 @@ export class RepositorioEliminarUsuarios {
   /**
    * Elimina a uno o varios usuarios del sistema desde la API
    * @param {Object} seleccion - Objeto con el type e ids usuarios a eliminar
-   * @returns {Promise<{exito: boolean, mensaje: string, idsEliminados: number[]}>}
+   * @returns {Promise<{mensaje: string}>} - Mensaje de éxito o error
    */
   static async eliminarUsuarios(seleccion) {
     try {
@@ -31,7 +31,7 @@ export class RepositorioEliminarUsuarios {
         }
       );
 
-      console.log('✅ Respuesta del servidor:', respuesta.data);
+      console.log('✅ Respuesta del servidor:', respuesta);
       return respuesta.data;
     } catch (error) {
       console.error('❌ Error en el repositorio:', error);

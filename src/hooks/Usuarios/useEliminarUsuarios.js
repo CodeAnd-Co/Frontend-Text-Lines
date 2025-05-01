@@ -52,12 +52,15 @@ export function useEliminarUsuarios(onAlerta, onRecarga) {
       const resultado = await RepositorioEliminarUsuarios.eliminarUsuarios(usuariosAEliminar);
       setAbrirPopUp(false);
 
-      onAlerta({
-        tipo: resultado.exito ? 'success' : 'error',
-        mensaje: resultado.mensaje,
-      });
+      // Detectar éxito por el mensaje recibido
+      const exito =
+        resultado.mensaje && resultado.mensaje.toLowerCase().includes('eliminados correctamente');
 
-      if (resultado.exito) {
+      if (exito) {
+        onAlerta({
+          tipo: 'success',
+          mensaje: 'Usuario(s) eliminado(s)  ',
+        });
         setUsuariosAEliminar({ type: 'include', ids: new Set(), rol: new Set() });
         if (onRecarga) onRecarga();
       }

@@ -14,7 +14,6 @@ const FormaCrearRol = ({
   setNombreRol,
   descripcionRol,
   setDescripcionRol,
-  permisosSeleccionados,
   setPermisosSeleccionados,
   mostrarAlerta,
   setMostrarAlerta,
@@ -38,7 +37,7 @@ const FormaCrearRol = ({
         fullWidth
         type="text"
         value={nombreRol}
-        onChange={(e) => setNombreRol(e.target.value)}
+        onChange={(evento) => setNombreRol(evento.target.value)}
       />
 
       {/* TABLA PERMISOS */}
@@ -68,7 +67,7 @@ const FormaCrearRol = ({
         fullWidth
         type="text"
         value={descripcionRol}
-        onChange={(e) => setDescripcionRol(e.target.value)}
+        onChange={(evento) => setDescripcionRol(evento.target.value)}
       />
 
       {/* ALERTA */}

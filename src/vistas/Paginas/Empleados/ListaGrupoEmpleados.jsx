@@ -13,6 +13,8 @@ const ListaEmpleados = () => {
   const { grupos, cargando, error, refetch } = useConsultarGrupos();
   const [theme] = useMode();
   const colores = tokens(theme.palette.mode);
+  const MENSAJE_ELIMINAR =
+    '¿Estás seguro de que deseas eliminar los grupos seleccionados? Esta acción no se puede deshacer.';
 
   const [gruposSeleccionados, setGruposSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
@@ -174,9 +176,7 @@ const ListaEmpleados = () => {
         abrir={openModalEliminar}
         cerrar={manejarCancelarEliminar}
         confirmar={manejarConfirmarEliminar}
-        dialogo='¿Estás seguro de que deseas eliminar los grupos seleccionados?'
-        labelCancelar='Cancelar'
-        labelConfirmar='Eliminar'
+        dialogo={MENSAJE_ELIMINAR}
       />
     </>
   );

@@ -12,7 +12,6 @@ import { RepositorioEliminarGrupoEmpleados } from '../../dominio/repositorios/Em
  * *  error: string | null,
  * * }}
  */
-
 export function useEliminarGrupoEmpleados() {
   const [mensaje, setMensaje] = useState('');
   const [cargando, setCargando] = useState(false);

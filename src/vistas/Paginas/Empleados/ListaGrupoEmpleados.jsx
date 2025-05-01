@@ -16,7 +16,7 @@ const ListaEmpleados = () => {
 
   const [gruposSeleccionados, setGruposSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
-  const { eliminar, cargando: cargandoEliminacion } = useEliminarGrupoEmpleados();
+  const { eliminar } = useEliminarGrupoEmpleados();
   const [openModalEliminar, setOpenModalEliminar] = useState(false);
   const manejarCancelarEliminar = () => {
     setOpenModalEliminar(false);
@@ -115,7 +115,7 @@ const ListaEmpleados = () => {
       outlineColor: colores.altertex[1],
     },
     {
-      label: cargandoEliminacion ? 'Eliminando...' : 'Eliminar',
+      label: 'Eliminar',
       onClick: () => {
         console.log('Grupos a eliminar:', gruposSeleccionados);
         if (gruposSeleccionados.length === 0) {
@@ -127,8 +127,7 @@ const ListaEmpleados = () => {
             centradoInferior: true,
           });
         } else {
-          // TODO: Abrir pop up eliminar
-          setOpenModalEliminar(true); // ✅ Aquí abres el modal
+          setOpenModalEliminar(true);
         }
       },
 

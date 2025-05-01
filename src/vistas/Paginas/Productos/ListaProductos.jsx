@@ -127,6 +127,7 @@ const ListaProductos = () => {
       size: 'large',
       outlineColor: colores.altertex[1],
     },
+    { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large' },
     {
       label: 'Eliminar',
       onClick: () => {
@@ -145,7 +146,7 @@ const ListaProductos = () => {
       disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_PRODUCTO),
       size: 'large',
       backgroundColor: colores.altertex[1],
-    },
+    },  
   ];
 
   return (

@@ -10,6 +10,9 @@ import Alerta from '../../Componentes/moleculas/Alerta';
 import { useEliminarGrupoEmpleados } from '../../../hooks/Empleados/useEliminarGrupoEmpleados';
 import { useState, React } from 'react';
 import PopUpEliminar from '../../componentes/moleculas/PopUpEliminar';
+import { PERMISOS } from '../../../Utilidades/Constantes/permisos';
+import { useAuth } from '../../../hooks/AuthProvider';
+
 
 const ListaEmpleados = () => {
   const { grupos, cargando, error, refetch } = useConsultarGrupos();
@@ -25,7 +28,7 @@ const ListaEmpleados = () => {
   const manejarCancelarEliminar = () => {
     setAbrirPopUpEliminar(false);
   };
-
+  const { usuario } = useAuth();
   const manejarConfirmarEliminar = async () => {
     try {
       await eliminar(gruposSeleccionados);
@@ -134,7 +137,7 @@ const ListaEmpleados = () => {
           setAbrirPopUpEliminar(true);
         }
       },
-
+      disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_GRUPO_EMPLEADOS),
       size: 'large',
       backgroundColor: colores.altertex[1],
     },

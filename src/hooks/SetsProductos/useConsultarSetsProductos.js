@@ -32,6 +32,7 @@ export function useConsultarSetsProductos() {
 
       try {
         const { setsDeProductos, mensaje } = await RepositorioConsultarSetsProductos.obtenerLista();
+
         setSetsProductos(setsDeProductos);
         setMensaje(mensaje);
       } catch (err) {

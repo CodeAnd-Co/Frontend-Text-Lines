@@ -57,8 +57,6 @@ export default function useInicioSesion() {
       setUsuario(respuesta.data.user);
       setMensaje('Inicio de sesión exitoso');
     } catch (error) {
-      console.log(error);
-
       // Manejo de errores personalizados o genéricos
       if (error.response && error.response.data && error.response.data.mensaje) {
         setMensaje(error.response.data.mensaje);

@@ -1,12 +1,15 @@
 //RF17 - Consulta Lista Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF17
 import React from 'react';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import Tabla from '../../Componentes/Organismos/Tabla';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import { useConsultarEmpleados } from '../../../hooks/Empleados/useConsultarEmpleados';
+import { tokens } from '../../../theme';
 
 const ListaGrupoEmpleados = () => {
   const { empleados, cargando, error } = useConsultarEmpleados();
+  const theme = useTheme();
+  const colores = tokens(theme.palette.mode);
 
   const columnas = [
     { field: 'nombreCompleto', headerName: 'Nombre del Empleado', flex: 1 },
@@ -31,7 +34,12 @@ const ListaGrupoEmpleados = () => {
   }));
 
   const botones = [
-    { label: 'Añadir', onClick: () => console.log('Añadir'), size: 'large' },
+    {
+      label: 'Añadir',
+      onClick: () => console.log('Añadir'),
+      size: 'large',
+      backgroundColor: colores.altertex[1],
+    },
     {
       variant: 'outlined',
       label: 'Importar',
@@ -45,7 +53,12 @@ const ListaGrupoEmpleados = () => {
       size: 'large',
     },
     { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large' },
-    { label: 'Eliminar', onClick: () => console.log('Eliminar'), size: 'large' },
+    {
+      label: 'Eliminar',
+      onClick: () => console.log('Eliminar'),
+      size: 'large',
+      backgroundColor: colores.altertex[1],
+    },
   ];
 
   return (

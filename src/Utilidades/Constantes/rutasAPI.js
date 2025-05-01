@@ -35,6 +35,7 @@ export const RUTAS_API = {
     BASE: BASE_CLIENTES,
     CONSULTAR_LISTA: `${BASE_CLIENTES}/consultar-lista`,
     CONSULTAR_SISTEMA: `${BASE_CLIENTES}/consultar-sistema`,
+    ELIMINAR_CLIENTE: `${BASE_CLIENTES}/eliminar`,
   },
   EMPLEADOS: {
     BASE: BASE_EMPLEADOS,

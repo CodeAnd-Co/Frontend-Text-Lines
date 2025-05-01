@@ -1,9 +1,12 @@
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography, useTheme } from '@mui/material';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import Tabla from '../../Componentes/Organismos/Tabla';
 import { useConsultarPedidos } from '../../../hooks/Pedidos/useConsultarPedidos';
+import { tokens } from '../../../theme';
 
 const ListaPedidos = () => {
+  const theme = useTheme();
+  const colores = tokens(theme.palette.mode);
   const { pedidos, cargando, error } = useConsultarPedidos();
   const columnas = [
     {
@@ -44,15 +47,30 @@ const ListaPedidos = () => {
   ];
 
   const botones = [
-    { label: 'Añadir', onClick: () => console.log('Añadir'), size: 'large' },
+    {
+      label: 'Añadir',
+      onClick: () => console.log('Añadir'),
+      size: 'large',
+      backgroundColor: colores.altertex[1],
+    },
     {
       variant: 'outlined',
       label: 'Importar',
       onClick: () => console.log('Importar'),
       size: 'large',
     },
-    { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large' },
-    { label: 'Eliminar', onClick: () => console.log('Eliminar'), size: 'large' },
+    {
+      variant: 'outlined',
+      label: 'Editar',
+      onClick: () => console.log('Editar'),
+      size: 'large',
+    },
+    {
+      label: 'Eliminar',
+      onClick: () => console.log('Eliminar'),
+      size: 'large',
+      backgroundColor: colores.altertex[1],
+    },
   ];
 
   const filas = pedidos.map((pedidos) => ({

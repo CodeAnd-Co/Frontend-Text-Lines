@@ -27,7 +27,7 @@ const ListaEventos = () => {
     descripcion: evento.descripcion,
     puntos: evento.puntos,
     periodo: evento.periodo,
-    renovacion: evento.renovacion,
+    renovacion: evento.renovacion === 1 ? 'Si' : 'No',
   }));
 
   const botones = [

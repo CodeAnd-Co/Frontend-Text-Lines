@@ -1,42 +1,37 @@
 // RF[30] - Elimina producto - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF30
 
-import { useEffect, useState } from 'react';
-import { RepositorioEliminarProductos } from '../../dominio/repositorios/Productos/repositorioEliminarProductos';   
+
+import { useState } from 'react';
+import { RepositorioEliminarProductos } from '../../dominio/repositorios/Productos/repositorioEliminarProductos';
 
 /**
- * Hook para eliminar uno o más productos.
- * @param {array} idsProducto
- * @return {{
- *  mensaje: string,
- *  cargando: boolean,
- *  error: string | null,
- * }}
+ * * Hook para eliminar productos.
+ * * @param {array} idProducto
+ * * @return {{
+ * *  mensaje: string,
+ *  *  cargando: boolean,
+ * *  error: string | null,
+ * * }}
  */
-
-export function useEliminarProductos(idsProducto) {
+export function useEliminarProductos() {
   const [mensaje, setMensaje] = useState('');
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
-  useEffect(() => {
-    const eliminarProducto = async () => {
-      setCargando(true);
-      setError(null);
 
-      try {
-        const { mensaje } = await RepositorioEliminarProductos.eliminarProducto(idsProducto);
-        setMensaje(mensaje);
-      } catch (err) {
-        setMensaje('');
-        setError(err.message);
-      } finally {
-        setCargando(false);
-      }
-    };
+  const eliminar = async (idsProductos) => {
+    setCargando(true);
+    setError(null);
 
-    if (Array.isArray(idsProducto) && idsProducto.length > 0) {
-      eliminarProducto();
+    try {
+      const { mensaje } = await RepositorioEliminarProductos.eliminarProducto(idsProductos);
+      setMensaje(mensaje);
+    } catch (err) {
+      setMensaje('');
+      setError(err.message);
+    } finally {
+      setCargando(false);
     }
-  }, [idsProducto]);
+  };
 
-  return { mensaje, cargando, error };
+  return { eliminar, mensaje, cargando, error };
 }

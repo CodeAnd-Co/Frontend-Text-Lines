@@ -23,8 +23,8 @@ const PopUpEliminar = ({ abrir, cerrar, confirmar, dialogo, labelCancelar, label
     >
       <DialogContent>{dialogo}</DialogContent>
       <DialogActions>
-        <Button onClick={cerrar}>{labelCancelar}</Button>
-        <Button onClick={confirmar}>{labelConfirmar}</Button>
+        <Button onClick={cerrar}>{labelCancelar = 'Cancelar'}</Button>
+        <Button onClick={confirmar}>{labelConfirmar = 'Eliminar'}</Button>
       </DialogActions>
     </Dialog>
   );

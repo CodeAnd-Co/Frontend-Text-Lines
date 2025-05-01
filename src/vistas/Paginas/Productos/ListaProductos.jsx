@@ -1,24 +1,58 @@
 //RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
 //RF[30] Elimina Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF30]
-import React, { useState } from 'react';
+import { Box } from '@mui/material';
+import { useState } from 'react';
 import Tabla from '../../Componentes/Organismos/Tabla';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import Alerta from '../../Componentes/moleculas/Alerta';
-import ModalEliminarProducto from '../../componentes/organismos/ModalEliminarProducto';
+import PopUpEliminar from '../../componentes/moleculas/PopUpEliminar';
 import { useConsultarProductos } from '../../../hooks/Productos/useConsultarProductos';
-import { Box, useTheme } from '@mui/material';
-import { tokens } from '../../../theme';
+import { useEliminarProductos } from '../../../hooks/Productos/useEliminarProductos';
+import { useMode, tokens } from '../../../theme';
+import { useAuth } from '../../../hooks/AuthProvider';
+import { PERMISOS } from '../../../Utilidades/Constantes/permisos';
 
 const ListaProductos = () => {
   const { productos, cargando, error, recargar } = useConsultarProductos();
-  const [seleccionados, setSeleccionados] = useState(new Set());
+  const { eliminar } = useEliminarProductos();
+  const [theme] = useMode();
+  const colores = tokens(theme.palette.mode);
+  const { usuario } = useAuth();
+  const MENSAJE_POPUP_ELIMINAR =
+    '¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.';
+
+  const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
-  const [idsProducto, setIdsProducto] = useState([]);
-  const tema = useTheme();
-  const colores = tokens(tema.palette.mode);
+  const [openModalEliminar, setAbrirPopUpEliminar] = useState(false);
 
+  const manejarCancelarEliminar = () => {
+    setAbrirPopUpEliminar(false);
+  };
 
-  const [openModalEliminar, setOpenModalEliminar] = useState(false);
+  const manejarConfirmarEliminar = async () => {
+    try {
+      await eliminar(productosSeleccionados);
+      await recargar();
+      setAlerta({
+        tipo: 'success',
+        mensaje: 'Productos eliminados correctamente.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+      setProductosSeleccionados([]);
+    } catch {
+      setAlerta({
+        tipo: 'error',
+        mensaje: 'Ocurrió un error al eliminar los productos.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+    } finally {
+      setAbrirPopUpEliminar(false);
+    }
+  };
 
   const columnas = [
     {
@@ -79,26 +113,24 @@ const ListaProductos = () => {
     urlImagen: prod.urlImagen,
   }));
 
-
   const botones = [
     {
       label: 'Añadir',
-      variant: 'contained',
-      color: 'primary',
-      size: 'large',
       onClick: () => console.log('Añadir'),
+      size: 'large',
+      backgroundColor: colores.altertex[1],
     },
     {
       variant: 'outlined',
       label: 'Editar',
       onClick: () => console.log('Editar'),
-      color: 'primary',
       size: 'large',
+      outlineColor: colores.altertex[1],
     },
     {
       label: 'Eliminar',
       onClick: () => {
-        if (seleccionados.size === 0) {
+        if (productosSeleccionados.length === 0) {
           setAlerta({
             tipo: 'error',
             mensaje: 'Selecciona al menos un producto para eliminar.',
@@ -107,11 +139,12 @@ const ListaProductos = () => {
             centradoInferior: true,
           });
         } else {
-          setIdsProducto(Array.from(seleccionados.ids)); // Convierte el Set a un array
-          setOpenModalEliminar(true); // Abre el modal
+          setAbrirPopUpEliminar(true);
         }
       },
+      disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_PRODUCTO),
       size: 'large',
+      backgroundColor: colores.altertex[1],
     },
   ];
 
@@ -130,20 +163,13 @@ const ListaProductos = () => {
             loading={cargando}
             checkboxSelection
             rowHeight={80}
-            onRowSelectionModelChange={(newSelection) => {
-              setSeleccionados(newSelection);
+            onRowSelectionModelChange={(nuevosIds) => {
+              const ids = Array.isArray(nuevosIds) ? nuevosIds : Array.from(nuevosIds?.ids || []);
+              setProductosSeleccionados(ids);
             }}
           />
         </Box>
       </ContenedorLista>
-
-      <ModalEliminarProducto
-        open={openModalEliminar}
-        onClose={() => setOpenModalEliminar(false)}
-        idsProducto={idsProducto}
-        setAlerta={setAlerta}
-        refrescarPagina={recargar}
-      />
 
       {alerta && (
         <Alerta
@@ -156,9 +182,15 @@ const ListaProductos = () => {
           onClose={() => setAlerta(null)}
         />
       )}
+
+      <PopUpEliminar
+        abrir={openModalEliminar}
+        cerrar={manejarCancelarEliminar}
+        confirmar={manejarConfirmarEliminar}
+        dialogo={MENSAJE_POPUP_ELIMINAR}
+      />
     </>
   );
 };
 
 export default ListaProductos;
-

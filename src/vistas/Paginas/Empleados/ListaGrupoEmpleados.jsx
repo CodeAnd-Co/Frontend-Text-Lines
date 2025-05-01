@@ -1,4 +1,6 @@
 //RF22 - Consulta Lista de Grupo Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF22
+//RF25 Eliminar Grupo de empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF25
+
 import { Box } from '@mui/material';
 import Tabla from '../../Componentes/Organismos/Tabla';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
@@ -13,15 +15,15 @@ const ListaEmpleados = () => {
   const { grupos, cargando, error, refetch } = useConsultarGrupos();
   const [theme] = useMode();
   const colores = tokens(theme.palette.mode);
-  const MENSAJE_ELIMINAR 
+  const MENSAJE_POPUP_ELIMINAR 
     = '¿Estás seguro de que deseas eliminar los grupos seleccionados? Esta acción no se puede deshacer.';
 
   const [gruposSeleccionados, setGruposSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
   const { eliminar } = useEliminarGrupoEmpleados();
-  const [openModalEliminar, setOpenModalEliminar] = useState(false);
+  const [openModalEliminar, setAbrirPopUpEliminar] = useState(false);
   const manejarCancelarEliminar = () => {
-    setOpenModalEliminar(false);
+    setAbrirPopUpEliminar(false);
   };
 
   const manejarConfirmarEliminar = async () => {
@@ -45,7 +47,7 @@ const ListaEmpleados = () => {
         centradoInferior: true,
       });
     } finally {
-      setOpenModalEliminar(false);
+      setAbrirPopUpEliminar(false);
     }
   };
 
@@ -129,7 +131,7 @@ const ListaEmpleados = () => {
             centradoInferior: true,
           });
         } else {
-          setOpenModalEliminar(true);
+          setAbrirPopUpEliminar(true);
         }
       },
 
@@ -176,7 +178,7 @@ const ListaEmpleados = () => {
         abrir={openModalEliminar}
         cerrar={manejarCancelarEliminar}
         confirmar={manejarConfirmarEliminar}
-        dialogo={MENSAJE_ELIMINAR}
+        dialogo={MENSAJE_POPUP_ELIMINAR}
       />
     </>
   );

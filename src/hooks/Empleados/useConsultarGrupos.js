@@ -14,7 +14,6 @@ import { PERMISOS } from '../../Utilidades/Constantes/permisos';
  *   error: string | null
  * }}
  */
-
 export function useConsultarGrupos() {
   const [grupos, setGrupos] = useState([]);
   const [mensaje, setMensaje] = useState('');
@@ -48,5 +47,5 @@ export function useConsultarGrupos() {
     if (usuario) cargar();
   }, [usuario, cargar]);
 
-  return { grupos, mensaje, cargando, error, refetch: cargar }; // 👈 aquí lo expones
+  return { grupos, mensaje, cargando, error, refetch: cargar };
 }

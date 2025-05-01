@@ -1,12 +1,15 @@
 //RF22 - Consulta Lista de Grupo Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF22
 import React from 'react';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import Tabla from '../../Componentes/Organismos/Tabla';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import { useConsultarGrupos } from '../../../hooks/Empleados/useConsultarGrupos';
+import { tokens } from '../../../theme';
 
 const ListaEmpleados = () => {
   const { grupos, cargando, error } = useConsultarGrupos();
+  const theme = useTheme();
+  const colores = tokens(theme.palette.mode);
 
   const columnas = [
     {
@@ -48,7 +51,12 @@ const ListaEmpleados = () => {
   }));
 
   const botones = [
-    { label: 'Añadir', onClick: () => console.log('Añadir'), size: 'large' },
+    {
+      label: 'Añadir',
+      onClick: () => console.log('Añadir'),
+      size: 'large',
+      backgroundColor: colores.altertex[1],
+    },
     {
       variant: 'outlined',
       label: 'Importar',
@@ -62,7 +70,12 @@ const ListaEmpleados = () => {
       size: 'large',
     },
     { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large' },
-    { label: 'Eliminar', onClick: () => console.log('Eliminar'), size: 'large' },
+    {
+      label: 'Eliminar',
+      onClick: () => console.log('Eliminar'),
+      size: 'large',
+      backgroundColor: colores.altertex[1],
+    },
   ];
 
   return (

@@ -1,8 +1,7 @@
-
 // RF[32] - Consulta Lista de Cuotas - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF32
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Typography, useTheme, Button, Box } from '@mui/material';
+import { useTheme, Box } from '@mui/material';
 import { tokens } from '../../../theme';
 import { useConsultarCuotas } from '../../../hooks/Cuotas/useConsultarCuotas';
 import { useAuth } from '../../../hooks/AuthProvider';
@@ -29,6 +28,9 @@ const ListaCuotas = () => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
 
+  // Estado para controlar la visualización del modal crear
+  const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
+
   useEffect(() => {
     if (!usuario?.clienteSeleccionado) {
       navegar(RUTAS.SISTEMA_ADMINISTRATIVO.BASE);
@@ -53,11 +55,11 @@ const ListaCuotas = () => {
       renderCell: (params) => (
         <Chip
           label={params.value ? 'Activo' : 'Inactivo'}
-          shape="circular"
-          size="medium"
-          variant="filled"
+          shape='circular'
+          size='medium'
+          variant='filled'
           backgroundColor={params.value ? colores.primario[2] : colores.texto[3]}
-          textColor="#fff"
+          textColor='#fff'
         />
       ),
     },
@@ -72,80 +74,59 @@ const ListaCuotas = () => {
       }))
     : [];
 
+  // Manejador para abrir el modal
+  const handleAbrirModalCrear = () => {
+    setModalCrearAbierto(true);
+  };
+
+  // Manejador para cerrar el modal
+  const handleCerrarModalCrear = () => {
+    setModalCrearAbierto(false);
+  };
+
   const botones = [
     {
-      componente: <ModalCrearCuotaSet />
+      label: 'Añadir',
+      variant: 'contained',
+      color: 'error',
+      size: 'large',
+      backgroundColor: colores.altertex[1],
+      onClick: handleAbrirModalCrear,
     },
     {
-      label: 'Ir Atrás',
-      variant: 'outlined',
+      label: 'Eliminar',
+      onClick: () => console.log('Eliminar'),
+      color: 'error',
       size: 'large',
-      onClick: () => navegar(RUTAS.SISTEMA_ADMINISTRATIVO.BASE),
+      backgroundColor: colores.altertex[1],
     },
   ];
 
-  if (!usuario?.clienteSeleccionado) {
-    return null;
-  }
-
   return (
-    <ContenedorLista
-      titulo="Lista de Sets de Cuotas"
-      descripcion="Consulta y administra los sets de cuotas registrados para cada cliente."
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-          gap: '10px',
-          mb: '20px',
-        }}
+    <>
+      <ContenedorLista
+        titulo='Lista de Sets de Cuotas'
+        descripcion='Consulta y administra los sets de cuotas registrados para cada cliente.'
+        informacionBotones={botones}
       >
-        {botones.map((boton, index) => (
-          <Box key={index}>
-            {boton.componente ? (
-              boton.componente
-            ) : (
-              <Button
-                variant={boton.variant}
-                onClick={boton.onClick}
-                sx={{
-                  minWidth: 'auto',
-                  height: '40px',
-                  padding: '6px 16px',
-                  textTransform: 'none',
-                  fontSize: '0.875rem',
-                  borderRadius: '8px',
-                  color: boton.variant === 'outlined' ? '#1976d2' : '#fff',
-                  borderColor: '#1976d2',
-                  backgroundColor: boton.variant === 'outlined' ? 'transparent' : '#1976d2',
-                  '&:hover': {
-                    backgroundColor: boton.variant === 'outlined' ? 'hsla(210, 78.70%, 46.10%, 0.04)' : '#1565c0',
-                    borderColor: '#1565c0',
-                  },
-                }}
-              >
-                {boton.label}
-              </Button>
-            )}
-          </Box>
-        ))}
-      </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            gap: '10px',
+            mb: '20px',
+          }}
+        ></Box>
 
-      <Box width="100%">
-        {error && (
-          <Alerta
-            tipo="error"
-            mensaje={error}
-            icono
-            cerrable
-            centradoInferior
-          />
-        )}
-        <Tabla columns={columnas} rows={filas} loading={cargando} checkboxSelection />
-      </Box>
-    </ContenedorLista>
+        <Box width='100%'>
+          {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}
+          <Tabla columns={columnas} rows={filas} loading={cargando} checkboxSelection />
+        </Box>
+      </ContenedorLista>
+
+      <ModalCrearCuotaSet abierto={modalCrearAbierto} onCerrar={handleCerrarModalCrear} />
+    </>
   );
 };
 

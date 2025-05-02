@@ -7,21 +7,17 @@ import { useConsultarEventos } from '../../../hooks/Eventos/useConsultarEventos'
 
 const ListaEventos = () => {
   const { eventos, cargando, error } = useConsultarEventos();
+  console.log('Eventos:', eventos); // Para depuración
 
   const columnas = [
     { field: 'nombre', headerName: 'Nombre', flex: 1 },
     { field: 'descripcion', headerName: 'Descripción', flex: 2 },
     { field: 'puntos', headerName: 'Puntos', flex: 1 },
     { field: 'periodo', headerName: 'Periodo', flex: 1 },
-    {
-      field: 'renovacion',
-      headerName: 'Renovación',
-      flex: 1,
-      renderCell: ({ row: { renovacion } }) => (renovacion === 1 ? 'Si' : 'No'),
-    },
+    { field: 'renovacion', headerName: 'Renovación', flex: 1 },
   ];
 
-  const filas = eventos.map((evento) => ({
+  const filas = (eventos || []).map((evento) => ({
     id: evento.idEvento,
     nombre: evento.nombre,
     descripcion: evento.descripcion,

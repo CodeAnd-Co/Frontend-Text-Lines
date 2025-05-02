@@ -48,7 +48,7 @@ export function useConsultarEmpleados() {
 
     cargar();
 
-  }, [recargarToken]);
+  }, [recargarToken, usuario]);
      const recargar = () => {
         setRecargarToken((prev) => prev + 1);
       };

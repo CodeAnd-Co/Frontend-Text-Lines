@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Tabla from '../../Componentes/Organismos/Tabla';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import Alerta from '../../Componentes/moleculas/Alerta';
-import PopUpEliminar from '../../componentes/moleculas/PopUpEliminar';
+import PopUp from '../../componentes/moleculas/PopUp';
 import { useConsultarProductos } from '../../../hooks/Productos/useConsultarProductos';
 import { useEliminarProductos } from '../../../hooks/Productos/useEliminarProductos';
 import { useMode, tokens } from '../../../theme';
@@ -23,10 +23,10 @@ const ListaProductos = () => {
 
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
-  const [openModalEliminar, setAbrirPopUpEliminar] = useState(false);
+  const [openModalEliminar, setAbrirPopUp] = useState(false);
 
   const manejarCancelarEliminar = () => {
-    setAbrirPopUpEliminar(false);
+    setAbrirPopUp(false);
   };
 
   const manejarConfirmarEliminar = async () => {
@@ -50,7 +50,7 @@ const ListaProductos = () => {
         centradoInferior: true,
       });
     } finally {
-      setAbrirPopUpEliminar(false);
+      setAbrirPopUp(false);
     }
   };
 
@@ -62,7 +62,7 @@ const ListaProductos = () => {
       renderCell: (params) => (
         <img
           src={params.row.urlImagen}
-          alt="Producto"
+          alt='Producto'
           style={{ width: 50, height: 50, objectFit: 'cover' }}
         />
       ),
@@ -88,16 +88,16 @@ const ListaProductos = () => {
       cellClassName: 'estado-row--cell',
       renderCell: ({ row: { estado } }) => (
         <Box
-          width="110px"
-          height="50%"
-          m="10px auto"
-          p="15px"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
+          width='110px'
+          height='50%'
+          m='10px auto'
+          p='15px'
+          display='flex'
+          justifyContent='center'
+          alignItems='center'
           color={estado === 1 ? colores.primario[4] : colores.texto[1]}
           backgroundColor={estado === 1 ? colores.altertex[1] : colores.acciones[1]}
-          borderRadius="4px"
+          borderRadius='4px'
         >
           {estado === 1 ? 'Disponible' : 'No disponible'}
         </Box>
@@ -133,24 +133,24 @@ const ListaProductos = () => {
             centradoInferior: true,
           });
         } else {
-          setAbrirPopUpEliminar(true);
+          setAbrirPopUp(true);
         }
       },
       disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_PRODUCTO),
       size: 'large',
       backgroundColor: colores.altertex[1],
-    },  
+    },
   ];
 
   return (
     <>
       <ContenedorLista
-        titulo="Lista de Productos"
-        descripcion="Gestiona y organiza los productos registrados en el sistema."
+        titulo='Lista de Productos'
+        descripcion='Gestiona y organiza los productos registrados en el sistema.'
         informacionBotones={botones}
       >
-        <Box width="100%">
-          {error && <Alerta tipo="error" mensaje={error} icono cerrable centradoInferior />}
+        <Box width='100%'>
+          {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}
           <Tabla
             columns={columnas}
             rows={filas}
@@ -177,7 +177,7 @@ const ListaProductos = () => {
         />
       )}
 
-      <PopUpEliminar
+      <PopUp
         abrir={openModalEliminar}
         cerrar={manejarCancelarEliminar}
         confirmar={manejarConfirmarEliminar}

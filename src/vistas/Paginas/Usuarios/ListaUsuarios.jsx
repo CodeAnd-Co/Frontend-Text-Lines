@@ -1,7 +1,8 @@
 //RF02 Super Administrador Consulta Lista de Usuarios - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF2
-import { useState } from 'react';
+//RF05 Super Administrador Consulta Lista de Usuarios - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF5
+
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../../hooks/AuthProvider';
 import FormularioCrearUsuario from '../../Componentes/organismos/Formularios/FormularioCrearUsuario';
 import ModalFlotante from '../../componentes/organismos/ModalFlotante';
 import Alerta from '../../componentes/moleculas/Alerta';
@@ -9,11 +10,13 @@ import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import Tabla from '../../componentes/organismos/Tabla';
 import Chip from '../../componentes/atomos/Chip';
 import { useConsultarListaUsuarios } from '../../../hooks/Usuarios/useConsultarListaUsuarios';
+import { useEliminarUsuarios } from '../../../hooks/Usuarios/useEliminarUsuarios';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';
 import { useMode, tokens } from '../../../theme';
 import NavegadorAdministrador from '../../Componentes/Organismos/NavegadorAdministrador';
 import { useUsuarioId } from '../../../hooks/Usuarios/useLeerUsuario';
 import InfoUsuario from '../../componentes/moleculas/UsuarioInfo';
+import PopUp from '../../componentes/moleculas/PopUp';
 const estiloImagenLogo = { marginRight: '1rem' };
 
 /**
@@ -27,14 +30,15 @@ const estiloImagenLogo = { marginRight: '1rem' };
  *
  * @see [RF02 Super Administrador Consulta Lista de Usuarios](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF2)
  * @see [RF03 Leer usuario](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF3)
+ * @see [RF05 Super Administrador Eliminar Usuario](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF5)
  */
 
 const ListaUsuarios = () => {
   const [theme] = useMode();
   const colores = tokens(theme.palette.mode);
   const navigate = useNavigate();
-  const { cerrarSesion } = useAuth();
-  const { usuarios, cargando, error } = useConsultarListaUsuarios();
+  const [alerta, setAlerta] = useState(null);
+  const { usuarios, cargando, error, recargar } = useConsultarListaUsuarios();
 
   const [modalCrearUsuarioAbierto, setModalCrearUsuarioAbierto] = useState(false);
   const [idUsuarioSeleccionado, setIdUsuarioSeleccionado] = useState(null);
@@ -49,8 +53,39 @@ const ListaUsuarios = () => {
     navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE, { replace: true });
   };
 
-  const manejarCerrarSesion = async () => {
-    await cerrarSesion();
+  const manejarCerrarSesion = async () => {};
+
+  const {
+    usuariosAEliminar,
+    abrirPopUp,
+    manejarSeleccion,
+    manejarAbrirPopUp,
+    manejarCerrarPopUp,
+    eliminarUsuarios,
+  } = useEliminarUsuarios(setAlerta, recargar);
+
+  useEffect(() => {}, [usuariosAEliminar]);
+
+  const manejarEliminarUsuarios = async () => {
+    await eliminarUsuarios();
+  };
+
+  const manejarSeleccionUsuarios = (seleccionados) => {
+    // seleccionados: { type: 'include', ids: Set }
+    const ids = Array.from(seleccionados.ids || []);
+    const roles = new Set();
+
+    ids.forEach((id) => {
+      const fila = rows.find((row) => row.id === id);
+      if (fila && fila.rol) {
+        roles.add(fila.rol);
+      }
+    });
+
+    manejarSeleccion({
+      ids: new Set(ids),
+      rol: roles,
+    });
   };
 
   const handleOpen = () => setModalCrearUsuarioAbierto(true);
@@ -66,8 +101,12 @@ const ListaUsuarios = () => {
       flex: 1,
       renderCell: (params) => {
         const isSuspendido = params.row.estatus === 0;
-        const clientes = Array.isArray(params.value) ? params.value : params.value ? [params.value] : [];
-      
+        const clientes = Array.isArray(params.value)
+          ? params.value
+          : params.value
+          ? [params.value]
+          : [];
+
         if (isSuspendido) {
           return (
             <Chip
@@ -80,7 +119,7 @@ const ListaUsuarios = () => {
             />
           );
         }
-      
+
         if (clientes.length === 0) {
           return (
             <Chip
@@ -93,9 +132,9 @@ const ListaUsuarios = () => {
             />
           );
         }
-      
+
         const clientesConcatenados = clientes.join(', ');
-      
+
         return (
           <Chip
             label={clientesConcatenados}
@@ -162,7 +201,7 @@ const ListaUsuarios = () => {
     },
     {
       label: 'Eliminar',
-      onClick: redirigirAInicio,
+      onClick: manejarAbrirPopUp,
       variant: 'contained',
       size: 'large',
       backgroundColor: colores.altertex[1],
@@ -211,19 +250,36 @@ const ListaUsuarios = () => {
         alClicIcono={redirigirATienda}
         informacionBotones={botonesBarraAdministradora}
       />
-
       <ContenedorLista
-        titulo={<div style={{ textAlign: 'center' }}>Usuarios</div>}
+        titulo={<span style={{ textAlign: 'center', display: 'block' }}>Usuarios</span>}
         descripcion={
-          <div style={{ textAlign: 'center' }}>
+          <span style={{ textAlign: 'center', display: 'block' }}>
             Gestiona y organiza los usuarios registrados en el sistema.
-          </div>
+          </span>
         }
         informacionBotones={botones}
       >
+        {alerta && (
+          <Alerta
+            tipo={alerta.tipo}
+            mensaje={alerta.mensaje}
+            cerrable
+            duracion={4000}
+            onClose={() => setAlerta(null)}
+          />
+        )}
         {modalCrearUsuarioAbierto && (
           <FormularioCrearUsuario open={modalCrearUsuarioAbierto} onClose={handleClose} />
         )}
+
+        <PopUp
+          abrir={abrirPopUp}
+          cerrar={manejarCerrarPopUp}
+          confirmar={manejarEliminarUsuarios}
+          dialogo={`¿Estás seguro de que deseas eliminar ${usuariosAEliminar.ids.size} usuario(s) seleccionado(s)?`}
+          labelCancelar='Cancelar'
+          labelConfirmar='Eliminar'
+        />
 
         <div style={{ marginTop: 20, height: 650, width: '100%' }}>
           {error && <p style={{ color: 'red' }}>Error: {error}</p>}
@@ -232,12 +288,17 @@ const ListaUsuarios = () => {
             rows={rows}
             loading={cargando}
             pageSize={10}
+            checkboxSelection
+            disableRowSelectionOnClick
+            onRowSelectionModelChange={manejarSeleccionUsuarios}
             onRowClick={(params) => {
               setIdUsuarioSeleccionado(params.row.idUsuario);
+
               setModalDetalleAbierto(true);
             }}
           />
         </div>
+
         {modalDetalleAbierto && (
           <ModalFlotante
             open={modalDetalleAbierto}

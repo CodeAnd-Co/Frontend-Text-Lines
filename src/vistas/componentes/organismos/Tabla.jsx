@@ -125,6 +125,7 @@ const Tabla = ({
   onRowClick,
   checkboxSelection,
   onRowSelectionModelChange,
+  disableRowSelectionOnClick,
 }) => {
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
@@ -139,8 +140,10 @@ const Tabla = ({
       pageSize={paginationModel.pageSize}
       onRowClick={onRowClick}
       checkboxSelection={checkboxSelection}
-      disableSelectionOnClick
-      onRowSelectionModelChange={onRowSelectionModelChange}
+      disableSelectionOnClick={disableRowSelectionOnClick}
+      onRowSelectionModelChange={(seleccion) => {
+        onRowSelectionModelChange(seleccion);
+      }}
       paginationModel={paginationModel}
       onPaginationModelChange={setPaginationModel}
       pageSizeOptions={[5]}
@@ -169,13 +172,13 @@ Tabla.propTypes = {
   onRowClick: PropTypes.func,
   checkboxSelection: PropTypes.bool,
   onRowSelectionModelChange: PropTypes.func,
+  disableRowSelectionOnClick: PropTypes.func,
 };
 
 Tabla.defaultProps = {
   loading: false,
   pageSize: 5,
   onRowClick: () => {},
-  checkboxSelection: false,
   onRowSelectionModelChange: () => {},
 };
 

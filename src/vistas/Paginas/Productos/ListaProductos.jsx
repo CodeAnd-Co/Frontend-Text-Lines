@@ -74,7 +74,12 @@ const ListaProductos = () => {
   }));
 
   const botones = [
-    { label: 'Añadir', onClick: () => console.log('Añadir'), size: 'large' },
+    {
+      label: 'Añadir',
+      onClick: () => console.log('Añadir'),
+      size: 'large',
+      backgroundColor: colores.altertex[1],
+    },
     {
       variant: 'outlined',
       label: 'Importar',
@@ -88,7 +93,12 @@ const ListaProductos = () => {
       size: 'large',
     },
     { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large' },
-    { label: 'Eliminar', onClick: () => console.log('Eliminar'), size: 'large' },
+    {
+      label: 'Eliminar',
+      onClick: () => console.log('Eliminar'),
+      size: 'large',
+      backgroundColor: colores.altertex[1],
+    },
   ];
 
   return (

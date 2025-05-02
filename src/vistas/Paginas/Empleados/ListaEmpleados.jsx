@@ -18,8 +18,8 @@ const ListaGrupoEmpleados = () => {
   const [theme] = useMode();
   const colores = tokens(theme.palette.mode);
   const { usuario } = useAuth();
-  const MENSAJE_POPUP_ELIMINAR =
-    '¿Estás seguro de que deseas eliminar los empleados seleccionados? Esta acción no se puede deshacer.';
+  const MENSAJE_POPUP_ELIMINAR
+    = '¿Estás seguro de que deseas eliminar los empleados seleccionados? Esta acción no se puede deshacer.';
 
   const [empleadosSeleccionados, setEmpleadosSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
@@ -35,7 +35,7 @@ const ListaGrupoEmpleados = () => {
       await recargar();
       setAlerta({
         tipo: 'success',
-        mensaje: 'Productos eliminados correctamente.',
+        mensaje: 'Empleados eliminados correctamente.',
         icono: true,
         cerrable: true,
         centradoInferior: true,
@@ -44,7 +44,7 @@ const ListaGrupoEmpleados = () => {
     } catch {
       setAlerta({
         tipo: 'error',
-        mensaje: 'Ocurrió un error al eliminar los productos.',
+        mensaje: 'Ocurrió un error al eliminar los empleados.',
         icono: true,
         cerrable: true,
         centradoInferior: true,

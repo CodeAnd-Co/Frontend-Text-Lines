@@ -117,7 +117,7 @@ const ListaUsuarios = () => {
       const id = usuario.idUsuario;
       if (!acc[id]) {
         acc[id] = {
-          id: id,
+          id,
           idUsuario: id,
           nombre: usuario.nombre,
           rol: usuario.rol || 'Sin rol',

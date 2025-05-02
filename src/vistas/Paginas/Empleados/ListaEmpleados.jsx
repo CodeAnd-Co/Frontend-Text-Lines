@@ -11,7 +11,6 @@ import { useEliminarEmpleado } from '../../../hooks/Empleados/useEliminarEmplead
 import { useMode, tokens } from '../../../theme';
 import { useAuth } from '../../../hooks/AuthProvider';
 import { PERMISOS } from '../../../Utilidades/Constantes/permisos';
-import { tokens } from '../../../theme';
 
 const ListaGrupoEmpleados = () => {
   const { empleados, cargando, error, refetch } = useConsultarEmpleados();
@@ -54,8 +53,7 @@ const ListaGrupoEmpleados = () => {
       setAbrirPopUpEliminar(false);
     }
   };
-  const theme = useTheme();
-  const colores = tokens(theme.palette.mode);
+
 
   const columnas = [
     { field: 'nombreCompleto', headerName: 'Nombre del Empleado', flex: 1 },

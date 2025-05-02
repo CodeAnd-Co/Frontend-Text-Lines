@@ -13,14 +13,6 @@ export class RepositorioEliminarProductos {
    */
   static async eliminarProducto(idsProducto) {
     try {
-      console.log('Enviando solicitud DELETE con:', {
-        url: RUTAS_API.PRODUCTOS.ELIMINAR_PRODUCTO,
-        data: { ids: idsProducto },
-        headers: {
-          'x-api-key': API_KEY,
-        },
-      });
-  
       const respuesta = await axios.delete(RUTAS_API.PRODUCTOS.ELIMINAR_PRODUCTO, {
         data: { ids: idsProducto },
         headers: {
@@ -30,7 +22,6 @@ export class RepositorioEliminarProductos {
       });
       return respuesta.data;
     } catch (error) {
-      console.error('Error al eliminar productos:', error.response || error.message);
       const mensaje = error.response?.data?.mensaje || 'Error al eliminar los productos';
       throw new Error(mensaje);
     }

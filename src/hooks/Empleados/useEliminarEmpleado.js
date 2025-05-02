@@ -1,3 +1,4 @@
+// RF[20] - Elimina empleado - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF20
 import { useState } from 'react';
 import { RepositorioEliminarEmpleado } from '../../dominio/repositorios/Empleados/RepositorioEliminarEmpleado';
 /**

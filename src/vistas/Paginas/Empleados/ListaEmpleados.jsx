@@ -1,7 +1,7 @@
 // RF17 - Consulta Lista Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF17
 // RF20 - Eliminar empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF20
-import React, { useState } from 'react';
-import { Box, useTheme } from '@mui/material';
+import { useState } from 'react';
+import { Box } from '@mui/material';
 import Tabla from '../../Componentes/Organismos/Tabla';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import { useConsultarEmpleados } from '../../../hooks/Empleados/useConsultarEmpleados';
@@ -13,7 +13,7 @@ import { useAuth } from '../../../hooks/AuthProvider';
 import { PERMISOS } from '../../../Utilidades/Constantes/permisos';
 
 const ListaGrupoEmpleados = () => {
-  const { empleados, cargando, error, refetch } = useConsultarEmpleados();
+  const { empleados, cargando, error, recargar } = useConsultarEmpleados();
   const { eliminar } = useEliminarEmpleado();
   const [theme] = useMode();
   const colores = tokens(theme.palette.mode);
@@ -32,10 +32,10 @@ const ListaGrupoEmpleados = () => {
   const manejarConfirmarEliminar = async () => {
     try {
       await eliminar(empleadosSeleccionados);
-      await refetch();
+      await recargar();
       setAlerta({
         tipo: 'success',
-        mensaje: 'Empleados eliminados correctamente.',
+        mensaje: 'Productos eliminados correctamente.',
         icono: true,
         cerrable: true,
         centradoInferior: true,
@@ -44,7 +44,7 @@ const ListaGrupoEmpleados = () => {
     } catch {
       setAlerta({
         tipo: 'error',
-        mensaje: 'Ocurrió un error al eliminar los empleados.',
+        mensaje: 'Ocurrió un error al eliminar los productos.',
         icono: true,
         cerrable: true,
         centradoInferior: true,
@@ -139,10 +139,10 @@ const ListaGrupoEmpleados = () => {
             rows={filas}
             loading={cargando}
             checkboxSelection
-            onRowSelectionModelChange={(selectionModel) => {
-              const ids = Array.isArray(selectionModel)
-                ? selectionModel
-                : Array.from(selectionModel?.ids || []);
+            onRowSelectionModelChange={(nuevosIds) => {
+              const ids = Array.isArray(nuevosIds)
+                ? nuevosIds
+                : Array.from(nuevosIds?.ids || []);
               setEmpleadosSeleccionados(ids);
             }}
           />

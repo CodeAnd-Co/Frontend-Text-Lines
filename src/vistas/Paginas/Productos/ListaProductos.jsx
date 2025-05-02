@@ -120,13 +120,6 @@ const ListaProductos = () => {
       size: 'large',
       backgroundColor: colores.altertex[1],
     },
-    {
-      variant: 'outlined',
-      label: 'Editar',
-      onClick: () => console.log('Editar'),
-      size: 'large',
-      outlineColor: colores.altertex[1],
-    },
     { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large' },
     {
       label: 'Eliminar',

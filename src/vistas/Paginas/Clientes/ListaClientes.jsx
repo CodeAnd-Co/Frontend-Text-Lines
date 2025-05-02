@@ -8,11 +8,15 @@ import Alerta from '../../Componentes/moleculas/Alerta';
 import NavegadorAdministrador from '../../Componentes/Organismos/NavegadorAdministrador';
 import TarjetaConImagen from '../../componentes/Moleculas/TarjetaConImagen';
 import ModalFlotante from '../../componentes/organismos/ModalFlotante';
+import ModalCliente from '../../componentes/organismos/ModalLeerCliente';
+import InfoCliente from '../../componentes/moleculas/ClienteInfo';
 import Cookies from 'js-cookie';
+import { useMode, tokens } from '../../../theme';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';
 import { useConsultarClientes } from '../../../hooks/Clientes/useConsultarClientes';
 import { useSeleccionarCliente } from '../../../hooks/Clientes/useSeleccionarCliente';
 import { useEliminarCliente } from '../../../hooks/Clientes/useEliminarCliente';
+import { useClientePorId } from '../../../hooks/Clientes/useLeerCliente';
 import { useState, useEffect, useRef } from 'react';
 
 const estiloImagenLogo = { marginRight: '1rem' };
@@ -53,6 +57,8 @@ const estiloTarjetaAgregar = {
 };
 
 const ListaClientes = () => {
+  const [theme] = useMode();
+  const colores = tokens(theme.palette.mode);
   const navigate = useNavigate();
   const { cerrarSesion } = useAuth();
   const { clientes: clientesOriginales, cargando, error } = useConsultarClientes();
@@ -110,6 +116,14 @@ const ListaClientes = () => {
       setClientes(clientesOriginales);
     }
   }, [clientesOriginales]);
+
+  const [idClienteDetalle, setIdClienteDetalle] = useState(null);
+  const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
+  const {
+    cliente,
+    cargando: cargandoDetalle,
+    error: errorDetalle,
+  } = useClientePorId(modalDetalleAbierto ? idClienteDetalle : null);
 
   const manejarCerrarSesion = async () => {
     await cerrarSesion();
@@ -199,6 +213,9 @@ const ListaClientes = () => {
         alClicIcono={() => {
           if (modoEliminacion) {
             abrirModalEliminar(cliente);
+          } else {
+            setIdClienteDetalle(cliente.idCliente);
+            setModalDetalleAbierto(true);
           }
         }}
       />
@@ -303,6 +320,54 @@ const ListaClientes = () => {
           duracion={3000}
           onClose={() => setEliminacionExitosa(false)}
         />
+      )}
+
+      {modalDetalleAbierto && (
+        <ModalCliente
+          open={modalDetalleAbierto}
+          onClose={() => setModalDetalleAbierto(false)}
+          onConfirm={() => setModalDetalleAbierto(false)}
+          titulo={cliente?.nombreVisible || 'Cargando...'}
+          tituloVariant='h4'
+          botones={[
+            {
+              label: 'EDITAR',
+              variant: 'contained',
+              color: 'primary',
+              backgroundColor: colores.altertex[1],
+              onClick: () => console.log('Editar cliente'),
+              disabled: !!errorDetalle,
+            },
+            {
+              label: 'SALIR',
+              variant: 'outlined',
+              color: 'primary',
+              outlineColor: colores.altertex[1],
+              onClick: () => setModalDetalleAbierto(false),
+            },
+          ]}
+        >
+          {cargandoDetalle ? (
+            <Texto>Cargando cliente...</Texto>
+          ) : cliente ? (
+            <InfoCliente
+              idCliente={cliente.idCliente}
+              nombreLegal={cliente.nombreLegal}
+              nombreVisible={cliente.nombreVisible}
+              empleados={cliente.numeroEmpleados}
+              usuariosAsignados={cliente.usuariosAsignados}
+              imagenURL={cliente.imagenCliente}
+            />
+          ) : (
+            <Texto>No se encontró información del cliente.</Texto>
+          )}
+        </ModalCliente>
+      )}
+
+      {errorDetalle && (
+        <div style={{ marginTop: '2rem' }}>
+          <Alerta tipo='error' mensaje={errorDetalle} icono cerrable centradoInferior />
+        </div>
       )}
 
     </>

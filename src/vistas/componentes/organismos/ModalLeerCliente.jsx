@@ -5,7 +5,7 @@ import Texto from '../Atomos/Texto';
 import GrupoBotones from '../Moleculas/GrupoBotones';
 import { useMode, tokens } from '../../../theme';
 
-const ModalFlotante = ({
+const ModalLeerCliente = ({
   open,
   onClose,
   onConfirm,
@@ -60,11 +60,12 @@ const ModalFlotante = ({
           borderRadius: 2,
           padding: 3,
           outline: 'none',
-          width: 620,
+          minWidth: '650px',
+          maxWidth: '650px',
         }}
       >
         {titulo && (
-          <Texto variant={tituloVariant} gutterBottom sx={{ color: theme.palette.text.primary }} mb={3}>
+          <Texto variant={tituloVariant} gutterBottom sx={{ color: theme.palette.text.primary }} mb={4}>
             {titulo}
           </Texto>
         )}
@@ -77,7 +78,7 @@ const ModalFlotante = ({
   );
 };
 
-ModalFlotante.propTypes = {
+ModalLeerCliente.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onConfirm: PropTypes.func.isRequired,
@@ -89,4 +90,4 @@ ModalFlotante.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default ModalFlotante;
+export default ModalLeerCliente;

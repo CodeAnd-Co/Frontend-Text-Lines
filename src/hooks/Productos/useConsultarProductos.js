@@ -10,6 +10,7 @@ import { RepositorioListaProductos } from '../../dominio/repositorios/Productos/
  *   cargando: boolean,
  *   error: string | null,
  *   mensaje: string,
+ *  recargar: () => void
  * }}
  */
 export function useConsultarProductos() {
@@ -17,6 +18,7 @@ export function useConsultarProductos() {
   const [mensaje, setMensaje] = useState('');
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
+  const [recargarToken, setRecargarToken] = useState(0);
 
   useEffect(() => {
     const cargar = async () => {
@@ -36,7 +38,10 @@ export function useConsultarProductos() {
     };
 
     cargar();
-  }, []);
-
-  return { productos, mensaje, cargando, error };
+  }, [recargarToken]);
+      const recargar = () => {
+      setRecargarToken((prev) => prev + 1);
+    };
+ 
+  return { productos, mensaje, cargando, error, recargar };
 }

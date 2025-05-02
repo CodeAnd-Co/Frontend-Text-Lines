@@ -25,6 +25,7 @@ export const RUTAS_API = {
   PRODUCTOS: {
     BASE: BASE_PRODUCTOS,
     CONSULTAR_LISTA: `${BASE_PRODUCTOS}/consultar-lista`,
+    ELIMINAR_PRODUCTO: `${BASE_PRODUCTOS}/eliminar`,
   },
   SETS_PRODUCTOS: {
     BASE: BASE_SETS_PRODUCTOS,
@@ -35,6 +36,7 @@ export const RUTAS_API = {
     BASE: BASE_CLIENTES,
     CONSULTAR_LISTA: `${BASE_CLIENTES}/consultar-lista`,
     CONSULTAR_SISTEMA: `${BASE_CLIENTES}/consultar-sistema`,
+    ELIMINAR_CLIENTE: `${BASE_CLIENTES}/eliminar`,
   },
   EMPLEADOS: {
     BASE: BASE_EMPLEADOS,
@@ -49,6 +51,7 @@ export const RUTAS_API = {
   ROLES: {
     BASE: BASE_ROLES,
     CONSULTAR_LISTA: `${BASE_ROLES}/consultar-lista`,
+    CREAR_ROL: `${BASE_ROLES}/crear-rol`,
   },
   PEDIDOS: {
     BASE: BASE_PEDIDOS,

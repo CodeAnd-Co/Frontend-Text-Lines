@@ -61,6 +61,12 @@ const RutasSistemaAdministrativo = () => {
           element={<EditarCuotas />}
         />
 
+        {/* EVENTOS */}
+        <Route
+          path={RUTAS.SISTEMA_ADMINISTRATIVO.EVENTOS.CONSULTAR_EVENTOS}
+          element={<ListaEventos />}
+        />
+
         {/* Productos */}
         <Route
           path={RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_PRODUCTOS}

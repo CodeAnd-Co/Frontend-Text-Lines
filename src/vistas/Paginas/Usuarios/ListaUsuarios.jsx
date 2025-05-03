@@ -16,7 +16,7 @@ import { useMode, tokens } from '../../../theme';
 import NavegadorAdministrador from '../../Componentes/Organismos/NavegadorAdministrador';
 import { useUsuarioId } from '../../../hooks/Usuarios/useLeerUsuario';
 import InfoUsuario from '../../componentes/moleculas/UsuarioInfo';
-import PopUp from '../../componentes/moleculas/PopUp';
+import PopUpEliminar from '../../componentes/moleculas/PopUpEliminar';
 const estiloImagenLogo = { marginRight: '1rem' };
 
 /**
@@ -272,7 +272,7 @@ const ListaUsuarios = () => {
           <FormularioCrearUsuario open={modalCrearUsuarioAbierto} onClose={handleClose} />
         )}
 
-        <PopUp
+        <PopUpEliminar
           abrir={abrirPopUp}
           cerrar={manejarCerrarPopUp}
           confirmar={manejarEliminarUsuarios}

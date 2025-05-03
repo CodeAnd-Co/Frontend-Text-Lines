@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useEliminarSetProductos } from '../../../hooks/SetsProductos/useEliminarSetProductos';
-import PopUp from '../../componentes/moleculas/PopUp';
+import PopUpEliminar from '../../componentes/moleculas/PopUpEliminar';
 
 const ModalEliminarSetProductos = ({
   open,
@@ -51,7 +51,7 @@ const ModalEliminarSetProductos = ({
   }, [confirmado, mensaje, error, setAlerta, refrescarPagina]);
 
   return (
-    <PopUp
+    <PopUpEliminar
       abrir={open}
       cerrar={handleCancelar}
       confirmar={handleConfirm}

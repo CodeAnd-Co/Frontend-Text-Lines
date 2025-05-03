@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Tabla from '../../Componentes/Organismos/Tabla';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import Alerta from '../../Componentes/moleculas/Alerta';
-import PopUp from '../../componentes/moleculas/PopUp';
+import PopUpEliminar from '../../componentes/moleculas/PopUpEliminar';
 import { useConsultarProductos } from '../../../hooks/Productos/useConsultarProductos';
 import { useEliminarProductos } from '../../../hooks/Productos/useEliminarProductos';
 import { useMode, tokens } from '../../../theme';
@@ -18,8 +18,8 @@ const ListaProductos = () => {
   const [theme] = useMode();
   const colores = tokens(theme.palette.mode);
   const { usuario } = useAuth();
-  const MENSAJE_POPUP_ELIMINAR
-    = '¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.';
+  const MENSAJE_POPUP_ELIMINAR =
+    '¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.';
 
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
@@ -177,7 +177,7 @@ const ListaProductos = () => {
         />
       )}
 
-      <PopUp
+      <PopUpEliminar
         abrir={openModalEliminar}
         cerrar={manejarCancelarEliminar}
         confirmar={manejarConfirmarEliminar}

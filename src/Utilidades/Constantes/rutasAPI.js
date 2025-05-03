@@ -42,7 +42,6 @@ export const RUTAS_API = {
     BASE: BASE_EMPLEADOS,
     CONSULTAR_LISTA: `${BASE_EMPLEADOS}/consultar-lista`,
     CONSULTAR_GRUPOS: `${BASE_EMPLEADOS}/consultar-grupo`,
-    ELIMINAR_EMPLEADO: `${BASE_EMPLEADOS}/eliminar`,
   },
   CUOTAS: {
     BASE: BASE_CUOTAS,

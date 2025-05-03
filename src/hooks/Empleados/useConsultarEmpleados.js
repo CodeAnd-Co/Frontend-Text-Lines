@@ -10,7 +10,6 @@ export function useConsultarEmpleados() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
   const { usuario } = useAuth();
-  const [recargarToken, setRecargarToken] = useState(0);
 
   /**
    * Hook para consultar la lista de empleados.
@@ -46,13 +45,8 @@ export function useConsultarEmpleados() {
       }
     };
 
-    cargar();
+    if (usuario) cargar();
+  }, [usuario]);
 
-  }, [recargarToken, usuario]);
-     const recargar = () => {
-        setRecargarToken((prev) => prev + 1);
-      };
-
-  return { empleados, mensaje, cargando, error, recargar };
+  return { empleados, mensaje, cargando, error };
 }
-

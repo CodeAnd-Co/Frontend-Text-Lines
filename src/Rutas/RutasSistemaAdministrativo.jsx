@@ -14,7 +14,7 @@ import ListaRoles from '../Vistas/Paginas/Roles/ListaRoles';
 import ListaUsuarios from '../vistas/Paginas/Usuarios/ListaUsuarios';
 import ListaCategorias from '../vistas/paginas/Categorias/ListaCategorias';
 import ListaSetsProductos from '../vistas/Paginas/SetsProductos/ListaSetsProductos';
-
+import ListaEventos from '../vistas/Paginas/Eventos/ListaEventos';
 import RutaProtegida from './RutaProtegida';
 import VerificarClienteSeleccionado from './VerificarClienteSeleccionado';
 import ListaPedidos from '../vistas/Paginas/Pedidos/ListaPedidos';

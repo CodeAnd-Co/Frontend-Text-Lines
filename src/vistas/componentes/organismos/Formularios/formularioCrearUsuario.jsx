@@ -212,6 +212,9 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
               helperText={
                 errores.numeroTelefono === true ? CAMPO_OBLIGATORIO : errores.numeroTelefono || ''
               }
+              inputProps={{
+                maxLength: 13,
+              }}
             />
           </Grid>
 

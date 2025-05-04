@@ -1,11 +1,11 @@
 //RF22 - Consulta Lista de Grupo Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF22
 //RF25 Eliminar Grupo de empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF25
 
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import Tabla from '../../Componentes/Organismos/Tabla';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import { useConsultarGrupos } from '../../../hooks/Empleados/useConsultarGrupos';
-import { useMode, tokens } from '../../../theme';
+import { tokens } from '../../../theme';
 import Alerta from '../../Componentes/moleculas/Alerta';
 import { useEliminarGrupoEmpleados } from '../../../hooks/Empleados/useEliminarGrupoEmpleados';
 import { useState, React } from 'react';
@@ -13,10 +13,9 @@ import PopUpEliminar from '../../componentes/moleculas/PopUpEliminar';
 import { PERMISOS } from '../../../Utilidades/Constantes/permisos';
 import { useAuth } from '../../../hooks/AuthProvider';
 
-
 const ListaEmpleados = () => {
   const { grupos, cargando, error, refetch } = useConsultarGrupos();
-  const [theme] = useMode();
+  const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const MENSAJE_POPUP_ELIMINAR 
     = '¿Estás seguro de que deseas eliminar los grupos seleccionados? Esta acción no se puede deshacer.';

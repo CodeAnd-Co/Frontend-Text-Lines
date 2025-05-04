@@ -1,15 +1,58 @@
 //RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
-import React from 'react';
+//RF[30] Elimina Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF30]
+import { Box } from '@mui/material';
+import { useState } from 'react';
 import Tabla from '../../Componentes/Organismos/Tabla';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
+import Alerta from '../../Componentes/moleculas/Alerta';
+import PopUp from '../../componentes/moleculas/PopUp';
 import { useConsultarProductos } from '../../../hooks/Productos/useConsultarProductos';
-import { Box, useTheme } from '@mui/material';
-import { tokens } from '../../../theme';
+import { useEliminarProductos } from '../../../hooks/Productos/useEliminarProductos';
+import { useMode, tokens } from '../../../theme';
+import { useAuth } from '../../../hooks/AuthProvider';
+import { PERMISOS } from '../../../Utilidades/Constantes/permisos';
 
 const ListaProductos = () => {
-  const { productos, cargando } = useConsultarProductos();
-  const tema = useTheme();
-  const colores = tokens(tema.palette.mode);
+  const { productos, cargando, error, recargar } = useConsultarProductos();
+  const { eliminar } = useEliminarProductos();
+  const [theme] = useMode();
+  const colores = tokens(theme.palette.mode);
+  const { usuario } = useAuth();
+  const MENSAJE_POPUP_ELIMINAR
+    = '¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.';
+
+  const [productosSeleccionados, setProductosSeleccionados] = useState([]);
+  const [alerta, setAlerta] = useState(null);
+  const [openModalEliminar, setAbrirPopUp] = useState(false);
+
+  const manejarCancelarEliminar = () => {
+    setAbrirPopUp(false);
+  };
+
+  const manejarConfirmarEliminar = async () => {
+    try {
+      await eliminar(productosSeleccionados);
+      await recargar();
+      setAlerta({
+        tipo: 'success',
+        mensaje: 'Productos eliminados correctamente.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+      setProductosSeleccionados([]);
+    } catch {
+      setAlerta({
+        tipo: 'error',
+        mensaje: 'Ocurrió un error al eliminar los productos.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+    } finally {
+      setAbrirPopUp(false);
+    }
+  };
 
   const columnas = [
     {
@@ -28,7 +71,6 @@ const ListaProductos = () => {
       field: 'nombreComun',
       headerName: 'Nombre',
       flex: 1,
-
       cellClassName: 'name-column--cell',
     },
     {
@@ -44,24 +86,22 @@ const ListaProductos = () => {
       headerName: 'Disponibilidad en stock',
       flex: 1,
       cellClassName: 'estado-row--cell',
-      renderCell: ({ row: { estado } }) => {
-        return (
-          <Box
-            width='110px'
-            height='50%'
-            m='10px auto'
-            p='15px'
-            display='flex'
-            justifyContent='center'
-            alignItems='center'
-            color={estado === 1 ? colores.primario[4] : colores.texto[1]}
-            backgroundColor={estado === 1 ? colores.altertex[1] : colores.acciones[1]}
-            borderRadius='4px'
-          >
-            {estado === 1 ? 'Disponible' : 'No disponible'}
-          </Box>
-        );
-      },
+      renderCell: ({ row: { estado } }) => (
+        <Box
+          width='110px'
+          height='50%'
+          m='10px auto'
+          p='15px'
+          display='flex'
+          justifyContent='center'
+          alignItems='center'
+          color={estado === 1 ? colores.primario[4] : colores.texto[1]}
+          backgroundColor={estado === 1 ? colores.altertex[1] : colores.acciones[1]}
+          borderRadius='4px'
+        >
+          {estado === 1 ? 'Disponible' : 'No disponible'}
+        </Box>
+      ),
     },
   ];
 
@@ -74,39 +114,76 @@ const ListaProductos = () => {
   }));
 
   const botones = [
-    { label: 'Añadir', onClick: () => console.log('Añadir'), size: 'large' },
     {
-      variant: 'outlined',
-      label: 'Importar',
-      onClick: () => console.log('Importar'),
+      label: 'Añadir',
+      onClick: () => console.log('Añadir'),
       size: 'large',
-    },
-    {
-      variant: 'outlined',
-      label: 'Exportar',
-      onClick: () => console.log('Exportar'),
-      size: 'large',
+      backgroundColor: colores.altertex[1],
     },
     { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large' },
-    { label: 'Eliminar', onClick: () => console.log('Eliminar'), size: 'large' },
+    {
+      label: 'Eliminar',
+      onClick: () => {
+        if (productosSeleccionados.length === 0) {
+          setAlerta({
+            tipo: 'error',
+            mensaje: 'Selecciona al menos un producto para eliminar.',
+            icono: true,
+            cerrable: true,
+            centradoInferior: true,
+          });
+        } else {
+          setAbrirPopUp(true);
+        }
+      },
+      disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_PRODUCTO),
+      size: 'large',
+      backgroundColor: colores.altertex[1],
+    },
   ];
 
   return (
-    <ContenedorLista
-      titulo='Lista de Productos'
-      descripcion='Gestiona y organiza los productos registrados en el sistema.'
-      informacionBotones={botones}
-    >
-      <Box width={'100%'}>
-        <Tabla
-          columns={columnas}
-          rows={filas}
-          loading={cargando}
-          checkboxSelection
-          rowHeight={80}
+    <>
+      <ContenedorLista
+        titulo='Lista de Productos'
+        descripcion='Gestiona y organiza los productos registrados en el sistema.'
+        informacionBotones={botones}
+      >
+        <Box width='100%'>
+          {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}
+          <Tabla
+            columns={columnas}
+            rows={filas}
+            loading={cargando}
+            checkboxSelection
+            rowHeight={80}
+            onRowSelectionModelChange={(nuevosIds) => {
+              const ids = Array.isArray(nuevosIds) ? nuevosIds : Array.from(nuevosIds?.ids || []);
+              setProductosSeleccionados(ids);
+            }}
+          />
+        </Box>
+      </ContenedorLista>
+
+      {alerta && (
+        <Alerta
+          tipo={alerta.tipo}
+          mensaje={alerta.mensaje}
+          icono={alerta.icono}
+          cerrable={alerta.cerrable}
+          duracion={2500}
+          centradoInferior={alerta.centradoInferior}
+          onClose={() => setAlerta(null)}
         />
-      </Box>
-    </ContenedorLista>
+      )}
+
+      <PopUp
+        abrir={openModalEliminar}
+        cerrar={manejarCancelarEliminar}
+        confirmar={manejarConfirmarEliminar}
+        dialogo={MENSAJE_POPUP_ELIMINAR}
+      />
+    </>
   );
 };
 

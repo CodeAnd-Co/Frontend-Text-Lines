@@ -22,14 +22,15 @@ const ModalFlotante = ({
   const defaultBotones = [
     {
       label: cancelLabel,
-      variant: 'outlined',
+      variant: 'contained',
       onClick: onClose,
-      outlineColor: colores.altertex[1],
+      color: 'error',
     },
     {
       label: confirmLabel,
       variant: 'contained',
       onClick: onConfirm,
+      color: 'error',
       backgroundColor: colores.altertex[1],
     },
   ];
@@ -55,7 +56,6 @@ const ModalFlotante = ({
           transform: 'translate(-50%, -50%)',
           maxHeight: '80vh',
           overflowY: 'auto',
-          bgcolor: theme.palette.background.paper,
           boxShadow: 24,
           borderRadius: 2,
           padding: 3,
@@ -64,7 +64,7 @@ const ModalFlotante = ({
         }}
       >
         {titulo && (
-          <Texto variant={tituloVariant} gutterBottom sx={{ color: theme.palette.text.primary }}>
+          <Texto variant={tituloVariant} gutterBottom>
             {titulo}
           </Texto>
         )}

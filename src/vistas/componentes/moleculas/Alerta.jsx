@@ -78,7 +78,7 @@ const Alerta = ({
         {icono && (
           <Icono nombre={iconoMostrar} color={colorPrincipal} size='medium' variant='filled' />
         )}
-        <Texto variant={textoVariant} color={textoColor || colorPrincipal}>
+        <Texto variant={textoVariant} color={textoColor}>
           {mensaje}
         </Texto>
       </div>

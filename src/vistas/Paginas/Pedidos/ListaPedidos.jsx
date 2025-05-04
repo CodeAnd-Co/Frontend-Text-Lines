@@ -50,6 +50,7 @@ const ListaPedidos = () => {
     {
       label: 'Añadir',
       onClick: () => console.log('Añadir'),
+      color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
     },
@@ -57,18 +58,23 @@ const ListaPedidos = () => {
       variant: 'outlined',
       label: 'Importar',
       onClick: () => console.log('Importar'),
+      color: 'primary',
       size: 'large',
+      outlineColor: colores.primario[10],
     },
     {
       variant: 'outlined',
       label: 'Editar',
       onClick: () => console.log('Editar'),
+      color: 'primary',
       size: 'large',
+      outlineColor: colores.primario[10],
     },
     {
       label: 'Eliminar',
       onClick: () => console.log('Eliminar'),
       size: 'large',
+      color: 'error',
       backgroundColor: colores.altertex[1],
     },
   ];

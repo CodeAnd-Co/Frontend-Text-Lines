@@ -54,6 +54,7 @@ const ListaEmpleados = () => {
     {
       label: 'Añadir',
       onClick: () => console.log('Añadir'),
+      color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
     },
@@ -61,23 +62,34 @@ const ListaEmpleados = () => {
       variant: 'outlined',
       label: 'Importar',
       onClick: () => console.log('Importar'),
+      color: 'primary',
       size: 'large',
+      outlineColor: colores.primario[10],
     },
     {
       variant: 'outlined',
       label: 'Exportar',
       onClick: () => console.log('Exportar'),
+      color: 'primary',
       size: 'large',
+      outlineColor: colores.primario[10],
     },
-    { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large' },
+    {
+      variant: 'outlined',
+      label: 'Editar',
+      onClick: () => console.log('Editar'),
+      color: 'primary',
+      size: 'large',
+      outlineColor: colores.primario[10],
+    },
     {
       label: 'Eliminar',
       onClick: () => console.log('Eliminar'),
       size: 'large',
+      color: 'error',
       backgroundColor: colores.altertex[1],
     },
   ];
-
   return (
     <ContenedorLista
       titulo='Grupos de Empleados'

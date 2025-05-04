@@ -4,7 +4,7 @@ import { PERMISOS } from '../Utilidades/Constantes/permisos';
 import RutaProtegida from './RutaProtegida';
 import RutasAdministrativas from './RutasSistemaAdministrativo';
 import RutasTienda from './RutasTienda';
-import Error404 from '../vistas/paginas/Errores/Error404';
+// import Error404 from '../vistas/paginas/Errores/Error404';
 import RedireccionSesion from './RedireccionSesion';
 import RutasSesion from './RutasSesion';
 
@@ -13,11 +13,7 @@ export default function AppRouter() {
     <Routes>
       <Route
         path={RUTAS.RAIZ}
-        element={
-          <RedireccionSesion>
-            <Error404 />
-          </RedireccionSesion>
-        }
+        element={<RedireccionSesion>{/* <Error404 /> */}</RedireccionSesion>}
       />
       <Route path={RUTAS.INICIO_SESION} element={<RutasSesion />} />
       <Route

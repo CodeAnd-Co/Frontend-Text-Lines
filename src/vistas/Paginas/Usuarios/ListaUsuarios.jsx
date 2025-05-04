@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import FormularioCrearUsuario from '../../componentes/organismos/Formularios/FormularioCrearUsuario';
+import FormularioCrearUsuario from '../../componentes/organismos/Formularios/formularioCrearUsuario';
 import ModalFlotante from '../../componentes/organismos/ModalFlotante';
 import Alerta from '../../componentes/moleculas/Alerta';
 import ContenedorLista from '../../componentes/organismos/ContenedorLista';

@@ -1,8 +1,8 @@
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import Imagen from '../../componentes/Atomos/Imagen';
-import Texto from '../../componentes/Atomos/Texto';
-import Boton from '../../componentes/Atomos/Boton';
+import Imagen from '../../componentes/atomos/Imagen';
+import Texto from '../../componentes/atomos/Texto';
+import Boton from '../../componentes/atomos/Boton';
 
 const estilosContenedor = {
   display: 'flex',

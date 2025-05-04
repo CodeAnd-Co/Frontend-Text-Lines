@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Boton from '../Atomos/Boton';
+import Boton from '../atomos/Boton';
 import FormaCrearCuotaSet from '../organismos/Formularios/FormaCrearCuotaSet';
 import ModalFlotante from '../organismos/ModalFlotante';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';

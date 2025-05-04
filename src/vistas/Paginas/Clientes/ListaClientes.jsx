@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
 import { useAuth } from '../../../hooks/AuthProvider';
-import Icono from '../../componentes/Atomos/Icono';
-import Cargador from '../../componentes/Atomos/Cargador';
-import Texto from '../../componentes/Atomos/Texto';
+import Icono from '../../componentes/atomos/Icono';
+import Cargador from '../../componentes/atomos/Cargador';
+import Texto from '../../componentes/atomos/Texto';
 import Alerta from '../../componentes/moleculas/Alerta';
 import NavegadorAdministrador from '../../componentes/Organismos/NavegadorAdministrador';
 import TarjetaConImagen from '../../componentes/Moleculas/TarjetaConImagen';

@@ -1,7 +1,7 @@
 import { Box, useTheme } from '@mui/material';
-import Imagen from '../Atomos/Imagen';
-import Icono from '../Atomos/Icono';
-import Texto from '../Atomos/Texto';
+import Imagen from '../atomos/Imagen';
+import Icono from '../atomos/Icono';
+import Texto from '../atomos/Texto';
 import GrupoBotones from '../Moleculas/GrupoBotones';
 import PropTypes from 'prop-types';
 

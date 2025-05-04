@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Paper } from '@mui/material';
-import Texto from '../Atomos/Texto';
+import Texto from '../atomos/Texto';
 import GrupoBotones from '../Moleculas/GrupoBotones';
 import { useMode, tokens } from '../../../theme';
 

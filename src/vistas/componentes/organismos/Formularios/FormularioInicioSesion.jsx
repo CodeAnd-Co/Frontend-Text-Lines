@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
-import Texto from '../../Atomos/Texto';
-import CampoTexto from '../../Atomos/CampoTexto';
-import Contenedor from '../../Atomos/Contenedor';
-import Imagen from '../../Atomos/Imagen';
-import Cargador from '../../Atomos/Cargador';
-import Boton from '../../Atomos/Boton';
+import Texto from '../../atomos/Texto';
+import CampoTexto from '../../atomos/CampoTexto';
+import Contenedor from '../../atomos/Contenedor';
+import Imagen from '../../atomos/Imagen';
+import Cargador from '../../atomos/Cargador';
+import Boton from '../../atomos/Boton';
 import Alerta from '../../Moleculas/Alerta';
 
 const estilosContenedorFormulario = {

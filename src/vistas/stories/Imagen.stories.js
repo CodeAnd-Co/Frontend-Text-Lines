@@ -1,5 +1,5 @@
 import { fn } from '@storybook/test';
-import Imagen from '../componentes/Atomos/Imagen';
+import Imagen from '../componentes/atomos/Imagen';
 
 export default {
   title: 'Componentes/Átomos/Imagen',

@@ -1,5 +1,5 @@
 import { fn } from '@storybook/test';
-import Boton from '../componentes/Atomos/Boton';
+import Boton from '../componentes/atomos/Boton';
 
 export default {
   title: 'Componentes/Átomos/Boton',

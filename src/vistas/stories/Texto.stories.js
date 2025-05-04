@@ -1,4 +1,4 @@
-import Texto from '../componentes/Atomos/Texto';
+import Texto from '../componentes/atomos/Texto';
 
 export default {
   title: 'Componentes/Átomos/Texto',

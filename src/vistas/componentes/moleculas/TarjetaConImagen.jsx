@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box } from '@mui/material';
-import Contenedor from '../Atomos/Contenedor';
-import Imagen from '../Atomos/Imagen';
-import Texto from '../Atomos/Texto';
-import Icono from '../Atomos/Icono';
+import Contenedor from '../atomos/Contenedor';
+import Imagen from '../atomos/Imagen';
+import Texto from '../atomos/Texto';
+import Icono from '../atomos/Icono';
 
 const TarjetaConImagen = ({
   src,

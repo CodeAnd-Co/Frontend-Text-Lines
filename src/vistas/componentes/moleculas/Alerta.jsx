@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import Contenedor from '../Atomos/Contenedor';
-import Icono from '../Atomos/Icono';
-import Texto from '../Atomos/Texto';
+import Contenedor from '../atomos/Contenedor';
+import Icono from '../atomos/Icono';
+import Texto from '../atomos/Texto';
 import { IconButton } from '@mui/material';
 
 const Alerta = ({

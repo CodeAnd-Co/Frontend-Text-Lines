@@ -1,23 +1,23 @@
 import { Routes, Route } from 'react-router-dom';
 import { RUTAS } from '../Utilidades/Constantes/rutas';
 import { PERMISOS } from '../Utilidades/Constantes/permisos';
-import ListaClientes from '../vistas/Paginas/clientes/ListaClientes';
-import ListaProductos from '../vistas/Paginas/productos/ListaProductos';
-import ListaCuotas from '../vistas/Paginas/cuotas/ListaCuotas';
-import LIstaEmpleados from '../vistas/Paginas/empleados/ListaEmpleados';
-import EditarCuotas from '../vistas/Paginas/cuotas/EditarCuotas';
-import ListaGrupoEmpleados from '../vistas/Paginas/empleados/ListaGrupoEmpleados';
+import ListaClientes from '../vistas/Paginas/Clientes/ListaClientes';
+import ListaProductos from '../vistas/Paginas/Productos/ListaProductos';
+import ListaCuotas from '../vistas/Paginas/Cuotas/ListaCuotas';
+import LIstaEmpleados from '../vistas/Paginas/Empleados/ListaEmpleados';
+import EditarCuotas from '../vistas/Paginas/Cuotas/EditarCuotas';
+import ListaGrupoEmpleados from '../vistas/Paginas/Empleados/ListaGrupoEmpleados';
 import SistemaAdministrativo from '../vistas/Paginas/SistemaAdministrativo';
-import Configuracion from '../vistas/Paginas/configuracion/ConfiguracionGeneral';
+import Configuracion from '../vistas/Paginas/Configuracion/ConfiguracionGeneral';
 import Error404 from '../vistas/Paginas/Errores/Error404';
-import ListaRoles from '../vistas/Paginas/roles/ListaRoles';
-import ListaUsuarios from '../vistas/Paginas/usuarios/ListaUsuarios';
+import ListaRoles from '../vistas/Paginas/Roles/ListaRoles';
+import ListaUsuarios from '../vistas/Paginas/Usuarios/ListaUsuarios';
 import ListaCategorias from '../vistas/Paginas/Categorias-temp/ListaCategorias';
-import ListaSetsProductos from '../vistas/Paginas/setsproductos/ListaSetsProductos';
+import ListaSetsProductos from '../vistas/Paginas/SetsProductos/ListaSetsProductos';
 
 import RutaProtegida from './RutaProtegida';
 import VerificarClienteSeleccionado from './VerificarClienteSeleccionado';
-import ListaPedidos from '../vistas/Paginas/pedidos/ListaPedidos';
+import ListaPedidos from '../vistas/Paginas/Pedidos/ListaPedidos';
 
 const RutasSistemaAdministrativo = () => {
   return (

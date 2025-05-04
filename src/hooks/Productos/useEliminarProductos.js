@@ -1,7 +1,7 @@
 // RF[30] - Elimina producto - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF30
 
 import { useState } from 'react';
-import { RepositorioEliminarProductos } from '../../Dominio/repositorios/Productos/repositorioEliminarProductos';
+import { RepositorioEliminarProductos } from '../../Dominio/Repositorios/Productos/repositorioEliminarProductos';
 
 /**
  * * Hook para eliminar productos.

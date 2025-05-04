@@ -1,7 +1,7 @@
 //RF22 - Consulta Lista de Grupo Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF22
 import axios from 'axios';
 import { RUTAS_API } from '../../../Utilidades/Constantes/rutasAPI';
-import { ListaGrupoEmpleados } from '../../modelos/Empleados/ListaGrupoEmpleados';
+import { ListaGrupoEmpleados } from '../../Modelos/Empleados/ListaGrupoEmpleados';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 

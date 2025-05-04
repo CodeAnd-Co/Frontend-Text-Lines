@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { crearUsuario } from '../../Dominio/repositorios/Usuarios/repositorioCrearUsuario';
-import { validarDatosCrearUsuario } from '../../Dominio/modelos/Usuarios/modeloCrearUsuario';
+import { crearUsuario } from '../../Dominio/Repositorios/Usuarios/repositorioCrearUsuario';
+import { validarDatosCrearUsuario } from '../../Dominio/Modelos/Usuarios/modeloCrearUsuario';
 /**
  * RF1 - Crear Usuario - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF1
  * Hook `useCrearUsuario`

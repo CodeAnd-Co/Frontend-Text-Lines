@@ -1,7 +1,7 @@
 //RF02 Super Administrador Consulta Lista de Usuarios - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF2
 
 import { useEffect, useState } from 'react';
-import { RepositorioConsultarListaUsuarios } from '../../Dominio/repositorios/Usuarios/repositorioConsultarListaUsuarios';
+import { RepositorioConsultarListaUsuarios } from '../../Dominio/Repositorios/Usuarios/repositorioConsultarListaUsuarios';
 
 /**
  * Hook para consultar la lista de usuarios.

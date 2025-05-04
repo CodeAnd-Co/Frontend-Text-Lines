@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthProvider';
 import { RUTAS } from '../../Utilidades/Constantes/rutas';
-import { RepositorioSeleccionarCliente } from '../../Dominio/repositorios/Clientes/repositorioSeleccionarCliente';
+import { RepositorioSeleccionarCliente } from '../../Dominio/Repositorios/Clientes/repositorioSeleccionarCliente';
 
 /**
  * Hook personalizado para seleccionar un cliente en el sistema.

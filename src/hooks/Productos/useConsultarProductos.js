@@ -1,6 +1,6 @@
 //RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
 import { useEffect, useState } from 'react';
-import { RepositorioListaProductos } from '../../Dominio/repositorios/Productos/RepositorioListaProductos';
+import { RepositorioListaProductos } from '../../Dominio/Repositorios/Productos/RepositorioListaProductos';
 
 /**
  * Hook para consultar la lista de productos.

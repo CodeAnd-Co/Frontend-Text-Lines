@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { listaCategorias } from '../../modelos/Categorias/ListaCategorias';
+import { listaCategorias } from '../../Modelos/Categorias/ListaCategorias';
 import { RUTAS_API } from '../../../Utilidades/Constantes/rutasAPI';
 
 const API_KEY = import.meta.env.VITE_API_KEY;

@@ -12,7 +12,7 @@ import Configuracion from '../vistas/Paginas/Configuracion/ConfiguracionGeneral'
 import Error404 from '../vistas/Paginas/Errores/Error404';
 import ListaRoles from '../vistas/Paginas/Roles/ListaRoles';
 import ListaUsuarios from '../vistas/Paginas/Usuarios/ListaUsuarios';
-import ListaCategorias from '../vistas/Paginas/Categorias-temp/ListaCategorias';
+import ListaCategorias from '../vistas/Paginas/Categorias/ListaCategorias';
 import ListaSetsProductos from '../vistas/Paginas/SetsProductos/ListaSetsProductos';
 
 import RutaProtegida from './RutaProtegida';

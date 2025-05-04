@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Alerta from '../../Moleculas/Alerta';
 import CampoTexto from '../../Atomos/CampoTexto';
 import CustomDataGrid from '../../Organismos/Tabla';
-import obtenerPermisos from '../../../../dominio/servicios/obtenerPermisos';
+import obtenerPermisos from '../../../../Dominio/servicios/obtenerPermisos';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 100 },
@@ -23,7 +23,7 @@ const FormaCrearRol = ({
   useEffect(() => {
     const cargarPermisos = async () => {
       const permisos = await obtenerPermisos();
-      console.log("🟡 Permisos cargados:", permisos);
+      console.log('🟡 Permisos cargados:', permisos);
       setRows(permisos);
     };
     cargarPermisos();
@@ -33,9 +33,9 @@ const FormaCrearRol = ({
     <>
       {/* CAMPO: NOMBRE */}
       <CampoTexto
-        label="Nombre del Rol"
+        label='Nombre del Rol'
         fullWidth
-        type="text"
+        type='text'
         value={nombreRol}
         onChange={(evento) => setNombreRol(evento.target.value)}
       />
@@ -52,10 +52,10 @@ const FormaCrearRol = ({
             ? selectionModel
             : Array.from(selectionModel?.ids || []);
 
-          console.log("🟣 IDs seleccionados:", ids);
+          console.log('🟣 IDs seleccionados:', ids);
 
           const seleccionados = rows.filter((permiso) => ids.includes(permiso.id));
-          console.log("🟣 Permisos seleccionados:", seleccionados);
+          console.log('🟣 Permisos seleccionados:', seleccionados);
 
           setPermisosSeleccionados(seleccionados);
         }}
@@ -63,9 +63,9 @@ const FormaCrearRol = ({
 
       {/* CAMPO: DESCRIPCIÓN */}
       <CampoTexto
-        label="Descripción"
+        label='Descripción'
         fullWidth
-        type="text"
+        type='text'
         value={descripcionRol}
         onChange={(evento) => setDescripcionRol(evento.target.value)}
       />
@@ -73,8 +73,8 @@ const FormaCrearRol = ({
       {/* ALERTA */}
       {mostrarAlerta && (
         <Alerta
-          tipo="warning"
-          mensaje="Completa todos los campos y selecciona al menos un permiso."
+          tipo='warning'
+          mensaje='Completa todos los campos y selecciona al menos un permiso.'
           cerrable
           duracion={10000}
           onClose={() => setMostrarAlerta(false)}

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { repositorioEliminarCliente } from '../../dominio/repositorios/Clientes/repositorioEliminarCliente';
+import { repositorioEliminarCliente } from '../../Dominio/repositorios/Clientes/repositorioEliminarCliente';
 
 /**
  * Hook para eliminar un cliente por su ID.
- * 
+ *
  * @param {number|null} idCliente - ID del cliente a eliminar.
  * @param {Function} setEliminacionExitosa - Función para marcar si fue exitosa la eliminación.
  * @param {Function} onSuccess - Función a ejecutar si la eliminación fue exitosa (recibe el ID eliminado).

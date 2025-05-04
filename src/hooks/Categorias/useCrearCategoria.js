@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
-import { RepositorioCrearCategoria } from '../../dominio/repositorios/Categorias/repositorioCrearCategorias';
-import { CrearCategoria } from '../../dominio/modelos/Categorias/CrearCategoria';
+import { RepositorioCrearCategoria } from '../../Dominio/repositorios/Categorias/repositorioCrearCategorias';
+import { CrearCategoria } from '../../Dominio/modelos/Categorias/CrearCategoria';
 
 const useCrearCategoria = () => {
   const [cargando, setCargando] = useState(false);

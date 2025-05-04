@@ -1,7 +1,7 @@
 import Alerta from '../../componentes/moleculas/Alerta';
 import CampoTexto from '../atomos/CampoTexto';
 import { useState, useEffect } from 'react';
-import obtenerProductos from '../../../dominio/servicios/obtenerProductos';
+import obtenerProductos from '../../../Dominio/servicios/obtenerProductos';
 import ProductosModal from './ProductosModal';
 
 const columns = [

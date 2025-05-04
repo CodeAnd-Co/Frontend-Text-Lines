@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import CuotaSetModelo from '../../dominio/modelos/Cuotas/CuotaSetModelo';
+import CuotaSetModelo from '../../Dominio/modelos/Cuotas/CuotaSetModelo';
 import { RUTAS_API } from '../../Utilidades/Constantes/rutasAPI';
 
 const API_URL = import.meta.env.VITE_API_URL;

@@ -1,6 +1,6 @@
 //RF22 - Consulta Lista de Grupo Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF22
 import { useEffect, useState } from 'react';
-import { RepositorioConsultarGrupos } from '../../dominio/repositorios/Empleados/RepositorioConsultarGrupos';
+import { RepositorioConsultarGrupos } from '../../Dominio/repositorios/Empleados/RepositorioConsultarGrupos';
 import { useAuth } from '../../hooks/AuthProvider';
 import { PERMISOS } from '../../Utilidades/Constantes/permisos';
 

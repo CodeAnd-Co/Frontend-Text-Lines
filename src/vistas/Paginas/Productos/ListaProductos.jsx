@@ -2,9 +2,9 @@
 //RF[30] Elimina Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF30]
 import { Box } from '@mui/material';
 import { useState } from 'react';
-import Tabla from '../../Componentes/Organismos/Tabla';
-import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
-import Alerta from '../../Componentes/moleculas/Alerta';
+import Tabla from '../../componentes/Organismos/Tabla';
+import ContenedorLista from '../../componentes/Organismos/ContenedorLista';
+import Alerta from '../../componentes/moleculas/Alerta';
 import PopUp from '../../componentes/moleculas/PopUp';
 import { useConsultarProductos } from '../../../hooks/Productos/useConsultarProductos';
 import { useEliminarProductos } from '../../../hooks/Productos/useEliminarProductos';
@@ -18,8 +18,8 @@ const ListaProductos = () => {
   const [theme] = useMode();
   const colores = tokens(theme.palette.mode);
   const { usuario } = useAuth();
-  const MENSAJE_POPUP_ELIMINAR
-    = '¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.';
+  const MENSAJE_POPUP_ELIMINAR =
+    '¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.';
 
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);

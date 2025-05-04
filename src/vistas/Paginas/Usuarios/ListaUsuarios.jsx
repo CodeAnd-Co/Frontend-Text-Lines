@@ -3,17 +3,17 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import FormularioCrearUsuario from '../../Componentes/organismos/Formularios/FormularioCrearUsuario';
+import FormularioCrearUsuario from '../../componentes/organismos/Formularios/FormularioCrearUsuario';
 import ModalFlotante from '../../componentes/organismos/ModalFlotante';
 import Alerta from '../../componentes/moleculas/Alerta';
-import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
+import ContenedorLista from '../../componentes/Organismos/ContenedorLista';
 import Tabla from '../../componentes/organismos/Tabla';
 import Chip from '../../componentes/atomos/Chip';
 import { useConsultarListaUsuarios } from '../../../hooks/Usuarios/useConsultarListaUsuarios';
 import { useEliminarUsuarios } from '../../../hooks/Usuarios/useEliminarUsuarios';
 import { RUTAS } from '../../../Utilidades/Constantes/rutas';
 import { useMode, tokens } from '../../../theme';
-import NavegadorAdministrador from '../../Componentes/Organismos/NavegadorAdministrador';
+import NavegadorAdministrador from '../../componentes/Organismos/NavegadorAdministrador';
 import { useUsuarioId } from '../../../hooks/Usuarios/useLeerUsuario';
 import InfoUsuario from '../../componentes/moleculas/UsuarioInfo';
 import PopUp from '../../componentes/moleculas/PopUp';

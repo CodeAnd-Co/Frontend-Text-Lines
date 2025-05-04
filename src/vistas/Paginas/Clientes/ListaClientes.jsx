@@ -4,8 +4,8 @@ import { useAuth } from '../../../hooks/AuthProvider';
 import Icono from '../../componentes/Atomos/Icono';
 import Cargador from '../../componentes/Atomos/Cargador';
 import Texto from '../../componentes/Atomos/Texto';
-import Alerta from '../../Componentes/moleculas/Alerta';
-import NavegadorAdministrador from '../../Componentes/Organismos/NavegadorAdministrador';
+import Alerta from '../../componentes/moleculas/Alerta';
+import NavegadorAdministrador from '../../componentes/Organismos/NavegadorAdministrador';
 import TarjetaConImagen from '../../componentes/Moleculas/TarjetaConImagen';
 import ModalFlotante from '../../componentes/organismos/ModalFlotante';
 import Cookies from 'js-cookie';
@@ -64,11 +64,11 @@ const ListaClientes = () => {
     idEliminar,
     setEliminacionExitosa,
     (idClienteEliminado) => {
-      setClientes(prev => prev.filter(cliente => cliente.idCliente !== idClienteEliminado));
+      setClientes((prev) => prev.filter((cliente) => cliente.idCliente !== idClienteEliminado));
       Cookies.remove('imagenClienteSeleccionado');
       Cookies.remove('nombreClienteSeleccionado');
-      seleccionarCliente(null); 
-      setIdEliminar(null); 
+      seleccionarCliente(null);
+      setIdEliminar(null);
     }
   );
 
@@ -170,8 +170,8 @@ const ListaClientes = () => {
   };
 
   const renderTarjetaCliente = (cliente) => (
-    <Box 
-      key={cliente.idCliente} 
+    <Box
+      key={cliente.idCliente}
       sx={estiloTarjeta}
       onMouseDown={manejarInicioPresionado}
       onMouseUp={manejarFinPresionado}
@@ -190,7 +190,9 @@ const ListaClientes = () => {
         ajuste='contain'
         anchoImagen='100%'
         alturaImagen='250px'
-        tooltipIcono={modoEliminacion ? 'Eliminar cliente' : `Ver información de ${cliente.nombreComercial}`} // nuevo
+        tooltipIcono={
+          modoEliminacion ? 'Eliminar cliente' : `Ver información de ${cliente.nombreComercial}`
+        } // nuevo
         clickeableImagen={true}
         elevacion={3}
         alClicImagen={() =>
@@ -284,13 +286,7 @@ const ListaClientes = () => {
       </ModalFlotante>
 
       {errorEliminacion && (
-        <Alerta
-          tipo='error'
-          mensaje={errorEliminacion}
-          icono
-          cerrable
-          centradoInferior
-        />
+        <Alerta tipo='error' mensaje={errorEliminacion} icono cerrable centradoInferior />
       )}
 
       {eliminacionExitosa && (
@@ -304,7 +300,6 @@ const ListaClientes = () => {
           onClose={() => setEliminacionExitosa(false)}
         />
       )}
-
     </>
   );
 };

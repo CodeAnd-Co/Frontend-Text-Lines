@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Tabla from '../../Componentes/Organismos/Tabla';
-import Alerta from '../../Componentes/moleculas/Alerta';
-import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
+import Tabla from '../../componentes/Organismos/Tabla';
+import Alerta from '../../componentes/moleculas/Alerta';
+import ContenedorLista from '../../componentes/Organismos/ContenedorLista';
 import ModalEliminarCategoria from '../../componentes/Organismos/ModalEliminarCategoria';
 import { useConsultarCategorias } from '../../../hooks/Categorias/useConsultarCategorias';
 import { Box, useTheme } from '@mui/material';

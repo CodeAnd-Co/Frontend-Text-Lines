@@ -1,6 +1,6 @@
 import React from 'react';
 import { fn } from '@storybook/test';
-import Icono from '../Componentes/Atomos/Icono';
+import Icono from '../componentes/Atomos/Icono';
 
 export default {
   title: 'Componentes/Átomos/Icono',

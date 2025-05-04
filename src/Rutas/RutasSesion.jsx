@@ -2,7 +2,7 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../hooks/AuthProvider';
 import { RUTAS } from '../Utilidades/Constantes/rutas';
 import { PERMISOS } from '../Utilidades/Constantes/permisos';
-import Error403 from '../vistas/paginas/Errores/Error403';
+import Error403 from '../vistas/paginas/errores/Error403';
 import IniciarSesion from '../vistas/paginas/IniciarSesion';
 
 export default function RutasSesion() {

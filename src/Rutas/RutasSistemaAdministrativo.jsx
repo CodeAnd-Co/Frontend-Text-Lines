@@ -13,7 +13,7 @@ import Error404 from '../vistas/paginas/errores/Error404';
 import ListaRoles from '../vistas/paginas/roles/ListaRoles';
 import ListaUsuarios from '../vistas/paginas/usuarios/ListaUsuarios';
 import ListaCategorias from '../vistas/paginas/categorias/ListaCategorias';
-import ListaSetsProductos from '../vistas/paginas/SetsProductos/ListaSetsProductos';
+import ListaSetsProductos from '../vistas/paginas/setsproductos/ListaSetsProductos';
 
 import RutaProtegida from './RutaProtegida';
 import VerificarClienteSeleccionado from './VerificarClienteSeleccionado';

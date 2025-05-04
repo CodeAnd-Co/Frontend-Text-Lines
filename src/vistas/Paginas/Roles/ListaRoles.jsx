@@ -1,7 +1,7 @@
 //RF[7] Consulta Lista de Roles - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF7]
 import React from 'react';
 import CustomDataGrid from '../../componentes/organismos/Tabla';
-import ContenedorLista from '../../componentes/Organismos/ContenedorLista';
+import ContenedorLista from '../../componentes/organismos/ContenedorLista';
 import { useConsultarRoles } from '../../../hooks/Roles/useConsultarRoles';
 import { Box, Typography, useTheme } from '@mui/material';
 import { tokens } from '../../../theme';

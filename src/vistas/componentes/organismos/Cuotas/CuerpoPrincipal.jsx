@@ -1,7 +1,7 @@
 import TarjetaRenovacion from '../Cuotas/TarjetaRenovacion';
 import ProductosConCuotas from '../Cuotas/ProductosConCuotas';
 import { Box } from '@mui/material';
-import GrupoBotones from '../../Moleculas/GrupoBotones';
+import GrupoBotones from '../../moleculas/GrupoBotones';
 import PopUp from '../../moleculas/PopUp';
 import { useNavigate } from 'react-router-dom';
 

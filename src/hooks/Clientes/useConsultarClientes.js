@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { RepositorioListaClientes } from '../../Dominio/repositorios/Clientes/RepositorioListaClientes';
+import { RepositorioListaClientes } from '../../dominio/repositorios/Clientes/RepositorioListaClientes';
 
 /**
  * Hook para consultar la lista de clientes.

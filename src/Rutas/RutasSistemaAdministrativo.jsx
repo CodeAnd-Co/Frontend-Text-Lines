@@ -1,23 +1,23 @@
 import { Routes, Route } from 'react-router-dom';
 import { RUTAS } from '../Utilidades/Constantes/rutas';
 import { PERMISOS } from '../Utilidades/Constantes/permisos';
-import ListaClientes from '../vistas/Paginas/Clientes/ListaClientes';
+import ListaClientes from '../vistas/paginas/Clientes/ListaClientes';
 import ListaProductos from '../vistas/paginas/Productos/ListaProductos';
-import ListaCuotas from '../vistas/Paginas/Cuotas/ListaCuotas';
-import LIstaEmpleados from '../vistas/Paginas/Empleados/ListaEmpleados';
-import EditarCuotas from '../vistas/Paginas/Cuotas/EditarCuotas';
-import ListaGrupoEmpleados from '../vistas/Paginas/Empleados/ListaGrupoEmpleados';
-import SistemaAdministrativo from '../vistas/Paginas/SistemaAdministrativo';
-import Configuracion from '../vistas/Paginas/Configuracion/ConfiguracionGeneral';
-import Error404 from '../vistas/Paginas/Errores/Error404';
-import ListaRoles from '../vistas/Paginas/Roles/ListaRoles';
-import ListaUsuarios from '../vistas/Paginas/Usuarios/ListaUsuarios';
+import ListaCuotas from '../vistas/paginas/Cuotas/ListaCuotas';
+import LIstaEmpleados from '../vistas/paginas/Empleados/ListaEmpleados';
+import EditarCuotas from '../vistas/paginas/Cuotas/EditarCuotas';
+import ListaGrupoEmpleados from '../vistas/paginas/Empleados/ListaGrupoEmpleados';
+import SistemaAdministrativo from '../vistas/paginas/SistemaAdministrativo';
+import Configuracion from '../vistas/paginas/Configuracion/ConfiguracionGeneral';
+import Error404 from '../vistas/paginas/Errores/Error404';
+import ListaRoles from '../vistas/paginas/Roles/ListaRoles';
+import ListaUsuarios from '../vistas/paginas/Usuarios/ListaUsuarios';
 import ListaCategorias from '../vistas/paginas/Categorias/ListaCategorias';
-import ListaSetsProductos from '../vistas/Paginas/SetsProductos/ListaSetsProductos';
+import ListaSetsProductos from '../vistas/paginas/SetsProductos/ListaSetsProductos';
 
 import RutaProtegida from './RutaProtegida';
 import VerificarClienteSeleccionado from './VerificarClienteSeleccionado';
-import ListaPedidos from '../vistas/Paginas/Pedidos/ListaPedidos';
+import ListaPedidos from '../vistas/paginas/Pedidos/ListaPedidos';
 
 const RutasSistemaAdministrativo = () => {
   return (

@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import GrupoBotones from '../Moleculas/GrupoBotones';
+import GrupoBotones from '../moleculas/GrupoBotones';
 import Texto from '../atomos/Texto';
 import PropTypes from 'prop-types';
 

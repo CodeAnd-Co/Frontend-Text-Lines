@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { fn } from '@storybook/test'; 
+import { fn } from '@storybook/test';
 import ModalFlotante from '../componentes/organismos/ModalFlotante';
 import Texto from '../componentes/atomos/Texto';
 import InfoUsuario from '../componentes/moleculas/UsuarioInfo';
 
 export default {
-  title: 'Componentes/Organismos/ModalFlotante',
+  title: 'Componentes/organismos/ModalFlotante',
   component: ModalFlotante,
   parameters: {
     layout: 'centered',
@@ -13,7 +13,7 @@ export default {
 };
 
 // ----------------------
-// Ejemplo Básico 
+// Ejemplo Básico
 // ----------------------
 const TemplateBasico = (args) => {
   const [open, setOpen] = useState(true);
@@ -23,12 +23,7 @@ const TemplateBasico = (args) => {
   };
 
   return (
-    <ModalFlotante
-      {...args}
-      open={open}
-      onClose={() => setOpen(false)}
-      onConfirm={handleConfirm}
-    >
+    <ModalFlotante {...args} open={open} onClose={() => setOpen(false)} onConfirm={handleConfirm}>
       <Texto>Aquí va el formulario</Texto>
     </ModalFlotante>
   );
@@ -81,12 +76,7 @@ const TemplateConInfoUsuario = (args) => {
   };
 
   return (
-    <ModalFlotante
-      {...args}
-      open={open}
-      onClose={() => setOpen(false)}
-      onConfirm={handleConfirm}
-    >
+    <ModalFlotante {...args} open={open} onClose={() => setOpen(false)} onConfirm={handleConfirm}>
       <InfoUsuario
         modoEdicion={args.modoEdicion}
         cliente={baseUsuario.cliente}
@@ -122,7 +112,7 @@ ConInfoUsuarioLectura.args = {
       color: 'primary',
       size: 'medium',
       outlineColor: 'rgba(24, 50, 165, 1)',
-      onClick: fn(), 
+      onClick: fn(),
     },
     {
       label: 'Editar',

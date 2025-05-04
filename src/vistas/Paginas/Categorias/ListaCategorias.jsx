@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Tabla from '../../componentes/Organismos/Tabla';
+import Tabla from '../../componentes/organismos/Tabla';
 import Alerta from '../../componentes/moleculas/Alerta';
-import ContenedorLista from '../../componentes/Organismos/ContenedorLista';
-import ModalEliminarCategoria from '../../componentes/Organismos/ModalEliminarCategoria';
+import ContenedorLista from '../../componentes/organismos/ContenedorLista';
+import ModalEliminarCategoria from '../../componentes/organismos/ModalEliminarCategoria';
 import { useConsultarCategorias } from '../../../hooks/Categorias/useConsultarCategorias';
 import { Box, useTheme } from '@mui/material';
 import { tokens } from '../../../theme';

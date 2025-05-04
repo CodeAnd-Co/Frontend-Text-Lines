@@ -2,7 +2,7 @@ import { Box, useTheme } from '@mui/material';
 import Imagen from '../atomos/Imagen';
 import Icono from '../atomos/Icono';
 import Texto from '../atomos/Texto';
-import GrupoBotones from '../Moleculas/GrupoBotones';
+import GrupoBotones from '../moleculas/GrupoBotones';
 import PropTypes from 'prop-types';
 
 const NavegadorAdministrador = ({

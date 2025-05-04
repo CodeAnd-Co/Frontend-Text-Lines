@@ -1,8 +1,8 @@
 //RF22 - Consulta Lista de Grupo Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF22
 import React from 'react';
 import { Box, useTheme } from '@mui/material';
-import Tabla from '../../componentes/Organismos/Tabla';
-import ContenedorLista from '../../componentes/Organismos/ContenedorLista';
+import Tabla from '../../componentes/organismos/Tabla';
+import ContenedorLista from '../../componentes/organismos/ContenedorLista';
 import { useConsultarGrupos } from '../../../hooks/Empleados/useConsultarGrupos';
 import { tokens } from '../../../theme';
 

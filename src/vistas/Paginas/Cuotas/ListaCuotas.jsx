@@ -5,7 +5,7 @@ import { useTheme, Box } from '@mui/material';
 import { tokens } from '../../../theme';
 import { useConsultarCuotas } from '../../../hooks/Cuotas/useConsultarCuotas';
 import { useAuth } from '../../../hooks/AuthProvider';
-import ContenedorLista from '../../componentes/Organismos/ContenedorLista';
+import ContenedorLista from '../../componentes/organismos/ContenedorLista';
 import Tabla from '../../componentes/organismos/Tabla';
 import Chip from '../../componentes/atomos/Chip';
 import ModalCrearCuotaSet from '../../componentes/organismos/ModalCrearCuotaSet';

@@ -2,8 +2,8 @@ import { Box } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import { useAuth } from '../../hooks/AuthProvider';
 import Cookies from 'js-cookie';
-import BarraLateral from '../componentes/Organismos/BarraLateral';
-import NavegadorAdministrador from '../componentes/Organismos/NavegadorAdministrador'; // Faltaba
+import BarraLateral from '../componentes/organismos/BarraLateral';
+import NavegadorAdministrador from '../componentes/organismos/NavegadorAdministrador'; // Faltaba
 
 const estiloImagenLogo = { marginRight: '1rem' };
 

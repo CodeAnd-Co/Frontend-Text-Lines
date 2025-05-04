@@ -2,8 +2,8 @@
 //RF[30] Elimina Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF30]
 import { Box } from '@mui/material';
 import { useState } from 'react';
-import Tabla from '../../componentes/Organismos/Tabla';
-import ContenedorLista from '../../componentes/Organismos/ContenedorLista';
+import Tabla from '../../componentes/organismos/Tabla';
+import ContenedorLista from '../../componentes/organismos/ContenedorLista';
 import Alerta from '../../componentes/moleculas/Alerta';
 import PopUp from '../../componentes/moleculas/PopUp';
 import { useConsultarProductos } from '../../../hooks/Productos/useConsultarProductos';

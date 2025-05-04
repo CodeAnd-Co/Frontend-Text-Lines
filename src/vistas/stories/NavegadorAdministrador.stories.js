@@ -1,8 +1,8 @@
 import { fn } from '@storybook/test';
-import NavegadorAdministrador from '../componentes/Organismos/NavegadorAdministrador';
+import NavegadorAdministrador from '../componentes/organismos/NavegadorAdministrador';
 
 export default {
-  title: 'Componentes/Organismos/NavegadorAdministrador',
+  title: 'Componentes/organismos/NavegadorAdministrador',
   component: NavegadorAdministrador,
   tags: ['autodocs'],
   argTypes: {

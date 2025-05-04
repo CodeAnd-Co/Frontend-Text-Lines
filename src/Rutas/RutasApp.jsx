@@ -4,7 +4,7 @@ import { PERMISOS } from '../Utilidades/Constantes/permisos';
 import RutaProtegida from './RutaProtegida';
 import RutasAdministrativas from './RutasSistemaAdministrativo';
 import RutasTienda from './RutasTienda';
-// import Error404 from '../vistas/Paginas/Errores/Error404';
+// import Error404 from '../Vistas/Paginas/Errores/Error404';
 import RedireccionSesion from './RedireccionSesion';
 import RutasSesion from './RutasSesion';
 

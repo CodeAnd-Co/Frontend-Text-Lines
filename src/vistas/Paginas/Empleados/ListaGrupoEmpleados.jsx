@@ -9,7 +9,7 @@ import { tokens } from '../../../theme';
 import Alerta from '../../Componentes/moleculas/Alerta';
 import { useEliminarGrupoEmpleados } from '../../../hooks/Empleados/useEliminarGrupoEmpleados';
 import { useState, React } from 'react';
-import PopUpEliminar from '../../componentes/moleculas/PopUpEliminar';
+import PopUpEliminar from '../../componentes/moleculas/PopUp';
 import { PERMISOS } from '../../../Utilidades/Constantes/permisos';
 import { useAuth } from '../../../hooks/AuthProvider';
 

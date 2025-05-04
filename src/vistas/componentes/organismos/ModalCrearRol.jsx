@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Boton from '../atomos/Boton';
+import Boton from '../atomos/boton';
 import FormaCrearRol from '../organismos/Formularios/FormaCrearRol';
 import ModalFlotante from '../organismos/ModalFlotante';
 import { useCrearRol } from '../../../hooks/Roles/useCrearRol';
@@ -34,20 +34,20 @@ const ModalCrearRol = ({ onRolCreado }) => {
     }
 
     await crearRol(nombreRol.trim(), descripcionRol.trim(), permisosSeleccionados, () => {
-      if (onRolCreado) onRolCreado(); 
-      handleCerrar(); 
+      if (onRolCreado) onRolCreado();
+      handleCerrar();
     });
   };
 
   return (
     <>
-      <Boton label="Crear Rol" variant="contained" onClick={handleAbrir} size="large" />
+      <Boton label='Crear Rol' variant='contained' onClick={handleAbrir} size='large' />
       <ModalFlotante
         open={mostrarFormulario}
         onClose={handleCerrar}
         onConfirm={handleConfirmar}
-        titulo="Crear Nuevo Rol"
-        cancelLabel="Cancelar"
+        titulo='Crear Nuevo Rol'
+        cancelLabel='Cancelar'
         confirmLabel={cargando ? 'Creando...' : 'Crear'}
       >
         <FormaCrearRol

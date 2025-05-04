@@ -5,7 +5,7 @@ import CampoTexto from '../../atomos/CampoTexto';
 import Contenedor from '../../atomos/Contenedor';
 import Imagen from '../../atomos/Imagen';
 import Cargador from '../../atomos/Cargador';
-import Boton from '../../atomos/Boton';
+import Boton from '../../atomos/boton';
 import Alerta from '../../moleculas/Alerta';
 
 const estilosContenedorFormulario = {

@@ -1,8 +1,8 @@
 import { fn } from '@storybook/test';
-import Boton from '../componentes/atomos/Boton';
+import Boton from '../componentes/atomos/boton';
 
 export default {
-  title: 'Componentes/Átomos/Boton',
+  title: 'Componentes/Átomos/boton',
   component: Boton,
   parameters: {
     layout: 'centered',

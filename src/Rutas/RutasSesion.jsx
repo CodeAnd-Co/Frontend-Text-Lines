@@ -2,8 +2,8 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../hooks/AuthProvider';
 import { RUTAS } from '../Utilidades/Constantes/rutas';
 import { PERMISOS } from '../Utilidades/Constantes/permisos';
-import Error403 from '../vistas/paginas/Error403';
-import IniciarSesion from '../vistas/paginas/IniciarSesion';
+import Error403 from '../vistas/Paginas/Error403';
+import IniciarSesion from '../vistas/Paginas/IniciarSesion';
 
 export default function RutasSesion() {
   const { usuario, cargando } = useAuth();

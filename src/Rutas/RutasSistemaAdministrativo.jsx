@@ -1,23 +1,23 @@
 import { Routes, Route } from 'react-router-dom';
 import { RUTAS } from '../Utilidades/Constantes/rutas';
 import { PERMISOS } from '../Utilidades/Constantes/permisos';
-import ListaClientes from '../vistas/paginas/clientes/ListaClientes';
-import ListaProductos from '../vistas/paginas/productos/ListaProductos';
-import ListaCuotas from '../vistas/paginas/cuotas/ListaCuotas';
-import LIstaEmpleados from '../vistas/paginas/empleados/ListaEmpleados';
-import EditarCuotas from '../vistas/paginas/cuotas/EditarCuotas';
-import ListaGrupoEmpleados from '../vistas/paginas/empleados/ListaGrupoEmpleados';
-import SistemaAdministrativo from '../vistas/paginas/SistemaAdministrativo';
-import Configuracion from '../vistas/paginas/configuracion/ConfiguracionGeneral';
-import Error404 from '../vistas/paginas/errores/Error404';
-import ListaRoles from '../vistas/paginas/roles/ListaRoles';
-import ListaUsuarios from '../vistas/paginas/usuarios/ListaUsuarios';
-import ListaCategorias from '../vistas/paginas/categorias/ListaCategorias';
-import ListaSetsProductos from '../vistas/paginas/setsproductos/ListaSetsProductos';
+import ListaClientes from '../vistas/Paginas/clientes/ListaClientes';
+import ListaProductos from '../vistas/Paginas/productos/ListaProductos';
+import ListaCuotas from '../vistas/Paginas/cuotas/ListaCuotas';
+import LIstaEmpleados from '../vistas/Paginas/empleados/ListaEmpleados';
+import EditarCuotas from '../vistas/Paginas/cuotas/EditarCuotas';
+import ListaGrupoEmpleados from '../vistas/Paginas/empleados/ListaGrupoEmpleados';
+import SistemaAdministrativo from '../vistas/Paginas/SistemaAdministrativo';
+import Configuracion from '../vistas/Paginas/configuracion/ConfiguracionGeneral';
+import Error404 from '../vistas/Paginas/Errores/Error404';
+import ListaRoles from '../vistas/Paginas/roles/ListaRoles';
+import ListaUsuarios from '../vistas/Paginas/usuarios/ListaUsuarios';
+import ListaCategorias from '../vistas/Paginas/Categorias-temp/ListaCategorias';
+import ListaSetsProductos from '../vistas/Paginas/setsproductos/ListaSetsProductos';
 
 import RutaProtegida from './RutaProtegida';
 import VerificarClienteSeleccionado from './VerificarClienteSeleccionado';
-import ListaPedidos from '../vistas/paginas/pedidos/ListaPedidos';
+import ListaPedidos from '../vistas/Paginas/pedidos/ListaPedidos';
 
 const RutasSistemaAdministrativo = () => {
   return (

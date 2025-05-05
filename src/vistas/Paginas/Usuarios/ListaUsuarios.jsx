@@ -272,7 +272,7 @@ const ListaUsuarios = () => {
           />
         )}
         {modalCrearUsuarioAbierto && (
-          <FormularioCrearUsuario open={modalCrearUsuarioAbierto} onClose={handleClose} />
+          <FormularioCrearUsuario open={modalCrearUsuarioAbierto} onClose={handleClose} onUsuarioCreado={recargar} />
         )}
 
         <PopUp

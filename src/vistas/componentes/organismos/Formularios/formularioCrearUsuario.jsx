@@ -13,7 +13,7 @@ import { useConsultarRoles } from '../../../../hooks/Roles/useConsultarRoles';
 import { useConsultarClientes } from '../../../../hooks/Clientes/useConsultarClientes';
 import { useCrearUsuario } from '../../../../hooks/Usuarios/useCrearUsuario';
 
-const FormularioCrearUsuario = ({ open, onClose }) => {
+const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
   const [alerta, setAlerta] = useState(null);
   const [datosUsuario, setDatosUsuario] = useState({
     nombreCompleto: '',
@@ -41,6 +41,7 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
 
     if (resultado?.mensaje) {
       if (resultado.exito) {
+        if (onUsuarioCreado) await onUsuarioCreado();
         const resumenUsuario = `
           Usuario ${datosUsuario.nombreCompleto} ${datosUsuario.apellido} creado exitosamente.
         `;
@@ -146,12 +147,13 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
           </Grid>
 
           <Grid size={6} sx={estiloCuadricula}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
               <DateField
                 required
                 label='Fecha de nacimiento'
                 value={datosUsuario.fechaNacimiento}
                 onChange={manejarFechaNacimiento}
+                format="DD/MM/YYYY"
                 sx={{ width: '30ch' }}
                 slotProps={{
                   textField: {

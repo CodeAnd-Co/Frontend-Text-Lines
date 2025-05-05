@@ -9,8 +9,12 @@
 export const validarDatosCrearUsuario = (datos) => {
   const errores = {};
 
-  if (!datos.nombreCompleto) errores.nombreCompleto = true;
-  if (!datos.apellido) errores.apellido = true;
+  if (!datos.nombreCompleto || datos.nombreCompleto.trim() === '') {
+    errores.nombreCompleto = true;
+  }
+  if (!datos.apellido || datos.apellido.trim() === '') {
+    errores.apellido = true;
+  }
   const correoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!datos.correoElectronico) {
     errores.correoElectronico = true;
@@ -18,14 +22,14 @@ export const validarDatosCrearUsuario = (datos) => {
     errores.correoElectronico = 'Correo electrónico no válido';
   }
   const telefonoValido = /^\d{10}$/;
-
   if (!datos.numeroTelefono) {
     errores.numeroTelefono = true;
   } else if (!telefonoValido.test(datos.numeroTelefono)) {
     errores.numeroTelefono = 'El número de teléfono debe tener exactamente 10 dígitos';
   }
-
-  if (!datos.direccion) errores.direccion = true;
+  if (!datos.direccion || datos.direccion.trim() === '') {
+    errores.direccion = true;
+  }
   if (!datos.genero) errores.genero = true;
   if (!datos.cliente) errores.cliente = true;
   if (!datos.rol) errores.rol = true;
@@ -40,20 +44,24 @@ export const validarDatosCrearUsuario = (datos) => {
       errores.fechaNacimiento = 'La fecha no puede ser futura';
     }
   }
-
   const tieneCaracterEspecial = /[!@#$%^&*(),.?":{}|<>]/;
 
-  if (!datos.contrasenia) {
+  if (!datos.contrasenia || datos.contrasenia.trim() === '') {
     errores.contrasenia = true;
   } else {
+    const contraseniaSinEspacios = datos.contrasenia.replace(/\s/g, ''); // elimina todos los espacios
+  
     if (datos.contrasenia.length < 8) {
       errores.contrasenia = 'La contraseña debe tener al menos 8 caracteres';
     } else if (!tieneCaracterEspecial.test(datos.contrasenia)) {
-      errores.contrasenia
+      errores.contrasenia 
         = 'Debe contener al menos uno de estos caracteres: ! @ # $ % ^ & * ( ) , . ? " : { } | < >';
+    } else if (contraseniaSinEspacios.length < 2) {
+      errores.contrasenia 
+        = 'La contraseña no puede estar compuesta solo de espacios y un carácter especial';
     }
   }
-
+  
   if (!datos.confirmarContrasenia) {
     errores.confirmarContrasenia = true;
   } else if (datos.contrasenia !== datos.confirmarContrasenia) {

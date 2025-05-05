@@ -7,7 +7,7 @@ import ContenedorLista from '@Organismos/ContenedorLista';
 import Alerta from '@Moleculas/Alerta';
 import Chip from '@Atomos/Chip';
 import { useEliminarSetProductos } from '@Hooks/SetsProductos/useEliminarSetProductos';
-import PopUpEliminar from '@Moleculas/PopUpEliminar';
+import PopUp from '@Moleculas/PopUpEliminar';
 import { Box, useTheme } from '@mui/material';
 import { useConsultarSetsProductos } from '@Hooks/SetsProductos/useConsultarSetsProductos';
 import { tokens } from '@SRC/theme';
@@ -172,7 +172,7 @@ const ListaSetsProductos = () => {
           onClose={() => setAlerta(null)}
         />
       )}
-      <PopUpEliminar
+      <PopUp
         abrir={openModalEliminar}
         cerrar={manejarCancelarEliminar}
         confirmar={manejarConfirmarEliminar}

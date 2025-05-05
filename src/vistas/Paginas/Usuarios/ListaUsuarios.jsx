@@ -16,7 +16,9 @@ import { useMode, tokens } from '../../../theme';
 import NavegadorAdministrador from '../../Componentes/Organismos/NavegadorAdministrador';
 import { useUsuarioId } from '../../../hooks/Usuarios/useLeerUsuario';
 import InfoUsuario from '../../componentes/moleculas/UsuarioInfo';
-import PopUpEliminar from '../../componentes/moleculas/PopUpEliminar';
+import PopUp from '../../componentes/moleculas/PopUp';
+import { PERMISOS } from '../../../Utilidades/Constantes/permisos';
+import { useAuth } from '../../../hooks/AuthProvider';
 const estiloImagenLogo = { marginRight: '1rem' };
 
 /**
@@ -39,7 +41,7 @@ const ListaUsuarios = () => {
   const navigate = useNavigate();
   const [alerta, setAlerta] = useState(null);
   const { usuarios, cargando, error, recargar } = useConsultarListaUsuarios();
-
+  const { usuario: usuarioAutenticado } = useAuth();
   const [modalCrearUsuarioAbierto, setModalCrearUsuarioAbierto] = useState(false);
   const [idUsuarioSeleccionado, setIdUsuarioSeleccionado] = useState(null);
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
@@ -198,6 +200,7 @@ const ListaUsuarios = () => {
       onClick: handleOpen,
       size: 'large',
       backgroundColor: colores.altertex[1],
+      disabled: !usuarioAutenticado?.permisos?.includes(PERMISOS.CREAR_USUARIO),
     },
     {
       label: 'Eliminar',

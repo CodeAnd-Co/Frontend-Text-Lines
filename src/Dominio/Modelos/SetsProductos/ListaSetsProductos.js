@@ -1,4 +1,4 @@
-import { SetProductos } from '@Modelos/SetsProductos/SetProductos';
+import { SetProductos } from '@SRC/Dominio/Modelos/SetsProductos/SetProductos';
 
 /**
  * Convierte una lista de sets de productos recibida del backend en instancias del modelo SetProductos.

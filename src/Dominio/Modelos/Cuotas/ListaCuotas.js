@@ -1,4 +1,4 @@
-import { CuotaSetModelo } from '@Modelos/Cuotas/CuotaSetModelo';
+import { CuotaSetModelo } from '@SRC/Dominio/Modelos/Cuotas/CuotaSetModelo';
 
 export class ListaCuotas {
   constructor({ mensaje, cuotas }) {

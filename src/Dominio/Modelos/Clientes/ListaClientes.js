@@ -1,4 +1,4 @@
-import { Cliente } from '@Modelos/Clientes/Cliente';
+import { Cliente } from '@SRC/Dominio/Modelos/Clientes/Cliente';
 /**
  * Modelo de la respuesta que contiene una lista de clientes
  */

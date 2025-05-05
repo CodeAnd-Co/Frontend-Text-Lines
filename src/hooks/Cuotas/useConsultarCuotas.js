@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { RepositorioListaCuotas } from '@Repositorios/Cuotas/repositorioListaCuotas';
+import { RepositorioListaCuotas } from '@SRC/Dominio/Repositorios/Cuotas/repositorioListaCuotas';
 
 export function useConsultarCuotas() {
   const [cuotas, setCuotas] = useState([]);

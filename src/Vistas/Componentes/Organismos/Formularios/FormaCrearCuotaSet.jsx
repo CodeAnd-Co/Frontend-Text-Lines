@@ -1,7 +1,7 @@
 import Alerta from '@Moleculas/Alerta';
 import CampoTexto from '@Atomos/CampoTexto';
 import { useState, useEffect } from 'react';
-import obtenerProductos from '@Servicios/obtenerProductos';
+import obtenerProductos from '@SRC/Dominio/Servicios/obtenerProductos';
 import ProductosModal from '@Organismos/ProductosModal';
 import { useAuth } from '@Hooks/AuthProvider';
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Alerta from '@Moleculas/Alerta';
 import CampoTexto from '@Atomos/CampoTexto';
 import CustomDataGrid from '@Organismos/Tabla';
-import obtenerPermisos from '@Servicios/obtenerPermisos';
+import obtenerPermisos from '@SRC/Dominio/Servicios/obtenerPermisos';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 100 },

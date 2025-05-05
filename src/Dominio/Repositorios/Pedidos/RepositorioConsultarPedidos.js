@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { RUTAS_API } from '@Constantes/rutasAPI';
-import { ListaPedidos } from '@Modelos/Pedidos/ListaPedidos';
+import { ListaPedidos } from '@SRC/Dominio/Modelos/Pedidos/ListaPedidos';
 
 // RF60 - Consulta Lista de Pedidos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF60
 

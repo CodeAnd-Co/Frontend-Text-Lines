@@ -1,7 +1,7 @@
 // RF5 - Eliminar Usuario -  https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/rf5/
 
 import { useState } from 'react';
-import { RepositorioEliminarUsuarios } from '@Repositorios/Usuarios/repositorioEliminarUsuario';
+import { RepositorioEliminarUsuarios } from '@SRC/Dominio/Repositorios/Usuarios/repositorioEliminarUsuario';
 
 /**
  * Hook para manejar la eliminación de usuarios
@@ -53,8 +53,8 @@ export function useEliminarUsuarios(onAlerta, onRecarga) {
       setAbrirPopUp(false);
 
       // Detectar éxito por el mensaje recibido
-      const exito
-        = resultado.mensaje && resultado.mensaje.toLowerCase().includes('eliminados correctamente');
+      const exito =
+        resultado.mensaje && resultado.mensaje.toLowerCase().includes('eliminados correctamente');
 
       if (exito) {
         onAlerta({

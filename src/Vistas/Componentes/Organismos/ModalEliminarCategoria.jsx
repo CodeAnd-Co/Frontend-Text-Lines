@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useEliminarCategorias } from '@Hooks/Categorias/useEliminarCategorias';
-import PopUp from '@SRC/Vistas/Componentes/Moleculas/PopUpEliminar';
+import PopUp from '@SRC/Vistas/Componentes/Moleculas/PopUp';
 
 const ModalEliminarCategoria = ({ open, onClose, idsCategoria, setAlerta, refrescarPagina }) => {
   const [confirmado, setConfirmado] = useState(false);

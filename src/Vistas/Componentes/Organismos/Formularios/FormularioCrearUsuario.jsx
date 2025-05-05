@@ -11,7 +11,7 @@ import ModalFlotante from '@Organismos/ModalFlotante';
 import { useConsultarRoles } from '@Hooks/Roles/useConsultarRoles';
 import { useConsultarClientes } from '@Hooks/Clientes/useConsultarClientes';
 import { useCrearUsuario } from '@Hooks/Usuarios/useCrearUsuario';
-import CampoSelectMultiple from '"@Atomos/CampoSelectMultiple';
+import CampoSelectMultiple from '@Atomos/CampoSelectMultiple';
 
 const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
   const [alerta, setAlerta] = useState(null);

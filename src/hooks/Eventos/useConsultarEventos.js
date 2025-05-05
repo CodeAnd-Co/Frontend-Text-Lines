@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { RepositorioConsultarEventos } from '../../dominio/repositorios/Eventos/RepositorioConsultarEventos';
+import { RepositorioConsultarEventos } from '@dominio/repositorios/Eventos/RepositorioConsultarEventos';
 
 /**
  * Hook para consultar la lista de eventos.

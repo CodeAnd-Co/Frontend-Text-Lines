@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { crearUsuario } from '../../dominio/repositorios/Usuarios/repositorioCrearUsuario';
-import { validarDatosCrearUsuario } from '../../dominio/modelos/usuarios/modeloCrearUsuario';
+import { crearUsuario } from '../../Dominio/Repositorios/Usuarios/repositorioCrearUsuario';
+import { validarDatosCrearUsuario } from '../../Dominio/Modelos/Usuarios/modeloCrearUsuario';
 /**
  * RF1 - Crear Usuario - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF1
  * Hook `useCrearUsuario`
@@ -50,9 +50,9 @@ export const useCrearUsuario = () => {
       await crearUsuario(datosParaEnviar);
       return { exito: true, mensaje: 'Usuario creado correctamente' };
     } catch (error) {
-      const mensaje
-        = error.response?.data?.mensaje
-        || 'Hubo un error al crear el usuario. Verifica que no exista.';
+      const mensaje =
+        error.response?.data?.mensaje ||
+        'Hubo un error al crear el usuario. Verifica que no exista.';
       return { exito: false, mensaje };
     }
   };

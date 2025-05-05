@@ -1,6 +1,6 @@
 // RF60 - Consulta Lista de Pedidos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF60
 import { useEffect, useState } from 'react';
-import { RepositorioConsultarPedidos } from '../../dominio/repositorios/Pedidos/RepositorioConsultarPedidos';
+import { RepositorioConsultarPedidos } from '../../Dominio/Repositorios/Pedidos/RepositorioConsultarPedidos';
 import { useAuth } from '../../hooks/AuthProvider';
 import { PERMISOS } from '../../Utilidades/Constantes/permisos';
 

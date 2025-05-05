@@ -25,6 +25,7 @@ jobs:
 
       - name: Run Linter
         run: npm run lint
+
   build:
     runs-on: ubuntu-22.04
 

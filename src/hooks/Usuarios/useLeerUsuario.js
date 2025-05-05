@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { RepositorioUsuarios } from "../../dominio/repositorios/Usuarios/repositorioLeerUsuario";
+import { useEffect, useState } from 'react';
+import { RepositorioUsuarios } from '../../Dominio/Repositorios/Usuarios/repositorioLeerUsuario';
 
 /**
  * Hook para obtener los datos de un usuario por su ID
@@ -10,12 +10,12 @@ import { RepositorioUsuarios } from "../../dominio/repositorios/Usuarios/reposit
  *   cargando: boolean,
  *   error: string | null
  * }}
- * 
+ *
  * @see [RF[03] Leer usuario - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF3)
  */
 export const useUsuarioId = (idUsuario) => {
   const [usuario, setUsuario] = useState(null);
-  const [mensaje, setMensaje] = useState("");
+  const [mensaje, setMensaje] = useState('');
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
 

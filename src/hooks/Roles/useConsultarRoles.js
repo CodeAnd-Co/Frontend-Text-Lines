@@ -1,6 +1,6 @@
 //RF[7] Consulta Lista de Roles - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF7]
 import { useEffect, useState } from 'react';
-import { RepositorioListaRol } from '../../dominio/repositorios/Roles/RepositorioListaRol';
+import { RepositorioListaRol } from '../../Dominio/Repositorios/Roles/RepositorioListaRol';
 
 /**
  * Hook para consultar la lista de roles.

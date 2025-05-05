@@ -14,12 +14,13 @@ import ListaRoles from '@Roles/ListaRoles';
 import ListaUsuarios from '@Usuarios/ListaUsuarios';
 import ListaCategorias from '@Categorias/ListaCategorias';
 import ListaSetsProductos from '@SetsProductos/ListaSetsProductos';
-
+import ListaEventos from '@Eventos/ListaEventos';
 import RutaProtegida from '@Rutas/RutaProtegida';
 import VerificarClienteSeleccionado from '@Rutas/VerificarClienteSeleccionado';
 import ListaPedidos from '@Pedidos/ListaPedidos';
 
 const RutasSistemaAdministrativo = () => {
+  console.log('CONSULTAR_EVENTOS:', RUTAS.SISTEMA_ADMINISTRATIVO.EVENTOS.CONSULTAR_EVENTOS);
   return (
     <Routes>
       <Route path={RUTAS.RAIZ} element={<Error404 />} />

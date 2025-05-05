@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { crearUsuario } from '@Repositorios/Usuarios/repositorioCrearUsuario';
 import { validarDatosCrearUsuario } from '@Modelos/Usuarios/modeloCrearUsuario';
+import { useConsultarListaUsuarios } from '@Hooks/Usuarios/useConsultarListaUsuarios';
+
 /**
  * RF1 - Crear Usuario - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF1
  * Hook `useCrearUsuario`
@@ -24,10 +26,11 @@ import { validarDatosCrearUsuario } from '@Modelos/Usuarios/modeloCrearUsuario';
  * Retorna todo el estado y funciones necesarios para usar el formulario de creación de usuario.
  */
 export const useCrearUsuario = () => {
+  const { usuarios } = useConsultarListaUsuarios();
   const [errores, setErrores] = useState({});
 
   const handleGuardarUsuario = async (datosUsuario) => {
-    const erroresValidacion = validarDatosCrearUsuario(datosUsuario);
+    const erroresValidacion = validarDatosCrearUsuario(datosUsuario, usuarios);
     setErrores(erroresValidacion);
     if (Object.keys(erroresValidacion).length > 0) return { exito: false };
 

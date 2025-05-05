@@ -17,6 +17,9 @@ import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
 import { useUsuarioId } from '@Hooks/Usuarios/useLeerUsuario';
 import InfoUsuario from '@Moleculas/UsuarioInfo';
 import PopUp from '@Moleculas/PopUp';
+import { useAuth } from '@Hooks/AuthProvider';
+import { PERMISOS } from '@Constantes/permisos';
+
 const estiloImagenLogo = { marginRight: '1rem' };
 
 /**
@@ -39,7 +42,7 @@ const ListaUsuarios = () => {
   const navigate = useNavigate();
   const [alerta, setAlerta] = useState(null);
   const { usuarios, cargando, error, recargar } = useConsultarListaUsuarios();
-
+  const { usuario: usuarioAutenticado } = useAuth();
   const [modalCrearUsuarioAbierto, setModalCrearUsuarioAbierto] = useState(false);
   const [idUsuarioSeleccionado, setIdUsuarioSeleccionado] = useState(null);
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
@@ -53,7 +56,10 @@ const ListaUsuarios = () => {
     navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE, { replace: true });
   };
 
-  const manejarCerrarSesion = async () => {};
+  const manejarCerrarSesion = async () => {
+    await cerrarSesion();
+  };
+  const { cerrarSesion } = useAuth();
 
   const {
     usuariosAEliminar,
@@ -198,6 +204,7 @@ const ListaUsuarios = () => {
       onClick: handleOpen,
       size: 'large',
       backgroundColor: colores.altertex[1],
+      disabled: !usuarioAutenticado?.permisos?.includes(PERMISOS.CREAR_USUARIO),
     },
     {
       label: 'Eliminar',
@@ -269,7 +276,11 @@ const ListaUsuarios = () => {
           />
         )}
         {modalCrearUsuarioAbierto && (
-          <FormularioCrearUsuario open={modalCrearUsuarioAbierto} onClose={handleClose} />
+          <FormularioCrearUsuario
+            open={modalCrearUsuarioAbierto}
+            onClose={handleClose}
+            onUsuarioCreado={recargar}
+          />
         )}
 
         <PopUp

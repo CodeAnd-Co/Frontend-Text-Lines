@@ -16,7 +16,6 @@ import { useMode, tokens } from '@SRC/theme';
 import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
 import { useUsuarioId } from '@Hooks/Usuarios/useLeerUsuario';
 import InfoUsuario from '@Moleculas/UsuarioInfo';
-import PopUp from '@SRC/Vistas/Componentes/Moleculas/PopUpEliminar';
 import PopUp from '@Moleculas/PopUp';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';

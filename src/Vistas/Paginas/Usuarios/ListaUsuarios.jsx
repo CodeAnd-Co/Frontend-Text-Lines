@@ -56,7 +56,11 @@ const ListaUsuarios = () => {
     navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE, { replace: true });
   };
 
-  const manejarCerrarSesion = async () => {};
+  const manejarCerrarSesion = async () => {
+    await cerrarSesion();
+  };
+  const { cerrarSesion } = useAuth();
+
 
   const {
     usuariosAEliminar,

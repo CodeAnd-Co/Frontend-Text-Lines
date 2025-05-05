@@ -1,8 +1,8 @@
 //RF17 - Consulta Lista Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF17
 import { useEffect, useState } from 'react';
-import { RepositorioConsultarEmpleados } from '../../Dominio/repositorios/Empleados/RepositorioConsultarEmpleados';
-import { useAuth } from '../../hooks/AuthProvider';
-import { PERMISOS } from '../../Utilidades/Constantes/permisos';
+import { RepositorioConsultarEmpleados } from '@Repositorios/Empleados/RepositorioConsultarEmpleados';
+import { useAuth } from '@Hooks/AuthProvider';
+import { PERMISOS } from '@Constantes/permisos';
 
 export function useConsultarEmpleados() {
   const [empleados, setEmpleados] = useState([]);

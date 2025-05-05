@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../hooks/AuthProvider';
-import { RUTAS } from '../Utilidades/Constantes/rutas';
+import { useAuth } from '@Hooks/AuthProvider';
+import { RUTAS } from '@Constantes/rutas';
 
 export default function RedireccionSesion({ children }) {
   const { usuario, cargando } = useAuth();

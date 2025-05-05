@@ -1,23 +1,19 @@
 import { Routes, Route } from 'react-router-dom';
-import { RUTAS } from '../Utilidades/Constantes/rutas';
-import { PERMISOS } from '../Utilidades/Constantes/permisos';
-import RutaProtegida from './RutaProtegida';
-import RutasAdministrativas from './RutasSistemaAdministrativo';
-import RutasTienda from './RutasTienda';
-import Error404 from '../Vistas/Paginas/Errores/Error404';
-import RedireccionSesion from './RedireccionSesion';
-import RutasSesion from './RutasSesion';
+import { RUTAS } from '@Constantes/rutas';
+import { PERMISOS } from '@Constantes/permisos';
+import RutaProtegida from '@Rutas/RutaProtegida';
+import RutasAdministrativas from '@Rutas/RutasSistemaAdministrativo';
+import RutasTienda from '@Rutas/RutasTienda';
+// import Error404 from '@Errores/Error404';
+import RedireccionSesion from '@Rutas/RedireccionSesion';
+import RutasSesion from '@Rutas/RutasSesion';
 
 export default function AppRouter() {
   return (
     <Routes>
       <Route
         path={RUTAS.RAIZ}
-        element={
-          <RedireccionSesion>
-            <Error404 />
-          </RedireccionSesion>
-        }
+        element={<RedireccionSesion>{/* <Error404 /> */}</RedireccionSesion>}
       />
       <Route path={RUTAS.INICIO_SESION} element={<RutasSesion />} />
       <Route

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { RepositorioListaCategorias } from '@SRC/Dominio/Repositorios/Categorias/repositorioListaCategorias';
+import { RepositorioListaCategorias } from '@Repositorios/Categorias/repositorioListaCategorias';
 
 /**
  * Hook para consultar la lista de categorías.

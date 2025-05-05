@@ -1,7 +1,7 @@
 //RF37 - Consulta Lista de Eventos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF37
 import axios from 'axios';
 import { RUTAS_API } from '@Utilidades/Constantes/rutasAPI';
-import { ListaEventos } from '@SRC/Dominio/Modelos/Eventos/ListaEventos';
+import { ListaEventos } from '@Modelos/Eventos/ListaEventos';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 

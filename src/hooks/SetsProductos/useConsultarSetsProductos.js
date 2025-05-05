@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { RepositorioConsultarSetsProductos } from '../../dominio/repositorios/SetsProductos/RepositorioConsultarSetsProductos';
+import { RepositorioConsultarSetsProductos } from '@Repositorios/SetsProductos/RepositorioConsultarSetsProductos';
 
 /**
  * Hook para consultar la lista de sets de productos desde el repositorio.

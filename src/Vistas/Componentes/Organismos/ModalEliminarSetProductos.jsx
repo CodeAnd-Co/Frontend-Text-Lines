@@ -1,8 +1,8 @@
 //RF[45] Elimina set de productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF45]
 
 import { useEffect, useState } from 'react';
-import { useEliminarSetProductos } from '../../../hooks/SetsProductos/useEliminarSetProductos';
-import PopUp from '../../Componentes/Moleculas/PopUp';
+import { useEliminarSetProductos } from '@Hooks/SetsProductos/useEliminarSetProductos';
+import PopUp from '@Moleculas/PopUp';
 
 const ModalEliminarSetProductos = ({
   open,

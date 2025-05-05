@@ -1,11 +1,11 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import Texto from '../../Componentes/Atomos/Texto';
-import Alerta from '../../Componentes/Moleculas/Alerta';
-import { useCrearCuotaSet } from '../../../hooks/Cuotas//useCrearCuotaSet';
-import CuerpoPrincipal from '../../Componentes/Organismos/Cuotas/CuerpoPrincipal';
-import { useAuth } from '../../../hooks/AuthProvider';
-import { RUTAS } from '../../../Utilidades/Constantes/rutas';
+import Texto from '@Atomos/Texto';
+import Alerta from '@Moleculas/Alerta';
+import { useCrearCuotaSet } from '@Hooks/Cuotas/useCrearCuotaSet';
+import CuerpoPrincipal from '@Organismos/Cuotas/CuerpoPrincipal';
+import { useAuth } from '@Hooks/AuthProvider';
+import { RUTAS } from '@Constantes/rutas';
 
 const EditarCuotas = () => {
   const ubicacion = useLocation();

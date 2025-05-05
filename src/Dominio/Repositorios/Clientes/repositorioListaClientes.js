@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { ListaClientes } from '../../Modelos/Clientes/ListaClientes';
-import { RUTAS_API } from '../../../Utilidades/Constantes/rutasAPI';
+import { ListaClientes } from '@Modelos/Clientes/ListaClientes';
+import { RUTAS_API } from '@Constantes/rutasAPI';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 

@@ -1,4 +1,4 @@
-import Contenedor from '../Componentes/Atomos/Contenedor';
+import Contenedor from '@Atomos/Contenedor';
 
 export default {
   title: 'Componentes/Átomos/Contenedor',

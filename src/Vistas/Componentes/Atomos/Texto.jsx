@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
-import { tokens } from '../../../theme'; // Asegúrate de que la ruta es correcta
+import { tokens } from '@SRC/theme'; // Asegúrate de que la ruta es correcta
 
 const Texto = ({
   variant = 'body1',

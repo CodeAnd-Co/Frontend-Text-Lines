@@ -1,7 +1,7 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
 import { useTheme } from '@mui/material/styles';
-import { tokens } from '../../../theme';
+import { tokens } from '@SRC/theme';
 
 export const NumeroInput = ({
   value,

@@ -1,6 +1,6 @@
-import { useAuth } from '../hooks/AuthProvider';
+import { useAuth } from '@Hooks/AuthProvider';
 import { Navigate } from 'react-router-dom';
-import { RUTAS } from '../Utilidades/Constantes/rutas';
+import { RUTAS } from '@Constantes/rutas';
 
 export default function VerificarClienteSeleccionado({ children }) {
   const { usuario, cargando } = useAuth();

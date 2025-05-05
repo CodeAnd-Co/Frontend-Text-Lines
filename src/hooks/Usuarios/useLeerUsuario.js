@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { RepositorioUsuarios } from '../../Dominio/Repositorios/Usuarios/repositorioLeerUsuario';
+import { RepositorioUsuarios } from '@Repositorios/Usuarios/repositorioLeerUsuario';
 
 /**
  * Hook para obtener los datos de un usuario por su ID

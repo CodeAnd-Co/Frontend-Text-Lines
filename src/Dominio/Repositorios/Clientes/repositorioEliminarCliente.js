@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { RUTAS_API } from '../../../Utilidades/Constantes/rutasAPI';
+import { RUTAS_API } from '@Constantes/rutasAPI';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
@@ -13,20 +13,20 @@ const API_KEY = import.meta.env.VITE_API_KEY;
  *
  */
 export const repositorioEliminarCliente = async (idCliente) => {
-    try {
-      const respuesta = await axios.post(
-        RUTAS_API.CLIENTES.ELIMINAR_CLIENTE,
-        { idCliente },
-        {
-          headers: {
-            'x-api-key': API_KEY,
-          },
-          withCredentials: true,
-        }
-      );
-      return respuesta.data;
-    } catch (error) {
-      const mensaje = error.response?.data?.mensaje || 'Error al eliminar cliente';
-      throw new Error(mensaje);
-    }
-  };
+  try {
+    const respuesta = await axios.post(
+      RUTAS_API.CLIENTES.ELIMINAR_CLIENTE,
+      { idCliente },
+      {
+        headers: {
+          'x-api-key': API_KEY,
+        },
+        withCredentials: true,
+      }
+    );
+    return respuesta.data;
+  } catch (error) {
+    const mensaje = error.response?.data?.mensaje || 'Error al eliminar cliente';
+    throw new Error(mensaje);
+  }
+};

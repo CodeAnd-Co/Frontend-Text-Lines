@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Box, useTheme } from '@mui/material';
-import Texto from '../Atomos/Texto';
-import CampoTexto from '../Atomos/CampoTexto';
-import CampoSelect from '../Atomos/CampoSelect';
-import Chip from '../Atomos/Chip';
+import Texto from '@Atomos/Texto';
+import CampoTexto from '@Atomos/CampoTexto';
+import CampoSelect from '@Atomos/CampoSelect';
+import Chip from '@Atomos/Chip';
 
 const InfoUsuario = ({
   modoEdicion = false,

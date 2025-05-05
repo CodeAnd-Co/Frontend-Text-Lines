@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useTheme } from '@mui/material/styles';
-import { ColorModeContext } from '../../../theme';
-import Icono from '../Atomos/Icono';
+import { ColorModeContext } from '@SRC/theme';
+import Icono from '@Atomos/Icono';
 
 const TemaIcono = () => {
   const theme = useTheme();

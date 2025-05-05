@@ -1,4 +1,4 @@
-import { Cliente } from './Cliente';
+import { Cliente } from '@Modelos/Clientes/Cliente';
 /**
  * Modelo de la respuesta que contiene una lista de clientes
  */

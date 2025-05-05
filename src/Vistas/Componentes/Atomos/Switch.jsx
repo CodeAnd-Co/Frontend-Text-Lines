@@ -4,7 +4,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import MuiSwitch from '@mui/material/Switch';
 import { useTheme } from '@mui/material/styles';
-import { tokens } from '../../../theme';
+import { tokens } from '@SRC/theme';
 
 const CustomSwitch = ({
   label,

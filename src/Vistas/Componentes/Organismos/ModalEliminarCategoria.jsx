@@ -1,8 +1,8 @@
 //RF[50] - Elimina categoría de productos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF50
 
 import { useState, useEffect } from 'react';
-import { useEliminarCategorias } from '../../../hooks/Categorias/useEliminarCategorias';
-import PopUp from '../../Componentes/Moleculas/PopUp';
+import { useEliminarCategorias } from '@Hooks/Categorias/useEliminarCategorias';
+import PopUp from '@Moleculas/PopUp';
 
 const ModalEliminarCategoria = ({ open, onClose, idsCategoria, setAlerta, refrescarPagina }) => {
   const [confirmado, setConfirmado] = useState(false);

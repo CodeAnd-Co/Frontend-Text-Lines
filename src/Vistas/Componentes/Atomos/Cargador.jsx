@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
-import { tokens } from '../../../theme'; // Asegúrate de que la ruta es correcta
+import { tokens } from '@SRC/theme'; // Asegúrate de que la ruta es correcta
 
 const Cargador = ({ size = 40, thickness = 4, color = 'primary' }) => {
   const theme = useTheme();

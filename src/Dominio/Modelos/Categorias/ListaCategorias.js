@@ -1,10 +1,10 @@
-import { Categoria } from './Categoria';
+import { Categoria } from '@Modelos/Categorias/Categoria';
 /**
  * Convierte una lista de categorías recibida del backend en instancias del modelo Categoria.
- * @param {Object} respuestaJson - JSON recibido del backend, que contiene las propiedades 
+ * @param {Object} respuestaJson - JSON recibido del backend, que contiene las propiedades
  *                                 `mensaje` (string) y `listaCategoria` (array de categorías).
  * @returns {{
- *   categorias: Categoria[], 
+ *   categorias: Categoria[],
  *   mensaje: string
  * }}
  */

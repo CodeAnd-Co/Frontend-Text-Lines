@@ -4,7 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import * as MuiIcons from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
-import { tokens } from '../../../theme';
+import { tokens } from '@SRC/theme';
 
 const Icono = ({
   nombre,
@@ -40,8 +40,8 @@ const Icono = ({
 
   const isCustomColor = !muiColors.includes(color);
 
-  const customColor
-    = isCustomColor && colores[color] ? colores[color][500] || colores[color][0] || color : color;
+  const customColor =
+    isCustomColor && colores[color] ? colores[color][500] || colores[color][0] || color : color;
 
   const icon = (
     <IconComponent

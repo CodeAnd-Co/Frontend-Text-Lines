@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material';
 import MUIButton from '@mui/material/Button';
-import { tokens } from '../../../theme';
+import { tokens } from '@SRC/theme';
 
 const Boton = ({
   variant = 'contained',
@@ -19,16 +19,16 @@ const Boton = ({
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const outlinedStyle
-    = variant === 'outlined' && outlineColor
+  const outlinedStyle =
+    variant === 'outlined' && outlineColor
       ? {
           border: `1.5px solid ${outlineColor}`,
           color: outlineColor,
         }
       : {};
 
-  const selectedStyle
-    = selected && variant === 'contained'
+  const selectedStyle =
+    selected && variant === 'contained'
       ? {
           backgroundColor: colors.altertex[2],
           color: colors.primario[4],

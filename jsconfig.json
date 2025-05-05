@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@SRC/*": ["src/*"],
+
+      "@Dominio/*": ["src/Dominio/*"],
+      "@Modelos/*": ["src/Dominio/Modelos/*"],
+      "@Repositorios/*": ["src/Dominio/Repositorios/*"],
+      "@Servicios/*": ["src/Dominio/Servicios/*"],
+
+      "@Vistas/*": ["src/Vistas/*"],
+      "@Componentes/*": ["src/Vistas/Componentes/*"],
+      "@Atomos/*": ["src/Vistas/Componentes/Atomos/*"],
+      "@Moleculas/*": ["src/Vistas/Componentes/Moleculas/*"],
+      "@Organismos/*": ["src/Vistas/Componentes/Organismos/*"],
+      "@Paginas/*": ["src/Vistas/Paginas/*"],
+
+      "@Categorias/*": ["src/Vistas/Paginas/Categorias/*"],
+      "@Clientes/*": ["src/Vistas/Paginas/Clientes/*"],
+      "@Configuracion/*": ["src/Vistas/Paginas/Configuracion/*"],
+      "@Cuotas/*": ["src/Vistas/Paginas/Cuotas/*"],
+      "@Empleados/*": ["src/Vistas/Paginas/Empleados/*"],
+      "@Errores/*": ["src/Vistas/Paginas/Errores/*"],
+      "@Eventos/*": ["src/Vistas/Paginas/Eventos/*"],
+      "@Pedidos/*": ["src/Vistas/Paginas/Pedidos/*"],
+      "@Productos/*": ["src/Vistas/Paginas/Productos/*"],
+      "@Roles/*": ["src/Vistas/Paginas/Roles/*"],
+      "@SetsProductos/*": ["src/Vistas/Paginas/SetsProductos/*"],
+      "@Usuarios/*": ["src/Vistas/Paginas/Usuarios/*"],
+
+      "@IniciarSesion": ["src/Vistas/Paginas/IniciarSesion.jsx"],
+      "@SistemaAdministrativo": ["src/Vistas/Paginas/SistemaAdministrativo.jsx"],
+      "@Tienda": ["src/Vistas/Paginas/Tienda.jsx"],
+
+      "@Rutas/*": ["src/Rutas/*"],
+      "@Constantes/*": ["src/Utilidades/Constantes/*"],
+      "@Hooks/*": ["src/hooks/*"],
+      "@Utilidades/*": ["src/Utilidades/*"],
+      "@Temporal": ["src/temporal.jsx"]
+    }
+  },
+  "include": ["src"]
+}

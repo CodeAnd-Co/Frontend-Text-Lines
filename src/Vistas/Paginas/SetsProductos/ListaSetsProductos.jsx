@@ -110,7 +110,7 @@ const ListaSetsProductos = () => {
       onClick: () => console.log('Editar'),
       color: 'primary',
       size: 'large',
-      outlineColor: colores.primario[3],
+      outlineColor: colores.altertex[1],
     },
     {
       label: 'Eliminar',

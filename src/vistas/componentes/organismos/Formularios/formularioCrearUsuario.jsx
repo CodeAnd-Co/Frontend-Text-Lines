@@ -6,6 +6,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
 import CampoTexto from '../../atomos/CampoTexto';
 import CampoSelect from '../../atomos/CampoSelect';
+import CampoSelectMultiple from '../../atomos/CampoSelectMultiple';
 import Alerta from '../../moleculas/Alerta';
 import ModalFlotante from '../../organismos/ModalFlotante';
 import { useConsultarRoles } from '../../../../hooks/Roles/useConsultarRoles';
@@ -25,7 +26,7 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
     codigoPostal: '',
     fechaNacimiento: null,
     genero: '',
-    cliente: '',
+    cliente: [],
     rol: '',
   });
 
@@ -60,7 +61,7 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
           codigoPostal: '',
           fechaNacimiento: null,
           genero: '',
-          cliente: '',
+          cliente: [],
           rol: '',
         });
       } else {
@@ -235,7 +236,7 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
           </Grid>
 
           <Grid size={6} sx={estiloCuadricula}>
-            <CampoSelect
+            <CampoSelectMultiple
               label='Cliente'
               name='cliente'
               value={datosUsuario.cliente}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { repositorioEliminarCliente } from '@SRC/Dominio/Repositorios/Clientes/repositorioEliminarCliente';
+import { repositorioEliminarCliente } from '@Repositorios/Clientes/repositorioEliminarCliente';
 
 /**
  * Hook para eliminar un cliente por su ID.

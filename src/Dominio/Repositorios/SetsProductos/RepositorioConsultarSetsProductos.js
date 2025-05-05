@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { listaSetsProductos } from '@SRC/Dominio/Modelos/SetsProductos/ListaSetsProductos';
+import { listaSetsProductos } from '@Modelos/SetsProductos/ListaSetsProductos';
 import { RUTAS_API } from '@Constantes/rutasAPI';
 
 const API_KEY = import.meta.env.VITE_API_KEY;

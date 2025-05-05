@@ -1,9 +1,9 @@
 //RF[50] - Elimina categoría de productos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF50
 
 import { useEffect, useState } from 'react';
-import { RepositorioEliminarCategorias } from '@SRC/Dominio/Repositorios/Categorias/repositorioEliminarCategorias';
+import { RepositorioEliminarCategorias } from '@Repositorios/Categorias/repositorioEliminarCategorias';
 
-/**
+/**+
  * Hook para eliminar una o más categorías.
  * @param {array} idsCategoria
  * @return {{

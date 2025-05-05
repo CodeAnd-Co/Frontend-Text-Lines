@@ -1,4 +1,4 @@
-import { Categoria } from '@SRC/Dominio/Modelos/Categorias/Categoria';
+import { Categoria } from '@Modelos/Categorias/Categoria';
 /**
  * Convierte una lista de categorías recibida del backend en instancias del modelo Categoria.
  * @param {Object} respuestaJson - JSON recibido del backend, que contiene las propiedades

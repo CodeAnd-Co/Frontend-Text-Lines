@@ -1,6 +1,6 @@
 //RF[7] Consulta Lista de Roles - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF7]
 import axios from 'axios';
-import { listaRoles } from '@SRC/Dominio/Modelos/Roles/ListaRoles';
+import { listaRoles } from '@Modelos/Roles/ListaRoles';
 import { RUTAS_API } from '@Constantes/rutasAPI';
 
 const API_KEY = import.meta.env.VITE_API_KEY;

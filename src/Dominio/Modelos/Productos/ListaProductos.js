@@ -1,4 +1,4 @@
-import { Producto } from '@SRC/Dominio/Modelos/Productos/Producto';
+import { Producto } from '@Modelos/Productos/Producto';
 
 /**
  * Modelo de la respuesta que contiene una lista de productos

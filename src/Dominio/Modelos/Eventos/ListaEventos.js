@@ -1,4 +1,4 @@
-import { Evento } from './Eventos';
+import { Evento } from '@Modelos/Eventos/Eventos';
 
 export class ListaEventos {
   constructor({ mensaje, listaEventos }) {

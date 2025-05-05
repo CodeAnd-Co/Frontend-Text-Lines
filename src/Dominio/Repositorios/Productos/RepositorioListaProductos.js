@@ -1,6 +1,6 @@
 //RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
 import axios from 'axios';
-import { ListaProductos } from '@SRC/Dominio/Modelos/Productos/ListaProductos';
+import { ListaProductos } from '@Modelos/Productos/ListaProductos';
 import { RUTAS_API } from '@Constantes/rutasAPI';
 
 const API_KEY = import.meta.env.VITE_API_KEY;

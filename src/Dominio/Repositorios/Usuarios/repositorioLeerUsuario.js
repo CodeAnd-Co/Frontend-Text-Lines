@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { UsuarioLectura } from '@SRC/Dominio/Modelos/Usuarios/UsuarioLectura';
+import { UsuarioLectura } from '@Modelos/Usuarios/UsuarioLectura';
 import { RUTAS_API } from '@Constantes/rutasAPI';
 
 const API_KEY = import.meta.env.VITE_API_KEY;

@@ -1,6 +1,6 @@
 //RF02 Super Administrador Consulta Lista de Usuarios - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF2
 
-import { Usuario } from '@SRC/Dominio/Modelos/Usuarios/Usuario';
+import { Usuario } from '@Modelos/Usuarios/Usuario';
 
 /**
  * Convierte una lista del backend en instancias del modelo Usuario

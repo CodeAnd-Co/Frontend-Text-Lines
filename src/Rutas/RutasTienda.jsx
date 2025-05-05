@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 // import RUTAS from './Utilidades/Constates/rutas';
-// import Carrito from './paginas/tienda/Carrito';
-// import Catalogo from './paginas/tienda/Catalogo';
+// import Carrito from './Paginas/tienda/Carrito';
+// import Catalogo from './Paginas/tienda/Catalogo';
 
 const RutasTienda = () => {
   return (

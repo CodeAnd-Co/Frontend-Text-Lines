@@ -11,8 +11,9 @@ import ModalFlotante from '@Organismos/ModalFlotante';
 import { useConsultarRoles } from '@Hooks/Roles/useConsultarRoles';
 import { useConsultarClientes } from '@Hooks/Clientes/useConsultarClientes';
 import { useCrearUsuario } from '@Hooks/Usuarios/useCrearUsuario';
+import CampoSelectMultiple from '@Atomos/CampoSelectMultiple';
 
-const FormularioCrearUsuario = ({ open, onClose }) => {
+const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
   const [alerta, setAlerta] = useState(null);
   const [datosUsuario, setDatosUsuario] = useState({
     nombreCompleto: '',
@@ -25,7 +26,7 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
     codigoPostal: '',
     fechaNacimiento: null,
     genero: '',
-    cliente: '',
+    cliente: [],
     rol: '',
   });
 
@@ -40,6 +41,7 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
 
     if (resultado?.mensaje) {
       if (resultado.exito) {
+        if (onUsuarioCreado) await onUsuarioCreado();
         const resumenUsuario = `
           Usuario ${datosUsuario.nombreCompleto} ${datosUsuario.apellido} creado exitosamente.
         `;
@@ -60,7 +62,7 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
           codigoPostal: '',
           fechaNacimiento: null,
           genero: '',
-          cliente: '',
+          cliente: [],
           rol: '',
         });
       } else {
@@ -145,12 +147,13 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
           </Grid>
 
           <Grid size={6} sx={estiloCuadricula}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
               <DateField
                 required
                 label='Fecha de nacimiento'
                 value={datosUsuario.fechaNacimiento}
                 onChange={manejarFechaNacimiento}
+                format="DD/MM/YYYY"
                 sx={{ width: '30ch' }}
                 slotProps={{
                   textField: {
@@ -212,6 +215,9 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
               helperText={
                 errores.numeroTelefono === true ? CAMPO_OBLIGATORIO : errores.numeroTelefono || ''
               }
+              inputProps={{
+                maxLength: 10,
+              }}
             />
           </Grid>
 
@@ -232,7 +238,7 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
           </Grid>
 
           <Grid size={6} sx={estiloCuadricula}>
-            <CampoSelect
+            <CampoSelectMultiple
               label='Cliente'
               name='cliente'
               value={datosUsuario.cliente}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { RepositorioConsultarSetsProductos } from '../../dominio/repositorios/SetsProductos/RepositorioConsultarSetsProductos';
+import { RepositorioConsultarSetsProductos } from '@Repositorios/SetsProductos/RepositorioConsultarSetsProductos';
 
 /**
  * Hook para consultar la lista de sets de productos desde el repositorio.
@@ -32,6 +32,7 @@ export function useConsultarSetsProductos() {
 
       try {
         const { setsDeProductos, mensaje } = await RepositorioConsultarSetsProductos.obtenerLista();
+
         setSetsProductos(setsDeProductos);
         setMensaje(mensaje);
       } catch (err) {

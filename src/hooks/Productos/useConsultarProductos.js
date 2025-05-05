@@ -1,6 +1,6 @@
 //RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
 import { useEffect, useState } from 'react';
-import { RepositorioListaProductos } from '../../dominio/repositorios/Productos/repositorioListaProductos';
+import { RepositorioListaProductos } from '@Repositorios/Productos/RepositorioListaProductos';
 
 /**
  * Hook para consultar la lista de productos.
@@ -10,6 +10,7 @@ import { RepositorioListaProductos } from '../../dominio/repositorios/Productos/
  *   cargando: boolean,
  *   error: string | null,
  *   mensaje: string,
+ *  recargar: () => void
  * }}
  */
 export function useConsultarProductos() {
@@ -17,6 +18,7 @@ export function useConsultarProductos() {
   const [mensaje, setMensaje] = useState('');
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
+  const [recargarToken, setRecargarToken] = useState(0);
 
   useEffect(() => {
     const cargar = async () => {
@@ -36,7 +38,10 @@ export function useConsultarProductos() {
     };
 
     cargar();
-  }, []);
+  }, [recargarToken]);
+  const recargar = () => {
+    setRecargarToken((prev) => prev + 1);
+  };
 
-  return { productos, mensaje, cargando, error };
+  return { productos, mensaje, cargando, error, recargar };
 }

@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
         }
       );
     } catch (error) {
+      console.error('Error al cerrar sesión:', error);
     } finally {
       setUsuario(null);
     }

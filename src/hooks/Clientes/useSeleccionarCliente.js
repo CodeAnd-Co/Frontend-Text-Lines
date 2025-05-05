@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../AuthProvider';
-import { RUTAS } from '../../Utilidades/Constantes/rutas';
-import { RepositorioSeleccionarCliente } from '../../Dominio/repositorios/Clientes/RepositorioSeleccionarCliente';
+import { useAuth } from '@Hooks/AuthProvider';
+import { RUTAS } from '@Constantes/rutas';
+import { RepositorioSeleccionarCliente } from '@Repositorios/Clientes/repositorioSeleccionarCliente';
 
 /**
  * Hook personalizado para seleccionar un cliente en el sistema.
@@ -18,10 +18,12 @@ export const useSeleccionarCliente = () => {
   const seleccionarCliente = useCallback(
     async (idCliente) => {
       try {
-        const mensaje = await RepositorioSeleccionarCliente.seleccionarCliente(idCliente);
+        await RepositorioSeleccionarCliente.seleccionarCliente(idCliente);
         await verificarSesion();
         navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO);
-      } catch (error) {}
+      } catch (error) {
+        console.error('Error al seleccionar cliente:', error.message);
+      }
     },
     [navigate, verificarSesion]
   );

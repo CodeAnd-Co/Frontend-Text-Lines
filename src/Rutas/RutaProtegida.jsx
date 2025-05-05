@@ -1,6 +1,6 @@
-import { useAuth } from '../hooks/AuthProvider';
-import Error403 from '../vistas/Paginas/Errores/Error403';
-import IniciarSesion from '../Vistas/Paginas/IniciarSesion';
+import { useAuth } from '@Hooks/AuthProvider';
+import Error403 from '@Errores/Error403';
+import IniciarSesion from '@Paginas/IniciarSesion';
 
 export default function RutaProtegida({ permiso, children }) {
   const { usuario, cargando } = useAuth();

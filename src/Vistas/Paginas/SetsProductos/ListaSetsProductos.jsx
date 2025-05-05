@@ -7,7 +7,7 @@ import ContenedorLista from '@Organismos/ContenedorLista';
 import Alerta from '@Moleculas/Alerta';
 import Chip from '@Atomos/Chip';
 import { useEliminarSetProductos } from '@Hooks/SetsProductos/useEliminarSetProductos';
-import PopUp from '@SRC/Vistas/Componentes/Moleculas/PopUp';
+import PopUp from '@Moleculas/PopUp';
 import { Box, useTheme } from '@mui/material';
 import { useConsultarSetsProductos } from '@Hooks/SetsProductos/useConsultarSetsProductos';
 import { tokens } from '@SRC/theme';

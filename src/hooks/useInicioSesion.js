@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { useAuth } from './AuthProvider'; // ajusta el path si es necesario
+import { useAuth } from '@Hooks/AuthProvider'; // ajusta el path si es necesario
 
 // Variables de entorno para la URL base de la API y la clave de autenticación
 const API_URL = import.meta.env.VITE_API_URL;

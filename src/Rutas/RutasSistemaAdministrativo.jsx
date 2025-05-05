@@ -20,7 +20,6 @@ import VerificarClienteSeleccionado from '@Rutas/VerificarClienteSeleccionado';
 import ListaPedidos from '@Pedidos/ListaPedidos';
 
 const RutasSistemaAdministrativo = () => {
-  console.log('CONSULTAR_EVENTOS:', RUTAS.SISTEMA_ADMINISTRATIVO.EVENTOS.CONSULTAR_EVENTOS);
   return (
     <Routes>
       <Route path={RUTAS.RAIZ} element={<Error404 />} />

@@ -275,7 +275,7 @@ const ListaUsuarios = () => {
           <FormularioCrearUsuario open={modalCrearUsuarioAbierto} onClose={handleClose} />
         )}
 
-        <PopUpEliminar
+        <PopUp
           abrir={abrirPopUp}
           cerrar={manejarCerrarPopUp}
           confirmar={manejarEliminarUsuarios}

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Tabla from '../../Componentes/Organismos/Tabla';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
 import Alerta from '../../Componentes/moleculas/Alerta';
-import PopUpEliminar from '../../componentes/moleculas/PopUpEliminar';
+import PopUp from '../../componentes/moleculas/PopUp';
 import { useConsultarProductos } from '../../../hooks/Productos/useConsultarProductos';
 import { useEliminarProductos } from '../../../hooks/Productos/useEliminarProductos';
 import { useMode, tokens } from '../../../theme';
@@ -177,7 +177,7 @@ const ListaProductos = () => {
         />
       )}
 
-      <PopUpEliminar
+      <PopUp
         abrir={openModalEliminar}
         cerrar={manejarCancelarEliminar}
         confirmar={manejarConfirmarEliminar}

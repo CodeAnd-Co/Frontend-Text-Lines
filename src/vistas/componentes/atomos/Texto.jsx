@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';

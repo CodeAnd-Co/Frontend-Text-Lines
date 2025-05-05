@@ -17,6 +17,7 @@ const CampoSelect = ({
   error = false,
   helperText = '',
   disabled = false,
+  autoWidth = false,
   size = 'small',
   ...props
 }) => {
@@ -35,6 +36,7 @@ const CampoSelect = ({
         name={name}
         value={value}
         label={label}
+        autoWidth={autoWidth}
         onChange={onChange}
         {...props}
       >

@@ -1,20 +1,38 @@
 //RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Tabla from '../../Componentes/Organismos/Tabla';
 import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
-import FormularioCrearProducto from '../../Componentes/organismos/Formularios/FormularioCrearProducto';
+import FormularioProducto from '../../Componentes/organismos/Formularios/FormularioProducto';
+import FormularioProveedor from '../../Componentes/organismos/Formularios/FormularioProveedor';
 import { useConsultarProductos } from '../../../hooks/Productos/useConsultarProductos';
 import { Box, useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
 
 const ListaProductos = () => {
   const { productos, cargando } = useConsultarProductos();
-  const [modalCrearProducto, setModalCrearProducto] = useState(false);
+  const [mostrarModalProveedor, setMostrarModalProveedor] = useState(false);
+  const [mostrarModalProducto, setMostrarModalProducto] = useState(false);
   const tema = useTheme();
   const colores = tokens(tema.palette.mode);
 
-  const handleOpen = () => setModalCrearProducto(true);
-  const handleClose = () => setModalCrearProducto(false);
+  const mostrarFormularioProducto = useCallback(() => {
+    setMostrarModalProducto(true);
+    setMostrarModalProveedor(false);
+  }, []);
+
+  const mostrarFormularioProveedor = useCallback(() => {
+    setMostrarModalProducto(false);
+    setMostrarModalProveedor(true);
+  }, []);
+
+  const cerrarFormularioProducto = useCallback(() => {
+    setMostrarModalProducto(false);
+  }, []);
+
+  const cerrarFormularioProveedor = useCallback(() => {
+    setMostrarModalProveedor(false);
+    setMostrarModalProducto(true);
+  }, []);
 
   const columnas = [
     {
@@ -33,7 +51,6 @@ const ListaProductos = () => {
       field: 'nombreComun',
       headerName: 'Nombre',
       flex: 1,
-
       cellClassName: 'name-column--cell',
     },
     {
@@ -79,7 +96,7 @@ const ListaProductos = () => {
   }));
 
   const botones = [
-    { label: 'Añadir', onClick: handleOpen },
+    { label: 'Añadir', onClick: mostrarFormularioProducto },
     {
       variant: 'outlined',
       label: 'Importar',
@@ -102,8 +119,18 @@ const ListaProductos = () => {
       descripcion='Gestiona y organiza los productos registrados en el sistema.'
       informacionBotones={botones}
     >
-      {modalCrearProducto && (
-        <FormularioCrearProducto open={modalCrearProducto} onClose={handleClose} />
+      {mostrarModalProducto && (
+        <FormularioProducto
+          open={mostrarModalProducto}
+          onCerrarFormularioProducto={cerrarFormularioProducto}
+          onMostrarFormularioProveedor={mostrarFormularioProveedor}
+        />
+      )}
+      {mostrarModalProveedor && (
+        <FormularioProveedor
+          open={mostrarModalProveedor}
+          onCerrarFormularioProveedor={cerrarFormularioProveedor}
+        />
       )}
       <Box width={'100%'}>
         <Tabla

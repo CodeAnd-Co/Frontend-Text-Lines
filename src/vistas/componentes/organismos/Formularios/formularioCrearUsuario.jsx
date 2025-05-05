@@ -108,7 +108,6 @@ const FormularioCrearUsuario = ({ open, onClose }) => {
           '& .MuiTextField-root': { margin: 1, width: '30ch' },
           '& .MuiFormControl-root': { margin: 1, minWidth: '30ch' },
         }}
-        noValidate
         autoComplete='off'
       >
         <Grid container columns={12}>

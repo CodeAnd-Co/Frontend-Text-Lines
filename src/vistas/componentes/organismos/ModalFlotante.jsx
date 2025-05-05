@@ -1,9 +1,42 @@
-import React from 'react';
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Paper } from '@mui/material';
 import Texto from '../Atomos/Texto';
 import GrupoBotones from '../Moleculas/GrupoBotones';
 import { useMode, tokens } from '../../../theme';
+
+const Titulo = memo(({ titulo, tituloVariant, theme }) => (
+  <Texto variant={tituloVariant} gutterBottom sx={{ color: theme.palette.text }}>
+    {titulo}
+  </Texto>
+));
+
+const Botones = memo(({ botones, defaultBotones }) => (
+  <GrupoBotones buttons={botones ?? defaultBotones} spacing={1} direction='row' align='end' />
+));
+
+const Contenedor = memo(({ titulo, tituloVariant, botones, children, theme, defaultBotones }) => (
+  <Paper
+    sx={{
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      maxHeight: '80vh',
+      overflowY: 'auto',
+      bgcolor: theme.palette.backgroundColor,
+      boxShadow: 24,
+      borderRadius: 2,
+      padding: 3,
+      outline: 'none',
+      width: 620,
+    }}
+  >
+    {titulo && <Titulo titulo={titulo} tituloVariant={tituloVariant} theme={theme} />}
+    {children}
+    <Botones botones={botones} defaultBotones={defaultBotones} />
+  </Paper>
+));
 
 const ModalFlotante = ({
   open,
@@ -47,32 +80,14 @@ const ModalFlotante = ({
         },
       }}
     >
-      <Paper
-        sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          maxHeight: '80vh',
-          overflowY: 'auto',
-          bgcolor: theme.palette.backgroundColor,
-          boxShadow: 24,
-          borderRadius: 2,
-          padding: 3,
-          outline: 'none',
-          width: 620,
-        }}
-      >
-        {titulo && (
-          <Texto variant={tituloVariant} gutterBottom sx={{ color: theme.palette.text }}>
-            {titulo}
-          </Texto>
-        )}
-
-        {children}
-
-        <GrupoBotones buttons={botones ?? defaultBotones} spacing={1} direction='row' align='end' />
-      </Paper>
+      <Contenedor
+        titulo={titulo}
+        tituloVariant={tituloVariant}
+        botones={botones}
+        children={children}
+        theme={theme}
+        defaultBotones={defaultBotones}
+      />
     </Modal>
   );
 };

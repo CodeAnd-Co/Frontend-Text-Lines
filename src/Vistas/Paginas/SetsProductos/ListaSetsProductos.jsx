@@ -25,7 +25,7 @@ const ListaSetsProductos = () => {
   const [alerta, setAlerta] = useState(null);
   const { eliminar } = useEliminarSetProductos();
   // Estado para controlar la visualización del modal eliminar
-  const [openModalEliminar, setAbrirPopUpEliminar] = useState(false);
+  const [abrirEliminar, setAbrirPopUpEliminar] = useState(false);
   const manejarCancelarEliminar = () => {
     setAbrirPopUpEliminar(false);
   };
@@ -172,7 +172,7 @@ const ListaSetsProductos = () => {
         />
       )}
       <PopUp
-        abrir={openModalEliminar}
+        abrir={abrirEliminar}
         cerrar={manejarCancelarEliminar}
         confirmar={manejarConfirmarEliminar}
         dialogo={MENSAJE_POPUP_ELIMINAR}

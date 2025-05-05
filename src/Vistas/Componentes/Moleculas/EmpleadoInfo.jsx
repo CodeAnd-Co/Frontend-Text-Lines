@@ -44,28 +44,28 @@ const InfoEmpleado = ({
 
           <Texto gutterBottom sx={{ mb: 2 }}>
             <strong>Área de Trabajo:</strong>{' '}
-            <span style={{ color: colores.altertex[2], fontWeight: 500 }}>
+            <span style={{ color: colores.altertex[3], fontWeight: 500 }}>
               {areaTrabajo || 'No especificada'}
             </span>
           </Texto>
 
           <Texto gutterBottom sx={{ mb: 2 }}>
             <strong>Posición:</strong>{' '}
-            <span style={{ color: colores.altertex[2], fontWeight: 500 }}>
+            <span style={{ color: colores.altertex[3], fontWeight: 500 }}>
               {posicion || 'No especificada'}
             </span>
           </Texto>
 
           <Texto gutterBottom sx={{ mb: 2 }}>
             <strong>Antigüedad:</strong>{' '}
-            <span style={{ color: colores.altertex[2], fontWeight: 500 }}>
+            <span style={{ color: colores.altertex[3], fontWeight: 500 }}>
               {antiguedad || 'No disponible'}
             </span>
           </Texto>
 
           <Texto gutterBottom sx={{ mb: 2 }}>
             <strong>Puntos:</strong>{' '}
-            <span style={{ color: colores.altertex[2], fontWeight: 500 }}>
+            <span style={{ color: colores.altertex[3], fontWeight: 500 }}>
               {cantidadPuntos || 0}
             </span>
           </Texto>
@@ -82,13 +82,13 @@ const InfoEmpleado = ({
             </Texto>
             <Texto gutterBottom sx={{ mb: 4 }}>
               Email:{' '}
-              <span style={{ color: colores.altertex[2] }}>
+              <span style={{ color: colores.altertex[3] }}>
                 {correoElectronico || 'No disponible'}
               </span>
             </Texto>
             <Texto gutterBottom sx={{ mb: 4 }}>
               Teléfono de Emergencia:{' '}
-              <span style={{ color: colores.altertex[2] }}>
+              <span style={{ color: colores.altertex[3] }}>
                 {numeroEmergencia || 'No disponible'}
               </span>
             </Texto>
@@ -101,11 +101,11 @@ const InfoEmpleado = ({
           </Texto>
           <Texto gutterBottom sx={{ mb: 4 }}>
             Nombre Completo:{' '}
-            <span style={{ color: colores.altertex[2] }}>{nombreCompleto || 'No disponible'}</span>
+            <span style={{ color: colores.altertex[3] }}>{nombreCompleto || 'No disponible'}</span>
           </Texto>
           <Texto gutterBottom sx={{ mb: 4 }}>
             ID de Empleado:{' '}
-            <span style={{ color: colores.altertex[2] }}>{idEmpleado || 'No disponible'}</span>
+            <span style={{ color: colores.altertex[3] }}>{idEmpleado || 'No disponible'}</span>
           </Texto>
         </Grid>
       </Grid>

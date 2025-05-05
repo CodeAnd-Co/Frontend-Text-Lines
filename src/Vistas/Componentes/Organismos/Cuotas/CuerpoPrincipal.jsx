@@ -2,7 +2,7 @@ import TarjetaRenovacion from '@Organismos/Cuotas/TarjetaRenovacion';
 import ProductosConCuotas from '@Organismos/Cuotas/ProductosConCuotas';
 import { Box } from '@mui/material';
 import GrupoBotones from '@Moleculas/GrupoBotones';
-import PopUp from '@SRC/Vistas/Componentes/Moleculas/PopUp';
+import PopUp from '@Moleculas/PopUp';
 import { useNavigate } from 'react-router-dom';
 
 const CuerpoPrincipal = ({

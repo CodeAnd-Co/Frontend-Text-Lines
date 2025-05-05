@@ -52,6 +52,7 @@ export const validarDatosCrearUsuario = (datos, usuariosExistentes = []) => {
     }
   }
   const tieneCaracterEspecial = /[!@#$%^&*(),.?":{}|<>]/;
+  const tieneMayuscula = /[A-Z]/;
 
   if (!datos.contrasenia || datos.contrasenia.trim() === '') {
     errores.contrasenia = true;
@@ -66,6 +67,8 @@ export const validarDatosCrearUsuario = (datos, usuariosExistentes = []) => {
     } else if (contraseniaSinEspacios.length < 2) {
       errores.contrasenia 
         = 'La contraseña no puede estar compuesta solo de espacios y un carácter especial';
+    }  else if (!tieneMayuscula.test(datos.contrasenia)) {
+      errores.contrasenia = 'Debe contener al menos una letra mayúscula';
     }
   }
   

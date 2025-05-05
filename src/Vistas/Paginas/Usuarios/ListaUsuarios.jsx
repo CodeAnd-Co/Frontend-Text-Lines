@@ -16,7 +16,7 @@ import { useMode, tokens } from '@SRC/theme';
 import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
 import { useUsuarioId } from '@Hooks/Usuarios/useLeerUsuario';
 import InfoUsuario from '@Moleculas/UsuarioInfo';
-import PopUp from '@Moleculas/PopUp';
+import PopUp from '@SRC/Vistas/Componentes/Moleculas/PopUpEliminar';
 const estiloImagenLogo = { marginRight: '1rem' };
 
 /**

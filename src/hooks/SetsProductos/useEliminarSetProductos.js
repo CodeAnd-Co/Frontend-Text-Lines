@@ -1,6 +1,6 @@
 //RF[45] Elimina set de productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF45]
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { RepositorioEliminarSetProductos } from '@Repositorios/SetsProductos/repositorioEliminarSetProductos';
 
 /**

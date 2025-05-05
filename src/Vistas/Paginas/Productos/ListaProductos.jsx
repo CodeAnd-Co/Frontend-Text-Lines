@@ -18,8 +18,8 @@ const ListaProductos = () => {
   const [theme] = useMode();
   const colores = tokens(theme.palette.mode);
   const { usuario } = useAuth();
-  const MENSAJE_POPUP_ELIMINAR =
-    '¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.';
+  const MENSAJE_POPUP_ELIMINAR
+    = '¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.';
 
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);

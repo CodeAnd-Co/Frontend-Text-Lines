@@ -4,7 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import * as MuiIcons from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
-import { tokens } from '../../../theme';
+import { tokens } from '@SRC/theme';
 
 const Icono = ({
   nombre,

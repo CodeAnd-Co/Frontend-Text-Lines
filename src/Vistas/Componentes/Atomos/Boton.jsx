@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material';
 import MUIButton from '@mui/material/Button';
-import { tokens } from '../../../theme';
+import { tokens } from '@SRC/theme';
 
 const Boton = ({
   variant = 'contained',

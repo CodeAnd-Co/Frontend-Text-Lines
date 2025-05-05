@@ -1,4 +1,4 @@
-import { Rol } from './Rol';
+import { Rol } from '@Modelos/Roles/Rol';
 
 /**
  * Convierte una lista del backend en instancias del modelo Roles

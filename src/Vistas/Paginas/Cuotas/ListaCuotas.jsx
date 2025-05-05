@@ -2,15 +2,15 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme, Box } from '@mui/material';
-import { tokens } from '../../../theme';
-import { useConsultarCuotas } from '../../../hooks/Cuotas/useConsultarCuotas';
-import { useAuth } from '../../../hooks/AuthProvider';
-import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
-import Tabla from '../../Componentes/Organismos/Tabla';
-import Chip from '../../Componentes/Atomos/Chip';
-import ModalCrearCuotaSet from '../../Componentes/Organismos/ModalCrearCuotaSet';
-import Alerta from '../../Componentes/Moleculas/Alerta';
-import { RUTAS } from '../../../Utilidades/Constantes/rutas';
+import { tokens } from '@SRC/theme';
+import { useConsultarCuotas } from '@Hooks/Cuotas/useConsultarCuotas';
+import { useAuth } from '@Hooks/AuthProvider';
+import ContenedorLista from '@Organismos/ContenedorLista';
+import Tabla from '@Organismos/Tabla';
+import Chip from '@Atomos/Chip';
+import ModalCrearCuotaSet from '@Organismos/ModalCrearCuotaSet';
+import Alerta from '@Moleculas/Alerta';
+import { RUTAS } from '@Constantes/rutas';
 
 /**
  * Página para consultar y mostrar la lista de cuotas en una tabla.

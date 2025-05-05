@@ -3,7 +3,7 @@ import { useState, React } from 'react';
 import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import { Box, IconButton, useTheme } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import { tokens } from '../../../theme';
+import { tokens } from '@SRC/theme';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
@@ -12,12 +12,12 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined';
 import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
-import Icono from '../Atomos/Icono';
-import TemaIcono from '../Moleculas/TemaIcono';
-import IconoMenu from '../Atomos/iconoMenu';
-import TextoMenu from '../Atomos/textoMenu';
+import Icono from '@Atomos/Icono';
+import TemaIcono from '@Moleculas/TemaIcono';
+import IconoMenu from '@Atomos/iconoMenu';
+import TextoMenu from '@Atomos/textoMenu';
 
-import { RUTAS } from '../../../Utilidades/Constantes/rutas';
+import { RUTAS } from '@Constantes/rutas';
 
 const ElementoMenu = ({ titulo, ruta, icono, seleccionado, setSeleccionado }) => {
   const theme = useTheme();

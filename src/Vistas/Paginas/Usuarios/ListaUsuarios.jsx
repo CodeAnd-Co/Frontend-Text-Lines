@@ -3,20 +3,20 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import FormularioCrearUsuario from '../../Componentes/Organismos/Formularios/FormularioCrearUsuario';
-import ModalFlotante from '../../Componentes/Organismos/ModalFlotante';
-import Alerta from '../../Componentes/Moleculas/Alerta';
-import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
-import Tabla from '../../Componentes/Organismos/Tabla';
-import Chip from '../../Componentes/Atomos/Chip';
-import { useConsultarListaUsuarios } from '../../../hooks/Usuarios/useConsultarListaUsuarios';
-import { useEliminarUsuarios } from '../../../hooks/Usuarios/useEliminarUsuarios';
-import { RUTAS } from '../../../Utilidades/Constantes/rutas';
-import { useMode, tokens } from '../../../theme';
-import NavegadorAdministrador from '../../Componentes/Organismos/NavegadorAdministrador';
-import { useUsuarioId } from '../../../hooks/Usuarios/useLeerUsuario';
-import InfoUsuario from '../../Componentes/Moleculas/UsuarioInfo';
-import PopUp from '../../Componentes/Moleculas/PopUp';
+import FormularioCrearUsuario from '@Organismos/Formularios/FormularioCrearUsuario';
+import ModalFlotante from '@Organismos/ModalFlotante';
+import Alerta from '@Moleculas/Alerta';
+import ContenedorLista from '@Organismos/ContenedorLista';
+import Tabla from '@Organismos/Tabla';
+import Chip from '@Atomos/Chip';
+import { useConsultarListaUsuarios } from '@Hooks/Usuarios/useConsultarListaUsuarios';
+import { useEliminarUsuarios } from '@Hooks/Usuarios/useEliminarUsuarios';
+import { RUTAS } from '@Constantes/rutas';
+import { useMode, tokens } from '@SRC/theme';
+import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
+import { useUsuarioId } from '@Hooks/Usuarios/useLeerUsuario';
+import InfoUsuario from '@Moleculas/UsuarioInfo';
+import PopUp from '@Moleculas/PopUp';
 const estiloImagenLogo = { marginRight: '1rem' };
 
 /**

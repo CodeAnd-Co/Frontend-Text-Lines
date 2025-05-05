@@ -1,18 +1,18 @@
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
-import { useAuth } from '../../../hooks/AuthProvider';
-import Icono from '../../Componentes/Atomos/Icono';
-import Cargador from '../../Componentes/Atomos/Cargador';
-import Texto from '../../Componentes/Atomos/Texto';
-import Alerta from '../../Componentes/Moleculas/Alerta';
-import NavegadorAdministrador from '../../Componentes/Organismos/NavegadorAdministrador';
-import TarjetaConImagen from '../../Componentes/Moleculas/TarjetaConImagen';
-import ModalFlotante from '../../Componentes/Organismos/ModalFlotante';
+import { useAuth } from '@Hooks/AuthProvider';
+import Icono from '@Atomos/Icono';
+import Cargador from '@Atomos/Cargador';
+import Texto from '@Atomos/Texto';
+import Alerta from '@Moleculas/Alerta';
+import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
+import TarjetaConImagen from '@Moleculas/TarjetaConImagen';
+import ModalFlotante from '@Organismos/ModalFlotante';
 import Cookies from 'js-cookie';
-import { RUTAS } from '../../../Utilidades/Constantes/rutas';
-import { useConsultarClientes } from '../../../hooks/Clientes/useConsultarClientes';
-import { useSeleccionarCliente } from '../../../hooks/Clientes/useSeleccionarCliente';
-import { useEliminarCliente } from '../../../hooks/Clientes/useEliminarCliente';
+import { RUTAS } from '@Constantes/rutas';
+import { useConsultarClientes } from '@Hooks/Clientes/useConsultarClientes';
+import { useSeleccionarCliente } from '@Hooks/Clientes/useSeleccionarCliente';
+import { useEliminarCliente } from '@Hooks/Clientes/useEliminarCliente';
 import { useState, useEffect, useRef } from 'react';
 
 const estiloImagenLogo = { marginRight: '1rem' };
@@ -64,11 +64,11 @@ const ListaClientes = () => {
     idEliminar,
     setEliminacionExitosa,
     (idClienteEliminado) => {
-      setClientes(prev => prev.filter(cliente => cliente.idCliente !== idClienteEliminado));
+      setClientes((prev) => prev.filter((cliente) => cliente.idCliente !== idClienteEliminado));
       Cookies.remove('imagenClienteSeleccionado');
       Cookies.remove('nombreClienteSeleccionado');
-      seleccionarCliente(null); 
-      setIdEliminar(null); 
+      seleccionarCliente(null);
+      setIdEliminar(null);
     }
   );
 
@@ -170,8 +170,8 @@ const ListaClientes = () => {
   };
 
   const renderTarjetaCliente = (cliente) => (
-    <Box 
-      key={cliente.idCliente} 
+    <Box
+      key={cliente.idCliente}
       sx={estiloTarjeta}
       onMouseDown={manejarInicioPresionado}
       onMouseUp={manejarFinPresionado}
@@ -190,7 +190,9 @@ const ListaClientes = () => {
         ajuste='contain'
         anchoImagen='100%'
         alturaImagen='250px'
-        tooltipIcono={modoEliminacion ? 'Eliminar cliente' : `Ver información de ${cliente.nombreComercial}`} // nuevo
+        tooltipIcono={
+          modoEliminacion ? 'Eliminar cliente' : `Ver información de ${cliente.nombreComercial}`
+        } // nuevo
         clickeableImagen={true}
         elevacion={3}
         alClicImagen={() =>
@@ -284,13 +286,7 @@ const ListaClientes = () => {
       </ModalFlotante>
 
       {errorEliminacion && (
-        <Alerta
-          tipo='error'
-          mensaje={errorEliminacion}
-          icono
-          cerrable
-          centradoInferior
-        />
+        <Alerta tipo='error' mensaje={errorEliminacion} icono cerrable centradoInferior />
       )}
 
       {eliminacionExitosa && (
@@ -304,7 +300,6 @@ const ListaClientes = () => {
           onClose={() => setEliminacionExitosa(false)}
         />
       )}
-
     </>
   );
 };

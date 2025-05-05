@@ -1,8 +1,8 @@
 import { Box, CircularProgress, Typography, useTheme } from '@mui/material';
-import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
-import Tabla from '../../Componentes/Organismos/Tabla';
-import { useConsultarPedidos } from '../../../hooks/Pedidos/useConsultarPedidos';
-import { tokens } from '../../../theme';
+import ContenedorLista from '@Organismos/ContenedorLista';
+import Tabla from '@Organismos/Tabla';
+import { useConsultarPedidos } from '@Hooks/Pedidos/useConsultarPedidos';
+import { tokens } from '@SRC/theme';
 
 const ListaPedidos = () => {
   const theme = useTheme();

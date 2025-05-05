@@ -1,16 +1,16 @@
 //RF[7] Consulta Lista de Roles - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF7]
 import React from 'react';
-import CustomDataGrid from '../../Componentes/Organismos/Tabla';
-import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
-import { useConsultarRoles } from '../../../hooks/Roles/useConsultarRoles';
+import CustomDataGrid from '@Organismos/Tabla';
+import ContenedorLista from '@Organismos/ContenedorLista';
+import { useConsultarRoles } from '@Hooks/Roles/useConsultarRoles';
 import { Box, Typography, useTheme } from '@mui/material';
-import { tokens } from '../../../theme';
+import { tokens } from '@SRC/theme';
 import { useNavigate } from 'react-router-dom';
-import { RUTAS } from '../../../Utilidades/Constantes/rutas';
-import ModalCrearRol from '../../Componentes/Organismos/ModalCrearRol';
+import { RUTAS } from '@Constantes/rutas';
+import ModalCrearRol from '@Organismos/ModalCrearRol';
 
 const ListaRoles = () => {
-  const { roles, cargando, error, recargar } = useConsultarRoles(); 
+  const { roles, cargando, error, recargar } = useConsultarRoles();
   const tema = useTheme();
   const colores = tokens(tema.palette.mode);
   const navigate = useNavigate();
@@ -47,8 +47,17 @@ const ListaRoles = () => {
   return (
     <ContenedorLista
       titulo={
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <Typography variant="h4" sx={{ mb: 0 }}>Roles</Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '20px',
+          }}
+        >
+          <Typography variant='h4' sx={{ mb: 0 }}>
+            Roles
+          </Typography>
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
             <ModalCrearRol onRolCreado={recargar} />
             <button

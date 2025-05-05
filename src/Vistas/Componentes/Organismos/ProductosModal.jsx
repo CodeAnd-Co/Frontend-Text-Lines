@@ -1,10 +1,10 @@
-import Contenedor from '../Atomos/Contenedor';
-import CustomDataGrid from './Tabla';
+import Contenedor from '@Atomos/Contenedor';
+import Tabla from '@Organismos/Tabla';
 
 const ProductosModal = ({ elevacion, sx, columnas, filas, paginacion, checkBox, onRowClick }) => {
   return (
     <Contenedor elevation={elevacion} sx={sx}>
-      <CustomDataGrid
+      <Tabla
         columns={columnas}
         rows={filas}
         pageSize={paginacion}

@@ -1,13 +1,13 @@
 // RF42 - Super Administrador, Cliente Consulta Lista de Sets de Productos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF42
 import React, { useState } from 'react';
-import Tabla from '../../Componentes/Organismos/Tabla';
-import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
-import Alerta from '../../Componentes/Moleculas/Alerta'; // Asegúrate de importar Alerta
-import Chip from '../../Componentes/Atomos/Chip';
-import ModalEliminarSetProductos from '../../Componentes/Organismos/ModalEliminarSetProductos';
+import Tabla from '@Organismos/Tabla';
+import ContenedorLista from '@Organismos/ContenedorLista';
+import Alerta from '@Moleculas/Alerta'; // Asegúrate de importar Alerta
+import Chip from '@Atomos/Chip';
+import ModalEliminarSetProductos from '@Organismos/ModalEliminarSetProductos';
 import { Box, useTheme } from '@mui/material';
-import { useConsultarSetsProductos } from '../../../hooks/SetsProductos/useConsultarSetsProductos';
-import { tokens } from '../../../theme';
+import { useConsultarSetsProductos } from '@Hooks/SetsProductos/useConsultarSetsProductos';
+import { tokens } from '@SRC/theme';
 
 const ListaSetsProductos = () => {
   const { setsDeProductos, cargando, error, recargar } = useConsultarSetsProductos();

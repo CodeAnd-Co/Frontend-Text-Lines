@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
-import GrupoBotones from '../Moleculas/GrupoBotones';
-import Texto from '../Atomos/Texto';
+import GrupoBotones from '@Moleculas/GrupoBotones';
+import Texto from '@Atomos/Texto';
 import PropTypes from 'prop-types';
 
 const estiloTitulo = {

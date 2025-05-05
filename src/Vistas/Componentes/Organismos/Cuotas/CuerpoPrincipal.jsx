@@ -1,8 +1,8 @@
-import TarjetaRenovacion from '../Cuotas/TarjetaRenovacion';
-import ProductosConCuotas from '../Cuotas/ProductosConCuotas';
+import TarjetaRenovacion from '@Organismos/Cuotas/TarjetaRenovacion';
+import ProductosConCuotas from '@Organismos/Cuotas/ProductosConCuotas';
 import { Box } from '@mui/material';
-import GrupoBotones from '../../Moleculas/GrupoBotones';
-import PopUp from '../../Moleculas/PopUp';
+import GrupoBotones from '@Moleculas/GrupoBotones';
+import PopUp from '@Moleculas/PopUp';
 import { useNavigate } from 'react-router-dom';
 
 const CuerpoPrincipal = ({

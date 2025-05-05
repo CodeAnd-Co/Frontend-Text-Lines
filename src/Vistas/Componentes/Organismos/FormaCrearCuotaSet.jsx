@@ -1,8 +1,8 @@
-import Alerta from '../../componentes/moleculas/Alerta';
-import CampoTexto from '../atomos/CampoTexto';
+import Alerta from '@Moleculas/Alerta';
+import CampoTexto from '@Atomos/CampoTexto';
 import { useState, useEffect } from 'react';
-import obtenerProductos from '../../../Dominio/Servicios/obtenerProductos';
-import ProductosModal from './ProductosModal';
+import obtenerProductos from '@Servicios/obtenerProductos';
+import ProductosModal from '@Organismos/ProductosModal';
 
 const columns = [
   { field: 'id', headerName: 'Id', width: 100 },

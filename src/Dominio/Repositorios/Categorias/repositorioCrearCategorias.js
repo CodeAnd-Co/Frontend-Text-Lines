@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { RUTAS_API } from '../../../Utilidades/Constantes/rutasAPI';
+import { RUTAS_API } from '@Constantes/rutasAPI';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 

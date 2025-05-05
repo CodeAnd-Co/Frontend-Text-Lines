@@ -1,4 +1,4 @@
-import CampoSelect from '../Componentes/Atomos/CampoSelect';
+import CampoSelect from '@Atomos/CampoSelect';
 
 export default {
   title: 'Componentes/Átomos/CampoSelect',

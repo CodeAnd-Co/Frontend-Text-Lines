@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Boton from '../Atomos/Boton';
-import FormaCrearCuotaSet from '../Organismos/Formularios/FormaCrearCuotaSet';
-import ModalFlotante from '../Organismos/ModalFlotante';
-import { RUTAS } from '../../../Utilidades/Constantes/rutas';
+import FormaCrearCuotaSet from '@Organismos/Formularios/FormaCrearCuotaSet';
+import ModalFlotante from '@Organismos/ModalFlotante';
+import { RUTAS } from '@Constantes/rutas';
 
 /**
  * Modal para crear un nuevo set de cuotas.

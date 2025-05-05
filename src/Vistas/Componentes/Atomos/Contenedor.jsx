@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Paper from '@mui/material/Paper';
 import { useTheme } from '@mui/material/styles';
-import { tokens } from '../../../theme'; // ajusta la ruta según tu estructura
+import { tokens } from '@SRC/theme'; // ajusta la ruta según tu estructura
 
 const Contenedor = ({ children, elevation = 1, background, borderLeft, sx = {}, ...props }) => {
   const theme = useTheme();

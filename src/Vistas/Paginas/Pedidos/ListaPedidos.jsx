@@ -1,22 +1,58 @@
+// RF60 - Consulta Lista de Pedidos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF60
+// RF53 Elimina Pedido - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF63]
+
 import React, { useState } from 'react';
 import { Box, CircularProgress, Typography, useTheme } from '@mui/material';
-import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
-import Tabla from '../../Componentes/Organismos/Tabla';
-import Alerta from '../../Componentes/moleculas/Alerta';
-import ModalEliminarPedido from '../../Componentes/organismos/ModalEliminarPedido';
-import { tokens } from '../../../theme';
-import { useConsultarPedidos } from '../../../hooks/Pedidos/useConsultarPedidos';
+import ContenedorLista from '@Organismos/ContenedorLista';
+import Tabla from '@Organismos/Tabla';
+import Alerta from '@Moleculas/Alerta';
+import PopUpEliminar from '@Moleculas/PopUpEliminar';
+import { tokens } from '@SRC/theme';
+import { useConsultarPedidos } from '@Hooks/Pedidos/useConsultarPedidos';
+import { useEliminarPedido } from '@Hooks/Pedidos/useEliminarPedido';
+import { PERMISOS } from '@Utilidades/Constantes/permisos';
+import { useAuth } from '@Hooks/AuthProvider';
 
 const ListaPedidos = () => {
   const { pedidos, cargando, error, recargar } = useConsultarPedidos();
-  const [seleccionados, setSeleccionados] = useState(new Set());
-  const [alerta, setAlerta] = useState(null);
-  const [idsPedido, setIdsPedido] = useState([]);
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
+  const MENSAJE_POPUP_ELIMINAR = '¿Estás seguro de que deseas eliminar los pedidos seleccionados?';
+
+  const [seleccionados, setSeleccionados] = useState(new Set());
+  const [alerta, setAlerta] = useState(null);
+  const { eliminar } = useEliminarPedido();
 
   // Estado para controlar la visualización del modal eliminar
-  const [openModalEliminar, setOpenModalEliminar] = useState(false);
+  const [openModalEliminar, setAbrirPopUpEliminar] = useState(false);
+  const manejarCancelarEliminar = () => {
+    setAbrirPopUpEliminar(false);
+  };
+  const { usuario } = useAuth();
+  const manejarConfirmarEliminar = async () => {
+    try {
+      await eliminar(seleccionados);
+      await recargar();
+      setAlerta({
+        tipo: 'success',
+        mensaje: 'Pedidos eliminados correctamente.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+      setSeleccionados([]);
+    } catch {
+      setAlerta({
+        tipo: 'error',
+        mensaje: 'Ocurrió un error al eliminar los pedidos.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+    } finally {
+      setAbrirPopUpEliminar(false);
+    }
+  };
 
   const columnas = [
     {
@@ -62,6 +98,7 @@ const ListaPedidos = () => {
       onClick: () => console.log('Añadir'),
       size: 'large',
       backgroundColor: colores.altertex[1],
+      color: 'error',
     },
     {
       variant: 'outlined',
@@ -74,7 +111,7 @@ const ListaPedidos = () => {
     {
       label: 'Eliminar',
       onClick: () => {
-        if (seleccionados.size === 0 || seleccionados.ids.size === 0) {
+        if (seleccionados.length === 0) {
           setAlerta({
             tipo: 'error',
             mensaje: 'Selecciona al menos un pedido para eliminar.',
@@ -83,11 +120,11 @@ const ListaPedidos = () => {
             centradoInferior: true,
           });
         } else {
-          setIdsPedido(Array.from(seleccionados.ids));
-          setOpenModalEliminar(true);
+          setAbrirPopUpEliminar(true);
         }
       },
       color: 'error',
+      disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_GRUPO_EMPLEADOS),
       size: 'large',
       backgroundColor: colores.altertex[1],
     },
@@ -125,20 +162,16 @@ const ListaPedidos = () => {
               columns={columnas}
               rows={filas}
               checkboxSelection
-              onRowSelectionModelChange={(newSelection) => {
-                setSeleccionados(newSelection);
+              onRowSelectionModelChange={(selectionModel) => {
+                const ids = Array.isArray(selectionModel)
+                  ? selectionModel
+                  : Array.from(selectionModel?.ids || []);
+                setSeleccionados(ids);
               }}
             />
           )}
         </Box>
       </ContenedorLista>
-      <ModalEliminarPedido
-        open={openModalEliminar}
-        onClose={() => setOpenModalEliminar(false)}
-        idsPedido={idsPedido}
-        setAlerta={setAlerta}
-        refrescarPagina={recargar}
-      />
       {alerta && (
         <Alerta
           tipo={alerta.tipo}
@@ -150,6 +183,12 @@ const ListaPedidos = () => {
           onClose={() => setAlerta(null)}
         />
       )}
+      <PopUpEliminar
+        abrir={openModalEliminar}
+        cerrar={manejarCancelarEliminar}
+        confirmar={manejarConfirmarEliminar}
+        dialogo={MENSAJE_POPUP_ELIMINAR}
+      />
     </>
   );
 };

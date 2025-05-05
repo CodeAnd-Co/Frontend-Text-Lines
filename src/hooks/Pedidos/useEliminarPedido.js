@@ -1,7 +1,7 @@
 //RF[63] Elimina pedido - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF63]
 
 import { useEffect, useState } from 'react';
-import { RepositorioEliminarPedido } from '../../dominio/repositorios/Pedidos/repositorioEliminarPedido';
+import { RepositorioEliminarPedido } from '@Repositorios/Pedidos/repositorioEliminarPedido';
 
 /**
  * * Hook para eliminar uno o más pedidos.

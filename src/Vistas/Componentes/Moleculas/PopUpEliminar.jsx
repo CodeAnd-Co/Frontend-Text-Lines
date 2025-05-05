@@ -10,7 +10,7 @@ import { Dialog, DialogActions, DialogContent, Button } from '@mui/material';
  * @returns {JSX.Element} Componente de pop-up de eliminacion.
  */
 
-const PopUp = ({
+const PopUpEliminar = ({
   abrir,
   cerrar,
   confirmar,
@@ -37,4 +37,4 @@ const PopUp = ({
   );
 };
 
-export default PopUp;
+export default PopUpEliminar;

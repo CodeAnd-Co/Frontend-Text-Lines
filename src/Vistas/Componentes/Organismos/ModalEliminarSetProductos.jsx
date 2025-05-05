@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useEliminarSetProductos } from '@Hooks/SetsProductos/useEliminarSetProductos';
-import PopUp from '@Moleculas/PopUp';
+import PopUp from '@SRC/Vistas/Componentes/Moleculas/PopUpEliminar';
 
 const ModalEliminarSetProductos = ({
   open,

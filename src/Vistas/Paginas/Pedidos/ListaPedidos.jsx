@@ -162,10 +162,10 @@ const ListaPedidos = () => {
               columns={columnas}
               rows={filas}
               checkboxSelection
-              onRowSelectionModelChange={(selectionModel) => {
-                const ids = Array.isArray(selectionModel)
-                  ? selectionModel
-                  : Array.from(selectionModel?.ids || []);
+              onRowSelectionModelChange={(seleccionados) => {
+                const ids = Array.isArray(seleccionados)
+                  ? seleccionados
+                  : Array.from(seleccionados?.ids || []);
                 setSeleccionados(ids);
               }}
             />

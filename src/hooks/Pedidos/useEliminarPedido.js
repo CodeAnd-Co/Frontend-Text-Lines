@@ -1,6 +1,6 @@
 //RF[63] Elimina pedido - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF63]
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { RepositorioEliminarPedido } from '@Repositorios/Pedidos/repositorioEliminarPedido';
 
 /**
@@ -13,31 +13,25 @@ import { RepositorioEliminarPedido } from '@Repositorios/Pedidos/repositorioElim
  * * }}
  */
 
-export function useEliminarPedido(idsPedidos) {
+export function useEliminarPedido() {
   const [mensaje, setMensaje] = useState('');
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const eliminarPedido = async () => {
-      setCargando(true);
-      setError(null);
+  const eliminar = async (idsPedidos) => {
+    setCargando(true);
+    setError(null);
 
-      try {
-        const { mensaje } = await RepositorioEliminarPedido.eliminarPedido(idsPedidos);
-        setMensaje(mensaje);
-      } catch (err) {
-        setMensaje('');
-        setError(err.message);
-      } finally {
-        setCargando(false);
-      }
-    };
-
-    if (Array.isArray(idsPedidos) && idsPedidos.length > 0) {
-      eliminarPedido();
+    try {
+      const { mensaje } = await RepositorioEliminarPedido.eliminarPedido(idsPedidos);
+      setMensaje(mensaje);
+    } catch (err) {
+      setMensaje('');
+      setError(err.message);
+    } finally {
+      setCargando(false);
     }
-  }, [idsPedidos]);
+  };
 
-  return { mensaje, cargando, error };
+  return { eliminar, mensaje, cargando, error };
 }

@@ -61,7 +61,6 @@ const ListaUsuarios = () => {
   };
   const { cerrarSesion } = useAuth();
 
-
   const {
     usuariosAEliminar,
     abrirPopUp,
@@ -277,7 +276,11 @@ const ListaUsuarios = () => {
           />
         )}
         {modalCrearUsuarioAbierto && (
-          <FormularioCrearUsuario open={modalCrearUsuarioAbierto} onClose={handleClose} onUsuarioCreado={recargar} />
+          <FormularioCrearUsuario
+            open={modalCrearUsuarioAbierto}
+            onClose={handleClose}
+            onUsuarioCreado={recargar}
+          />
         )}
 
         <PopUp

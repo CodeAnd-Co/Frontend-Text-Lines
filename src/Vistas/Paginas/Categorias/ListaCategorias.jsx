@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import Tabla from '@Organismos/Tabla';
-import Alerta from '@Moleculas/Alerta';
-import ContenedorLista from '@Organismos/ContenedorLista';
-import ModalEliminarCategoria from '@Organismos/ModalEliminarCategoria';
+import Tabla from '@SRC/Vistas/Componentes/Organismos/Tabla';
+import Alerta from '@SRC/Vistas/Componentes/Moleculas/Alerta';
+import ContenedorLista from '@SRC/Vistas/Componentes/Organismos/ContenedorLista';
+import ModalEliminarCategoria from '@SRC/Vistas/Componentes/Organismos/ModalEliminarCategoria';
 import { useConsultarCategorias } from '@Hooks/Categorias/useConsultarCategorias';
 import { Box, useTheme } from '@mui/material';
 import { tokens } from '@SRC/theme';
-import ModalCrearCategoria from '@Organismos/ModalCrearCategoria';
+import ModalCrearCategoria from '@SRC/Vistas/Componentes/Organismos/ModalCrearCategoria';
 
 /**
  * Página para consultar y mostrar la lista de categorías en una tabla.

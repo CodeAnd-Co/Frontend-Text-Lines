@@ -1,8 +1,8 @@
 //RF37 - Consulta Lista de Eventos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF37
 import React from 'react';
 import { Box } from '@mui/material';
-import Tabla from '@Componentes/Organismos/Tabla';
-import ContenedorLista from '@Componentes/Organismos/ContenedorLista';
+import Tabla from '@SRC/Vistas/Componentes/Organismos/Tabla';
+import ContenedorLista from '@SRC/Vistas/Componentes/Organismos/ContenedorLista';
 import { useConsultarEventos } from '@Hooks/Eventos/useConsultarEventos';
 
 const ListaEventos = () => {

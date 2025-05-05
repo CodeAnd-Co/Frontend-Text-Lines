@@ -1,5 +1,5 @@
-import Contenedor from '@Atomos/Contenedor';
-import Tabla from '@Organismos/Tabla';
+import Contenedor from '@SRC/Vistas/Componentes/Atomos/Contenedor';
+import Tabla from '@SRC/Vistas/Componentes/Organismos/Tabla';
 
 const ProductosModal = ({ elevacion, sx, columnas, filas, paginacion, checkBox, onRowClick }) => {
   return (

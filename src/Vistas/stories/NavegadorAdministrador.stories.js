@@ -1,5 +1,5 @@
 import { fn } from '@storybook/test';
-import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
+import NavegadorAdministrador from '@SRC/Vistas/Componentes/Organismos/NavegadorAdministrador';
 
 export default {
   title: '@Organismos/NavegadorAdministrador',

@@ -1,4 +1,4 @@
-import CampoSelect from '@Atomos/CampoSelect';
+import CampoSelect from '@SRC/Vistas/Componentes/Atomos/CampoSelect';
 
 export default {
   title: 'Componentes/Átomos/CampoSelect',

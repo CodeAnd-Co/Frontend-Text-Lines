@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import FormaCrearCuotaSet from '@Organismos/Formularios/FormaCrearCuotaSet';
-import ModalFlotante from '@Organismos/ModalFlotante';
+import FormaCrearCuotaSet from '@SRC/Vistas/Componentes/Organismos/Formularios/FormaCrearCuotaSet';
+import ModalFlotante from '@SRC/Vistas/Componentes/Organismos/ModalFlotante';
 import { RUTAS } from '@Constantes/rutas';
 
 /**

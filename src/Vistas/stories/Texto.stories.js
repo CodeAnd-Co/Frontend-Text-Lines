@@ -1,4 +1,4 @@
-import Texto from '@Atomos/Texto';
+import Texto from '@SRC/Vistas/Componentes/Atomos/Texto';
 
 export default {
   title: 'Componentes/Átomos/Texto',

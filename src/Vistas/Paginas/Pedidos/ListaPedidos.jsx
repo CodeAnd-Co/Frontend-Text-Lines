@@ -1,6 +1,6 @@
 import { Box, CircularProgress, Typography, useTheme } from '@mui/material';
-import ContenedorLista from '@Organismos/ContenedorLista';
-import Tabla from '@Organismos/Tabla';
+import ContenedorLista from '@SRC/Vistas/Componentes/Organismos/ContenedorLista';
+import Tabla from '@SRC/Vistas/Componentes/Organismos/Tabla';
 import { useConsultarPedidos } from '@Hooks/Pedidos/useConsultarPedidos';
 import { tokens } from '@SRC/theme';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import Cargador from '@Atomos/Cargador';
+import Cargador from '@SRC/Vistas/Componentes/Atomos/Cargador';
 
 export default {
   title: 'Componentes/Átomos/Cargador',

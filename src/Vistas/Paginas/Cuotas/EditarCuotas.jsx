@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import Texto from '@Atomos/Texto';
-import Alerta from '@Moleculas/Alerta';
+import Texto from '@SRC/Vistas/Componentes/Atomos/Texto';
+import Alerta from '@SRC/Vistas/Componentes/Moleculas/Alerta';
 import { useCrearCuotaSet } from '@Hooks/Cuotas/useCrearCuotaSet';
-import CuerpoPrincipal from '@Organismos/Cuotas/CuerpoPrincipal';
+import CuerpoPrincipal from '@SRC/Vistas/Componentes/Organismos/Cuotas/CuerpoPrincipal';
 import { useAuth } from '@Hooks/AuthProvider';
 import { RUTAS } from '@Constantes/rutas';
 

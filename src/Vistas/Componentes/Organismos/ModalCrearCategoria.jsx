@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import ModalFlotante from '@Organismos/ModalFlotante';
-import FormaCrearCategorias from '@Organismos/Formularios/FormaCrearCategoria';
+import ModalFlotante from '@SRC/Vistas/Componentes/Organismos/ModalFlotante';
+import FormaCrearCategorias from '@SRC/Vistas/Componentes/Organismos/Formularios/FormaCrearCategoria';
 import useCrearCategoria from '@Hooks/Categorias/useCrearCategoria';
-import Alerta from '@Moleculas/Alerta';
+import Alerta from '@SRC/Vistas/Componentes/Moleculas/Alerta';
 
 const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
   const [nombreCategoria, setNombreCategoria] = useState('');
@@ -13,8 +13,8 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
   // Track if the form has been reset to prevent multiple resets
   const hasReset = useRef(false);
 
-  const { crearCategoria, cargando, exito, error, mensaje, setError, resetEstado }
-    = useCrearCategoria();
+  const { crearCategoria, cargando, exito, error, mensaje, setError, resetEstado } =
+    useCrearCategoria();
 
   // Reset the form only once when the modal closes
   useEffect(() => {

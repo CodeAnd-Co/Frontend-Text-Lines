@@ -1,8 +1,8 @@
-import Alerta from '@Moleculas/Alerta';
-import CampoTexto from '@Atomos/CampoTexto';
+import Alerta from '@SRC/Vistas/Componentes/Moleculas/Alerta';
+import CampoTexto from '@SRC/Vistas/Componentes/Atomos/CampoTexto';
 import { useState, useEffect } from 'react';
 import obtenerProductos from '@SRC/Dominio/Servicios/obtenerProductos';
-import ProductosModal from '@Organismos/ProductosModal';
+import ProductosModal from '@SRC/Vistas/Componentes/Organismos/ProductosModal';
 import { useAuth } from '@Hooks/AuthProvider';
 
 const columns = [

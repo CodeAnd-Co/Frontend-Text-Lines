@@ -1,5 +1,5 @@
-import TarjetaBasica from '@Moleculas/TarjetaBasica';
-import { NumeroInput } from '@Atomos/NumeroInput';
+import TarjetaBasica from '@SRC/Vistas/Componentes/Moleculas/TarjetaBasica';
+import { NumeroInput } from '@SRC/Vistas/Componentes/Atomos/NumeroInput';
 import { Box } from '@mui/material';
 
 const ProductosConCuotas = ({ productos, manejarCambioCuota }) => {

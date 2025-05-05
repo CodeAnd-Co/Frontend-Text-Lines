@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import TarjetaBasica from '@Moleculas/TarjetaBasica';
-import { NumeroInput } from '@Atomos/NumeroInput';
-import Switch from '@Atomos/Switch';
+import TarjetaBasica from '@SRC/Vistas/Componentes/Moleculas/TarjetaBasica';
+import { NumeroInput } from '@SRC/Vistas/Componentes/Atomos/NumeroInput';
+import Switch from '@SRC/Vistas/Componentes/Atomos/Switch';
 
 const TarjetaRenovacion = ({
   periodoRenovacion,

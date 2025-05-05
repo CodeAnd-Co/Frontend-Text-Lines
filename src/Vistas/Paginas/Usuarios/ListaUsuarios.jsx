@@ -3,20 +3,20 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import FormularioCrearUsuario from '@Organismos/Formularios/FormularioCrearUsuario';
-import ModalFlotante from '@Organismos/ModalFlotante';
-import Alerta from '@Moleculas/Alerta';
-import ContenedorLista from '@Organismos/ContenedorLista';
-import Tabla from '@Organismos/Tabla';
-import Chip from '@Atomos/Chip';
+import FormularioCrearUsuario from '@SRC/Vistas/Componentes/Organismos/Formularios/FormularioCrearUsuario';
+import ModalFlotante from '@SRC/Vistas/Componentes/Organismos/ModalFlotante';
+import Alerta from '@SRC/Vistas/Componentes/Moleculas/Alerta';
+import ContenedorLista from '@SRC/Vistas/Componentes/Organismos/ContenedorLista';
+import Tabla from '@SRC/Vistas/Componentes/Organismos/Tabla';
+import Chip from '@SRC/Vistas/Componentes/Atomos/Chip';
 import { useConsultarListaUsuarios } from '@Hooks/Usuarios/useConsultarListaUsuarios';
 import { useEliminarUsuarios } from '@Hooks/Usuarios/useEliminarUsuarios';
 import { RUTAS } from '@Constantes/rutas';
 import { useMode, tokens } from '@SRC/theme';
-import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
+import NavegadorAdministrador from '@SRC/Vistas/Componentes/Organismos/NavegadorAdministrador';
 import { useUsuarioId } from '@Hooks/Usuarios/useLeerUsuario';
-import InfoUsuario from '@Moleculas/UsuarioInfo';
-import PopUp from '@Moleculas/PopUp';
+import InfoUsuario from '@SRC/Vistas/Componentes/Moleculas/UsuarioInfo';
+import PopUp from '@SRC/Vistas/Componentes/Moleculas/PopUp';
 const estiloImagenLogo = { marginRight: '1rem' };
 
 /**

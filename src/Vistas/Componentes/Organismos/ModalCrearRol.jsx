@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import Boton from '@Atomos/Boton';
-import FormaCrearRol from '@Organismos/Formularios/FormaCrearRol';
-import ModalFlotante from '@Organismos/ModalFlotante';
+import Boton from '@SRC/Vistas/Componentes/Atomos/Boton';
+import FormaCrearRol from '@SRC/Vistas/Componentes/Organismos/Formularios/FormaCrearRol';
+import ModalFlotante from '@SRC/Vistas/Componentes/Organismos/ModalFlotante';
 import { useCrearRol } from '@Hooks/Roles/useCrearRol';
-import Alerta from '@Moleculas/Alerta';
+import Alerta from '@SRC/Vistas/Componentes/Moleculas/Alerta';
 
 const ModalCrearRol = ({ onRolCreado }) => {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);

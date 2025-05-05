@@ -1,13 +1,13 @@
 //RF[7] Consulta Lista de Roles - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF7]
 import React from 'react';
-import CustomDataGrid from '@Organismos/Tabla';
-import ContenedorLista from '@Organismos/ContenedorLista';
+import CustomDataGrid from '@SRC/Vistas/Componentes/Organismos/Tabla';
+import ContenedorLista from '@SRC/Vistas/Componentes/Organismos/ContenedorLista';
 import { useConsultarRoles } from '@Hooks/Roles/useConsultarRoles';
 import { Box, Typography, useTheme } from '@mui/material';
 import { tokens } from '@SRC/theme';
 import { useNavigate } from 'react-router-dom';
 import { RUTAS } from '@Constantes/rutas';
-import ModalCrearRol from '@Organismos/ModalCrearRol';
+import ModalCrearRol from '@SRC/Vistas/Componentes/Organismos/ModalCrearRol';
 
 const ListaRoles = () => {
   const { roles, cargando, error, recargar } = useConsultarRoles();

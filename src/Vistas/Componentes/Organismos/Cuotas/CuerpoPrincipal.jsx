@@ -1,8 +1,8 @@
-import TarjetaRenovacion from '@Organismos/Cuotas/TarjetaRenovacion';
-import ProductosConCuotas from '@Organismos/Cuotas/ProductosConCuotas';
+import TarjetaRenovacion from '@SRC/Vistas/Componentes/Organismos/Cuotas/TarjetaRenovacion';
+import ProductosConCuotas from '@SRC/Vistas/Componentes/Organismos/Cuotas/ProductosConCuotas';
 import { Box } from '@mui/material';
-import GrupoBotones from '@Moleculas/GrupoBotones';
-import PopUp from '@Moleculas/PopUp';
+import GrupoBotones from '@SRC/Vistas/Componentes/Moleculas/GrupoBotones';
+import PopUp from '@SRC/Vistas/Componentes/Moleculas/PopUp';
 import { useNavigate } from 'react-router-dom';
 
 const CuerpoPrincipal = ({

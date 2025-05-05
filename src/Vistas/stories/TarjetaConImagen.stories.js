@@ -1,5 +1,5 @@
 import { fn } from '@storybook/test';
-import TarjetaConImagen from '@Moleculas/TarjetaConImagen';
+import TarjetaConImagen from '@SRC/Vistas/Componentes/Moleculas/TarjetaConImagen';
 
 export default {
   title: 'Componentes/Moléculas/TarjetaConImagen',

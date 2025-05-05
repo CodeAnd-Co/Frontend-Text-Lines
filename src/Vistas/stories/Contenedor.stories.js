@@ -1,4 +1,4 @@
-import Contenedor from '@Atomos/Contenedor';
+import Contenedor from '@SRC/Vistas/Componentes/Atomos/Contenedor';
 
 export default {
   title: 'Componentes/Átomos/Contenedor',

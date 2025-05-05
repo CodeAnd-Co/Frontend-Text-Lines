@@ -5,11 +5,11 @@ import { useTheme, Box } from '@mui/material';
 import { tokens } from '@SRC/theme';
 import { useConsultarCuotas } from '@Hooks/Cuotas/useConsultarCuotas';
 import { useAuth } from '@Hooks/AuthProvider';
-import ContenedorLista from '@Organismos/ContenedorLista';
-import Tabla from '@Organismos/Tabla';
-import Chip from '@Atomos/Chip';
-import ModalCrearCuotaSet from '@Organismos/ModalCrearCuotaSet';
-import Alerta from '@Moleculas/Alerta';
+import ContenedorLista from '@SRC/Vistas/Componentes/Organismos/ContenedorLista';
+import Tabla from '@SRC/Vistas/Componentes/Organismos/Tabla';
+import Chip from '@SRC/Vistas/Componentes/Atomos/Chip';
+import ModalCrearCuotaSet from '@SRC/Vistas/Componentes/Organismos/ModalCrearCuotaSet';
+import Alerta from '@SRC/Vistas/Componentes/Moleculas/Alerta';
 import { RUTAS } from '@Constantes/rutas';
 
 /**

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import Alerta from '@Moleculas/Alerta';
-import CampoTexto from '@Atomos/CampoTexto';
-import CustomDataGrid from '@Organismos/Tabla';
+import Alerta from '@SRC/Vistas/Componentes/Moleculas/Alerta';
+import CampoTexto from '@SRC/Vistas/Componentes/Atomos/CampoTexto';
+import CustomDataGrid from '@SRC/Vistas/Componentes/Organismos/Tabla';
 import obtenerPermisos from '@SRC/Dominio/Servicios/obtenerPermisos';
 
 const columns = [

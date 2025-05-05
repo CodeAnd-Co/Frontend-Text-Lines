@@ -1,5 +1,5 @@
 import { Height } from '@mui/icons-material';
-import Alerta from '@Moleculas/Alerta';
+import Alerta from '@SRC/Vistas/Componentes/Moleculas/Alerta';
 
 export default {
   title: 'Componentes/Moléculas/Alerta',

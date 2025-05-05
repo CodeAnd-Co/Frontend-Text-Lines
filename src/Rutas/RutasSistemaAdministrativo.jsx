@@ -1,23 +1,23 @@
 import { Routes, Route } from 'react-router-dom';
 import { RUTAS } from '@Constantes/rutas';
 import { PERMISOS } from '@Constantes/permisos';
-import ListaClientes from '@Clientes/ListaClientes';
-import ListaProductos from '@Productos/ListaProductos';
-import ListaCuotas from '@Cuotas/ListaCuotas';
-import LIstaEmpleados from '@Empleados/ListaEmpleados';
-import EditarCuotas from '@Cuotas/EditarCuotas';
-import ListaGrupoEmpleados from '@Empleados/ListaGrupoEmpleados';
-import SistemaAdministrativo from '@Paginas/SistemaAdministrativo';
-import Configuracion from '@Configuracion/ConfiguracionGeneral';
-import Error404 from '@Errores/Error404';
-import ListaRoles from '@Roles/ListaRoles';
-import ListaUsuarios from '@Usuarios/ListaUsuarios';
-import ListaCategorias from '@Categorias/ListaCategorias';
-import ListaSetsProductos from '@SetsProductos/ListaSetsProductos';
-import ListaEventos from '@Eventos/ListaEventos';
+import ListaClientes from '@SRC/Vistas/Paginas/Clientes/ListaClientes';
+import ListaProductos from '@SRC/Vistas/Paginas/Productos/ListaProductos';
+import ListaCuotas from '@SRC/Vistas/Paginas/Cuotas/ListaCuotas';
+import LIstaEmpleados from '@SRC/Vistas/Paginas/Empleados/ListaEmpleados';
+import EditarCuotas from '@SRC/Vistas/Paginas/Cuotas/EditarCuotas';
+import ListaGrupoEmpleados from '@SRC/Vistas/Paginas/Empleados/ListaGrupoEmpleados';
+import SistemaAdministrativo from '@SRC/Vistas/Paginas/SistemaAdministrativo';
+import Configuracion from '@SRC/Vistas/Paginas/Configuracion/ConfiguracionGeneral';
+import Error404 from '@SRC/Vistas/Paginas/Errores/Error404';
+import ListaRoles from '@SRC/Vistas/Paginas/Roles/ListaRoles';
+import ListaUsuarios from '@SRC/Vistas/Paginas/Usuarios/ListaUsuarios';
+import ListaCategorias from '@SRC/Vistas/Paginas/Categorias/ListaCategorias';
+import ListaSetsProductos from '@SRC/Vistas/Paginas/SetsProductos/ListaSetsProductos';
+import ListaEventos from '@SRC/Vistas/Paginas/Eventos/ListaEventos';
 import RutaProtegida from '@Rutas/RutaProtegida';
 import VerificarClienteSeleccionado from '@Rutas/VerificarClienteSeleccionado';
-import ListaPedidos from '@Pedidos/ListaPedidos';
+import ListaPedidos from '@SRC/Vistas/Paginas/Pedidos/ListaPedidos';
 
 const RutasSistemaAdministrativo = () => {
   return (

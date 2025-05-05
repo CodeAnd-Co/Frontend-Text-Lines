@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
-import FormularioInicioSesion from '@Organismos/Formularios/FormularioInicioSesion';
+import FormularioInicioSesion from '@SRC/Vistas/Componentes/Organismos/Formularios/FormularioInicioSesion';
 import useInicioSesion from '@Hooks/useInicioSesion';
 
 /**

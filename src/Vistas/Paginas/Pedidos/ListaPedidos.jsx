@@ -6,7 +6,7 @@ import { Box, CircularProgress, Typography, useTheme } from '@mui/material';
 import ContenedorLista from '@Organismos/ContenedorLista';
 import Tabla from '@Organismos/Tabla';
 import Alerta from '@Moleculas/Alerta';
-import PopUpEliminar from '@Moleculas/PopUpEliminar';
+import PopUp from '@Moleculas/PopUp';
 import { tokens } from '@SRC/theme';
 import { useConsultarPedidos } from '@Hooks/Pedidos/useConsultarPedidos';
 import { useEliminarPedido } from '@Hooks/Pedidos/useEliminarPedido';
@@ -183,7 +183,7 @@ const ListaPedidos = () => {
           onClose={() => setAlerta(null)}
         />
       )}
-      <PopUpEliminar
+      <PopUp
         abrir={openModalEliminar}
         cerrar={manejarCancelarEliminar}
         confirmar={manejarConfirmarEliminar}

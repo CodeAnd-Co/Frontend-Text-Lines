@@ -1,12 +1,12 @@
 import './App.css';
 
-import { ColorModeContext, useMode } from './theme';
+import { ColorModeContext, useMode } from '@SRC/theme';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './hooks/AuthProvider';
+import { AuthProvider } from '@Hooks/AuthProvider';
 
-import RutasApp from './Rutas/RutasApp';
-import { RUTAS } from './Utilidades/Constantes/rutas';
+import RutasApp from '@Rutas/RutasApp';
+import { RUTAS } from '@Constantes/rutas';
 
 function App() {
   const [theme, colorMode] = useMode();

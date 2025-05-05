@@ -1,6 +1,6 @@
 import './App.css';
 
-import { ColorModeContext, useMode } from '@SRC@SRC/theme';
+import { ColorModeContext, useMode } from '@SRC/theme';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from '@Hooks/AuthProvider';

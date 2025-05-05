@@ -1,15 +1,21 @@
 //RF17 - Consulta Lista Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF17
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, useTheme } from '@mui/material';
 import Tabla from '@SRC/Vistas/Componentes/Organismos/Tabla';
 import ContenedorLista from '@SRC/Vistas/Componentes/Organismos/ContenedorLista';
 import { useConsultarEmpleados } from '@Hooks/Empleados/useConsultarEmpleados';
 import { tokens } from '@SRC/theme';
+import ModalFlotante from '@Organismos/ModalFlotante';
+import InfoEmpleado from '@Moleculas/EmpleadoInfo';
 
 const ListaGrupoEmpleados = () => {
   const { empleados, cargando, error } = useConsultarEmpleados();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
+
+  // Estado para el modal y el empleado seleccionado
+  const [empleadoSeleccionado, setEmpleadoSeleccionado] = useState(null);
+  const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
 
   const columnas = [
     { field: 'nombreCompleto', headerName: 'Nombre del Empleado', flex: 1 },
@@ -52,7 +58,6 @@ const ListaGrupoEmpleados = () => {
       onClick: () => console.log('Exportar'),
       size: 'large',
     },
-    { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large' },
     {
       label: 'Eliminar',
       onClick: () => console.log('Eliminar'),
@@ -69,8 +74,61 @@ const ListaGrupoEmpleados = () => {
     >
       <Box width={'100%'}>
         {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-        <Tabla columns={columnas} rows={filas} loading={cargando} checkboxSelection />
+        <Tabla
+          columns={columnas}
+          rows={filas}
+          loading={cargando}
+          checkboxSelection
+          onRowClick={(params) => {
+            setEmpleadoSeleccionado(params.row);
+            setModalDetalleAbierto(true);
+          }}
+        />
       </Box>
+
+      {/* Modal para mostrar detalles del empleado */}
+      {modalDetalleAbierto && empleadoSeleccionado && (
+        <ModalFlotante
+          open={modalDetalleAbierto}
+          onClose={() => setModalDetalleAbierto(false)}
+          onConfirm={() => setModalDetalleAbierto(false)}
+          titulo={empleadoSeleccionado.nombreCompleto || 'Detalles del Empleado'}
+          tituloVariant='h4'
+          botones={[
+            {
+              label: 'EDITAR',
+              variant: 'contained',
+              color: 'primary',
+              backgroundColor: colores.altertex[1],
+              onClick: () => console.log('Editar empleado', empleadoSeleccionado.idEmpleado),
+            },
+            {
+              label: 'SALIR',
+              variant: 'outlined',
+              color: 'primary',
+              outlineColor: colores.altertex[1],
+              onClick: () => setModalDetalleAbierto(false),
+            },
+          ]}
+        >
+          <InfoEmpleado
+            nombreCompleto={empleadoSeleccionado.nombreCompleto}
+            correoElectronico={empleadoSeleccionado.correoElectronico}
+            numeroEmergencia={empleadoSeleccionado.numeroEmergencia}
+            areaTrabajo={empleadoSeleccionado.areaTrabajo}
+            posicion={empleadoSeleccionado.posicion}
+            cantidadPuntos={empleadoSeleccionado.cantidadPuntos}
+            antiguedad={empleadoSeleccionado.antiguedad}
+            idEmpleado={empleadoSeleccionado.idEmpleado}
+            estadoEmpleado={{
+              label: 'Activo',
+              color: 'primary',
+              shape: 'circular',
+              backgroundColor: 'rgba(24, 50, 165, 1)',
+            }}
+          />
+        </ModalFlotante>
+      )}
     </ContenedorLista>
   );
 };

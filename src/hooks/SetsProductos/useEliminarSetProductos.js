@@ -1,7 +1,7 @@
 //RF[45] Elimina set de productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF45]
 
-import { useEffect, useState } from 'react';
-import { RepositorioEliminarSetProductos } from '@SRC/Dominio/Repositorios/SetsProductos/repositorioEliminarSetProductos';
+import { useState } from 'react';
+import { RepositorioEliminarSetProductos } from '@Repositorios/SetsProductos/repositorioEliminarSetProductos';
 
 /**
  * * Hook para eliminar un set de productos.
@@ -13,33 +13,27 @@ import { RepositorioEliminarSetProductos } from '@SRC/Dominio/Repositorios/SetsP
  * * }}
  */
 
-export function useEliminarSetProductos(idsSetProductos) {
+export function useEliminarSetProductos() {
   const [mensaje, setMensaje] = useState('');
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const eliminarSetProductos = async () => {
-      setCargando(true);
-      setError(null);
+  const eliminar = async (idsSetProductos) => {
+    setCargando(true);
+    setError(null);
 
-      try {
-        const { mensaje } = await RepositorioEliminarSetProductos.eliminarSetProductos(
-          idsSetProductos
-        );
-        setMensaje(mensaje);
-      } catch (err) {
-        setMensaje('');
-        setError(err.message);
-      } finally {
-        setCargando(false);
-      }
-    };
-
-    if (Array.isArray(idsSetProductos) && idsSetProductos.length > 0) {
-      eliminarSetProductos();
+    try {
+      const { mensaje } = await RepositorioEliminarSetProductos.eliminarSetProductos(
+        idsSetProductos
+      );
+      setMensaje(mensaje);
+    } catch (err) {
+      setMensaje('');
+      setError(err.message);
+    } finally {
+      setCargando(false);
     }
-  }, [idsSetProductos]);
+  };
 
-  return { mensaje, cargando, error };
+  return { eliminar, mensaje, cargando, error };
 }

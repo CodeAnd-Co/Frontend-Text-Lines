@@ -115,7 +115,6 @@ const ListaSetsProductos = () => {
     {
       label: 'Eliminar',
       onClick: () => {
-        console.log('Sets a eliminar:', seleccionados);
         if (seleccionados.length === 0) {
           setAlerta({
             tipo: 'error',

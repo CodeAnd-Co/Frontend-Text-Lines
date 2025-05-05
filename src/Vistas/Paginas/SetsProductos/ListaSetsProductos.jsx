@@ -2,24 +2,24 @@
 // RF45 - Eliminar set de productos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF45
 
 import React, { useState } from 'react';
-import Tabla from '../../Componentes/Organismos/Tabla';
-import ContenedorLista from '../../Componentes/Organismos/ContenedorLista';
-import Alerta from '../../Componentes/moleculas/Alerta';
-import Chip from '../../Componentes/atomos/Chip';
-import { useEliminarSetProductos } from '../../../hooks/SetsProductos/useEliminarSetProductos';
-import PopUpEliminar from '../../componentes/moleculas/PopUpEliminar';
+import Tabla from '@Organismos/Tabla';
+import ContenedorLista from '@Organismos/ContenedorLista';
+import Alerta from '@Moleculas/Alerta';
+import Chip from '@Atomos/Chip';
+import { useEliminarSetProductos } from '@Hooks/SetsProductos/useEliminarSetProductos';
+import PopUpEliminar from '@Moleculas/PopUpEliminar';
 import { Box, useTheme } from '@mui/material';
-import { useConsultarSetsProductos } from '../../../hooks/SetsProductos/useConsultarSetsProductos';
-import { tokens } from '../../../theme';
-import { PERMISOS } from '../../../Utilidades/Constantes/permisos';
-import { useAuth } from '../../../hooks/AuthProvider';
+import { useConsultarSetsProductos } from '@Hooks/SetsProductos/useConsultarSetsProductos';
+import { tokens } from '@SRC/theme';
+import { PERMISOS } from '@Utilidades/Constantes/permisos';
+import { useAuth } from '@Hooks/AuthProvider';
 
 const ListaSetsProductos = () => {
   const { setsDeProductos, cargando, error, recargar } = useConsultarSetsProductos();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
-  const MENSAJE_POPUP_ELIMINAR
-    = '¿Estás seguro de que deseas eliminar los sets de productos seleccionados?';
+  const MENSAJE_POPUP_ELIMINAR =
+    '¿Estás seguro de que deseas eliminar los sets de productos seleccionados?';
 
   const [seleccionados, setSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);

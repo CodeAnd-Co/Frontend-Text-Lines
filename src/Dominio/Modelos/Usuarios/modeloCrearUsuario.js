@@ -6,7 +6,7 @@
  * @param {Object} datos - Datos del usuario
  * @returns {Object} errores - Campos con error
  */
-export const validarDatosCrearUsuario = (datos) => {
+export const validarDatosCrearUsuario = (datos, usuariosExistentes = []) => {
   const errores = {};
 
   if (!datos.nombreCompleto || datos.nombreCompleto.trim() === '') {
@@ -22,10 +22,17 @@ export const validarDatosCrearUsuario = (datos) => {
     errores.correoElectronico = 'Correo electrónico no válido';
   }
   const telefonoValido = /^\d{10}$/;
+
   if (!datos.numeroTelefono) {
     errores.numeroTelefono = true;
   } else if (!telefonoValido.test(datos.numeroTelefono)) {
     errores.numeroTelefono = 'El número de teléfono debe tener exactamente 10 dígitos';
+  } else if (
+    usuariosExistentes.some(
+      (usuario) => usuario.telefono === datos.numeroTelefono
+    )
+  ) {
+    errores.numeroTelefono = 'Este número ya está registrado';
   }
   if (!datos.direccion || datos.direccion.trim() === '') {
     errores.direccion = true;

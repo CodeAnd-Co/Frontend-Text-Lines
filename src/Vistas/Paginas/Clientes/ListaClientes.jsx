@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
 import { useAuth } from '@Hooks/AuthProvider';
-import Icono from '@Atomos/Icono';
 import Cargador from '@Atomos/Cargador';
 import Texto from '@Atomos/Texto';
 import Alerta from '@Moleculas/Alerta';
-import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
 import TarjetaConImagen from '@Moleculas/TarjetaConImagen';
+import TarjetaAccion from '@Moleculas/TarjetaAccion';
+import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
 import ModalFlotante from '@Organismos/ModalFlotante';
 import Cookies from 'js-cookie';
 import { RUTAS } from '@Constantes/rutas';
@@ -33,23 +33,6 @@ const estiloSubtitulo = {
   marginBottom: { xs: '1.5rem', sm: '2rem', md: '2.5rem' },
   fontSize: { xs: '1.2rem', sm: '1.5rem', md: '1.8rem' },
   fontWeight: 500,
-};
-
-const estiloTarjetaAgregar = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  border: '2px dashed rgba(15, 140, 241, 0.18)',
-  backgroundColor: 'rgba(15, 140, 241, 0.18)',
-  color: '#1976D2',
-  borderRadius: '10px',
-  cursor: 'pointer',
-  transition: 'all 0.2s ease-in-out',
-  '&:hover': {
-    backgroundColor: 'rgba(15, 139, 241, 0.38)',
-    transform: 'scale(1.03)',
-  },
 };
 
 const ListaClientes = () => {
@@ -207,20 +190,6 @@ const ListaClientes = () => {
     </Box>
   );
 
-  const renderTarjetaAgregarCliente = () => (
-    <Box
-      onClick={() => console.log('Agregar cliente')}
-      sx={{ ...estiloTarjeta, ...estiloTarjetaAgregar }}
-      role='button'
-      tabIndex={0}
-    >
-      <Icono nombre='Add' size='large' />
-      <Texto variant='button' sx={{ mt: 1 }}>
-        Agregar cliente
-      </Texto>
-    </Box>
-  );
-
   return (
     <>
       <NavegadorAdministrador
@@ -269,7 +238,12 @@ const ListaClientes = () => {
             width='100%'
           >
             {clientes.map(renderTarjetaCliente)}
-            {renderTarjetaAgregarCliente()}
+            {              
+              <TarjetaAccion
+                icono='Add'
+                texto='Agregar cliente'
+                onClick={() => console.log('Agregar cliente')}
+              />}
           </Box>
         )}
       </Box>

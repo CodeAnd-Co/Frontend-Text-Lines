@@ -1,11 +1,13 @@
 //RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
 //RF[30] Elimina Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF30]
 import { Box } from '@mui/material';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Tabla from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';
 import Alerta from '@Moleculas/Alerta';
 import PopUp from '@Moleculas/PopUp';
+import FormularioProducto from '@Organismos/Formularios/FormularioProducto';
+import FormularioProveedor from '@Organismos/Formularios/FormularioProveedor';
 import { useConsultarProductos } from '@Hooks/Productos/useConsultarProductos';
 import { useEliminarProductos } from '@Hooks/Productos/useEliminarProductos';
 import { useMode, tokens } from '@SRC/theme';
@@ -22,8 +24,29 @@ const ListaProductos = () => {
     = '¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.';
 
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
+  const [mostrarModalProveedor, setMostrarModalProveedor] = useState(false);
+  const [mostrarModalProducto, setMostrarModalProducto] = useState(false);
   const [alerta, setAlerta] = useState(null);
   const [openModalEliminar, setAbrirPopUp] = useState(false);
+
+  const mostrarFormularioProducto = useCallback(() => {
+    setMostrarModalProducto(true);
+    setMostrarModalProveedor(false);
+  }, []);
+
+  const mostrarFormularioProveedor = useCallback(() => {
+    setMostrarModalProducto(false);
+    setMostrarModalProveedor(true);
+  }, []);
+
+  const cerrarFormularioProducto = useCallback(() => {
+    setMostrarModalProducto(false);
+  }, []);
+
+  const cerrarFormularioProveedor = useCallback(() => {
+    setMostrarModalProveedor(false);
+    setMostrarModalProducto(true);
+  }, []);
 
   const manejarCancelarEliminar = () => {
     setAbrirPopUp(false);
@@ -116,7 +139,7 @@ const ListaProductos = () => {
   const botones = [
     {
       label: 'Añadir',
-      onClick: () => console.log('Añadir'),
+      onClick: mostrarFormularioProducto,
       size: 'large',
       backgroundColor: colores.altertex[1],
     },
@@ -149,6 +172,19 @@ const ListaProductos = () => {
         descripcion='Gestiona y organiza los productos registrados en el sistema.'
         informacionBotones={botones}
       >
+        {mostrarModalProducto && (
+          <FormularioProducto
+            open={mostrarModalProducto}
+            onCerrarFormularioProducto={cerrarFormularioProducto}
+            onMostrarFormularioProveedor={mostrarFormularioProveedor}
+          />
+        )}
+        {mostrarModalProveedor && (
+          <FormularioProveedor
+            open={mostrarModalProveedor}
+            onCerrarFormularioProveedor={cerrarFormularioProveedor}
+          />
+        )}
         <Box width='100%'>
           {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}
           <Tabla

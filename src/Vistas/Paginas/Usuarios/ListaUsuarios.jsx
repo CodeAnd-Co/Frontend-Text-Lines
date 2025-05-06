@@ -212,6 +212,7 @@ const ListaUsuarios = () => {
       variant: 'contained',
       size: 'large',
       backgroundColor: colores.altertex[1],
+      disabled: !usuarioAutenticado?.permisos?.includes(PERMISOS.ELIMINAR_USUARIO),
     },
   ];
 

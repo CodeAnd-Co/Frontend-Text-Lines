@@ -1,4 +1,4 @@
-//RF[7] Consulta Lista de Roles - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF7]
+// RF[7] Consulta Lista de Roles - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF7
 import React, { useState } from 'react';
 import CustomDataGrid from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';
@@ -10,7 +10,7 @@ import { RUTAS } from '@Constantes/rutas';
 import ModalCrearRol from '@Organismos/ModalCrearRol';
 
 const ListaRoles = () => {
-  const { roles, cargando, error } = useConsultarRoles();
+  const { roles, cargando, error, recargar } = useConsultarRoles();
   const tema = useTheme();
   const colores = tokens(tema.palette.mode);
   const navigate = useNavigate();
@@ -46,23 +46,23 @@ const ListaRoles = () => {
     urlImagen: rol.urlImagen,
   }));
 
-
-
+  const handleAbrirModalCrear = () => {
+    setModalCrearAbierto(true);
+  };
 
   const handleCerrarModalCrear = () => {
     setModalCrearAbierto(false);
   };
 
-
   const botones = [
-  {
-    label: 'Añadir',
-    variant: 'contained',
-    color: 'error',
-    size: 'large',
-    backgroundColor: colores.altertex[1],
-    onClick: () => console.log('Añadir'), 
-  },
+    {
+      label: 'Añadir',
+      variant: 'contained',
+      color: 'error',
+      size: 'large',
+      backgroundColor: colores.altertex[1],
+      onClick: handleAbrirModalCrear,
+    },
     {
       label: 'Atrás',
       onClick: redirigirAUsuarios,
@@ -99,7 +99,8 @@ const ListaRoles = () => {
 
       <ModalCrearRol
         abierto={modalCrearAbierto}
-        onCerrar={handleCerrarModalCrear} 
+        onCerrar={handleCerrarModalCrear}
+        onRolCreado={recargar}
       />
     </>
   );

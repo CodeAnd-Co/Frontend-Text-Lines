@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  RepositorioEventos,
-  RepositorioLeerEvento,
-} from '@Repositorios/Eventos/repositorioLeerEvento';
+import { RepositorioLeerEvento } from '@Repositorios/Eventos/repositorioLeerEvento';
 
 /**
  * Hook para obtener los datos de un evento por su ID

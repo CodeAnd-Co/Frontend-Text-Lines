@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { RUTAS_API } from '@Utilidades/Constantes/rutasAPI';
-import { EventoLectura } from '@Modelos/Eventos/EventosLectura';
+import { EventoLectura } from '@SRC/Dominio/Modelos/Eventos/EventoLectura';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 

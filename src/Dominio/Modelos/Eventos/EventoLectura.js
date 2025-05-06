@@ -3,7 +3,7 @@
  * RF[38] - Leer evento - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF38]
  */
 
-export class EventosLectura {
+export class EventoLectura {
   constructor({ idEvento, nombre, descripcion, puntos, periodoRenovacion, renovacion, estatus }) {
     this.idEvento = idEvento;
     this.nombre = nombre;

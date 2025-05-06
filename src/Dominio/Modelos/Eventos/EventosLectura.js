@@ -1,6 +1,6 @@
 /*
  * Modelo de dominio para lectura de eventos
- * RF[38] - Leer evento - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF38
+ * RF[38] - Leer evento - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF38]
  */
 
 export class EventosLectura {

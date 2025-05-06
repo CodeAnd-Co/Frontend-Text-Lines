@@ -7,11 +7,14 @@ const config = {
     "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"
   ],
   "addons": [
-    "@storybook/addon-essentials",
+    {
+      "name": "@storybook/addon-essentials",
+      "options": {
+        "docs": false
+      }
+    },
     "@storybook/addon-onboarding",
-    "@chromatic-com/storybook",
-    "@storybook/experimental-addon-test",
-    "@storybook/addon-a11y"
+    "@storybook/addon-interactions"
   ],
   "framework": {
     "name": "@storybook/react-vite",

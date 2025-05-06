@@ -18,8 +18,8 @@ const ListaProductos = () => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const { usuario } = useAuth();
-  const MENSAJE_POPUP_ELIMINAR
-    = '¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.';
+  const MENSAJE_POPUP_ELIMINAR =
+    '¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.';
 
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
@@ -121,6 +121,22 @@ const ListaProductos = () => {
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
+    },
+    {
+      variant: 'outlined',
+      label: 'Importar',
+      onClick: () => console.log('Importar'),
+      color: 'primary',
+      size: 'large',
+      outlineColor: colores.primario[10],
+    },
+    {
+      variant: 'outlined',
+      label: 'Exportar',
+      onClick: () => console.log('Exportar'),
+      color: 'primary',
+      size: 'large',
+      outlineColor: colores.primario[10],
     },
     {
       variant: 'outlined',

@@ -8,6 +8,7 @@ import { tokens } from '@SRC/theme';
 import { useNavigate } from 'react-router-dom';
 import { RUTAS } from '@Constantes/rutas';
 import ModalCrearRol from '@Organismos/ModalCrearRol';
+import Alerta from '@Moleculas/Alerta';
 
 const ListaRoles = () => {
   const { roles, cargando, error, recargar } = useConsultarRoles();
@@ -16,6 +17,7 @@ const ListaRoles = () => {
   const navigate = useNavigate();
 
   const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
+  const [mensajeExito, setMensajeExito] = useState(''); 
 
   const columnas = [
     {
@@ -54,6 +56,12 @@ const ListaRoles = () => {
     setModalCrearAbierto(false);
   };
 
+  const handleRolCreado = () => {
+    setMensajeExito('Rol creado exitosamente.');
+    recargar(); 
+    setTimeout(() => setMensajeExito(''), 4000);
+  };
+
   const botones = [
     {
       label: 'Añadir',
@@ -83,6 +91,16 @@ const ListaRoles = () => {
         informacionBotones={botones}
       >
         <Box sx={{ mt: '20px' }}>
+          {mensajeExito && (
+            <Alerta
+              tipo="success"
+              mensaje={mensajeExito}
+              duracion={4000}
+              cerrable
+              sx={{ mb: 2 }}
+            />
+          )}
+
           {error && (
             <Typography
               variant="h6"
@@ -100,7 +118,7 @@ const ListaRoles = () => {
       <ModalCrearRol
         abierto={modalCrearAbierto}
         onCerrar={handleCerrarModalCrear}
-        onRolCreado={recargar}
+        onRolCreado={handleRolCreado} 
       />
     </>
   );

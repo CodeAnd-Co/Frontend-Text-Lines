@@ -7,12 +7,10 @@ const ModalEliminarSetCuotas = ({ open, onClose, idsSetCuotas, setAlerta, refres
 
   const handleConfirm = async () => {
     try {
-      // ✅ 1. Asegurarte de que sea array
       const idsArray = Array.isArray(idsSetCuotas) ? idsSetCuotas : Array.from(idsSetCuotas);
 
-      // ✅ 2. Validar antes de enviar
       if (!idsArray.length) {
-        console.warn('⚠️ [ModalEliminarSetCuotas] No se enviarán IDs vacíos.');
+        console.warn('No se enviarán IDs vacíos.');
         setAlerta({
           tipo: 'error',
           mensaje: 'No hay sets de cuotas seleccionados para eliminar.',
@@ -23,7 +21,7 @@ const ModalEliminarSetCuotas = ({ open, onClose, idsSetCuotas, setAlerta, refres
         return;
       }
 
-      console.log('🟢 [ModalEliminarSetCuotas] Enviando estos IDs al backend:', idsArray);
+      console.log('Enviando estos IDs al backend:', idsArray);
       setCargando(true);
 
       const { mensaje } = await RepositorioEliminarSetCuotas.eliminarSetCuotas(idsArray);

@@ -11,6 +11,8 @@ import Chip from '@Atomos/Chip';
 import ModalCrearCuotaSet from '@Organismos/ModalCrearCuotaSet';
 import Alerta from '@Moleculas/Alerta';
 import { RUTAS } from '@Constantes/rutas';
+import ModalEliminarSetCuotas from '../../Componentes/Organismos/ModalEliminarSetCuotas';
+
 
 /**
  * Página para consultar y mostrar la lista de cuotas en una tabla.
@@ -30,6 +32,10 @@ const ListaCuotas = () => {
 
   // Estado para controlar la visualización del modal crear
   const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
+  const [seleccionados, setSeleccionados] = useState([]);
+  const [idsSetCuotas, setIdsSetCuotas] = useState([]);
+  const [alerta, setAlerta] = useState(null);
+  const [openModalEliminar, setOpenModalEliminar] = useState(false);
 
   useEffect(() => {
     if (!usuario?.clienteSeleccionado) {
@@ -74,12 +80,10 @@ const ListaCuotas = () => {
       }))
     : [];
 
-  // Manejador para abrir el modal
   const handleAbrirModalCrear = () => {
     setModalCrearAbierto(true);
   };
 
-  // Manejador para cerrar el modal
   const handleCerrarModalCrear = () => {
     setModalCrearAbierto(false);
   };
@@ -95,7 +99,20 @@ const ListaCuotas = () => {
     },
     {
       label: 'Eliminar',
-      onClick: () => console.log('Eliminar'),
+      onClick: () => {
+        if (seleccionados.length === 0) {
+          setAlerta({
+            tipo: 'error',
+            mensaje: 'Selecciona al menos un set de cuotas para eliminar.',
+            icono: true,
+            cerrable: true,
+            centradoInferior: true,
+          });
+        } else {
+          setIdsSetCuotas(seleccionados);
+          setOpenModalEliminar(true);
+        }
+      },
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
@@ -121,11 +138,41 @@ const ListaCuotas = () => {
 
         <Box width='100%'>
           {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}
-          <Tabla columns={columnas} rows={filas} loading={cargando} checkboxSelection />
+          <Tabla
+            columns={columnas}
+            rows={filas}
+            loading={cargando}
+            checkboxSelection
+            onRowSelectionModelChange={(nuevosIds) => {
+              const ids = Array.isArray(nuevosIds) ? nuevosIds : Array.from(nuevosIds?.ids || []);
+              console.log('IDs seleccionados:', ids);
+              setSeleccionados(ids);
+            }}                      
+          />
         </Box>
       </ContenedorLista>
 
       <ModalCrearCuotaSet abierto={modalCrearAbierto} onCerrar={handleCerrarModalCrear} />
+      <ModalEliminarSetCuotas
+        open={openModalEliminar}
+        onClose={() => setOpenModalEliminar(false)}
+        idsSetCuotas={Array.from(idsSetCuotas)}
+        setAlerta={setAlerta}
+        refrescarPagina={() => window.location.reload()} 
+      />
+
+      {alerta && (
+        <Alerta
+          tipo={alerta.tipo}
+          mensaje={alerta.mensaje}
+          icono={alerta.icono}
+          cerrable={alerta.cerrable}
+          duracion={2500}
+          centradoInferior={alerta.centradoInferior}
+          onClose={() => setAlerta(null)}
+        />
+      )}
+
     </>
   );
 };

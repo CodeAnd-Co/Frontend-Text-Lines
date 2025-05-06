@@ -47,6 +47,7 @@ export const RUTAS_API = {
     BASE: BASE_CUOTAS,
     CREAR_CUOTA: `${BASE_CUOTAS}/crear-cuota`,
     CONSULTAR_LISTA: `${BASE_CUOTAS}/consultar-lista`,
+    ELIMINAR_SET_CUOTAS: `${BASE_CUOTAS}/eliminar-set-cuotas`,
   },
   ROLES: {
     BASE: BASE_ROLES,

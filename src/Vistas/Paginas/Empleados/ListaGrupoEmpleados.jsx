@@ -6,10 +6,10 @@ import ContenedorLista from '@Organismos/ContenedorLista';
 import { useConsultarGrupos } from '@Hooks/Empleados/useConsultarGrupos';
 import { tokens } from '@SRC/theme';
 import { Box, useTheme } from '@mui/material';
-import Alerta from '@Componentes/Moleculas/Alerta';
+import Alerta from '@Moleculas/Alerta';
 import { useEliminarGrupoEmpleados } from '@Hooks/Empleados/useEliminarGrupoEmpleados';
 import { useState, React } from 'react';
-import PopUpEliminar from '@Componentes/Moleculas/PopUp';
+import PopUpEliminar from '@Moleculas/PopUp';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
 
@@ -23,7 +23,7 @@ const ListaEmpleados = () => {
   const [gruposSeleccionados, setGruposSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
   const { eliminar } = useEliminarGrupoEmpleados();
-  const [openModalEliminar, setAbrirPopUpEliminar] = useState(false);
+  const [abrirPopUpEliminar, setAbrirPopUpEliminar] = useState(false);
   const manejarCancelarEliminar = () => {
     setAbrirPopUpEliminar(false);
   };
@@ -163,7 +163,7 @@ const ListaEmpleados = () => {
         />
       )}
       <PopUpEliminar
-        abrir={openModalEliminar}
+        abrir={abrirPopUpEliminar}
         cerrar={manejarCancelarEliminar}
         confirmar={manejarConfirmarEliminar}
         dialogo={MENSAJE_POPUP_ELIMINAR}

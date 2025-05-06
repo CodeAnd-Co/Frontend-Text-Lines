@@ -74,7 +74,11 @@ const RutasSistemaAdministrativo = () => {
           path={RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_CATEGORIAS}
           element={<ListaCategorias />}
         />
-
+        {/* EVENTOS */}
+        <Route
+          path={RUTAS.SISTEMA_ADMINISTRATIVO.EVENTOS.CONSULTAR_EVENTOS}
+          element={<ListaEventos />}
+        />
         {/* Pedidos */}
         <Route
           path={RUTAS.SISTEMA_ADMINISTRATIVO.PEDIDOS.CONSULTAR_PEDIDOS}

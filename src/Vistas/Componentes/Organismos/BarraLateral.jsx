@@ -185,7 +185,7 @@ const BarraLateral = () => {
               ruta={
                 RUTAS.SISTEMA_ADMINISTRATIVO.BASE +
                 RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO +
-                RUTAS.SISTEMA_ADMINISTRATIVO.EVENTOS.CONSULTAR_LISTA
+                RUTAS.SISTEMA_ADMINISTRATIVO.EVENTOS.CONSULTAR_EVENTOS
               }
               icono={<EditCalendarOutlinedIcon />}
               seleccionado={seleccionado}

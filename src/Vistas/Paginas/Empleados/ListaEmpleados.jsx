@@ -8,6 +8,7 @@ import ModalFlotante from '@Organismos/ModalFlotante';
 import InfoEmpleado from '@Moleculas/EmpleadoInfo';
 import PopUp from '@Moleculas/PopUp';
 import Alerta from '@Moleculas/Alerta';
+import { useAuth } from '@Hooks/AuthProvider';
 import { useConsultarEmpleados } from '@Hooks/Empleados/useConsultarEmpleados';
 import { useEliminarEmpleado } from '@Hooks/Empleados/useEliminarEmpleado';
 import { tokens } from '@SRC/theme';
@@ -16,6 +17,7 @@ import { PERMISOS } from '@Constantes/permisos';
 const ListaGrupoEmpleados = () => {
   const { empleados, cargando, error, recargar } = useConsultarEmpleados();
   const { eliminar } = useEliminarEmpleado();
+  const { usuario } = useAuth();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
 
@@ -112,7 +114,20 @@ const ListaGrupoEmpleados = () => {
     },
     {
       label: 'Eliminar',
-      onClick: () => console.log('Eliminar'),
+      onClick: () => {
+        if (empleadosSeleccionados.length === 0) {
+          setAlerta({
+            tipo: 'error',
+            mensaje: 'Selecciona al menos un empleado para eliminar.',
+            icono: true,
+            cerrable: true,
+            centradoInferior: true,
+          });
+        } else {
+          setAbrirPopUpEliminar(true);
+        }
+      },
+      disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_EMPLEADO),
       size: 'large',
       color: 'error',
       backgroundColor: colores.altertex[1],

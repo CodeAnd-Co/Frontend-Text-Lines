@@ -28,18 +28,6 @@ const ListaEventos = () => {
 
   const botones = [
     { label: 'Añadir', onClick: () => console.log('Añadir'), size: 'large' },
-    {
-      variant: 'outlined',
-      label: 'Importar',
-      onClick: () => console.log('Importar'),
-      size: 'large',
-    },
-    {
-      variant: 'outlined',
-      label: 'Exportar',
-      onClick: () => console.log('Exportar'),
-      size: 'large',
-    },
     { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large' },
     { label: 'Eliminar', onClick: () => console.log('Eliminar'), size: 'large' },
   ];

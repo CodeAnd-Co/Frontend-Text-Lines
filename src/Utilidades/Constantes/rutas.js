@@ -33,7 +33,7 @@ export const RUTAS = {
 
     EVENTOS: {
       BASE: `${BASE_EVENTOS}`,
-      CONSULTAR_EVENTOS: `${BASE_EVENTOS}/consultar-lista-eventos`,
+      CONSULTAR_EVENTOS: `${BASE_EVENTOS}/consultar-lista`,
     },
     CONFIGURACION: '/configuracion',
     USUARIOS: {

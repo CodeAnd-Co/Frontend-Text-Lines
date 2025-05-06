@@ -8,6 +8,7 @@ const BASE_EMPLEADOS = `${BASE_URL}/api/empleados`;
 const BASE_CUOTAS = `${BASE_URL}/api/cuotas`;
 const BASE_ROLES = `${BASE_URL}/api/roles`;
 const BASE_PEDIDOS = `${BASE_URL}/api/pedidos`;
+const BASE_EVENTOS = `${BASE_URL}/api/eventos`;
 
 export const RUTAS_API = {
   USUARIOS: {
@@ -42,6 +43,8 @@ export const RUTAS_API = {
     BASE: BASE_EMPLEADOS,
     CONSULTAR_LISTA: `${BASE_EMPLEADOS}/consultar-lista`,
     CONSULTAR_GRUPOS: `${BASE_EMPLEADOS}/consultar-grupo`,
+    ELIMINAR_EMPLEADO: `${BASE_EMPLEADOS}/eliminar`,
+    ELIMINAR_GRUPO: `${BASE_EMPLEADOS}/eliminar-grupo`,
   },
   CUOTAS: {
     BASE: BASE_CUOTAS,
@@ -52,10 +55,15 @@ export const RUTAS_API = {
     BASE: BASE_ROLES,
     CONSULTAR_LISTA: `${BASE_ROLES}/consultar-lista`,
     CREAR_ROL: `${BASE_ROLES}/crear-rol`,
+    ELIMINAR_ROL: `${BASE_ROLES}/eliminar`,
   },
   PEDIDOS: {
     BASE: BASE_PEDIDOS,
     CONSULTAR_LISTA: `${BASE_PEDIDOS}/consultar-lista`,
     ELIMINAR_PEDIDO: `${BASE_PEDIDOS}/eliminar`,
+  },
+  EVENTOS: {
+    BASE: BASE_EVENTOS,
+    CONSULTAR_LISTA: `${BASE_URL}/api/eventos/consultar-lista-eventos`,
   },
 };

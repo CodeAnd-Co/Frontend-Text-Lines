@@ -96,17 +96,18 @@ const ListaPedidos = () => {
     {
       label: 'Añadir',
       onClick: () => console.log('Añadir'),
+      color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
-      color: 'error',
     },
+
     {
       variant: 'outlined',
       label: 'Editar',
       onClick: () => console.log('Editar'),
       color: 'primary',
       size: 'large',
-      outlineColor: colores.primario[3],
+      outlineColor: colores.primario[10],
     },
     {
       label: 'Eliminar',
@@ -126,6 +127,7 @@ const ListaPedidos = () => {
       color: 'error',
       disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_GRUPO_EMPLEADOS),
       size: 'large',
+      color: 'error',
       backgroundColor: colores.altertex[1],
     },
   ];

@@ -18,8 +18,8 @@ const ListaSetsProductos = () => {
   const { setsDeProductos, cargando, error, recargar } = useConsultarSetsProductos();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
-  const MENSAJE_POPUP_ELIMINAR =
-    '¿Estás seguro de que deseas eliminar los sets de productos seleccionados?';
+  const MENSAJE_POPUP_ELIMINAR
+    = '¿Estás seguro de que deseas eliminar los sets de productos seleccionados?';
 
   const [seleccionados, setSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
@@ -110,7 +110,7 @@ const ListaSetsProductos = () => {
       onClick: () => console.log('Editar'),
       color: 'primary',
       size: 'large',
-      outlineColor: colores.altertex[1],
+      outlineColor: colores.primario[10],
     },
     {
       label: 'Eliminar',
@@ -129,6 +129,7 @@ const ListaSetsProductos = () => {
       },
       disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_GRUPO_EMPLEADOS),
       size: 'large',
+      color: 'error',
       backgroundColor: colores.altertex[1],
     },
   ];

@@ -83,7 +83,7 @@ const ListaCategorias = () => {
       onClick: () => console.log('Importar'),
       color: 'primary',
       size: 'large',
-      outlineColor: colores.primario[3],
+      outlineColor: colores.primario[10],
     },
     {
       label: 'Eliminar',

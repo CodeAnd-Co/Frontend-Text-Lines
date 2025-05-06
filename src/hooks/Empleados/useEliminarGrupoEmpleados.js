@@ -1,8 +1,7 @@
 //RF25 Eliminar Grupo de empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF25
 
 import { useState } from 'react';
-import { RepositorioEliminarGrupoEmpleados } from '../../dominio/repositorios/Empleados/RepositorioEliminarGrupoEmpleados';
-
+import { RepositorioEliminarGrupoEmpleados } from '@Repositorios/Empleados/RepositorioEliminarGrupoEmpleados'
 /**
  * * Hook para eliminar un Grupo de empleados.
  * * @param {array} idGrupo

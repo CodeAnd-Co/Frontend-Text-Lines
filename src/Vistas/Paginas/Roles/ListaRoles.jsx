@@ -1,5 +1,5 @@
 //RF[7] Consulta Lista de Roles - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF7]
-import React from 'react';
+import React, { useState } from 'react';
 import CustomDataGrid from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';
 import { useConsultarRoles } from '@Hooks/Roles/useConsultarRoles';
@@ -10,10 +10,12 @@ import { RUTAS } from '@Constantes/rutas';
 import ModalCrearRol from '@Organismos/ModalCrearRol';
 
 const ListaRoles = () => {
-  const { roles, cargando, error, recargar } = useConsultarRoles();
+  const { roles, cargando, error } = useConsultarRoles();
   const tema = useTheme();
   const colores = tokens(tema.palette.mode);
   const navigate = useNavigate();
+
+  const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
 
   const columnas = [
     {
@@ -44,50 +46,62 @@ const ListaRoles = () => {
     urlImagen: rol.urlImagen,
   }));
 
-  return (
-    <ContenedorLista
-      titulo={
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: '20px',
-          }}
-        >
-          <Typography variant='h4' sx={{ mb: 0 }}>
-            Roles
-          </Typography>
-          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-            <ModalCrearRol onRolCreado={recargar} />
-            <button
-              onClick={redirigirAUsuarios}
-              style={{
-                padding: '10px 20px',
-                backgroundColor: 'transparent',
-                color: colores.primario[2],
-                border: `1px solid ${colores.primario[2]}`,
-                borderRadius: '5px',
-                height: '40px',
-                cursor: 'pointer',
-              }}
-            >
-              ATRÁS
-            </button>
-          </Box>
-        </Box>
-      }
-    >
-      <Box sx={{ mt: '20px' }}>
-        {error && (
-          <Typography variant='h6' color='error' sx={{ textAlign: 'center', marginBottom: '20px' }}>
-            Error: {error}
-          </Typography>
-        )}
 
-        <CustomDataGrid columns={columnas} rows={filas} loading={cargando} checkboxSelection />
-      </Box>
-    </ContenedorLista>
+
+
+  const handleCerrarModalCrear = () => {
+    setModalCrearAbierto(false);
+  };
+
+
+  const botones = [
+  {
+    label: 'Añadir',
+    variant: 'contained',
+    color: 'error',
+    size: 'large',
+    backgroundColor: colores.altertex[1],
+    onClick: () => console.log('Añadir'), 
+  },
+    {
+      label: 'Atrás',
+      onClick: redirigirAUsuarios,
+      size: 'large',
+      backgroundColor: 'transparent',
+      color: colores.primario[2],
+      border: `1px solid ${colores.primario[2]}`,
+      borderRadius: '5px',
+      height: '40px',
+    },
+  ];
+
+  return (
+    <>
+      <ContenedorLista
+        titulo="Lista de Roles"
+        descripcion="Gestiona y organiza los roles registrados en el sistema."
+        informacionBotones={botones}
+      >
+        <Box sx={{ mt: '20px' }}>
+          {error && (
+            <Typography
+              variant="h6"
+              color="error"
+              sx={{ textAlign: 'center', marginBottom: '20px' }}
+            >
+              Error: {error}
+            </Typography>
+          )}
+
+          <CustomDataGrid columns={columnas} rows={filas} loading={cargando} checkboxSelection />
+        </Box>
+      </ContenedorLista>
+
+      <ModalCrearRol
+        abierto={modalCrearAbierto}
+        onCerrar={handleCerrarModalCrear} 
+      />
+    </>
   );
 };
 

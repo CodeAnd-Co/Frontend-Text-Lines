@@ -6,7 +6,9 @@ import CampoTexto from '@Atomos/CampoTexto';
 import CampoSelect from '@Atomos/CampoSelect';
 import TarjetaAccion from '@Moleculas/TarjetaAccion';
 import TarjetaElementoAccion from '@Moleculas/TarjetaElementoAccion';
+import Alerta from '@Moleculas/Alerta';
 import ModalFlotante from '@Organismos/ModalFlotante';
+import CamposVariante from '@Organismos/Formularios/CamposVariante';
 import { useConsultarProveedores } from '@Hooks/Proveedores/useConsultarProveedores';
 
 const CampoTextoForm = memo(
@@ -30,7 +32,7 @@ const CampoTextoForm = memo(
 
 const CampoSelectForm = memo(
   ({ label, name, options, value, onChange, placeholder, helperText, size = 12 }) => (
-    <Grid item size={size}>
+    <Grid size={size}>
       <CampoSelect
         label={label}
         name={name}
@@ -48,7 +50,7 @@ const CampoSelectForm = memo(
 );
 
 const BotonForm = memo(({ selected, fullWidth, backgroundColor, outlineColor, label, onClick }) => (
-  <Grid item size={6} display='flex' alignItems='center' justifyContent='end'>
+  <Grid size={6} display='flex' alignItems='center' justifyContent='end'>
     <Boton
       variant='contained'
       selected={selected}
@@ -64,7 +66,7 @@ const BotonForm = memo(({ selected, fullWidth, backgroundColor, outlineColor, la
 ));
 
 const TituloForm = memo(({ titulo, tituloVariant, size = 12 }) => (
-  <Grid item size={size} overflow='hidden'>
+  <Grid size={size} overflow='hidden'>
     <Texto variant={tituloVariant} gutterBottom>
       {titulo}
     </Texto>
@@ -75,7 +77,7 @@ const CampoImagenProducto = memo(
   ({ imagenProducto, setImagenes, fileInputRef, handleFileSelect }) => (
     <>
       {imagenProducto ? (
-        <Grid item size={12}>
+        <Grid size={12}>
           <TarjetaElementoAccion
             icono='Image'
             texto={imagenProducto.name}
@@ -92,10 +94,10 @@ const CampoImagenProducto = memo(
         </Grid>
       ) : (
         <>
-          <Grid item size={12}>
+          <Grid size={12}>
             <Texto variant='h6'>Sube la Imagen Principal del Producto Aquí</Texto>
           </Grid>
-          <Grid item size={12}>
+          <Grid size={12}>
             <TarjetaAccion
               icono='AddPhotoAlternate'
               texto='Agregar imagen'
@@ -117,178 +119,15 @@ const CampoImagenProducto = memo(
 );
 
 const CampoCrear = memo(({ etiqueta, onClic }) => (
-  <Grid item size={12}>
+  <Grid size={12}>
     <TarjetaAccion icono='Add' texto={etiqueta} onClick={onClic} hoverScale={false} />
   </Grid>
 ));
 
-const CamposVariante = memo(
-  ({
-    varianteId,
-    variante,
-    onUpdateVariante,
-    onEliminarVariante,
-    onAgregarOpcion,
-    onActualizarOpcion,
-    onEliminarOpcion,
-  }) => {
-    const handleVarianteChange = useCallback(
-      (campo, valor) => {
-        onUpdateVariante(varianteId, campo, valor);
-      },
-      [varianteId, onUpdateVariante]
-    );
-
-    const handleEliminarVariante = useCallback(() => {
-      onEliminarVariante(varianteId);
-    }, [varianteId, onEliminarVariante]);
-
-    const handleAgregarOpcion = useCallback(() => {
-      onAgregarOpcion(varianteId);
-    }, [varianteId, onAgregarOpcion]);
-
-    return (
-      <>
-        <TituloForm titulo={`Variante ${variante.nombreVariante}`} tituloVariant='h6' size={6} />
-        <BotonForm label='Eliminar' onClick={handleEliminarVariante} />
-
-        <CampoTextoForm
-          label='Nombre de la Variante'
-          name={`nombreVariante-${varianteId}`}
-          value={variante.nombreVariante || ''}
-          onChange={(evento) => handleVarianteChange('nombreVariante', evento.target.value)}
-          placeholder='Ej: Color, Talla, Material...'
-        />
-
-        <CampoTextoForm
-          label='Descripción de la Variante'
-          name={`descripcion-${varianteId}`}
-          value={variante.descripcion || ''}
-          onChange={(evento) => handleVarianteChange('descripcion', evento.target.value)}
-          placeholder='Descripción de la variante'
-        />
-
-        {(variante.opciones || []).map((opcion, index) => (
-          <OpcionVariante
-            key={opcion.id || index}
-            index={index}
-            opcion={opcion}
-            varianteId={varianteId}
-            onActualizarOpcion={onActualizarOpcion}
-            onEliminarOpcion={onEliminarOpcion}
-          />
-        ))}
-        <CampoCrear etiqueta='Crear Opción' onClic={handleAgregarOpcion} />
-      </>
-    );
-  },
-  (prevProps, nextProps) => {
-    return (
-      prevProps.varianteId === nextProps.varianteId &&
-      prevProps.variante.nombreVariante === nextProps.variante.nombreVariante &&
-      prevProps.variante.descripcion === nextProps.variante.descripcion &&
-      JSON.stringify(prevProps.variante.opciones) === JSON.stringify(nextProps.variante.opciones) &&
-      prevProps.onUpdateVariante === nextProps.onUpdateVariante &&
-      prevProps.onEliminarVariante === nextProps.onEliminarVariante &&
-      prevProps.onAgregarOpcion === nextProps.onAgregarOpcion &&
-      prevProps.onActualizarOpcion === nextProps.onActualizarOpcion &&
-      prevProps.onEliminarOpcion === nextProps.onEliminarOpcion
-    );
-  }
-);
-
-const OpcionVariante = memo(
-  ({ opcion, index, varianteId, onActualizarOpcion, onEliminarOpcion }) => {
-    const handleOpcionChange = useCallback(
-      (campo, valor) => {
-        onActualizarOpcion(varianteId, index, campo, valor);
-      },
-      [varianteId, index, onActualizarOpcion]
-    );
-
-    const handleEliminar = useCallback(() => {
-      onEliminarOpcion(varianteId, index);
-    }, [varianteId, index, onEliminarOpcion]);
-
-    return (
-      <Grid container spacing={2}>
-        <TituloForm titulo={`Opcion ${opcion.valorOpcion}`} tituloVariant='h6' size={6} />
-        <BotonForm label='Eliminar' onClick={handleEliminar} />
-        <CampoTextoForm
-          label='Cantidad'
-          type='number'
-          name={`cantidad-${varianteId}-${index}`}
-          value={opcion.cantidad}
-          onChange={(evento) => handleOpcionChange('cantidad', evento.target.value)}
-        />
-        <CampoTextoForm
-          label='Valor Opción'
-          name={`valorOpcion-${varianteId}-${index}`}
-          value={opcion.valorOpcion}
-          onChange={(evento) => handleOpcionChange('valorOpcion', evento.target.value)}
-        />
-        <CampoTextoForm
-          label='SKU Automático'
-          name={`SKUautomatico-${varianteId}-${index}`}
-          value={opcion.SKUautomatico}
-          onChange={(evento) => handleOpcionChange('SKUautomatico', evento.target.value)}
-        />
-        <CampoTextoForm
-          label='SKU Comercial'
-          name={`SKUcomercial-${varianteId}-${index}`}
-          value={opcion.SKUcomercial}
-          onChange={(evento) => handleOpcionChange('SKUcomercial', evento.target.value)}
-        />
-        <CampoTextoForm
-          label='Costo Adicional'
-          type='number'
-          name={`costoAdicional-${varianteId}-${index}`}
-          value={opcion.costoAdicional}
-          onChange={(evento) => handleOpcionChange('costoAdicional', evento.target.value)}
-        />
-        <CampoTextoForm
-          label='Descuento (%)'
-          type='number'
-          name={`descuento-${varianteId}-${index}`}
-          value={opcion.descuento}
-          onChange={(evento) => handleOpcionChange('descuento', evento.target.value)}
-        />
-        <CampoSelectForm
-          label='Estado'
-          name={`estado-${varianteId}-${index}`}
-          options={[
-            { value: 1, label: 'Activo' },
-            { value: 0, label: 'Inactivo' },
-          ]}
-          value={opcion.estado}
-          onChange={(evento) => handleOpcionChange('estado', evento.target.value)}
-          size={6}
-        />
-      </Grid>
-    );
-  },
-  (prev, next) => {
-    return (
-      prev.index === next.index &&
-      prev.varianteId === next.varianteId &&
-      prev.opcion.cantidad === next.opcion.cantidad &&
-      prev.opcion.valorOpcion === next.opcion.valorOpcion &&
-      prev.opcion.SKUautomatico === next.opcion.SKUautomatico &&
-      prev.opcion.SKUcomercial === next.opcion.SKUcomercial &&
-      prev.opcion.costoAdicional === next.opcion.costoAdicional &&
-      prev.opcion.descuento === next.opcion.descuento &&
-      prev.opcion.estado === next.opcion.estado &&
-      prev.onActualizarOpcion === next.onActualizarOpcion &&
-      prev.onEliminarOpcion === next.onEliminarOpcion
-    );
-  }
-);
-
 const FormularioProducto = memo(
   ({ open, onMostrarFormularioProveedor, onCerrarFormularioProducto }) => {
     const fileInputRef = useRef();
-
-    // Estado para almacenar las variantes (reemplaza useRef)
+    const [alerta, setAlerta] = useState(null);
     const [variantes, setVariantes] = useState({
       1: {
         nombreVariante: '',
@@ -296,13 +135,9 @@ const FormularioProducto = memo(
         opciones: [],
       },
     });
-
-    // Estado para mantener los IDs de las variantes
     const [variantesIds, setVariantesIds] = useState([1]);
-
-    // Contador para generar IDs únicos
     const [nextVarianteId, setNextVarianteId] = useState(2);
-
+    const [nextImagenId, setNextImagenId] = useState(1);
     const [producto, setProducto] = useState({
       nombreComun: '',
       nombreComercial: '',
@@ -323,7 +158,7 @@ const FormularioProducto = memo(
 
     const [imagenes, setImagenes] = useState({
       imagenProducto: null,
-      imagenVariantes: [],
+      imagenesVariantes: {},
     });
 
     const { proveedores } = useConsultarProveedores();
@@ -340,6 +175,14 @@ const FormularioProducto = memo(
       }));
 
       setVariantesIds((prev) => [...prev, newId]);
+
+      setImagenes((prev) => ({
+        ...prev,
+        imagenesVariantes: {
+          ...prev.imagenesVariantes,
+          [newId]: [],
+        },
+      }));
 
       setNextVarianteId((prev) => prev + 1);
     }, [nextVarianteId]);
@@ -360,7 +203,6 @@ const FormularioProducto = memo(
       });
     }, []);
 
-    // Método para eliminar una variante
     const eliminarVariante = useCallback((varianteId) => {
       setVariantes((prev) => {
         const newVariantes = { ...prev };
@@ -368,17 +210,29 @@ const FormularioProducto = memo(
         return newVariantes;
       });
 
+      setImagenes((prev) => {
+        const newImagenesVariantes = { ...prev.imagenesVariantes };
+        delete newImagenesVariantes[varianteId];
+        return {
+          ...prev,
+          imagenesVariantes: newImagenesVariantes,
+        };
+      });
+
+      setAlerta({
+        tipo: 'success',
+        mensaje: 'Variante eliminada',
+      });
+
       setVariantesIds((prev) => prev.filter((id) => id !== varianteId));
     }, []);
 
-    // Método para agregar una opción a una variante - más eficiente
     const agregarOpcion = useCallback((varianteId) => {
       setVariantes((prev) => {
         if (!prev[varianteId]) {
-          return prev; // Si la variante no existe, no hacemos nada
+          return prev;
         }
 
-        // Crear una nueva opción con valores por defecto
         const nuevaOpcion = {
           id: Date.now(),
           cantidad: 0,
@@ -400,7 +254,6 @@ const FormularioProducto = memo(
       });
     }, []);
 
-    // Método para actualizar una opción específica - optimizado para actualizar solo lo necesario
     const actualizarOpcion = useCallback((varianteId, opcionIndex, campo, valor) => {
       setVariantes((prev) => {
         const varianteActual = prev[varianteId];
@@ -408,12 +261,10 @@ const FormularioProducto = memo(
 
         const opcionesActuales = varianteActual.opciones || [];
 
-        // Si el índice no es válido, no hacer cambios
         if (opcionIndex < 0 || opcionIndex >= opcionesActuales.length) {
           return prev;
         }
 
-        // Crear un nuevo array con la opción actualizada
         const opcionesActualizadas = [...opcionesActuales];
         opcionesActualizadas[opcionIndex] = {
           ...opcionesActuales[opcionIndex],
@@ -429,7 +280,7 @@ const FormularioProducto = memo(
         };
       });
     }, []);
-    // Método para eliminar una opción - optimizado
+
     const eliminarOpcion = useCallback((varianteId, opcionIndex) => {
       setVariantes((prev) => {
         const varianteActual = prev[varianteId];
@@ -438,14 +289,18 @@ const FormularioProducto = memo(
           !varianteActual.opciones ||
           opcionIndex >= varianteActual.opciones.length
         ) {
-          return prev; // No hay nada que eliminar
+          return prev;
         }
 
-        // Crear nuevo array de opciones sin la opción a eliminar
         const opcionesActualizadas = [
           ...varianteActual.opciones.slice(0, opcionIndex),
           ...varianteActual.opciones.slice(opcionIndex + 1),
         ];
+
+        setAlerta({
+          tipo: 'success',
+          mensaje: 'Opción eliminada',
+        });
 
         return {
           ...prev,
@@ -457,22 +312,82 @@ const FormularioProducto = memo(
       });
     }, []);
 
+    const agregarImagenVariante = useCallback(
+      (varianteId, files) => {
+        setImagenes((prev) => {
+          const imagenesVariante = prev.imagenesVariantes[varianteId] || [];
+          const nuevasImagenes = files.map((file) => ({
+            id: nextImagenId + imagenesVariante.length,
+            file,
+          }));
+
+          setNextImagenId(nextImagenId + files.length);
+
+          return {
+            ...prev,
+            imagenesVariantes: {
+              ...prev.imagenesVariantes,
+              [varianteId]: [...imagenesVariante, ...nuevasImagenes],
+            },
+          };
+        });
+
+        setAlerta({
+          tipo: 'success',
+          mensaje: `${
+            files.length > 1 ? `${files.length} imágenes agregadas` : 'Imagen agregada'
+          } a la variante`,
+        });
+      },
+      [nextImagenId]
+    );
+
+    const eliminarImagenVariante = useCallback((varianteId, imagenId) => {
+      setImagenes((prev) => {
+        const imagenesVariante = prev.imagenesVariantes[varianteId] || [];
+
+        return {
+          ...prev,
+          imagenesVariantes: {
+            ...prev.imagenesVariantes,
+            [varianteId]: imagenesVariante.filter((img) => img.id !== imagenId),
+          },
+        };
+      });
+
+      setAlerta({
+        tipo: 'success',
+        mensaje: 'Imagen eliminada',
+      });
+    }, []);
+
     const handleCrearProducto = useCallback(() => {
-      // Convertir el objeto de variantes a un array para enviar
+      const imagenesFormateadas = {};
+      if (imagenes.imagenProducto) {
+        imagenesFormateadas.principal = imagenes.imagenProducto;
+      }
+      Object.entries(imagenes.imagenesVariantes).forEach(([varianteId, imagenesArray]) => {
+        if (imagenesArray && imagenesArray.length > 0) {
+          imagenesFormateadas[`variante_${varianteId}`] = imagenesArray.map((img) => ({
+            id: img.id,
+            file: img.file,
+          }));
+        }
+      });
+
       const variantesData = Object.entries(variantes).map(([id, data]) => ({
         id: parseInt(id),
         ...data,
+        imagenesIds: (imagenes.imagenesVariantes[id] || []).map((img) => img.id),
       }));
 
-      // Preparar datos completos del producto incluyendo variantes
       const productoCompleto = {
         ...producto,
         variantes: variantesData,
-        imagenes,
+        imagenes: imagenesFormateadas,
       };
 
       console.log('Producto completo a enviar:', productoCompleto);
-      // Aquí iría la lógica para enviar los datos al servidor
     }, [producto, variantes, imagenes]);
 
     const handleChange = useCallback((evento) => {
@@ -495,160 +410,189 @@ const FormularioProducto = memo(
       [proveedores]
     );
 
+    useMemo(() => {
+      setImagenes((prev) => {
+        const imagenesActualizadas = { ...prev };
+
+        variantesIds.forEach((id) => {
+          if (!imagenesActualizadas.imagenesVariantes[id]) {
+            imagenesActualizadas.imagenesVariantes[id] = [];
+          }
+        });
+
+        return imagenesActualizadas;
+      });
+    }, [variantesIds]);
+
     return (
-      <ModalFlotante
-        open={open}
-        onClose={onCerrarFormularioProducto}
-        onConfirm={handleCrearProducto}
-        titulo='Crear Producto'
-        confirmLabel='Siguiente'
-        cancelLabel='Cerrar'
-      >
-        <Box
-          component='form'
-          method='POST'
-          noValidate
-          autoComplete='off'
-          sx={{
-            flexGrow: 1,
-            '& .MuiTextField-root': { margin: 1, width: '30ch' },
-            '& .MuiFormControl-root': { margin: 1, minWidth: '30ch' },
-            mt: 3,
-            mb: 3,
-          }}
+      <>
+        <ModalFlotante
+          open={open}
+          onClose={onCerrarFormularioProducto}
+          onConfirm={handleCrearProducto}
+          titulo='Crear Producto'
+          confirmLabel='Siguiente'
+          cancelLabel='Cerrar'
         >
-          <Grid container spacing={2}>
-            <TituloForm titulo='Datos del Proveedor' tituloVariant='h6' size={6} />
-            <BotonForm label='Agregar nuevo proveedor' onClick={onMostrarFormularioProveedor} />
-            <CampoSelectForm
-              label='Proveedor'
-              name='proveedorId'
-              value={producto.proveedorId}
-              onChange={handleChange}
-              options={listaProveedores}
-              placeholder='Selecciona un proveedor'
-            />
-            <TituloForm titulo='Datos del Producto' tituloVariant='h6' />
-            <CampoTextoForm
-              label='Nombre Común'
-              name='nombreComun'
-              value={producto.nombreComun}
-              onChange={handleChange}
-              placeholder='Ingresa el nombre común del producto'
-            />
-            <CampoTextoForm
-              label='Nombre Comercial'
-              name='nombreComercial'
-              value={producto.nombreComercial}
-              onChange={handleChange}
-              placeholder='Ingresa el nombre comercial del producto'
-            />
-            <CampoTextoForm
-              label='Descripción'
-              name='descripcion'
-              value={producto.descripcion}
-              onChange={handleChange}
-              placeholder='Ingresa una breve descripción del producto'
-              multiline
-              rows={4}
-            />
-            <CampoTextoForm
-              label='Marca'
-              name='marca'
-              value={producto.marca}
-              onChange={handleChange}
-              placeholder='Ingresa la marca del producto'
-            />
-            <CampoTextoForm
-              label='Modelo'
-              name='modelo'
-              value={producto.modelo}
-              onChange={handleChange}
-              placeholder='Ingresa el modelo del producto'
-            />
-            <CampoTextoForm
-              label='Tipo de Producto'
-              name='tipoProducto'
-              value={producto.tipoProducto}
-              onChange={handleChange}
-              placeholder='Ingresa el tipo de producto'
-            />
-            <CampoTextoForm
-              label='Precio en Puntos'
-              name='precioPuntos'
-              value={producto.precioPuntos}
-              onChange={handleChange}
-              placeholder='Ingresa el precio en puntos'
-              type='number'
-            />
-            <CampoTextoForm
-              label='Precio Cliente'
-              name='precioCliente'
-              value={producto.precioCliente}
-              onChange={handleChange}
-              placeholder='Ingresa el precio para el cliente'
-              type='number'
-            />
-            <CampoTextoForm
-              label='Precio Venta'
-              name='precioVenta'
-              value={producto.precioVenta}
-              onChange={handleChange}
-              placeholder='Ingresa el precio de venta'
-              type='number'
-            />
-            <CampoTextoForm
-              label='Precio Costo'
-              name='costo'
-              value={producto.costo}
-              onChange={handleChange}
-              placeholder='Ingresa el costo del producto'
-              type='number'
-            />
-            <CampoTextoForm
-              label='Impuesto (%)'
-              name='impuesto'
-              value={producto.impuesto}
-              onChange={handleChange}
-              placeholder='Ej: 16'
-              type='number'
-            />
-            <CampoTextoForm
-              label='Descuento (%)'
-              name='descuento'
-              value={producto.descuento}
-              onChange={handleChange}
-              placeholder='Ej: 10'
-              type='number'
-            />
-            <CampoImagenProducto
-              imagenProducto={imagenes.imagenProducto}
-              setImagenes={setImagenes}
-              fileInputRef={fileInputRef}
-              handleFileSelect={handleFileSelect}
-            />
-            <TituloForm titulo='Datos de las Variantes' tituloVariant='h6' />
-
-            {/* Renderizamos los componentes de variantes usando sus IDs */}
-            {variantesIds.map((varianteId) => (
-              <CamposVariante
-                key={`variante-${varianteId}`}
-                varianteId={varianteId}
-                variante={
-                  variantes[varianteId] || { nombreVariante: '', descripcion: '', opciones: [] }
-                }
-                onUpdateVariante={updateVariante}
-                onEliminarVariante={eliminarVariante}
-                onAgregarOpcion={agregarOpcion}
-                onActualizarOpcion={actualizarOpcion}
-                onEliminarOpcion={eliminarOpcion}
+          <Box
+            component='form'
+            method='POST'
+            noValidate
+            autoComplete='off'
+            sx={{
+              flexGrow: 1,
+              '& .MuiTextField-root': { margin: 1, width: '30ch' },
+              '& .MuiFormControl-root': { margin: 1, minWidth: '30ch' },
+              mt: 3,
+              mb: 3,
+            }}
+          >
+            <Grid container spacing={2}>
+              <TituloForm titulo='Datos del Proveedor' tituloVariant='h6' size={6} />
+              <BotonForm label='Agregar nuevo proveedor' onClick={onMostrarFormularioProveedor} />
+              <CampoSelectForm
+                label='Proveedor'
+                name='proveedorId'
+                value={producto.proveedorId}
+                onChange={handleChange}
+                options={listaProveedores}
+                placeholder='Selecciona un proveedor'
               />
-            ))}
+              <TituloForm titulo='Datos del Producto' tituloVariant='h6' />
+              <CampoTextoForm
+                label='Nombre Común'
+                name='nombreComun'
+                value={producto.nombreComun}
+                onChange={handleChange}
+                placeholder='Ingresa el nombre común del producto'
+              />
+              <CampoTextoForm
+                label='Nombre Comercial'
+                name='nombreComercial'
+                value={producto.nombreComercial}
+                onChange={handleChange}
+                placeholder='Ingresa el nombre comercial del producto'
+              />
+              <CampoTextoForm
+                label='Descripción'
+                name='descripcion'
+                value={producto.descripcion}
+                onChange={handleChange}
+                placeholder='Ingresa una breve descripción del producto'
+                multiline
+                rows={4}
+              />
+              <CampoTextoForm
+                label='Marca'
+                name='marca'
+                value={producto.marca}
+                onChange={handleChange}
+                placeholder='Ingresa la marca del producto'
+              />
+              <CampoTextoForm
+                label='Modelo'
+                name='modelo'
+                value={producto.modelo}
+                onChange={handleChange}
+                placeholder='Ingresa el modelo del producto'
+              />
+              <CampoTextoForm
+                label='Tipo de Producto'
+                name='tipoProducto'
+                value={producto.tipoProducto}
+                onChange={handleChange}
+                placeholder='Ingresa el tipo de producto'
+              />
+              <CampoTextoForm
+                label='Precio en Puntos'
+                name='precioPuntos'
+                value={producto.precioPuntos}
+                onChange={handleChange}
+                placeholder='Ingresa el precio en puntos'
+                type='number'
+              />
+              <CampoTextoForm
+                label='Precio Cliente'
+                name='precioCliente'
+                value={producto.precioCliente}
+                onChange={handleChange}
+                placeholder='Ingresa el precio para el cliente'
+                type='number'
+              />
+              <CampoTextoForm
+                label='Precio Venta'
+                name='precioVenta'
+                value={producto.precioVenta}
+                onChange={handleChange}
+                placeholder='Ingresa el precio de venta'
+                type='number'
+              />
+              <CampoTextoForm
+                label='Precio Costo'
+                name='costo'
+                value={producto.costo}
+                onChange={handleChange}
+                placeholder='Ingresa el costo del producto'
+                type='number'
+              />
+              <CampoTextoForm
+                label='Impuesto (%)'
+                name='impuesto'
+                value={producto.impuesto}
+                onChange={handleChange}
+                placeholder='Ej: 16'
+                type='number'
+              />
+              <CampoTextoForm
+                label='Descuento (%)'
+                name='descuento'
+                value={producto.descuento}
+                onChange={handleChange}
+                placeholder='Ej: 10'
+                type='number'
+              />
+              <CampoImagenProducto
+                imagenProducto={imagenes.imagenProducto}
+                setImagenes={setImagenes}
+                fileInputRef={fileInputRef}
+                handleFileSelect={handleFileSelect}
+              />
+              <TituloForm titulo='Datos de las Variantes' tituloVariant='h6' />
 
-            <CampoCrear etiqueta='Crear Variante' onClic={handleCrearVariante} />
-          </Grid>
-        </Box>
-      </ModalFlotante>
+              {variantesIds.map((varianteId) => (
+                <CamposVariante
+                  key={`variante-${varianteId}`}
+                  varianteId={varianteId}
+                  variante={
+                    variantes[varianteId] || { nombreVariante: '', descripcion: '', opciones: [] }
+                  }
+                  imagenesVariante={imagenes.imagenesVariantes[varianteId] || []}
+                  onUpdateVariante={updateVariante}
+                  onEliminarVariante={eliminarVariante}
+                  onAgregarOpcion={agregarOpcion}
+                  onActualizarOpcion={actualizarOpcion}
+                  onEliminarOpcion={eliminarOpcion}
+                  onAgregarImagen={agregarImagenVariante}
+                  onEliminarImagen={eliminarImagenVariante}
+                />
+              ))}
+
+              <CampoCrear etiqueta='Crear Variante' onClic={handleCrearVariante} />
+            </Grid>
+          </Box>
+        </ModalFlotante>
+
+        {alerta && (
+          <Alerta
+            sx={{ marginBottom: 2 }}
+            tipo={alerta.tipo}
+            mensaje={alerta.mensaje}
+            duracion='2000'
+            centradoInferior={true}
+            onClose={() => setAlerta(null)}
+          />
+        )}
+      </>
     );
   }
 );

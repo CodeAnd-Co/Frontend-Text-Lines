@@ -182,8 +182,8 @@ const ListaRoles = () => {
             // Mantener los seleccionados originales para la UI, pero usar los filtrados para la eliminación
             setAbrirPopupEliminar(true);
           } else if (
-            (seleccionFiltrada.length === 0 && seleccionados.includes(String(SUPERUSER_ID))) ||
-            (seleccionFiltrada.length === 0 && seleccionados.includes(SUPERUSER_ID))
+            (seleccionFiltrada.length === 0 && seleccionados.includes(String(SUPERUSER_ID)))
+            || (seleccionFiltrada.length === 0 && seleccionados.includes(SUPERUSER_ID))
           ) {
             // Si solo se seleccionó el superusuario, mostrar un mensaje más claro
             setAlerta({

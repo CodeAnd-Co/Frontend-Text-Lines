@@ -24,7 +24,7 @@ const ListaPedidos = () => {
   const { eliminar } = useEliminarPedido();
 
   // Estado para controlar la visualización del modal eliminar
-  const [openModalEliminar, setAbrirPopUpEliminar] = useState(false);
+  const [abrirPopUpEliminar, setAbrirPopUpEliminar] = useState(false);
   const manejarCancelarEliminar = () => {
     setAbrirPopUpEliminar(false);
   };
@@ -186,7 +186,7 @@ const ListaPedidos = () => {
         />
       )}
       <PopUp
-        abrir={openModalEliminar}
+        abrir={abrirPopUpEliminar}
         cerrar={manejarCancelarEliminar}
         confirmar={manejarConfirmarEliminar}
         dialogo={MENSAJE_POPUP_ELIMINAR}

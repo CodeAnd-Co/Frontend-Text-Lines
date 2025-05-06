@@ -8,7 +8,7 @@ import Alerta from '@Moleculas/Alerta';
 import PopUp from '@Moleculas/PopUp';
 import { useConsultarProductos } from '@Hooks/Productos/useConsultarProductos';
 import { useEliminarProductos } from '@Hooks/Productos/useEliminarProductos';
-import { useMode, tokens } from '@SRC/theme';
+import { tokens } from '@SRC/theme';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
 
@@ -18,8 +18,8 @@ const ListaProductos = () => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const { usuario } = useAuth();
-  const MENSAJE_POPUP_ELIMINAR =
-    '¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.';
+  const MENSAJE_POPUP_ELIMINAR
+    = '¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.';
 
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);

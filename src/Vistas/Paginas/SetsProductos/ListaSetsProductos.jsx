@@ -129,6 +129,7 @@ const ListaSetsProductos = () => {
       },
       disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_GRUPO_EMPLEADOS),
       size: 'large',
+      color: 'error',
       backgroundColor: colores.altertex[1],
     },
   ];

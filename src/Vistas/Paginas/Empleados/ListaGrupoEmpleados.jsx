@@ -100,14 +100,7 @@ const ListaEmpleados = () => {
       size: 'large',
       backgroundColor: colores.altertex[1],
     },
-    {
-      variant: 'outlined',
-      label: 'Importar',
-      onClick: () => console.log('Importar'),
-      color: 'primary',
-      size: 'large',
-      outlineColor: colores.primario[10],
-    },
+
     {
       variant: 'outlined',
       label: 'Editar',

@@ -5,6 +5,7 @@ import Texto from '@Atomos/Texto';
 import CampoTexto from '@Atomos/CampoTexto';
 import CampoSelect from '@Atomos/CampoSelect';
 import Chip from '@Atomos/Chip';
+import { tokens } from '@SRC/theme';
 
 const InfoUsuario = ({
   modoEdicion = false,

@@ -1,11 +1,14 @@
 //RF37 - Consulta Lista de Eventos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF37
 import React from 'react';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import Tabla from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';
 import { useConsultarEventos } from '@Hooks/Eventos/useConsultarEventos';
+import { tokens } from '@SRC/theme';
 
 const ListaEventos = () => {
+  const theme = useTheme();
+  const colores = tokens(theme.palette.mode);
   const { eventos, cargando, error } = useConsultarEventos();
   console.log('Eventos:', eventos); // Para depuración
 
@@ -27,9 +30,28 @@ const ListaEventos = () => {
   }));
 
   const botones = [
-    { label: 'Añadir', onClick: () => console.log('Añadir'), size: 'large' },
-    { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large' },
-    { label: 'Eliminar', onClick: () => console.log('Eliminar'), size: 'large' },
+    {
+      label: 'Añadir',
+      onClick: () => console.log('Añadir'),
+      color: 'error',
+      size: 'large',
+      backgroundColor: colores.altertex[1],
+    },
+    {
+      variant: 'outlined',
+      label: 'Editar',
+      onClick: () => console.log('Editar'),
+      color: 'primary',
+      size: 'large',
+      outlineColor: colores.primario[10],
+    },
+    {
+      label: 'Eliminar',
+      onClick: () => console.log('Eliminar'),
+      size: 'large',
+      color: 'error',
+      backgroundColor: colores.altertex[1],
+    },
   ];
 
   return (

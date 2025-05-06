@@ -1,7 +1,7 @@
 //RF17 - Consulta Lista Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF17
 //RF20 - Eliminar empleado - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF20
 import React, { useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import Tabla from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';
 import ModalFlotante from '@Organismos/ModalFlotante';
@@ -10,15 +10,13 @@ import PopUp from '@Moleculas/PopUp';
 import Alerta from '@Moleculas/Alerta';
 import { useConsultarEmpleados } from '@Hooks/Empleados/useConsultarEmpleados';
 import { useEliminarEmpleado } from '@Hooks/Empleados/useEliminarEmpleado';
-import { useAuth } from '@Hooks/AuthProvider';
-import { useMode, tokens } from '@SRC/theme';
+import { tokens } from '@SRC/theme';
 import { PERMISOS } from '@Constantes/permisos';
 
 const ListaGrupoEmpleados = () => {
   const { empleados, cargando, error, recargar } = useConsultarEmpleados();
   const { eliminar } = useEliminarEmpleado();
-  const { usuario } = useAuth();
-  const [theme] = useMode();
+  const theme = useTheme();
   const colores = tokens(theme.palette.mode);
 
   const [empleadosSeleccionados, setEmpleadosSeleccionados] = useState([]);
@@ -27,7 +25,8 @@ const ListaGrupoEmpleados = () => {
   const [empleadoSeleccionado, setEmpleadoSeleccionado] = useState(null);
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
 
-  const MENSAJE_POPUP_ELIMINAR = '¿Estás seguro de que deseas eliminar los empleados seleccionados? Esta acción no se puede deshacer.';
+  const MENSAJE_POPUP_ELIMINAR
+    = '¿Estás seguro de que deseas eliminar los empleados seleccionados? Esta acción no se puede deshacer.';
 
   const manejarCancelarEliminar = () => {
     setAbrirPopUpEliminar(false);
@@ -83,6 +82,7 @@ const ListaGrupoEmpleados = () => {
     {
       label: 'Añadir',
       onClick: () => console.log('Añadir'),
+      color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
     },
@@ -90,31 +90,31 @@ const ListaGrupoEmpleados = () => {
       variant: 'outlined',
       label: 'Importar',
       onClick: () => console.log('Importar'),
+      color: 'primary',
       size: 'large',
+      outlineColor: colores.primario[10],
     },
     {
       variant: 'outlined',
       label: 'Exportar',
       onClick: () => console.log('Exportar'),
+      color: 'primary',
       size: 'large',
+      outlineColor: colores.primario[10],
+    },
+    {
+      variant: 'outlined',
+      label: 'Editar',
+      onClick: () => console.log('Editar'),
+      color: 'primary',
+      size: 'large',
+      outlineColor: colores.primario[10],
     },
     {
       label: 'Eliminar',
-      onClick: () => {
-        if (empleadosSeleccionados.length === 0) {
-          setAlerta({
-            tipo: 'error',
-            mensaje: 'Selecciona al menos un empleado para eliminar.',
-            icono: true,
-            cerrable: true,
-            centradoInferior: true,
-          });
-        } else {
-          setAbrirPopUpEliminar(true);
-        }
-      },
-      disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_EMPLEADO),
+      onClick: () => console.log('Eliminar'),
       size: 'large',
+      color: 'error',
       backgroundColor: colores.altertex[1],
     },
   ];

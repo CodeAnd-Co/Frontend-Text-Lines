@@ -8,6 +8,7 @@ import ModalFlotante from '@Organismos/ModalFlotante';
 import InfoEmpleado from '@Moleculas/EmpleadoInfo';
 import PopUp from '@Moleculas/PopUp';
 import Alerta from '@Moleculas/Alerta';
+import { useAuth } from '@Hooks/AuthProvider';
 import { useConsultarEmpleados } from '@Hooks/Empleados/useConsultarEmpleados';
 import { useEliminarEmpleado } from '@Hooks/Empleados/useEliminarEmpleado';
 import { tokens } from '@SRC/theme';
@@ -16,6 +17,7 @@ import { PERMISOS } from '@Constantes/permisos';
 const ListaGrupoEmpleados = () => {
   const { empleados, cargando, error, recargar } = useConsultarEmpleados();
   const { eliminar } = useEliminarEmpleado();
+  const { usuario } = useAuth();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
 
@@ -25,8 +27,8 @@ const ListaGrupoEmpleados = () => {
   const [empleadoSeleccionado, setEmpleadoSeleccionado] = useState(null);
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
 
-  const MENSAJE_POPUP_ELIMINAR
-    = '¿Estás seguro de que deseas eliminar los empleados seleccionados? Esta acción no se puede deshacer.';
+  const MENSAJE_POPUP_ELIMINAR =
+    '¿Estás seguro de que deseas eliminar los empleados seleccionados? Esta acción no se puede deshacer.';
 
   const manejarCancelarEliminar = () => {
     setAbrirPopUpEliminar(false);
@@ -112,7 +114,19 @@ const ListaGrupoEmpleados = () => {
     },
     {
       label: 'Eliminar',
-      onClick: () => console.log('Eliminar'),
+      onClick: () => {
+        if (empleadosSeleccionados.length === 0) {
+          setAlerta({
+            tipo: 'error',
+            mensaje: 'Selecciona al menos un empleado para eliminar.',
+            icono: true,
+            cerrable: true,
+            centradoInferior: true,
+          });
+        } else {
+          setAbrirPopUpEliminar(true);
+        }
+      },
       size: 'large',
       color: 'error',
       backgroundColor: colores.altertex[1],

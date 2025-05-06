@@ -110,7 +110,7 @@ const ListaSetsProductos = () => {
       onClick: () => console.log('Editar'),
       color: 'primary',
       size: 'large',
-      outlineColor: colores.altertex[1],
+      outlineColor: colores.primario[10],
     },
     {
       label: 'Eliminar',
@@ -129,6 +129,7 @@ const ListaSetsProductos = () => {
       },
       disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_GRUPO_EMPLEADOS),
       size: 'large',
+      color: 'error',
       backgroundColor: colores.altertex[1],
     },
   ];

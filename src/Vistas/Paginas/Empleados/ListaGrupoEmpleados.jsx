@@ -113,7 +113,7 @@ const ListaEmpleados = () => {
         if (gruposSeleccionados.length === 0) {
           setAlerta({
             tipo: 'error',
-            mensaje: 'Selecciona al menos un Grupo de empleados para eliminar.',
+            mensaje: 'Selecciona al menos un grupo de empleados para eliminar.',
             icono: true,
             cerrable: true,
             centradoInferior: true,

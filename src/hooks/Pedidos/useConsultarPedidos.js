@@ -45,8 +45,8 @@ export function useConsultarPedidos() {
       }
     };
 
-    if (usuario) cargar();
-  }, [recargarToken]);
+    cargar();
+  }, [recargarToken, usuario?.permisos]);
 
   /**
    * Incrementa el token de recarga para volver a disparar la consulta.

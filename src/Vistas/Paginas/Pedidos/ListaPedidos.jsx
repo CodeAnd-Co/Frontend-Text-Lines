@@ -124,7 +124,6 @@ const ListaPedidos = () => {
           setAbrirPopUpEliminar(true);
         }
       },
-      color: 'error',
       disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_GRUPO_EMPLEADOS),
       size: 'large',
       color: 'error',

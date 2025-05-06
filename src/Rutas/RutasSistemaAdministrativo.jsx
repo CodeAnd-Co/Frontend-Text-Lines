@@ -14,7 +14,7 @@ import ListaRoles from '@Roles/ListaRoles';
 import ListaUsuarios from '@Usuarios/ListaUsuarios';
 import ListaCategorias from '@Categorias/ListaCategorias';
 import ListaSetsProductos from '@SetsProductos/ListaSetsProductos';
-
+import ListaEventos from '@Eventos/ListaEventos';
 import RutaProtegida from '@Rutas/RutaProtegida';
 import VerificarClienteSeleccionado from '@Rutas/VerificarClienteSeleccionado';
 import ListaPedidos from '@Pedidos/ListaPedidos';
@@ -74,7 +74,11 @@ const RutasSistemaAdministrativo = () => {
           path={RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_CATEGORIAS}
           element={<ListaCategorias />}
         />
-
+        {/* EVENTOS */}
+        <Route
+          path={RUTAS.SISTEMA_ADMINISTRATIVO.EVENTOS.CONSULTAR_EVENTOS}
+          element={<ListaEventos />}
+        />
         {/* Pedidos */}
         <Route
           path={RUTAS.SISTEMA_ADMINISTRATIVO.PEDIDOS.CONSULTAR_PEDIDOS}

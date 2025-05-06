@@ -59,7 +59,7 @@ const ModalCrearRol = ({ abierto, onCerrar, onRolCreado }) => {
           mensaje={mensaje}
           duracion={exito ? 4000 : 8000}
           cerrable
-          sx={{ mt: 2 }}
+          sx={{ mt: 2, mb: 2 }}
         />
       )}
     </ModalFlotante>

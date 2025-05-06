@@ -36,12 +36,21 @@ const ListaRoles = () => {
 
   const { usuario } = useAuth();
 
-  // Función para verificar si se está intentando eliminar el superusuario
+  const manejarCrearRolExitoso = () => {
+    setAlerta({
+      tipo: 'success',
+      mensaje: 'Rol creado exitosamente.',
+      icono: true,
+      cerrable: true,
+      centradoInferior: true,
+      duracion: 3000,
+    });
+    recargar();
+  };
+
   const verificarSeleccion = (seleccion) => {
-    // Filtrar el ID de superusuario si está en la selección
     const seleccionSinSuperuser = seleccion.filter((id) => Number(id) !== SUPERUSER_ID);
 
-    // Si la selección original tenía el superusuario y ahora no lo tiene
     if (seleccion.length !== seleccionSinSuperuser.length) {
       setAlerta({
         tipo: 'warning',
@@ -59,10 +68,8 @@ const ListaRoles = () => {
 
   const manejarConfirmarEliminar = async () => {
     try {
-      // Verificar que no se esté intentando eliminar el superusuario
       const seleccionFiltrada = verificarSeleccion(seleccionados);
 
-      // Si no hay roles para eliminar después de filtrar
       if (seleccionFiltrada.length === 0) {
         setAbrirPopupEliminar(false);
         return;
@@ -71,11 +78,11 @@ const ListaRoles = () => {
       await eliminar(seleccionFiltrada);
       recargar();
 
-      // Si había algún superusuario en la selección original pero se procedió con los demás roles
       if (seleccionados.length !== seleccionFiltrada.length) {
         setAlerta({
           tipo: 'success',
-          mensaje: `Roles eliminados correctamente, excepto el rol de superusuario que está protegido.`,
+          mensaje:
+            'Roles eliminados correctamente, excepto el rol de superusuario que está protegido.',
           icono: true,
           cerrable: true,
           centradoInferior: true,
@@ -91,12 +98,9 @@ const ListaRoles = () => {
         });
       }
 
-      // No resetear la selección para permitir intentar de nuevo
-      // Solo limpiar si todos los seleccionados se eliminaron correctamente
       if (seleccionFiltrada.length === seleccionados.length) {
         setSeleccionados([]);
       } else {
-        // Mantener solo el superusuario seleccionado para que el usuario pueda ver qué no se eliminó
         const superuserSeleccionado = seleccionados.filter((id) => Number(id) === SUPERUSER_ID);
         setSeleccionados(superuserSeleccionado);
       }
@@ -173,19 +177,14 @@ const ListaRoles = () => {
             centradoInferior: true,
           });
         } else {
-          // Verificar si se intenta eliminar el superusuario
           const seleccionFiltrada = verificarSeleccion(seleccionados);
 
-          // Continuar con la eliminación incluso si se intentó eliminar el superusuario
-          // pero aún hay otros roles seleccionados
           if (seleccionFiltrada.length > 0) {
-            // Mantener los seleccionados originales para la UI, pero usar los filtrados para la eliminación
             setAbrirPopupEliminar(true);
           } else if (
-            (seleccionFiltrada.length === 0 && seleccionados.includes(String(SUPERUSER_ID)))
-            || (seleccionFiltrada.length === 0 && seleccionados.includes(SUPERUSER_ID))
+            (seleccionFiltrada.length === 0 && seleccionados.includes(String(SUPERUSER_ID))) ||
+            (seleccionFiltrada.length === 0 && seleccionados.includes(SUPERUSER_ID))
           ) {
-            // Si solo se seleccionó el superusuario, mostrar un mensaje más claro
             setAlerta({
               tipo: 'warning',
               mensaje:
@@ -253,7 +252,11 @@ const ListaRoles = () => {
         </Box>
       </ContenedorLista>
 
-      <ModalCrearRol abierto={modalCrearAbierto} onCerrar={handleCerrarModalCrear} />
+      <ModalCrearRol
+        abierto={modalCrearAbierto}
+        onCerrar={handleCerrarModalCrear}
+        onRolCreado={manejarCrearRolExitoso}
+      />
 
       {alerta && (
         <Alerta
@@ -261,7 +264,7 @@ const ListaRoles = () => {
           mensaje={alerta.mensaje}
           icono={alerta.icono}
           cerrable={alerta.cerrable}
-          duracion={2500}
+          duracion={alerta.duracion || 2500}
           centradoInferior={alerta.centradoInferior}
           onClose={() => setAlerta(null)}
         />

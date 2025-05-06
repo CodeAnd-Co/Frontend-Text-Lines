@@ -1,6 +1,6 @@
 // RF[20] - Elimina empleado - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF20
 import { useState } from 'react';
-import { RepositorioEliminarEmpleado } from '../../Dominio/Repositorios/Empleados/RepositorioEliminarEmpleado.js';
+import { RepositorioEliminarEmpleado } from '@Repositorios/Empleados/RepositorioEliminarEmpleado';
 /**
  * * Hook para eliminar empleados.
  * * @param {array} idsEmpleado - ID del empleado a eliminar

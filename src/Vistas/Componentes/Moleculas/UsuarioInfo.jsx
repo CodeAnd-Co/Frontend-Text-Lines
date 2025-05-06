@@ -5,6 +5,7 @@ import Texto from '@Atomos/Texto';
 import CampoTexto from '@Atomos/CampoTexto';
 import CampoSelect from '@Atomos/CampoSelect';
 import Chip from '@Atomos/Chip';
+import { tokens } from '@SRC/theme';
 
 const InfoUsuario = ({
   modoEdicion = false,
@@ -17,6 +18,7 @@ const InfoUsuario = ({
   estadoUsuario,
 }) => {
   const theme = useTheme();
+  const colores = tokens(theme.palette.mode);
 
   return (
     <Box>
@@ -25,7 +27,7 @@ const InfoUsuario = ({
           <Box display='flex' alignItems='center' gap={25} mb={2}>
             <Texto gutterBottom>
               <strong>Cliente(s):</strong>{' '}
-              <span style={{ color: theme.palette.primary.main, fontWeight: 500 }}>{cliente}</span>
+              <span style={{ color: colores.altertex[2], fontWeight: 500 }}>{cliente}</span>
             </Texto>
 
             {estadoUsuario && (
@@ -114,28 +116,15 @@ const InfoUsuario = ({
                   INFORMACIÓN DE CONTACTO
                 </Texto>
                 <Texto gutterBottom sx={{ mb: 4 }}>
-                  Email:{' '}
-                  <a
-                    href={`mailto:${datosContacto.email}`}
-                    style={{ color: theme.palette.primary.main, textDecoration: 'none' }}
-                  >
-                    {datosContacto.email}
-                  </a>
+                  Email: <span style={{ color: colores.altertex[2] }}>{datosContacto.email}</span>
                 </Texto>
                 <Texto gutterBottom sx={{ mb: 4 }}>
                   Teléfono:{' '}
-                  <a
-                    href={`tel:${datosContacto.telefono}`}
-                    style={{ color: theme.palette.primary.main, textDecoration: 'none' }}
-                  >
-                    {datosContacto.telefono}
-                  </a>
+                  <span style={{ color: colores.altertex[2] }}>{datosContacto.telefono}</span>
                 </Texto>
                 <Texto gutterBottom sx={{ mb: 4 }}>
                   Dirección:{' '}
-                  <span style={{ color: theme.palette.primary.main }}>
-                    {datosContacto.direccion}
-                  </span>
+                  <span style={{ color: colores.altertex[2] }}>{datosContacto.direccion}</span>
                 </Texto>
               </>
             )}
@@ -149,11 +138,10 @@ const InfoUsuario = ({
 
           <Texto gutterBottom sx={{ mb: 4 }}>
             Nacimiento:{' '}
-            <span style={{ color: theme.palette.primary.main }}>{datosAdicionales.nacimiento}</span>
+            <span style={{ color: colores.altertex[2] }}>{datosAdicionales.nacimiento}</span>
           </Texto>
           <Texto gutterBottom sx={{ mb: 4 }}>
-            Género:{' '}
-            <span style={{ color: theme.palette.primary.main }}>{datosAdicionales.genero}</span>
+            Género: <span style={{ color: colores.altertex[2] }}>{datosAdicionales.genero}</span>
           </Texto>
         </Grid>
       </Grid>

@@ -25,7 +25,7 @@ const ListaSetsProductos = () => {
   const [alerta, setAlerta] = useState(null);
   const { eliminar } = useEliminarSetProductos();
   // Estado para controlar la visualización del modal eliminar
-  const [openModalEliminar, setAbrirPopUpEliminar] = useState(false);
+  const [abrirEliminar, setAbrirPopUpEliminar] = useState(false);
   const manejarCancelarEliminar = () => {
     setAbrirPopUpEliminar(false);
   };
@@ -110,7 +110,7 @@ const ListaSetsProductos = () => {
       onClick: () => console.log('Editar'),
       color: 'primary',
       size: 'large',
-      outlineColor: colores.altertex[1],
+      outlineColor: colores.primario[10],
     },
     {
       label: 'Eliminar',
@@ -129,6 +129,7 @@ const ListaSetsProductos = () => {
       },
       disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_GRUPO_EMPLEADOS),
       size: 'large',
+      color: 'error',
       backgroundColor: colores.altertex[1],
     },
   ];
@@ -172,7 +173,7 @@ const ListaSetsProductos = () => {
         />
       )}
       <PopUp
-        abrir={openModalEliminar}
+        abrir={abrirEliminar}
         cerrar={manejarCancelarEliminar}
         confirmar={manejarConfirmarEliminar}
         dialogo={MENSAJE_POPUP_ELIMINAR}

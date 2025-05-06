@@ -61,7 +61,6 @@ const ListaUsuarios = () => {
   };
   const { cerrarSesion } = useAuth();
 
-
   const {
     usuariosAEliminar,
     abrirPopUp,
@@ -203,7 +202,9 @@ const ListaUsuarios = () => {
     {
       label: 'Añadir',
       onClick: handleOpen,
+      color: 'error',
       size: 'large',
+      variant: 'contained',
       backgroundColor: colores.altertex[1],
       disabled: !usuarioAutenticado?.permisos?.includes(PERMISOS.CREAR_USUARIO),
     },
@@ -211,6 +212,7 @@ const ListaUsuarios = () => {
       label: 'Eliminar',
       onClick: manejarAbrirPopUp,
       variant: 'contained',
+      color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
     },
@@ -277,7 +279,11 @@ const ListaUsuarios = () => {
           />
         )}
         {modalCrearUsuarioAbierto && (
-          <FormularioCrearUsuario open={modalCrearUsuarioAbierto} onClose={handleClose} onUsuarioCreado={recargar} />
+          <FormularioCrearUsuario
+            open={modalCrearUsuarioAbierto}
+            onClose={handleClose}
+            onUsuarioCreado={recargar}
+          />
         )}
 
         <PopUp

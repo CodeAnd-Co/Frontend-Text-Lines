@@ -1,6 +1,6 @@
 //RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
 //RF[30] Elimina Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF30]
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { useState } from 'react';
 import Tabla from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';
@@ -8,14 +8,14 @@ import Alerta from '@Moleculas/Alerta';
 import PopUp from '@Moleculas/PopUp';
 import { useConsultarProductos } from '@Hooks/Productos/useConsultarProductos';
 import { useEliminarProductos } from '@Hooks/Productos/useEliminarProductos';
-import { useMode, tokens } from '@SRC/theme';
+import { tokens } from '@SRC/theme';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
 
 const ListaProductos = () => {
   const { productos, cargando, error, recargar } = useConsultarProductos();
   const { eliminar } = useEliminarProductos();
-  const [theme] = useMode();
+  const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const { usuario } = useAuth();
   const MENSAJE_POPUP_ELIMINAR =
@@ -117,10 +117,35 @@ const ListaProductos = () => {
     {
       label: 'Añadir',
       onClick: () => console.log('Añadir'),
+      variant: 'contained',
+      color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
     },
-    { variant: 'outlined', label: 'Editar', onClick: () => console.log('Editar'), size: 'large' },
+    {
+      variant: 'outlined',
+      label: 'Importar',
+      onClick: () => console.log('Importar'),
+      color: 'primary',
+      size: 'large',
+      outlineColor: colores.primario[10],
+    },
+    {
+      variant: 'outlined',
+      label: 'Exportar',
+      onClick: () => console.log('Exportar'),
+      color: 'primary',
+      size: 'large',
+      outlineColor: colores.primario[10],
+    },
+    {
+      variant: 'outlined',
+      label: 'Editar',
+      onClick: () => console.log('Editar'),
+      color: 'primary',
+      size: 'large',
+      outlineColor: colores.primario[10],
+    },
     {
       label: 'Eliminar',
       onClick: () => {
@@ -137,6 +162,7 @@ const ListaProductos = () => {
         }
       },
       disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_PRODUCTO),
+      color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
     },

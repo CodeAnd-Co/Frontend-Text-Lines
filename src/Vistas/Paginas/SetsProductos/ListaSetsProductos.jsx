@@ -1,24 +1,59 @@
 // RF42 - Super Administrador, Cliente Consulta Lista de Sets de Productos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF42
+// RF45 - Eliminar set de productos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF45
+
 import React, { useState } from 'react';
 import Tabla from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';
-import Alerta from '@Moleculas/Alerta'; // Asegúrate de importar Alerta
+import Alerta from '@Moleculas/Alerta';
 import Chip from '@Atomos/Chip';
-import ModalEliminarSetProductos from '@Organismos/ModalEliminarSetProductos';
+import { useEliminarSetProductos } from '@Hooks/SetsProductos/useEliminarSetProductos';
+import PopUp from '@Moleculas/PopUp';
 import { Box, useTheme } from '@mui/material';
 import { useConsultarSetsProductos } from '@Hooks/SetsProductos/useConsultarSetsProductos';
 import { tokens } from '@SRC/theme';
+import { PERMISOS } from '@Utilidades/Constantes/permisos';
+import { useAuth } from '@Hooks/AuthProvider';
 
 const ListaSetsProductos = () => {
   const { setsDeProductos, cargando, error, recargar } = useConsultarSetsProductos();
-  const [seleccionados, setSeleccionados] = useState(new Set());
-  const [alerta, setAlerta] = useState(null);
-  const [idsSetProductos, setIdsSetProductos] = useState([]);
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
+  const MENSAJE_POPUP_ELIMINAR
+    = '¿Estás seguro de que deseas eliminar los sets de productos seleccionados?';
 
+  const [seleccionados, setSeleccionados] = useState([]);
+  const [alerta, setAlerta] = useState(null);
+  const { eliminar } = useEliminarSetProductos();
   // Estado para controlar la visualización del modal eliminar
-  const [openModalEliminar, setOpenModalEliminar] = useState(false);
+  const [openModalEliminar, setAbrirPopUpEliminar] = useState(false);
+  const manejarCancelarEliminar = () => {
+    setAbrirPopUpEliminar(false);
+  };
+  const { usuario } = useAuth();
+  const manejarConfirmarEliminar = async () => {
+    try {
+      await eliminar(seleccionados);
+      await recargar();
+      setAlerta({
+        tipo: 'success',
+        mensaje: 'Sets de productos eliminados correctamente.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+      setSeleccionados([]);
+    } catch {
+      setAlerta({
+        tipo: 'error',
+        mensaje: 'Ocurrió un error al eliminar los sets de productos.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+    } finally {
+      setAbrirPopUpEliminar(false);
+    }
+  };
 
   const columns = [
     {
@@ -75,12 +110,12 @@ const ListaSetsProductos = () => {
       onClick: () => console.log('Editar'),
       color: 'primary',
       size: 'large',
-      outlineColor: colores.primario[3],
+      outlineColor: colores.primario[10],
     },
     {
       label: 'Eliminar',
       onClick: () => {
-        if (seleccionados.size === 0 || seleccionados.ids.size === 0) {
+        if (seleccionados.length === 0) {
           setAlerta({
             tipo: 'error',
             mensaje: 'Selecciona al menos un set de productos para eliminar.',
@@ -89,12 +124,12 @@ const ListaSetsProductos = () => {
             centradoInferior: true,
           });
         } else {
-          setIdsSetProductos(Array.from(seleccionados.ids));
-          setOpenModalEliminar(true);
+          setAbrirPopUpEliminar(true);
         }
       },
-      color: 'error',
+      disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_GRUPO_EMPLEADOS),
       size: 'large',
+      color: 'error',
       backgroundColor: colores.altertex[1],
     },
   ];
@@ -117,19 +152,15 @@ const ListaSetsProductos = () => {
             rows={rows}
             loading={cargando}
             checkboxSelection
-            onRowSelectionModelChange={(newSelection) => {
-              setSeleccionados(newSelection);
+            onRowSelectionModelChange={(selectionModel) => {
+              const ids = Array.isArray(selectionModel)
+                ? selectionModel
+                : Array.from(selectionModel?.ids || []);
+              setSeleccionados(ids);
             }}
           />
         </Box>
       </ContenedorLista>
-      <ModalEliminarSetProductos
-        open={openModalEliminar}
-        onClose={() => setOpenModalEliminar(false)}
-        idsSetProductos={idsSetProductos}
-        setAlerta={setAlerta}
-        refrescarPagina={recargar}
-      />
       {alerta && (
         <Alerta
           tipo={alerta.tipo}
@@ -141,6 +172,12 @@ const ListaSetsProductos = () => {
           onClose={() => setAlerta(null)}
         />
       )}
+      <PopUp
+        abrir={openModalEliminar}
+        cerrar={manejarCancelarEliminar}
+        confirmar={manejarConfirmarEliminar}
+        dialogo={MENSAJE_POPUP_ELIMINAR}
+      />
     </>
   );
 };

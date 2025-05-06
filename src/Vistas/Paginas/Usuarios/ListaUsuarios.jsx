@@ -202,7 +202,9 @@ const ListaUsuarios = () => {
     {
       label: 'Añadir',
       onClick: handleOpen,
+      color: 'error',
       size: 'large',
+      variant: 'contained',
       backgroundColor: colores.altertex[1],
       disabled: !usuarioAutenticado?.permisos?.includes(PERMISOS.CREAR_USUARIO),
     },
@@ -210,6 +212,7 @@ const ListaUsuarios = () => {
       label: 'Eliminar',
       onClick: manejarAbrirPopUp,
       variant: 'contained',
+      color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
       disabled: !usuarioAutenticado?.permisos?.includes(PERMISOS.ELIMINAR_USUARIO),

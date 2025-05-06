@@ -1,21 +1,61 @@
 //RF17 - Consulta Lista Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF17
+//RF20 - Eliminar empleado - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF20
 import React, { useState } from 'react';
 import { Box, useTheme } from '@mui/material';
 import Tabla from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';
-import { useConsultarEmpleados } from '@Hooks/Empleados/useConsultarEmpleados';
-import { tokens } from '@SRC/theme';
 import ModalFlotante from '@Organismos/ModalFlotante';
 import InfoEmpleado from '@Moleculas/EmpleadoInfo';
+import PopUp from '@Moleculas/PopUp';
+import Alerta from '@Moleculas/Alerta';
+import { useConsultarEmpleados } from '@Hooks/Empleados/useConsultarEmpleados';
+import { useEliminarEmpleado } from '@Hooks/Empleados/useEliminarEmpleado';
+import { tokens } from '@SRC/theme';
+import { PERMISOS } from '@Constantes/permisos';
 
 const ListaGrupoEmpleados = () => {
-  const { empleados, cargando, error } = useConsultarEmpleados();
+  const { empleados, cargando, error, recargar } = useConsultarEmpleados();
+  const { eliminar } = useEliminarEmpleado();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
 
-  // Estado para el modal y el empleado seleccionado
+  const [empleadosSeleccionados, setEmpleadosSeleccionados] = useState([]);
+  const [alerta, setAlerta] = useState(null);
+  const [openModalEliminar, setAbrirPopUpEliminar] = useState(false);
   const [empleadoSeleccionado, setEmpleadoSeleccionado] = useState(null);
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
+
+  const MENSAJE_POPUP_ELIMINAR
+    = '¿Estás seguro de que deseas eliminar los empleados seleccionados? Esta acción no se puede deshacer.';
+
+  const manejarCancelarEliminar = () => {
+    setAbrirPopUpEliminar(false);
+  };
+
+  const manejarConfirmarEliminar = async () => {
+    try {
+      await eliminar(empleadosSeleccionados);
+      await recargar(); // Se asegura de que se recargue la lista
+      setAlerta({
+        tipo: 'success',
+        mensaje: 'Empleados eliminados correctamente.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+      setEmpleadosSeleccionados([]);
+    } catch {
+      setAlerta({
+        tipo: 'error',
+        mensaje: 'Ocurrió un error al eliminar los empleados.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+    } finally {
+      setAbrirPopUpEliminar(false);
+    }
+  };
 
   const columnas = [
     { field: 'nombreCompleto', headerName: 'Nombre del Empleado', flex: 1 },
@@ -31,7 +71,6 @@ const ListaGrupoEmpleados = () => {
     id: empleado.idEmpleado,
     nombreCompleto: empleado.nombreCompleto,
     correoElectronico: empleado.correoElectronico,
-    idEmpleado: empleado.idEmpleado,
     numeroEmergencia: empleado.numeroEmergencia,
     areaTrabajo: empleado.areaTrabajo,
     posicion: empleado.posicion,
@@ -43,6 +82,7 @@ const ListaGrupoEmpleados = () => {
     {
       label: 'Añadir',
       onClick: () => console.log('Añadir'),
+      color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
     },
@@ -50,43 +90,62 @@ const ListaGrupoEmpleados = () => {
       variant: 'outlined',
       label: 'Importar',
       onClick: () => console.log('Importar'),
+      color: 'primary',
       size: 'large',
+      outlineColor: colores.primario[10],
     },
     {
       variant: 'outlined',
       label: 'Exportar',
       onClick: () => console.log('Exportar'),
+      color: 'primary',
       size: 'large',
+      outlineColor: colores.primario[10],
+    },
+    {
+      variant: 'outlined',
+      label: 'Editar',
+      onClick: () => console.log('Editar'),
+      color: 'primary',
+      size: 'large',
+      outlineColor: colores.primario[10],
     },
     {
       label: 'Eliminar',
       onClick: () => console.log('Eliminar'),
       size: 'large',
+      color: 'error',
       backgroundColor: colores.altertex[1],
     },
   ];
 
   return (
-    <ContenedorLista
-      titulo='Lista de Empleados'
-      descripcion='Consulta y administra la información de los empleados registrados para cada cliente.'
-      informacionBotones={botones}
-    >
-      <Box width={'100%'}>
-        {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-        <Tabla
-          columns={columnas}
-          rows={filas}
-          loading={cargando}
-          checkboxSelection
-          onRowClick={(params) => {
-            setEmpleadoSeleccionado(params.row);
-            setModalDetalleAbierto(true);
-          }}
-        />
-      </Box>
+    <>
+      <ContenedorLista
+        titulo='Lista de Empleados'
+        descripcion='Consulta y administra la información de los empleados registrados para cada cliente.'
+        informacionBotones={botones}
+      >
+        <Box width={'100%'}>
+          {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+          <Tabla
+            columns={columnas}
+            rows={filas}
+            loading={cargando}
+            checkboxSelection
+            onRowClick={(params) => {
+              setEmpleadoSeleccionado(params.row);
+              setModalDetalleAbierto(true);
+            }}
+            onRowSelectionModelChange={(nuevosIds) => {
+              const ids = Array.isArray(nuevosIds) ? nuevosIds : Array.from(nuevosIds?.ids || []);
+              setEmpleadosSeleccionados(ids);
+            }}
+          />
+        </Box>
+      </ContenedorLista>
 
-      {/* Modal para mostrar detalles del empleado */}
+      {/* Modal de detalles */}
       {modalDetalleAbierto && empleadoSeleccionado && (
         <ModalFlotante
           open={modalDetalleAbierto}
@@ -100,7 +159,7 @@ const ListaGrupoEmpleados = () => {
               variant: 'contained',
               color: 'primary',
               backgroundColor: colores.altertex[1],
-              onClick: () => console.log('Editar empleado', empleadoSeleccionado.idEmpleado),
+              onClick: () => console.log('Editar empleado', empleadoSeleccionado.id),
             },
             {
               label: 'SALIR',
@@ -119,7 +178,7 @@ const ListaGrupoEmpleados = () => {
             posicion={empleadoSeleccionado.posicion}
             cantidadPuntos={empleadoSeleccionado.cantidadPuntos}
             antiguedad={empleadoSeleccionado.antiguedad}
-            idEmpleado={empleadoSeleccionado.idEmpleado}
+            idEmpleado={empleadoSeleccionado.id}
             estadoEmpleado={{
               label: 'Activo',
               color: 'primary',
@@ -129,7 +188,28 @@ const ListaGrupoEmpleados = () => {
           />
         </ModalFlotante>
       )}
-    </ContenedorLista>
+
+      {/* PopUp de confirmación para eliminar */}
+      <PopUp
+        abrir={openModalEliminar}
+        cerrar={manejarCancelarEliminar}
+        confirmar={manejarConfirmarEliminar}
+        dialogo={MENSAJE_POPUP_ELIMINAR}
+      />
+
+      {/* Alerta inferior */}
+      {alerta && (
+        <Alerta
+          tipo={alerta.tipo}
+          mensaje={alerta.mensaje}
+          icono={alerta.icono}
+          cerrable={alerta.cerrable}
+          duracion={2500}
+          centradoInferior={alerta.centradoInferior}
+          onClose={() => setAlerta(null)}
+        />
+      )}
+    </>
   );
 };
 

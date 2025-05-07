@@ -1,8 +1,7 @@
 // RF37 - Consulta Lista de Eventos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF37
 //RF38 - Leer Evento - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF38
 
-
-import React, { useState }, { useState } from 'react';
+import React, { useState } from 'react';
 import Tabla from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';
 import Alerta from '@Moleculas/Alerta';
@@ -28,6 +27,10 @@ const ListaEventos = () => {
   const { eliminar } = useEliminarEvento();
   const [abrirEliminar, setAbrirPopUpEliminar] = useState(false);
   const { usuario } = useAuth();
+
+  const [eventoSeleccionado, setEventoSeleccionado] = useState(null);
+  const [modalAbierto, setModalAbierto] = useState(false);
+  const { evento } = useEventoId(eventoSeleccionado ? eventoSeleccionado.id : null);
 
   const manejarCancelarEliminar = () => {
     setAbrirPopUpEliminar(false);
@@ -139,9 +142,49 @@ const ListaEventos = () => {
               setSeleccionados(ids);
             }}
             selectionModel={seleccionados}
+            onRowClick={(params) => {
+              setEventoSeleccionado(params.row);
+              setModalAbierto(true);
+            }}
           />
         </Box>
       </ContenedorLista>
+
+      {/* Modal para mostrar los detalles del evento */}
+      {modalAbierto && eventoSeleccionado && (
+        <ModalFlotante
+          open={modalAbierto}
+          onClose={() => setModalAbierto(false)}
+          onConfirm={() => setModalAbierto(false)}
+          titulo={evento?.nombre || eventoSeleccionado.nombre || 'Cargando...'}
+          tituloVariant='h4'
+          botones={[
+            {
+              label: 'EDITAR',
+              variant: 'contained',
+              color: 'error',
+              backgroundColor: colores.altertex[1],
+              onClick: () => console.log('Editar Evento'),
+            },
+            {
+              label: 'SALIR',
+              variant: 'outlined',
+              color: 'primary',
+              outlineColor: colores.primario[10],
+              onClick: () => setModalAbierto(false),
+            },
+          ]}
+        >
+          <InfoEvento
+            nombre={eventoSeleccionado.nombre}
+            descripcion={eventoSeleccionado.descripcion}
+            puntos={eventoSeleccionado.puntos}
+            periodoRenovacion={eventoSeleccionado.periodo}
+            renovacion={eventoSeleccionado.renovacion}
+          />
+        </ModalFlotante>
+      )}
+
       {alerta && (
         <Alerta
           tipo={alerta.tipo}

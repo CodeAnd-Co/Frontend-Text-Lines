@@ -13,6 +13,7 @@ import { useConsultarEmpleados } from '@Hooks/Empleados/useConsultarEmpleados';
 import { useEliminarEmpleado } from '@Hooks/Empleados/useEliminarEmpleado';
 import { tokens } from '@SRC/theme';
 import { PERMISOS } from '@Constantes/permisos';
+import  ModalImportarEmpleados from '@Organismos/ModalImportarEmpleados';
 
 const ListaGrupoEmpleados = () => {
   const { empleados, cargando, error, recargar } = useConsultarEmpleados();
@@ -20,16 +21,15 @@ const ListaGrupoEmpleados = () => {
   const { usuario } = useAuth();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
-
+  const [modalImportarAbierto, setModalImportarAbierto] = useState(false);
   const [empleadosSeleccionados, setEmpleadosSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
   const [openModalEliminar, setAbrirPopUpEliminar] = useState(false);
   const [empleadoSeleccionado, setEmpleadoSeleccionado] = useState(null);
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
-
   const MENSAJE_POPUP_ELIMINAR
     = '¿Estás seguro de que deseas eliminar los empleados seleccionados? Esta acción no se puede deshacer.';
-
+  const handleAbrirImportar = () => setModalImportarAbierto(true);
   const manejarCancelarEliminar = () => {
     setAbrirPopUpEliminar(false);
   };
@@ -91,7 +91,7 @@ const ListaGrupoEmpleados = () => {
     {
       variant: 'outlined',
       label: 'Importar',
-      onClick: () => console.log('Importar'),
+      onClick: handleAbrirImportar,
       color: 'primary',
       size: 'large',
       outlineColor: colores.primario[10],
@@ -224,6 +224,10 @@ const ListaGrupoEmpleados = () => {
           onClose={() => setAlerta(null)}
         />
       )}
+      <ModalImportarEmpleados 
+       abierto = {modalImportarAbierto}
+       onCerrar={() => setModalImportarAbierto(false)}>
+       </ModalImportarEmpleados>
     </>
   );
 };

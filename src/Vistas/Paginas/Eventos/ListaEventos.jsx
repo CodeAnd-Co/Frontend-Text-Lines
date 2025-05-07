@@ -42,7 +42,7 @@ const ListaEventos = () => {
       //onClick: () => console.log('Añadir'),
       color: 'error',
       size: 'large',
-      backgroundColor: colores.altertex[1],
+      backgroundColor: colores.altertex[4],
     },
     {
       variant: 'outlined',
@@ -57,7 +57,7 @@ const ListaEventos = () => {
       onClick: () => console.log('Eliminar'),
       size: 'large',
       color: 'error',
-      backgroundColor: colores.altertex[1],
+      backgroundColor: colores.altertex[4],
     },
   ];
 
@@ -79,13 +79,13 @@ const ListaEventos = () => {
               label: 'EDITAR',
               variant: 'outlined',
               //onClick: () => console.log('Editar Evento'),
-              outlineColor: colores.altertex[1],
+              outlineColor: colores.altertex[4],
             },
             {
               label: 'SALIR',
               variant: 'contained',
               onClick: () => setModalAbierto(false),
-              backgroundColor: colores.altertex[1],
+              backgroundColor: colores.altertex[4],
             },
           ]}
         >

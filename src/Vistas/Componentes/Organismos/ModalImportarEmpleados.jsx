@@ -20,8 +20,9 @@ const ModalImportarEmpleados = ({
       titulo="Importar Empleados con CSV"
     >
       <ContenedorImportar />
-      Descargar CSV de ejemplo
-      <a href="/ruta/al/archivo/ejemplo.csv" download="empleados_ejemplo.csv"/>
+      <a href="/plantilla_empleados.csv" download="plantilla_empleados.csv">
+        Descargar CSV de ejemplo
+        </a>
     </ModalFlotante>
   );
 }

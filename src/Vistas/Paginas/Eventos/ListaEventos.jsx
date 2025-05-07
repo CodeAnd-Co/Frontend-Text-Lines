@@ -1,4 +1,6 @@
 //RF37 - Consulta Lista de Eventos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF37
+//RF38 - Leer Evento - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF38
+
 import React, { useState } from 'react';
 import { Box, useTheme } from '@mui/material';
 import Tabla from '@Organismos/Tabla';

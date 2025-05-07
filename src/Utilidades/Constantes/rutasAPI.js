@@ -45,6 +45,7 @@ export const RUTAS_API = {
     CONSULTAR_LISTA: `${BASE_CLIENTES}/consultar-lista`,
     CONSULTAR_SISTEMA: `${BASE_CLIENTES}/consultar-sistema`,
     ELIMINAR_CLIENTE: `${BASE_CLIENTES}/eliminar`,
+    CONSULTAR_CLIENTE: `${BASE_CLIENTES}/consultar-cliente`,
   },
   EMPLEADOS: {
     BASE: BASE_EMPLEADOS,
@@ -57,6 +58,7 @@ export const RUTAS_API = {
     BASE: BASE_CUOTAS,
     CREAR_CUOTA: `${BASE_CUOTAS}/crear-cuota`,
     CONSULTAR_LISTA: `${BASE_CUOTAS}/consultar-lista`,
+    ELIMINAR_SET_CUOTAS: `${BASE_CUOTAS}/eliminar-set-cuotas`,
   },
   ROLES: {
     BASE: BASE_ROLES,
@@ -71,6 +73,7 @@ export const RUTAS_API = {
   },
   EVENTOS: {
     BASE: BASE_EVENTOS,
-    CONSULTAR_LISTA: `${BASE_URL}/api/eventos/consultar-lista-eventos`,
+    CONSULTAR_LISTA: `${BASE_EVENTOS}/consultar-lista-eventos`,
+    ELIMINAR_EVENTO: `${BASE_EVENTOS}/eliminar`,
   },
 };

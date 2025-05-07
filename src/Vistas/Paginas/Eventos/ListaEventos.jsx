@@ -7,7 +7,7 @@ import ModalFlotante from '@Organismos/ModalFlotante';
 import { useEventoId } from '@Hooks/Eventos/useLeerEvento';
 import { useConsultarEventos } from '@Hooks/Eventos/useConsultarEventos';
 import InfoEvento from '@Moleculas/EventoInfo';
-import { useMode, tokens } from '@SRC/theme';
+import { tokens } from '@SRC/theme';
 
 const ListaEventos = () => {
   const theme = useTheme();
@@ -15,11 +15,7 @@ const ListaEventos = () => {
   const { eventos, cargando, error } = useConsultarEventos();
   const [eventoSeleccionado, setEventoSeleccionado] = useState(null);
   const [modalAbierto, setModalAbierto] = useState(false);
-  const {
-    evento,
-    cargando: cargandoDetalle,
-    error: errorDetalle,
-  } = useEventoId(eventoSeleccionado ? eventoSeleccionado.id : null);
+  const { evento } = useEventoId(eventoSeleccionado ? eventoSeleccionado.id : null);
 
   const columnas = [
     { field: 'nombre', headerName: 'Nombre', flex: 1 },

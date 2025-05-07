@@ -8,7 +8,6 @@ export function useEliminarSetCuotas(idsSetCuotas){
 
     useEffect(() => {
         const eliminarSetCuotas = async () => {
-            console.log('Enviando estos Ids: ', idsSetCuotas);
             setCargando(true);
             setError(null);
 

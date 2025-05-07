@@ -11,7 +11,7 @@ import ModalFlotante from '@Organismos/ModalFlotante';
 import ModalCliente from '@Organismos/ModalLeerCliente';
 import InfoCliente from '@Moleculas/ClienteInfo';
 import Cookies from 'js-cookie';
-import { useMode, tokens } from '@SRC/theme';
+import { tokens } from '@SRC/theme';
 import { RUTAS } from '@Utilidades/Constantes/rutas';
 import { useConsultarClientes } from '@Hooks/Clientes/useConsultarClientes';
 import { useSeleccionarCliente } from '@Hooks/Clientes/useSeleccionarCliente';
@@ -56,7 +56,7 @@ const estiloTarjetaAgregar = {
 };
 
 const ListaClientes = () => {
-  const [theme] = useMode();
+  const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const navigate = useNavigate();
   const { cerrarSesion } = useAuth();

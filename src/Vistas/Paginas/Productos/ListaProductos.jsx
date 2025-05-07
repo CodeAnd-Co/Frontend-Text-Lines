@@ -41,7 +41,8 @@ const ListaProductos = () => {
 
   const cerrarFormularioProducto = useCallback(() => {
     setMostrarModalProducto(false);
-  }, []);
+    recargar();
+  }, [recargar]);
 
   const cerrarFormularioProveedor = useCallback(() => {
     setMostrarModalProveedor(false);

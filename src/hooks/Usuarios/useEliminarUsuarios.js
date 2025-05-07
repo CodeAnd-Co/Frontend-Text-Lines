@@ -53,8 +53,8 @@ export function useEliminarUsuarios(onAlerta, onRecarga) {
       setAbrirPopUp(false);
 
       // Detectar éxito por el mensaje recibido
-      const exito =
-        resultado.mensaje && resultado.mensaje.toLowerCase().includes('eliminados correctamente');
+      const exito
+        = resultado.mensaje && resultado.mensaje.toLowerCase().includes('eliminados correctamente');
 
       if (exito) {
         onAlerta({

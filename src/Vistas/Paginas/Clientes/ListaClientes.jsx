@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
-<<<<<<< HEAD:src/vistas/Paginas/Clientes/ListaClientes.jsx
 import { useAuth } from '../../../hooks/AuthProvider';
 import Icono from '../../componentes/Atomos/Icono';
 import Cargador from '../../componentes/Atomos/Cargador';
@@ -18,21 +17,6 @@ import { useConsultarClientes } from '../../../hooks/Clientes/useConsultarClient
 import { useSeleccionarCliente } from '../../../hooks/Clientes/useSeleccionarCliente';
 import { useEliminarCliente } from '../../../hooks/Clientes/useEliminarCliente';
 import { useClientePorId } from '../../../hooks/Clientes/useLeerCliente';
-=======
-import { useAuth } from '@Hooks/AuthProvider';
-import Icono from '@Atomos/Icono';
-import Cargador from '@Atomos/Cargador';
-import Texto from '@Atomos/Texto';
-import Alerta from '@Moleculas/Alerta';
-import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
-import TarjetaConImagen from '@Moleculas/TarjetaConImagen';
-import ModalFlotante from '@Organismos/ModalFlotante';
-import Cookies from 'js-cookie';
-import { RUTAS } from '@Constantes/rutas';
-import { useConsultarClientes } from '@Hooks/Clientes/useConsultarClientes';
-import { useSeleccionarCliente } from '@Hooks/Clientes/useSeleccionarCliente';
-import { useEliminarCliente } from '@Hooks/Clientes/useEliminarCliente';
->>>>>>> bf389efff918142a2d946f714839713ff6a2b515:src/Vistas/Paginas/Clientes/ListaClientes.jsx
 import { useState, useEffect, useRef } from 'react';
 
 const estiloImagenLogo = { marginRight: '1rem' };
@@ -333,7 +317,6 @@ const ListaClientes = () => {
           onClose={() => setEliminacionExitosa(false)}
         />
       )}
-<<<<<<< HEAD:src/vistas/Paginas/Clientes/ListaClientes.jsx
 
       {modalDetalleAbierto && (
         <ModalCliente
@@ -382,9 +365,6 @@ const ListaClientes = () => {
           <Alerta tipo='error' mensaje={errorDetalle} icono cerrable centradoInferior />
         </div>
       )}
-
-=======
->>>>>>> bf389efff918142a2d946f714839713ff6a2b515:src/Vistas/Paginas/Clientes/ListaClientes.jsx
     </>
   );
 };

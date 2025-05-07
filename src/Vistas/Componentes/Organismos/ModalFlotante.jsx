@@ -64,11 +64,12 @@ const ModalFlotante = ({
         }}
       >
         {titulo && (
-<<<<<<< HEAD:src/vistas/componentes/organismos/ModalFlotante.jsx
-          <Texto variant={tituloVariant} gutterBottom sx={{ color: theme.palette.text.primary }} mb={3}>
-=======
-          <Texto variant={tituloVariant} gutterBottom>
->>>>>>> bf389efff918142a2d946f714839713ff6a2b515:src/Vistas/Componentes/Organismos/ModalFlotante.jsx
+          <Texto
+            variant={tituloVariant}
+            gutterBottom
+            sx={{ color: theme.palette.text.primary }}
+            mb={3}
+          >
             {titulo}
           </Texto>
         )}

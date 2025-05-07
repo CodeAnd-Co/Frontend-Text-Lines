@@ -4,19 +4,19 @@
  */
 
 export class ClienteLectura {
-    constructor({
-      idCliente,
-      nombreLegal,
-      nombreVisible,
-      usuariosAsignados,
-      numeroEmpleados,
-      imagenCliente,
-    }) {
-      this.idCliente = idCliente;
-      this.nombreLegal = nombreLegal;
-      this.nombreVisible = nombreVisible;
-      this.usuariosAsignados = usuariosAsignados;
-      this.numeroEmpleados = numeroEmpleados;
-      this.imagenCliente = imagenCliente;
-    }
+  constructor({
+    idCliente,
+    nombreLegal,
+    nombreVisible,
+    usuariosAsignados,
+    numeroEmpleados,
+    imagenCliente,
+  }) {
+    this.idCliente = idCliente;
+    this.nombreLegal = nombreLegal;
+    this.nombreVisible = nombreVisible;
+    this.usuariosAsignados = usuariosAsignados;
+    this.numeroEmpleados = numeroEmpleados;
+    this.imagenCliente = imagenCliente;
   }
+}

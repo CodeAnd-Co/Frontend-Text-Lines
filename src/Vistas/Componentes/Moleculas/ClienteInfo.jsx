@@ -16,7 +16,6 @@ const InfoCliente = ({
 
   return (
     <Box>
-
       <Grid container spacing={6} mb={4}>
         {/* Información principal */}
         <Grid item xs={12} sm={6}>
@@ -25,13 +24,16 @@ const InfoCliente = ({
           </Texto>
           <Texto gutterBottom mb={4}>
             ID de Cliente:{' '}
-            <a href={`#`} style={{ color: theme.palette.primary.main, fontWeight: 500, textDecoration: 'none'}}>
+            <a
+              href={`#`}
+              style={{ color: theme.palette.primary.main, fontWeight: 500, textDecoration: 'none' }}
+            >
               {idCliente}
             </a>
           </Texto>
           <Texto gutterBottom mb={4}>
             Nombre Legal:{' '}
-            <a href={`#`} style={{ color: theme.palette.primary.main, textDecoration: 'none'  }}>
+            <a href={`#`} style={{ color: theme.palette.primary.main, textDecoration: 'none' }}>
               {nombreLegal}
             </a>
           </Texto>
@@ -96,7 +98,7 @@ const InfoCliente = ({
               padding: 0.5,
             }}
           >
-            <Icono nombre="ImageOutlined" color="white" size="large" />
+            <Icono nombre='ImageOutlined' color='white' size='large' />
           </Box>
         )}
       </Box>

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { RepositorioClientes } from "../../dominio/repositorios/Clientes/repositorioLeerCliente";
+import { useEffect, useState } from 'react';
+import { RepositorioClientes } from '@Repositorios/Clientes/repositorioLeerCliente';
 
 /**
  * Hook para obtener los datos de un cliente por su ID
@@ -11,11 +11,11 @@ import { RepositorioClientes } from "../../dominio/repositorios/Clientes/reposit
  *   error: string | null
  * }}
  *
- * @see [RF[13] Leer cliente - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF13)
+ * @see RF[13] Leer cliente - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF13)
  */
 export const useClientePorId = (idCliente) => {
   const [cliente, setCliente] = useState(null);
-  const [mensaje, setMensaje] = useState("");
+  const [mensaje, setMensaje] = useState('');
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
 

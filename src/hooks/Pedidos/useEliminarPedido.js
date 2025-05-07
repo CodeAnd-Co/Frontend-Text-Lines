@@ -1,26 +1,29 @@
-// RF[20] - Elimina empleado - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF20
+//RF[63] Elimina pedido - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF63]
+
 import { useState } from 'react';
-import { RepositorioEliminarEmpleado } from '@Repositorios/Empleados/RepositorioEliminarEmpleado';
+import { RepositorioEliminarPedido } from '@Repositorios/Pedidos/repositorioEliminarPedido';
+
 /**
- * * Hook para eliminar empleados.
- * * @param {array} idsEmpleado - ID del empleado a eliminar
+ * * Hook para eliminar uno o más pedidos.
+ * * @param {array} idsPedidos
  * * @return {{
  * *  mensaje: string,
  *  *  cargando: boolean,
  * *  error: string | null,
  * * }}
  */
-export function useEliminarEmpleado() {
+
+export function useEliminarPedido() {
   const [mensaje, setMensaje] = useState('');
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
 
-  const eliminar = async (idsEmpleado) => {
+  const eliminar = async (idsPedidos) => {
     setCargando(true);
     setError(null);
 
     try {
-      const { mensaje } = await RepositorioEliminarEmpleado.eliminarEmpleados(idsEmpleado);
+      const { mensaje } = await RepositorioEliminarPedido.eliminarPedido(idsPedidos);
       setMensaje(mensaje);
     } catch (err) {
       setMensaje('');

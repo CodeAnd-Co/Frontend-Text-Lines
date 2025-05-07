@@ -22,11 +22,11 @@ const ModalFlotante = ({
   const defaultBotones = [
     {
       label: cancelLabel,
-      variant: 'contained',
+      variant: 'outlined',
       onClick: onClose,
-      color: 'error',
+      outlineColor: colores.altertex[1],
     },
-    {
+    { 
       label: confirmLabel,
       variant: 'contained',
       onClick: onConfirm,

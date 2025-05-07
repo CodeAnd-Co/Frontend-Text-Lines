@@ -30,6 +30,7 @@ const ListaEventos = () => {
 
   const manejarConfirmarEliminar = async () => {
     try {
+      console.log('Eliminando eventos:', seleccionados);
       await eliminar(seleccionados);
       if (typeof recargar === 'function') await recargar();
       setAlerta({

@@ -65,5 +65,6 @@ export const RUTAS_API = {
   EVENTOS: {
     BASE: BASE_EVENTOS,
     CONSULTAR_LISTA: `${BASE_URL}/api/eventos/consultar-lista-eventos`,
+    ELIMINAR_EVENTO: `${BASE_EVENTOS}/eliminar`,
   },
 };

@@ -15,12 +15,12 @@ export function useEliminarEvento() {
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
 
-  const eliminar = async (idsEvento) => {
+  const eliminar = async (ids) => {
     setCargando(true);
     setError(null);
 
     try {
-      const { mensaje } = await RepositorioEliminarEventos.eliminarEventos(idsEvento);
+      const { mensaje } = await RepositorioEliminarEventos.eliminarEventos(ids);
       setMensaje(mensaje);
     } catch (err) {
       setMensaje('');

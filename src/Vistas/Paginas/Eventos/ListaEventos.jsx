@@ -79,13 +79,13 @@ const ListaEventos = () => {
               label: 'EDITAR',
               variant: 'outlined',
               //onClick: () => console.log('Editar Evento'),
-              outlineColor: colores.altertex[4],
+              outlineColor: colores.altertex[1],
             },
             {
               label: 'SALIR',
               variant: 'contained',
               onClick: () => setModalAbierto(false),
-              backgroundColor: colores.altertex[4],
+              backgroundColor: colores.altertex[1],
             },
           ]}
         >

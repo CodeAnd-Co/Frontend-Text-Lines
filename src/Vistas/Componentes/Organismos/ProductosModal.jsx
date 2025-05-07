@@ -1,6 +1,6 @@
 import Tabla from '@Organismos/Tabla';
 
-const ProductosModal = ({ elevacion, sx, columnas, filas, paginacion, checkBox, onRowClick }) => {
+const ProductosModal = ({ columnas, filas, paginacion, checkBox, onRowClick }) => {
   return (
     <Tabla
       columns={columnas}

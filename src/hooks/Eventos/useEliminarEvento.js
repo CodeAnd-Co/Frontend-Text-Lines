@@ -1,6 +1,6 @@
 //RF[40] - Elimina evento - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF40
 import { useState } from 'react';
-import { RepositorioEliminarEvento } from '@Repositorios/Eventos/RepositorioEliminarEvento';
+import { RepositorioEliminarEventos } from '@Repositorios/Eventos/RepositorioEliminarEventos';
 /**
  * * Hook para eliminar eventos.
  * * @param {array} idsEvento - ID del evento a eliminar

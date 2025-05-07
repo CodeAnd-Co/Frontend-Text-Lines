@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Paper } from '@mui/material';
+import { Modal, Paper, useTheme } from '@mui/material';
 import Texto from '@Atomos/Texto';
 import GrupoBotones from '@Moleculas/GrupoBotones';
-import { useMode, tokens } from '@SRC/theme';
+import { tokens } from '@SRC/theme';
 
 const ModalFlotante = ({
   open,
@@ -16,7 +16,7 @@ const ModalFlotante = ({
   botones = null,
   children,
 }) => {
-  const [theme] = useMode();
+  const theme = useTheme();
   const colores = tokens(theme.palette.mode);
 
   const defaultBotones = [
@@ -43,7 +43,7 @@ const ModalFlotante = ({
         backdrop: {
           sx: {
             backdropFilter: 'blur(4px)',
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            backgroundColor: colores.acciones[2],
           },
         },
       }}
@@ -64,12 +64,7 @@ const ModalFlotante = ({
         }}
       >
         {titulo && (
-          <Texto
-            variant={tituloVariant}
-            gutterBottom
-            sx={{ color: theme.palette.text.primary }}
-            mb={3}
-          >
+          <Texto variant={tituloVariant} gutterBottom sx={{ color: colores.texto[1] }} mb={3}>
             {titulo}
           </Texto>
         )}

@@ -1,26 +1,25 @@
 import { useNavigate } from 'react-router-dom';
-import { Box } from '@mui/material';
-import { useAuth } from '../../../hooks/AuthProvider';
-import Icono from '../../componentes/Atomos/Icono';
-import Cargador from '../../componentes/Atomos/Cargador';
-import Texto from '../../componentes/Atomos/Texto';
-import Alerta from '../../Componentes/moleculas/Alerta';
-import NavegadorAdministrador from '../../Componentes/Organismos/NavegadorAdministrador';
-import TarjetaConImagen from '../../componentes/Moleculas/TarjetaConImagen';
-import ModalFlotante from '../../componentes/organismos/ModalFlotante';
-import ModalCliente from '../../componentes/organismos/ModalLeerCliente';
-import InfoCliente from '../../componentes/moleculas/ClienteInfo';
+import { Box, useTheme } from '@mui/material';
+import { useAuth } from '@Hooks/AuthProvider';
+import Icono from '@Atomos/Icono';
+import Cargador from '@Atomos/Cargador';
+import Texto from '@Atomos/Texto';
+import Alerta from '@Moleculas/Alerta';
+import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
+import TarjetaConImagen from '@Moleculas/TarjetaConImagen';
+import ModalFlotante from '@Organismos/ModalFlotante';
+import ModalCliente from '@Organismos/ModalLeerCliente';
+import InfoCliente from '@Moleculas/ClienteInfo';
 import Cookies from 'js-cookie';
-import { useMode, tokens } from '../../../theme';
-import { RUTAS } from '../../../Utilidades/Constantes/rutas';
-import { useConsultarClientes } from '../../../hooks/Clientes/useConsultarClientes';
-import { useSeleccionarCliente } from '../../../hooks/Clientes/useSeleccionarCliente';
-import { useEliminarCliente } from '../../../hooks/Clientes/useEliminarCliente';
-import { useClientePorId } from '../../../hooks/Clientes/useLeerCliente';
+import { useMode, tokens } from '@SRC/theme';
+import { RUTAS } from '@Utilidades/Constantes/rutas';
+import { useConsultarClientes } from '@Hooks/Clientes/useConsultarClientes';
+import { useSeleccionarCliente } from '@Hooks/Clientes/useSeleccionarCliente';
+import { useEliminarCliente } from '@Hooks/Clientes/useEliminarCliente';
+import { useClientePorId } from '@Hooks/Clientes/useLeerCliente';
 import { useState, useEffect, useRef } from 'react';
 
 const estiloImagenLogo = { marginRight: '1rem' };
-
 const estiloTarjeta = {
   minWidth: { xs: '100%', sm: '250px', md: '300px' },
   maxWidth: '100%',

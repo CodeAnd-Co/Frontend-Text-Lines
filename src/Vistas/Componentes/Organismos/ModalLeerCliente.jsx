@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Paper } from '@mui/material';
-import Texto from '../Atomos/Texto';
-import GrupoBotones from '../Moleculas/GrupoBotones';
-import { useMode, tokens } from '../../../theme';
+import { Modal, Paper, useTheme } from '@mui/material';
+import Texto from '@Atomos/Texto';
+import GrupoBotones from '@Moleculas/GrupoBotones';
+import { tokens } from '@SRC/theme';
 
 const ModalLeerCliente = ({
   open,
@@ -16,7 +16,7 @@ const ModalLeerCliente = ({
   botones = null,
   children,
 }) => {
-  const [theme] = useMode();
+  const theme = useTheme();
   const colores = tokens(theme.palette.mode);
 
   const defaultBotones = [
@@ -42,7 +42,7 @@ const ModalLeerCliente = ({
         backdrop: {
           sx: {
             backdropFilter: 'blur(4px)',
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            backgroundColor: colores.acciones[1],
           },
         },
       }}
@@ -65,7 +65,12 @@ const ModalLeerCliente = ({
         }}
       >
         {titulo && (
-          <Texto variant={tituloVariant} gutterBottom sx={{ color: theme.palette.text.primary }} mb={4}>
+          <Texto
+            variant={tituloVariant}
+            gutterBottom
+            sx={{ color: theme.palette.text.primary }}
+            mb={4}
+          >
             {titulo}
           </Texto>
         )}

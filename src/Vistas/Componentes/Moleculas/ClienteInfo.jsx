@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Box, useTheme } from '@mui/material';
-import Texto from '../atomos/Texto';
-import Icono from '../atomos/Icono';
+import Texto from '@Atomos/Texto';
+import Icono from '@Atomos/Icono';
+import { tokens } from '@SRC/theme';
 
 const InfoCliente = ({
   idCliente,
@@ -13,7 +14,7 @@ const InfoCliente = ({
   imagenURL,
 }) => {
   const theme = useTheme();
-
+  const colores = tokens(theme.palette.mode);
   return (
     <Box>
       <Grid container spacing={6} mb={4}>
@@ -24,22 +25,16 @@ const InfoCliente = ({
           </Texto>
           <Texto gutterBottom mb={4}>
             ID de Cliente:{' '}
-            <a
-              href={`#`}
-              style={{ color: theme.palette.primary.main, fontWeight: 500, textDecoration: 'none' }}
-            >
+            <a style={{ color: colores.primario[1], fontWeight: 500, textDecoration: 'none' }}>
               {idCliente}
             </a>
           </Texto>
           <Texto gutterBottom mb={4}>
             Nombre Legal:{' '}
-            <a href={`#`} style={{ color: theme.palette.primary.main, textDecoration: 'none' }}>
-              {nombreLegal}
-            </a>
+            <a style={{ color: colores.primario[1], textDecoration: 'none' }}>{nombreLegal}</a>
           </Texto>
           <Texto gutterBottom>
-            Nombre visible:{' '}
-            <span style={{ color: theme.palette.primary.main }}>{nombreVisible}</span>
+            Nombre visible: <span style={{ color: colores.primario[1] }}>{nombreVisible}</span>
           </Texto>
         </Grid>
 
@@ -50,15 +45,13 @@ const InfoCliente = ({
           </Texto>
           <Texto gutterBottom mb={4}>
             Usuarios asignados:{' '}
-            <a href={`#`} style={{ color: theme.palette.primary.main, textDecoration: 'none' }}>
+            <a style={{ color: colores.primario[1], textDecoration: 'none' }}>
               {usuariosAsignados}
             </a>
           </Texto>
           <Texto gutterBottom mb={4}>
             Empleados:{' '}
-            <a href={`#`} style={{ color: theme.palette.primary.main, textDecoration: 'none' }}>
-              {empleados}
-            </a>
+            <a style={{ color: colores.primario[1], textDecoration: 'none' }}>{empleados}</a>
           </Texto>
         </Grid>
       </Grid>
@@ -86,20 +79,28 @@ const InfoCliente = ({
           alt='Previsualización'
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: colores.acciones[3],
+          }}
+        />
         {imagenURL && (
-          <Box
-            sx={{
+          <Icono
+            nombre='ImageOutlined'
+            size='large'
+            style={{
               position: 'absolute',
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              backgroundColor: 'rgba(255, 255, 255, 0.7)',
-              borderRadius: '50%',
-              padding: 0.5,
+              color: 'white',
             }}
-          >
-            <Icono nombre='ImageOutlined' color='white' size='large' />
-          </Box>
+          />
         )}
       </Box>
     </Box>

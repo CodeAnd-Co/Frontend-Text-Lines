@@ -48,6 +48,7 @@ export const tokens = (mode) => ({
         acciones: {
           1: 'rgba(255, 255, 255, 0.08)',
           2: 'rgba(255, 255, 255, 0.10)',
+          3: 'rgba(0, 0, 0, 0.5)',
         },
       }
     : {
@@ -93,6 +94,7 @@ export const tokens = (mode) => ({
         acciones: {
           1: 'rgba(0, 0, 0, 0.08)',
           2: 'rgba(0, 0, 0, 0.10)',
+          3: 'rgba(0, 0, 0, 0.5)',
         },
       }),
 });

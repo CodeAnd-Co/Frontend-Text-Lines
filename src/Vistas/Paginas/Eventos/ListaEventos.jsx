@@ -1,6 +1,5 @@
 //RF37 - Consulta Lista de Eventos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF37
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Box, useTheme } from '@mui/material';
 import Tabla from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Box, useTheme } from '@mui/material';
 import Texto from '@Atomos/Texto';
+import { Grid, Box, useTheme } from '@mui/material';
 import { tokens } from '@SRC/theme';
 
 const InfoEvento = ({ descripcion, puntos, periodoRenovacion, renovacion }) => {

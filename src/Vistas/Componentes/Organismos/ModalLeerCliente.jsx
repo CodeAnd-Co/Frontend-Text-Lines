@@ -5,7 +5,7 @@ import Texto from '@Atomos/Texto';
 import GrupoBotones from '@Moleculas/GrupoBotones';
 import { tokens } from '@SRC/theme';
 
-const ModalFlotante = ({
+const ModalLeerCliente = ({
   open,
   onClose,
   onConfirm,
@@ -22,15 +22,14 @@ const ModalFlotante = ({
   const defaultBotones = [
     {
       label: cancelLabel,
-      variant: 'contained',
+      variant: 'outlined',
       onClick: onClose,
-      color: 'error',
+      outlineColor: colores.altertex[1],
     },
     {
       label: confirmLabel,
       variant: 'contained',
       onClick: onConfirm,
-      color: 'error',
       backgroundColor: colores.altertex[1],
     },
   ];
@@ -43,7 +42,7 @@ const ModalFlotante = ({
         backdrop: {
           sx: {
             backdropFilter: 'blur(4px)',
-            backgroundColor: colores.acciones[2],
+            backgroundColor: colores.acciones[1],
           },
         },
       }}
@@ -56,15 +55,22 @@ const ModalFlotante = ({
           transform: 'translate(-50%, -50%)',
           maxHeight: '80vh',
           overflowY: 'auto',
+          bgcolor: theme.palette.background.paper,
           boxShadow: 24,
           borderRadius: 2,
           padding: 3,
           outline: 'none',
-          width: 620,
+          minWidth: '700px',
+          maxWidth: '700px',
         }}
       >
         {titulo && (
-          <Texto variant={tituloVariant} gutterBottom sx={{ color: colores.texto[1] }} mb={3}>
+          <Texto
+            variant={tituloVariant}
+            gutterBottom
+            sx={{ color: theme.palette.text.primary }}
+            mb={4}
+          >
             {titulo}
           </Texto>
         )}
@@ -77,7 +83,7 @@ const ModalFlotante = ({
   );
 };
 
-ModalFlotante.propTypes = {
+ModalLeerCliente.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onConfirm: PropTypes.func.isRequired,
@@ -89,4 +95,4 @@ ModalFlotante.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default ModalFlotante;
+export default ModalLeerCliente;

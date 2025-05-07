@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { useAuth } from '@Hooks/AuthProvider';
 import Icono from '@Atomos/Icono';
 import Cargador from '@Atomos/Cargador';
@@ -8,15 +8,18 @@ import Alerta from '@Moleculas/Alerta';
 import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
 import TarjetaConImagen from '@Moleculas/TarjetaConImagen';
 import ModalFlotante from '@Organismos/ModalFlotante';
+import ModalCliente from '@Organismos/ModalLeerCliente';
+import InfoCliente from '@Moleculas/ClienteInfo';
 import Cookies from 'js-cookie';
-import { RUTAS } from '@Constantes/rutas';
+import { tokens } from '@SRC/theme';
+import { RUTAS } from '@Utilidades/Constantes/rutas';
 import { useConsultarClientes } from '@Hooks/Clientes/useConsultarClientes';
 import { useSeleccionarCliente } from '@Hooks/Clientes/useSeleccionarCliente';
 import { useEliminarCliente } from '@Hooks/Clientes/useEliminarCliente';
+import { useClientePorId } from '@Hooks/Clientes/useLeerCliente';
 import { useState, useEffect, useRef } from 'react';
 
 const estiloImagenLogo = { marginRight: '1rem' };
-
 const estiloTarjeta = {
   minWidth: { xs: '100%', sm: '250px', md: '300px' },
   maxWidth: '100%',
@@ -53,6 +56,8 @@ const estiloTarjetaAgregar = {
 };
 
 const ListaClientes = () => {
+  const theme = useTheme();
+  const colores = tokens(theme.palette.mode);
   const navigate = useNavigate();
   const { cerrarSesion } = useAuth();
   const { clientes: clientesOriginales, cargando, error } = useConsultarClientes();
@@ -110,6 +115,14 @@ const ListaClientes = () => {
       setClientes(clientesOriginales);
     }
   }, [clientesOriginales]);
+
+  const [idClienteDetalle, setIdClienteDetalle] = useState(null);
+  const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
+  const {
+    cliente,
+    cargando: cargandoDetalle,
+    error: errorDetalle,
+  } = useClientePorId(modalDetalleAbierto ? idClienteDetalle : null);
 
   const manejarCerrarSesion = async () => {
     await cerrarSesion();
@@ -201,6 +214,9 @@ const ListaClientes = () => {
         alClicIcono={() => {
           if (modoEliminacion) {
             abrirModalEliminar(cliente);
+          } else {
+            setIdClienteDetalle(cliente.idCliente);
+            setModalDetalleAbierto(true);
           }
         }}
       />
@@ -299,6 +315,54 @@ const ListaClientes = () => {
           duracion={3000}
           onClose={() => setEliminacionExitosa(false)}
         />
+      )}
+
+      {modalDetalleAbierto && (
+        <ModalCliente
+          open={modalDetalleAbierto}
+          onClose={() => setModalDetalleAbierto(false)}
+          onConfirm={() => setModalDetalleAbierto(false)}
+          titulo={cliente?.nombreVisible || 'Cargando...'}
+          tituloVariant='h4'
+          botones={[
+            {
+              label: 'EDITAR',
+              variant: 'contained',
+              color: 'primary',
+              backgroundColor: colores.altertex[1],
+              onClick: () => console.log('Editar cliente'),
+              disabled: !!errorDetalle,
+            },
+            {
+              label: 'SALIR',
+              variant: 'outlined',
+              color: 'primary',
+              outlineColor: colores.altertex[1],
+              onClick: () => setModalDetalleAbierto(false),
+            },
+          ]}
+        >
+          {cargandoDetalle ? (
+            <Texto>Cargando cliente...</Texto>
+          ) : cliente ? (
+            <InfoCliente
+              idCliente={cliente.idCliente}
+              nombreLegal={cliente.nombreLegal}
+              nombreVisible={cliente.nombreVisible}
+              empleados={cliente.numeroEmpleados}
+              usuariosAsignados={cliente.usuariosAsignados}
+              imagenURL={cliente.imagenCliente}
+            />
+          ) : (
+            <Texto>No se encontró información del cliente.</Texto>
+          )}
+        </ModalCliente>
+      )}
+
+      {errorDetalle && (
+        <div style={{ marginTop: '2rem' }}>
+          <Alerta tipo='error' mensaje={errorDetalle} icono cerrable centradoInferior />
+        </div>
       )}
     </>
   );

@@ -88,17 +88,17 @@ const CamposOpcion = memo(({ opcion, index, varianteId, onActualizarOpcion, onEl
       />
       <BotonForm label='Eliminar' onClick={handleEliminar} />
       <CampoTextoForm
+        label='Valor Opción'
+        name={`valorOpcion-${varianteId}-${index}`}
+        value={opcion.valorOpcion}
+        onChange={(evento) => handleOpcionChange('valorOpcion', evento.target.value)}
+      />
+      <CampoTextoForm
         label='Cantidad'
         type='number'
         name={`cantidad-${varianteId}-${index}`}
         value={opcion.cantidad}
         onChange={(evento) => handleOpcionChange('cantidad', evento.target.value)}
-      />
-      <CampoTextoForm
-        label='Valor Opción'
-        name={`valorOpcion-${varianteId}-${index}`}
-        value={opcion.valorOpcion}
-        onChange={(evento) => handleOpcionChange('valorOpcion', evento.target.value)}
       />
       <CampoTextoForm
         label='SKU Automático'

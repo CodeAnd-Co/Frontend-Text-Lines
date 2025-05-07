@@ -10,6 +10,7 @@ import Alerta from '@Moleculas/Alerta';
 import ModalFlotante from '@Organismos/ModalFlotante';
 import CamposVariante from '@Organismos/Formularios/CamposVariante';
 import { useConsultarProveedores } from '@Hooks/Proveedores/useConsultarProveedores';
+import { useCrearProducto } from '@Hooks/Productos/useCrearProducto';
 
 const CampoTextoForm = memo(
   ({ label, name, value, onChange, placeholder, type = 'text', multiline = false, rows = 1 }) => (
@@ -153,7 +154,7 @@ const FormularioProducto = memo(
       descuento: 0,
       estado: 1,
       envio: 1,
-      proveedorId: '',
+      idProveedor: -1,
     });
 
     const [imagenes, setImagenes] = useState({
@@ -162,6 +163,7 @@ const FormularioProducto = memo(
     });
 
     const { proveedores } = useConsultarProveedores();
+    const { errores, handleGuardarProducto } = useCrearProducto();
 
     const handleCrearVariante = useCallback(() => {
       const newId = nextVarianteId;
@@ -368,52 +370,98 @@ const FormularioProducto = memo(
         nombreVariante: data.nombreVariante,
         descripcion: data.descripcion,
         opciones: data.opciones.map((opcion) => ({
-          cantidad: opcion.cantidad,
+          cantidad: Number(opcion.cantidad) || 0,
           valorOpcion: opcion.valorOpcion,
-          SKUautomatico: opcion.SKUautomatico,
-          SKUcomercial: opcion.SKUcomercial,
-          costoAdicional: opcion.costoAdicional,
-          descuento: opcion.descuento,
-          estado: opcion.estado,
+          SKUautomatico: opcion.SKUautomatico || '',
+          SKUcomercial: opcion.SKUcomercial || '',
+          costoAdicional: Number(opcion.costoAdicional) || 0,
+          descuento: Number(opcion.descuento) || 0,
+          estado: Number(opcion.estado) || 1,
         })),
       }));
 
-      const formData = new FormData();
+      const productoFormateado = {
+        ...producto,
+        precioPuntos: Number(producto.precioPuntos) || 0,
+        precioCliente: Number(producto.precioCliente) || 0,
+        precioVenta: Number(producto.precioVenta) || 0,
+        costo: Number(producto.costo) || 0,
+        impuesto: Number(producto.impuesto) || 16,
+        descuento: Number(producto.descuento) || 0,
+        estado: Number(producto.estado) || 1,
+        envio: Number(producto.envio) || 1,
+        idProveedor: Number(producto.idProveedor),
+      };
 
-      formData.append('producto', JSON.stringify(producto));
-
-      formData.append('variantes', JSON.stringify(variantesData));
-
-      if (imagenes.imagenProducto) {
-        formData.append('imagenProducto', imagenes.imagenProducto);
-      }
-
-      const mapaImagenes = [];
-
-      Object.entries(imagenes.imagenesVariantes).forEach(([varianteId, imagenesArray]) => {
-        imagenesArray.forEach((img) => {
-          formData.append('imagenesVariante', img.file);
-          mapaImagenes.push({
-            filename: img.file.name,
-            idVariante: varianteId,
-          });
-        });
+      setAlerta({
+        tipo: 'info',
+        mensaje: 'Guardando producto...',
       });
 
-      formData.append('mapaImagenes', JSON.stringify(mapaImagenes));
+      const resultado = await handleGuardarProducto({
+        producto: productoFormateado,
+        variantes: variantesData,
+        imagenProducto: imagenes.imagenProducto,
+        imagenesVariantes: imagenes.imagenesVariantes,
+      });
 
-      console.log('---- CONTENIDO DEL FORMDATA ----');
-      for (const [key, value] of formData.entries()) {
-        if (value instanceof File) {
-          console.log(`${key}: File - ${value.name} (${value.type}, ${value.size} bytes)`);
+      if (resultado?.mensaje) {
+        if (resultado.exito) {
+          const resumenProducto = `
+              Producto ${producto.nombreComun} creado exitosamente.
+            `;
+
+          setAlerta({
+            tipo: 'success',
+            mensaje: resumenProducto,
+          });
+
+          setTimeout(() => {
+            setProducto({
+              nombreComun: '',
+              nombreComercial: '',
+              descripcion: '',
+              marca: '',
+              modelo: '',
+              tipoProducto: '',
+              precioPuntos: 0,
+              precioCliente: 0,
+              precioVenta: 0,
+              costo: 0,
+              impuesto: 16,
+              descuento: 0,
+              estado: 1,
+              envio: 1,
+              idProveedor: -1,
+            });
+
+            setVariantes({
+              1: {
+                nombreVariante: '',
+                descripcion: '',
+                opciones: [],
+              },
+            });
+
+            setVariantesIds([1]);
+            setNextVarianteId(2);
+            setNextImagenId(1);
+
+            setImagenes({
+              imagenProducto: null,
+              imagenesVariantes: { 1: [] },
+            });
+
+            onCerrarFormularioProducto();
+          }, 2000);
         } else {
-          console.log(`${key}: ${value}`);
+          setAlerta({
+            tipo: 'error',
+            mensaje: resultado.mensaje,
+          });
         }
       }
-      console.log('---- FIN DEL CONTENIDO ----');
-
-      console.log('JSON Producto:', formData);
-    }, [producto, variantes, imagenes]);
+    }, [handleGuardarProducto, imagenes, producto, variantes, onCerrarFormularioProducto]);
 
     const handleChange = useCallback((evento) => {
       const { name, value } = evento.target;
@@ -477,8 +525,8 @@ const FormularioProducto = memo(
               <BotonForm label='Agregar nuevo proveedor' onClick={onMostrarFormularioProveedor} />
               <CampoSelectForm
                 label='Proveedor'
-                name='proveedorId'
-                value={producto.proveedorId}
+                name='idProveedor'
+                value={producto.idProveedor}
                 onChange={handleChange}
                 options={listaProveedores}
                 placeholder='Selecciona un proveedor'

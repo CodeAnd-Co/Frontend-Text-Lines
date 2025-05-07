@@ -13,7 +13,7 @@ const InfoEvento = ({ descripcion, puntos, periodoRenovacion, renovacion }) => {
   return (
     <Box>
       <Grid container spacing={6} mb={4}>
-        <Grid item xs={12} sm={6}>
+        <Grid xs={12} sm={6}>
           <Box display='flex' alignItems='center' gap={25} mb={2}>
             <Texto variant='h6' gutterBottom>
               <strong>Información del Evento</strong>

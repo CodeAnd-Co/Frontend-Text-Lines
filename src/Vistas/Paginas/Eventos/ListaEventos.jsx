@@ -37,7 +37,7 @@ const ListaEventos = () => {
   const botones = [
     {
       label: 'Añadir',
-      onClick: () => console.log('Añadir'),
+      //onClick: () => console.log('Añadir'),
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
@@ -45,7 +45,7 @@ const ListaEventos = () => {
     {
       variant: 'outlined',
       label: 'Editar',
-      onClick: () => console.log('Editar'),
+      //onClick: () => console.log('Editar'),
       color: 'primary',
       size: 'large',
       outlineColor: colores.primario[10],
@@ -76,7 +76,7 @@ const ListaEventos = () => {
             {
               label: 'EDITAR',
               variant: 'outlined',
-              onClick: () => console.log('Editar Evento'),
+              //onClick: () => console.log('Editar Evento'),
               outlineColor: colores.altertex[1],
             },
             {

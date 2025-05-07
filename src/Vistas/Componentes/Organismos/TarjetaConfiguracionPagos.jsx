@@ -95,22 +95,14 @@ const TarjetaConfiguracionPagos = () => {
   };
 
   return (
-    <Contenedor
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
-        padding: '20px',
-      }}
-    >
+    <>
+      {/* Contenedor de los switches */}
       <Contenedor
         sx={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-evenly',
-          width: '100%',
-          marginBottom: '20px',
+          height: '100px',
         }}
       >
         <Switch
@@ -130,16 +122,9 @@ const TarjetaConfiguracionPagos = () => {
         />
       </Contenedor>
 
+      {/* Botones de confirmación (sin contenedor adicional) */}
       {mostrarConfirmacion && (
-        <Contenedor
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: '12px',
-            marginTop: '15px',
-            width: '100%',
-          }}
-        >
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginTop: '15px' }}>
           <Boton
             variant='contained'
             color='primary'
@@ -147,9 +132,9 @@ const TarjetaConfiguracionPagos = () => {
             onClick={confirmarCambios}
           />
           <Boton variant='outlined' label='Cancelar' onClick={cancelarCambios} />
-        </Contenedor>
+        </div>
       )}
-    </Contenedor>
+    </>
   );
 };
 

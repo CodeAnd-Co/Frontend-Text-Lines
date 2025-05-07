@@ -7,6 +7,7 @@ import ContenedorLista from '@Organismos/ContenedorLista';
 import ModalFlotante from '@Organismos/ModalFlotante';
 import { useEventoId } from '@Hooks/Eventos/useLeerEvento';
 import { useConsultarEventos } from '@Hooks/Eventos/useConsultarEventos';
+import InfoEvento from '@Moleculas/EventoInfo';
 import { useMode, tokens } from '@SRC/theme';
 
 const ListaEventos = () => {
@@ -20,25 +21,6 @@ const ListaEventos = () => {
     cargando: cargandoDetalle,
     error: errorDetalle,
   } = useEventoId(eventoSeleccionado ? eventoSeleccionado.id : null);
-  console.log('Eventos:', eventos); // Para depuración
-
-  /*   const manejarSeleccionEventos = (seleccionados) => {   Funcion no implementada, parte de la eliminación de eventos
-    // seleccionados: { type: 'include', ids: Set }
-    const ids = Array.from(seleccionados.ids || []);
-    const roles = new Set();
-
-    ids.forEach((id) => {
-      const fila = rows.find((row) => row.id === id);
-      if (fila && fila.rol) {
-        roles.add(fila.rol);
-      }
-    });
-
-    manejarSeleccion({
-      ids: new Set(ids),
-      rol: roles,
-    });
-  }; */
 
   const columnas = [
     { field: 'nombre', headerName: 'Nombre', flex: 1 },
@@ -88,11 +70,11 @@ const ListaEventos = () => {
       descripcion='Consulta y administra los eventos registrados en el sistema.'
       informacionBotones={botones}
     >
-      {modalAbierto && (
+      {modalAbierto && eventoSeleccionado && (
         <ModalFlotante
           open={modalAbierto}
           onClose={() => setModalAbierto(false)}
-          onConfirm={() => console.log('Confirmar')}
+          onConfirm={() => setModalAbierto(false)}
           titulo={evento?.nombre || 'Cargando...'}
           tituloVariant='h4'
           botones={[
@@ -109,7 +91,15 @@ const ListaEventos = () => {
               backgroundColor: colores.altertex[1],
             },
           ]}
-        ></ModalFlotante>
+        >
+          <InfoEvento
+            nombre={eventoSeleccionado.nombre}
+            descripcion={eventoSeleccionado.descripcion}
+            puntos={eventoSeleccionado.puntos}
+            periodoRenovacion={eventoSeleccionado.periodo}
+            renovacion={eventoSeleccionado.renovacion}
+          />
+        </ModalFlotante>
       )}
 
       <Box width={'100%'}>
@@ -119,7 +109,8 @@ const ListaEventos = () => {
           rows={filas}
           loading={cargando}
           checkboxSelection
-          //onRowSelectionModelChange={manejarSeleccionEventos}
+          disableSelectionOnClick
+          onRowSelectionModelChange={() => {}}
           onRowClick={(params) => {
             setEventoSeleccionado(params.row);
             setModalAbierto(true);

@@ -5,7 +5,7 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 
 export default [
   {
-    ignores: ['dist', '**/*.stories.js', 'vitest.workspace.js'],
+    ignores: ['dist', '**/*.stories.js', 'vitest.workspace.js', 'vite.config.js'],
   },
   {
     files: ['**/*.{js,jsx}'],

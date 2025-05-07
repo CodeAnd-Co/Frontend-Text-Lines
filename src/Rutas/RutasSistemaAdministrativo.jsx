@@ -1,23 +1,23 @@
 import { Routes, Route } from 'react-router-dom';
-import { RUTAS } from '../Utilidades/Constantes/rutas';
-import { PERMISOS } from '../Utilidades/Constantes/permisos';
-import ListaClientes from '../Vistas/Paginas/Clientes/ListaClientes';
-import ListaProductos from '../vistas/paginas/Productos/ListaProductos';
-import ListaCuotas from '../vistas/Paginas/Cuotas/ListaCuotas';
-import LIstaEmpleados from '../vistas/Paginas/Empleados/ListaEmpleados';
-import EditarCuotas from '../vistas/Paginas/Cuotas/EditarCuotas';
-import ListaGrupoEmpleados from '../Vistas/Paginas/Empleados/ListaGrupoEmpleados';
-import SistemaAdministrativo from '../Vistas/Paginas/SistemaAdministrativo';
-import Configuracion from '../Vistas/Paginas/Configuracion/ConfiguracionGeneral';
-import Error404 from '../Vistas/Paginas/Errores/Error404';
-import ListaRoles from '../Vistas/Paginas/Roles/ListaRoles';
-import ListaUsuarios from '../vistas/Paginas/Usuarios/ListaUsuarios';
-import ListaCategorias from '../vistas/paginas/Categorias/ListaCategorias';
-import ListaSetsProductos from '../vistas/Paginas/SetsProductos/ListaSetsProductos';
-
-import RutaProtegida from './RutaProtegida';
-import VerificarClienteSeleccionado from './VerificarClienteSeleccionado';
-import ListaPedidos from '../vistas/Paginas/Pedidos/ListaPedidos';
+import { RUTAS } from '@Constantes/rutas';
+import { PERMISOS } from '@Constantes/permisos';
+import ListaClientes from '@Clientes/ListaClientes';
+import ListaProductos from '@Productos/ListaProductos';
+import ListaCuotas from '@Cuotas/ListaCuotas';
+import LIstaEmpleados from '@Empleados/ListaEmpleados';
+import EditarCuotas from '@Cuotas/EditarCuotas';
+import ListaGrupoEmpleados from '@Empleados/ListaGrupoEmpleados';
+import SistemaAdministrativo from '@Paginas/SistemaAdministrativo';
+import Configuracion from '@Configuracion/ConfiguracionGeneral';
+import Error404 from '@Errores/Error404';
+import ListaRoles from '@Roles/ListaRoles';
+import ListaUsuarios from '@Usuarios/ListaUsuarios';
+import ListaCategorias from '@Categorias/ListaCategorias';
+import ListaSetsProductos from '@SetsProductos/ListaSetsProductos';
+import ListaEventos from '@Eventos/ListaEventos';
+import RutaProtegida from '@Rutas/RutaProtegida';
+import VerificarClienteSeleccionado from '@Rutas/VerificarClienteSeleccionado';
+import ListaPedidos from '@Pedidos/ListaPedidos';
 
 const RutasSistemaAdministrativo = () => {
   return (
@@ -74,7 +74,11 @@ const RutasSistemaAdministrativo = () => {
           path={RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_CATEGORIAS}
           element={<ListaCategorias />}
         />
-
+        {/* EVENTOS */}
+        <Route
+          path={RUTAS.SISTEMA_ADMINISTRATIVO.EVENTOS.CONSULTAR_EVENTOS}
+          element={<ListaEventos />}
+        />
         {/* Pedidos */}
         <Route
           path={RUTAS.SISTEMA_ADMINISTRATIVO.PEDIDOS.CONSULTAR_PEDIDOS}

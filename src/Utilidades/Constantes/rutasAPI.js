@@ -8,12 +8,14 @@ const BASE_EMPLEADOS = `${BASE_URL}/api/empleados`;
 const BASE_CUOTAS = `${BASE_URL}/api/cuotas`;
 const BASE_ROLES = `${BASE_URL}/api/roles`;
 const BASE_PEDIDOS = `${BASE_URL}/api/pedidos`;
+const BASE_EVENTOS = `${BASE_URL}/api/eventos`;
 
 export const RUTAS_API = {
   USUARIOS: {
     BASE: BASE_USUARIOS,
     CONSULTAR_LISTA: `${BASE_USUARIOS}/consultar-lista-usuarios`,
     CONSULTAR_USUARIO: `${BASE_USUARIOS}/consultar-usuario`,
+    ELIMINAR_USUARIOS: `${BASE_USUARIOS}/eliminar-usuarios`,
   },
   CATEGORIAS: {
     BASE: BASE_CATEGORIAS,
@@ -24,6 +26,7 @@ export const RUTAS_API = {
   PRODUCTOS: {
     BASE: BASE_PRODUCTOS,
     CONSULTAR_LISTA: `${BASE_PRODUCTOS}/consultar-lista`,
+    ELIMINAR_PRODUCTO: `${BASE_PRODUCTOS}/eliminar`,
   },
   SETS_PRODUCTOS: {
     BASE: BASE_SETS_PRODUCTOS,
@@ -41,19 +44,28 @@ export const RUTAS_API = {
     BASE: BASE_EMPLEADOS,
     CONSULTAR_LISTA: `${BASE_EMPLEADOS}/consultar-lista`,
     CONSULTAR_GRUPOS: `${BASE_EMPLEADOS}/consultar-grupo`,
+    ELIMINAR_EMPLEADO: `${BASE_EMPLEADOS}/eliminar`,
+    ELIMINAR_GRUPO: `${BASE_EMPLEADOS}/eliminar-grupo`,
   },
   CUOTAS: {
     BASE: BASE_CUOTAS,
     CREAR_CUOTA: `${BASE_CUOTAS}/crear-cuota`,
     CONSULTAR_LISTA: `${BASE_CUOTAS}/consultar-lista`,
+    ELIMINAR_SET_CUOTAS: `${BASE_CUOTAS}/eliminar-set-cuotas`,
   },
   ROLES: {
     BASE: BASE_ROLES,
     CONSULTAR_LISTA: `${BASE_ROLES}/consultar-lista`,
     CREAR_ROL: `${BASE_ROLES}/crear-rol`,
+    ELIMINAR_ROL: `${BASE_ROLES}/eliminar`,
   },
   PEDIDOS: {
     BASE: BASE_PEDIDOS,
     CONSULTAR_LISTA: `${BASE_PEDIDOS}/consultar-lista`,
+    ELIMINAR_PEDIDO: `${BASE_PEDIDOS}/eliminar`,
+  },
+  EVENTOS: {
+    BASE: BASE_EVENTOS,
+    CONSULTAR_LISTA: `${BASE_URL}/api/eventos/consultar-lista-eventos`,
   },
 };

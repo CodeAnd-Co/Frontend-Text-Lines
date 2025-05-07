@@ -1,11 +1,11 @@
-//RF[45] Elimina set de productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF45]
+//RF[63] Elimina pedido - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF63]
 
 import { useState } from 'react';
-import { RepositorioEliminarSetProductos } from '@Repositorios/SetsProductos/repositorioEliminarSetProductos';
+import { RepositorioEliminarPedido } from '@Repositorios/Pedidos/repositorioEliminarPedido';
 
 /**
- * * Hook para eliminar un set de productos.
- * * @param {array} idsSetProductos
+ * * Hook para eliminar uno o más pedidos.
+ * * @param {array} idsPedidos
  * * @return {{
  * *  mensaje: string,
  *  *  cargando: boolean,
@@ -13,19 +13,17 @@ import { RepositorioEliminarSetProductos } from '@Repositorios/SetsProductos/rep
  * * }}
  */
 
-export function useEliminarSetProductos() {
+export function useEliminarPedido() {
   const [mensaje, setMensaje] = useState('');
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
 
-  const eliminar = async (idsSetProductos) => {
+  const eliminar = async (idsPedidos) => {
     setCargando(true);
     setError(null);
 
     try {
-      const { mensaje } = await RepositorioEliminarSetProductos.eliminarSetProductos(
-        idsSetProductos
-      );
+      const { mensaje } = await RepositorioEliminarPedido.eliminarPedido(idsPedidos);
       setMensaje(mensaje);
     } catch (err) {
       setMensaje('');

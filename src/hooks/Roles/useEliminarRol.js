@@ -1,11 +1,11 @@
 //RF[45] Elimina set de productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF45]
 
 import { useState } from 'react';
-import { RepositorioEliminarSetProductos } from '@Repositorios/SetsProductos/repositorioEliminarSetProductos';
+import { RepositorioEliminarRol } from '@Repositorios/Roles/RepositorioEliminarRol';
 
 /**
  * * Hook para eliminar un set de productos.
- * * @param {array} idsSetProductos
+ * * @param {array} idsRol
  * * @return {{
  * *  mensaje: string,
  *  *  cargando: boolean,
@@ -13,19 +13,18 @@ import { RepositorioEliminarSetProductos } from '@Repositorios/SetsProductos/rep
  * * }}
  */
 
-export function useEliminarSetProductos() {
+export function useEliminarRol() {
   const [mensaje, setMensaje] = useState('');
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
 
-  const eliminar = async (idsSetProductos) => {
+  const eliminar = async (idsRol) => {
     setCargando(true);
     setError(null);
 
     try {
-      const { mensaje } = await RepositorioEliminarSetProductos.eliminarSetProductos(
-        idsSetProductos
-      );
+      const { mensaje } = await RepositorioEliminarRol.eliminarRol(idsRol);
+      console.log(mensaje);
       setMensaje(mensaje);
     } catch (err) {
       setMensaje('');

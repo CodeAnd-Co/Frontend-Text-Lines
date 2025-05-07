@@ -25,16 +25,16 @@ const InfoCliente = ({
           </Texto>
           <Texto gutterBottom mb={4}>
             ID de Cliente:{' '}
-            <a style={{ color: colores.primario[1], fontWeight: 500, textDecoration: 'none' }}>
+            <a style={{ color: colores.texto[4], fontWeight: 500, textDecoration: 'none' }}>
               {idCliente}
             </a>
           </Texto>
           <Texto gutterBottom mb={4}>
             Nombre Legal:{' '}
-            <a style={{ color: colores.primario[1], textDecoration: 'none' }}>{nombreLegal}</a>
+            <a style={{ color: colores.texto[4], textDecoration: 'none' }}>{nombreLegal}</a>
           </Texto>
           <Texto gutterBottom>
-            Nombre visible: <span style={{ color: colores.primario[1] }}>{nombreVisible}</span>
+            Nombre visible: <span style={{ color: colores.texto[4] }}>{nombreVisible}</span>
           </Texto>
         </Grid>
 
@@ -45,13 +45,11 @@ const InfoCliente = ({
           </Texto>
           <Texto gutterBottom mb={4}>
             Usuarios asignados:{' '}
-            <a style={{ color: colores.primario[1], textDecoration: 'none' }}>
-              {usuariosAsignados}
-            </a>
+            <a style={{ color: colores.texto[4], textDecoration: 'none' }}>{usuariosAsignados}</a>
           </Texto>
           <Texto gutterBottom mb={4}>
             Empleados:{' '}
-            <a style={{ color: colores.primario[1], textDecoration: 'none' }}>{empleados}</a>
+            <a style={{ color: colores.texto[4], textDecoration: 'none' }}>{empleados}</a>
           </Texto>
         </Grid>
       </Grid>

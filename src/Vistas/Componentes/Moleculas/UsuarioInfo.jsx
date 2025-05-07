@@ -27,7 +27,7 @@ const InfoUsuario = ({
           <Box display='flex' alignItems='center' gap={25} mb={2}>
             <Texto gutterBottom>
               <strong>Cliente(s):</strong>{' '}
-              <span style={{ color: colores.altertex[2], fontWeight: 500 }}>{cliente}</span>
+              <span style={{ color: colores.texto[4], fontWeight: 500 }}>{cliente}</span>
             </Texto>
 
             {estadoUsuario && (
@@ -116,15 +116,15 @@ const InfoUsuario = ({
                   INFORMACIÓN DE CONTACTO
                 </Texto>
                 <Texto gutterBottom sx={{ mb: 4 }}>
-                  Email: <span style={{ color: colores.altertex[2] }}>{datosContacto.email}</span>
+                  Email: <span style={{ color: colores.texto[4] }}>{datosContacto.email}</span>
                 </Texto>
                 <Texto gutterBottom sx={{ mb: 4 }}>
                   Teléfono:{' '}
-                  <span style={{ color: colores.altertex[2] }}>{datosContacto.telefono}</span>
+                  <span style={{ color: colores.texto[4] }}>{datosContacto.telefono}</span>
                 </Texto>
                 <Texto gutterBottom sx={{ mb: 4 }}>
                   Dirección:{' '}
-                  <span style={{ color: colores.altertex[2] }}>{datosContacto.direccion}</span>
+                  <span style={{ color: colores.texto[4] }}>{datosContacto.direccion}</span>
                 </Texto>
               </>
             )}
@@ -138,10 +138,10 @@ const InfoUsuario = ({
 
           <Texto gutterBottom sx={{ mb: 4 }}>
             Nacimiento:{' '}
-            <span style={{ color: colores.altertex[2] }}>{datosAdicionales.nacimiento}</span>
+            <span style={{ color: colores.texto[4] }}>{datosAdicionales.nacimiento}</span>
           </Texto>
           <Texto gutterBottom sx={{ mb: 4 }}>
-            Género: <span style={{ color: colores.altertex[2] }}>{datosAdicionales.genero}</span>
+            Género: <span style={{ color: colores.texto[4] }}>{datosAdicionales.genero}</span>
           </Texto>
         </Grid>
       </Grid>

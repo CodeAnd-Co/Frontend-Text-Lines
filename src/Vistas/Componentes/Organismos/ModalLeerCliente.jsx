@@ -60,8 +60,8 @@ const ModalLeerCliente = ({
           borderRadius: 2,
           padding: 3,
           outline: 'none',
-          minWidth: '650px',
-          maxWidth: '650px',
+          minWidth: '700px',
+          maxWidth: '700px',
         }}
       >
         {titulo && (

@@ -83,7 +83,7 @@ const CampoImagenesVariante = memo(
               <Grid key={`img-${varianteId}-${index}`} size={12} md={6}>
                 <TarjetaElementoAccion
                   icono='Image'
-                  texto={`ID: ${imagen.id} - ${imagen.file.name}`}
+                  texto={imagen.file.name}
                   onEliminar={() => onEliminarImagen(varianteId, imagen.id)}
                   tooltipEliminar='Eliminar'
                   borderColor='primary.light'

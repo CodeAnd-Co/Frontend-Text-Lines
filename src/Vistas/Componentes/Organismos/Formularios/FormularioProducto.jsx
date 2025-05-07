@@ -317,7 +317,8 @@ const FormularioProducto = memo(
         setImagenes((prev) => {
           const imagenesVariante = prev.imagenesVariantes[varianteId] || [];
           const nuevasImagenes = files.map((file) => ({
-            id: nextImagenId + imagenesVariante.length,
+            id: `${file.name}_${varianteId}`,
+            idVariante: varianteId,
             file,
           }));
 
@@ -361,33 +362,57 @@ const FormularioProducto = memo(
       });
     }, []);
 
-    const handleCrearProducto = useCallback(() => {
-      const imagenesFormateadas = {};
-      if (imagenes.imagenProducto) {
-        imagenesFormateadas.principal = imagenes.imagenProducto;
-      }
-      Object.entries(imagenes.imagenesVariantes).forEach(([varianteId, imagenesArray]) => {
-        if (imagenesArray && imagenesArray.length > 0) {
-          imagenesFormateadas[`variante_${varianteId}`] = imagenesArray.map((img) => ({
-            id: img.id,
-            file: img.file,
-          }));
-        }
-      });
-
+    const handleCrearProducto = useCallback(async () => {
       const variantesData = Object.entries(variantes).map(([id, data]) => ({
-        id: parseInt(id),
-        ...data,
-        imagenesIds: (imagenes.imagenesVariantes[id] || []).map((img) => img.id),
+        identificador: id,
+        nombreVariante: data.nombreVariante,
+        descripcion: data.descripcion,
+        opciones: data.opciones.map((opcion) => ({
+          cantidad: opcion.cantidad,
+          valorOpcion: opcion.valorOpcion,
+          SKUautomatico: opcion.SKUautomatico,
+          SKUcomercial: opcion.SKUcomercial,
+          costoAdicional: opcion.costoAdicional,
+          descuento: opcion.descuento,
+          estado: opcion.estado,
+        })),
       }));
 
-      const productoCompleto = {
-        ...producto,
-        variantes: variantesData,
-        imagenes: imagenesFormateadas,
-      };
+      const formData = new FormData();
 
-      console.log('Producto completo a enviar:', productoCompleto);
+      formData.append('producto', JSON.stringify(producto));
+
+      formData.append('variantes', JSON.stringify(variantesData));
+
+      if (imagenes.imagenProducto) {
+        formData.append('imagenProducto', imagenes.imagenProducto);
+      }
+
+      const mapaImagenes = [];
+
+      Object.entries(imagenes.imagenesVariantes).forEach(([varianteId, imagenesArray]) => {
+        imagenesArray.forEach((img) => {
+          formData.append('imagenesVariante', img.file);
+          mapaImagenes.push({
+            filename: img.file.name,
+            idVariante: varianteId,
+          });
+        });
+      });
+
+      formData.append('mapaImagenes', JSON.stringify(mapaImagenes));
+
+      console.log('---- CONTENIDO DEL FORMDATA ----');
+      for (const [key, value] of formData.entries()) {
+        if (value instanceof File) {
+          console.log(`${key}: File - ${value.name} (${value.type}, ${value.size} bytes)`);
+        } else {
+          console.log(`${key}: ${value}`);
+        }
+      }
+      console.log('---- FIN DEL CONTENIDO ----');
+
+      console.log('JSON Producto:', formData);
     }, [producto, variantes, imagenes]);
 
     const handleChange = useCallback((evento) => {

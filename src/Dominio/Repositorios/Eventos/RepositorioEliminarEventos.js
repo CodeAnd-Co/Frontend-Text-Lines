@@ -4,7 +4,7 @@ import { RUTAS_API } from '@Constantes/rutasAPI';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-export class RepositorioEliminarEvento {
+export class RepositorioEliminarEventos {
   /**
    * Elimina un evento desde la API
    * @param {array} idsEvento - ID del evento a eliminar

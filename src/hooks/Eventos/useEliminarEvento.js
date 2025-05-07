@@ -20,7 +20,7 @@ export function useEliminarEvento() {
     setError(null);
 
     try {
-      const { mensaje } = await RepositorioEliminarEvento.eliminarEventos(idsEvento);
+      const { mensaje } = await RepositorioEliminarEventos.eliminarEventos(idsEvento);
       setMensaje(mensaje);
     } catch (err) {
       setMensaje('');

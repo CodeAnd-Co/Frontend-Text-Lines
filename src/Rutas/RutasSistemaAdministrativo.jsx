@@ -18,6 +18,7 @@ import ListaEventos from '@Eventos/ListaEventos';
 import RutaProtegida from '@Rutas/RutaProtegida';
 import VerificarClienteSeleccionado from '@Rutas/VerificarClienteSeleccionado';
 import ListaPedidos from '@Pedidos/ListaPedidos';
+import ConfiguracionGeneral from '@Configuracion/ConfiguracionGeneral';
 
 const RutasSistemaAdministrativo = () => {
   return (
@@ -83,6 +84,10 @@ const RutasSistemaAdministrativo = () => {
         <Route
           path={RUTAS.SISTEMA_ADMINISTRATIVO.PEDIDOS.CONSULTAR_PEDIDOS}
           element={<ListaPedidos />}
+        />
+        <Route
+          path={RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION}
+          element={<ConfiguracionGeneral />}
         />
       </Route>
       {/* Rutas fuera del tablero */}

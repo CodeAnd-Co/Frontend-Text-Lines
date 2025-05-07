@@ -77,15 +77,17 @@ const ListaEventos = () => {
           botones={[
             {
               label: 'EDITAR',
-              variant: 'outlined',
+              variant: 'contained',
+              color: 'error',
+              backgroundColor: colores.altertex[1],
               //onClick: () => console.log('Editar Evento'),
-              outlineColor: colores.altertex[1],
             },
             {
               label: 'SALIR',
-              variant: 'contained',
+              variant: 'outlined',
+              color: 'primary',
+              outlineColor: colores.primario[10],
               onClick: () => setModalAbierto(false),
-              backgroundColor: colores.altertex[1],
             },
           ]}
         >

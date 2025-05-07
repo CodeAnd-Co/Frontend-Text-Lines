@@ -27,8 +27,8 @@ const ListaGrupoEmpleados = () => {
   const [empleadoSeleccionado, setEmpleadoSeleccionado] = useState(null);
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
 
-  const MENSAJE_POPUP_ELIMINAR
-    = '¿Estás seguro de que deseas eliminar los empleados seleccionados? Esta acción no se puede deshacer.';
+  const MENSAJE_POPUP_ELIMINAR =
+    '¿Estás seguro de que deseas eliminar los empleados seleccionados? Esta acción no se puede deshacer.';
 
   const manejarCancelarEliminar = () => {
     setAbrirPopUpEliminar(false);
@@ -172,7 +172,7 @@ const ListaGrupoEmpleados = () => {
             {
               label: 'EDITAR',
               variant: 'contained',
-              color: 'primary',
+              color: 'error',
               backgroundColor: colores.altertex[1],
               onClick: () => console.log('Editar empleado', empleadoSeleccionado.id),
             },
@@ -180,7 +180,7 @@ const ListaGrupoEmpleados = () => {
               label: 'SALIR',
               variant: 'outlined',
               color: 'primary',
-              outlineColor: colores.altertex[1],
+              outlineColor: colores.primario[10],
               onClick: () => setModalDetalleAbierto(false),
             },
           ]}
@@ -196,7 +196,7 @@ const ListaGrupoEmpleados = () => {
             idEmpleado={empleadoSeleccionado.id}
             estadoEmpleado={{
               label: 'Activo',
-              color: 'primary',
+              color: 'error',
               shape: 'circular',
               backgroundColor: 'rgba(24, 50, 165, 1)',
             }}

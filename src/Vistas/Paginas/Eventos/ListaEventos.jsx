@@ -42,7 +42,7 @@ const ListaEventos = () => {
       //onClick: () => console.log('Añadir'),
       color: 'error',
       size: 'large',
-      backgroundColor: colores.altertex[4],
+      backgroundColor: colores.altertex[1],
     },
     {
       variant: 'outlined',
@@ -57,7 +57,7 @@ const ListaEventos = () => {
       onClick: () => console.log('Eliminar'),
       size: 'large',
       color: 'error',
-      backgroundColor: colores.altertex[4],
+      backgroundColor: colores.altertex[1],
     },
   ];
 

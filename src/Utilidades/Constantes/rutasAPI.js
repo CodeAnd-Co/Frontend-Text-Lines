@@ -43,6 +43,7 @@ export const RUTAS_API = {
     BASE: BASE_EMPLEADOS,
     CONSULTAR_LISTA: `${BASE_EMPLEADOS}/consultar-lista`,
     CONSULTAR_GRUPOS: `${BASE_EMPLEADOS}/consultar-grupo`,
+    ELIMINAR_EMPLEADO: `${BASE_EMPLEADOS}/eliminar`,
     ELIMINAR_GRUPO: `${BASE_EMPLEADOS}/eliminar-grupo`,
   },
   CUOTAS: {
@@ -54,10 +55,12 @@ export const RUTAS_API = {
     BASE: BASE_ROLES,
     CONSULTAR_LISTA: `${BASE_ROLES}/consultar-lista`,
     CREAR_ROL: `${BASE_ROLES}/crear-rol`,
+    ELIMINAR_ROL: `${BASE_ROLES}/eliminar`,
   },
   PEDIDOS: {
     BASE: BASE_PEDIDOS,
     CONSULTAR_LISTA: `${BASE_PEDIDOS}/consultar-lista`,
+    ELIMINAR_PEDIDO: `${BASE_PEDIDOS}/eliminar`,
   },
   EVENTOS: {
     BASE: BASE_EVENTOS,

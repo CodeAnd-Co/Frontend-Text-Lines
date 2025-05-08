@@ -1,3 +1,5 @@
+//RF[54] Consulta Lista de Pagos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF54]
+
 import { useState } from 'react';
 import { RepositorioActualizarTipoPago } from '@Repositorios/Pagos/RepositorioActualizarTipoPago';
 

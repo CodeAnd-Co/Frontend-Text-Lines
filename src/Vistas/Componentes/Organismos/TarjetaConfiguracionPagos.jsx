@@ -1,3 +1,5 @@
+//RF[54] Consulta Lista de Pagos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF54]
+
 import Contenedor from '@Atomos/Contenedor';
 import Switch from '@Atomos/Switch';
 import Boton from '@Atomos/Boton';

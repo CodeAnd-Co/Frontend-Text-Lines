@@ -1,3 +1,5 @@
+//RF[52] Consulta Lista de Pago - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF52]
+
 import { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '@Hooks/AuthProvider';
 import { RepositorioConsultarTipoPagos } from '@Repositorios/Pagos/RepositorioConsultarTipoPagos';

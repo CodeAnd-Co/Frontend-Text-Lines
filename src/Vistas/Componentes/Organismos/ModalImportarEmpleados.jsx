@@ -6,32 +6,34 @@ import ContenedorImportar from '@Organismos/ContenedorImportar';
 
 const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm }) => {
   const [file, setFile] = useState(null);
-  const [rows, setRows] = useState([]);
   const [status, setStatus] = useState('idle'); 
+  const [empleadosJson, setEmpleadosJson] = useState([]);
 
   const handleCerrar = useCallback(() => {
     onCerrar(false);
+    setEmpleadosJson([]);
     setFile(null);
-    setRows([]);
     setStatus('idle');
   }, [onCerrar]);
 
   const handleFileAccepted = (archivo, data) => {
     setFile(archivo);
     setStatus('Cargando...');
-    setRows(data);
     setStatus('Listo');
+    setEmpleadosJson(data);
   };
 
   const handleEliminar = () => {
     setFile(null);
-    setRows([]);
     setStatus('idle');
   };
 
   const handleConfirmar = () => {
-    if (status !== 'Listo') return;
-    onConfirm(rows);
+    if (!empleadosJson.length) {
+      alert('Por favor selecciona primero un CSV válido.');
+      return;
+    }
+    onConfirm(empleadosJson);
   };
 
   return (
@@ -43,6 +45,10 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm }) => {
     >
 
       <ContenedorImportar onFileAccepted={handleFileAccepted} />
+      
+      {empleadosJson.length > 0 && (
+        <p>Se cargaron {empleadosJson.length} empleados desde el CSV.</p>
+      )}
 
       {file && (
         <List disablePadding>
@@ -70,7 +76,7 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm }) => {
       )}
 
       <Box mt={2}>
-        <a href="/plantilla_empleados.csv" download="plantilla_empleados.csv">
+        <a href="/plantilla_importar_empleados.csv" download="plantilla_importar_empleados.csv">
           Descargar CSV de ejemplo
         </a>
       </Box>

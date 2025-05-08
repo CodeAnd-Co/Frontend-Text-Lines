@@ -14,6 +14,8 @@ import { useEliminarEmpleado } from '@Hooks/Empleados/useEliminarEmpleado';
 import { tokens } from '@SRC/theme';
 import { PERMISOS } from '@Constantes/permisos';
 import  ModalImportarEmpleados from '@Organismos/ModalImportarEmpleados';
+import useImportarEmpleados from '@Hooks/Empleados/useImportarEmpleados';
+
 
 const ListaGrupoEmpleados = () => {
   const { empleados, cargando, error, recargar } = useConsultarEmpleados();
@@ -32,6 +34,10 @@ const ListaGrupoEmpleados = () => {
   const handleAbrirImportar = () => setModalImportarAbierto(true);
   const manejarCancelarEliminar = () => {
     setAbrirPopUpEliminar(false);
+  };
+  const { importar, errores } = useImportarEmpleados();
+  const handleConfirmImport = (empleadosArray) => {
+    importar(empleadosArray);
   };
 
   const manejarConfirmarEliminar = async () => {
@@ -226,8 +232,17 @@ const ListaGrupoEmpleados = () => {
       )}
       <ModalImportarEmpleados 
        abierto = {modalImportarAbierto}
-       onCerrar={() => setModalImportarAbierto(false)}>
+       onCerrar={() => setModalImportarAbierto(false)}
+       onConfirm={handleConfirmImport}>
        </ModalImportarEmpleados>
+       {cargando && <p>Importando...</p>}
+      {errores.length > 0 && (
+        <ul>
+          {errores.map((eh, ih) => (
+            <li key={ih}>Fila {eh.fila}: {eh.error}</li>
+          ))}
+        </ul>
+      )}
     </>
   );
 };

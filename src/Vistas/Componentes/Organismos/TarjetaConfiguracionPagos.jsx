@@ -27,6 +27,13 @@ const TarjetaConfiguracionPagos = () => {
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
   const [alerta, setAlerta] = useState(null);
 
+  // Objeto para mapear los tipos de pago internos a los nombres de la API
+  const tiposPagoMap = {
+    credito: 'Tarjeta de Crédito',
+    debito: 'Tarjeta de Débito',
+    puntos: 'Puntos',
+  };
+
   useEffect(() => {
     if (!cargandoConsulta && tipoPagos.length > 0) {
       let credito = false;
@@ -70,39 +77,41 @@ const TarjetaConfiguracionPagos = () => {
   };
 
   const confirmarCambios = async () => {
-    const cambios = [
-      {
-        id: tipoPagosMapeado['Tarjeta de Crédito']?.id,
-        metodo: 'Tarjeta de Crédito',
-        habilitado: creditoHabilitado,
-      },
-      {
-        id: tipoPagosMapeado['Tarjeta de Débito']?.id,
-        metodo: 'Tarjeta de Débito',
-        habilitado: debitoHabilitado,
-      },
-      {
-        id: tipoPagosMapeado['Puntos']?.id,
-        metodo: 'Puntos',
-        habilitado: puntosHabilitado,
-      },
-    ];
-
-    await actualizar(cambios);
-
-    setEstadoInicial({
+    // Obtener estado actual
+    const estadoActual = {
       credito: creditoHabilitado,
       debito: debitoHabilitado,
       puntos: puntosHabilitado,
-    });
+    };
+
+    // Filtrar solo los métodos que cambiaron
+    const cambios = Object.keys(estadoActual)
+      .filter((tipo) => estadoActual[tipo] !== estadoInicial[tipo])
+      .map((tipo) => ({
+        id: tipoPagosMapeado[tiposPagoMap[tipo]]?.id,
+        metodo: tiposPagoMap[tipo],
+        habilitado: estadoActual[tipo],
+      }));
+
+    // Solo enviar si hay cambios
+    if (cambios.length > 0) {
+      await actualizar(cambios);
+
+      // Actualizar el estado inicial con los nuevos valores
+      setEstadoInicial({
+        credito: creditoHabilitado,
+        debito: debitoHabilitado,
+        puntos: puntosHabilitado,
+      });
+
+      if (mensaje) {
+        setAlerta({ tipo: 'success', mensaje });
+      } else if (error) {
+        setAlerta({ tipo: 'error', mensaje: error });
+      }
+    }
 
     setMostrarConfirmacion(false);
-
-    if (mensaje) {
-      setAlerta({ tipo: 'success', mensaje });
-    } else if (error) {
-      setAlerta({ tipo: 'error', mensaje: error });
-    }
   };
 
   const cancelarCambios = () => {

@@ -6,7 +6,7 @@ const API_KEY = import.meta.env.VITE_API_KEY;
 export class RepositorioActualizarTipoPago {
   static async actualizar(cambios) {
     try {
-      const respuesta = await axios.post(
+      const respuesta = await axios.put(
         RUTAS_API.PAGOS.ACTUALIZAR_LISTA,
         { cambios },
         {

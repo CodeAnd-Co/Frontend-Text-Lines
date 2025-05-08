@@ -74,5 +74,6 @@ export const RUTAS_API = {
   PAGOS: {
     BASE: BASE_PAGOS,
     CONSULTAR_LISTA: `${BASE_PAGOS}/consultar-lista`,
+    ACTUALIZAR_LISTA: `${BASE_PAGOS}/actualizar`,
   },
 };

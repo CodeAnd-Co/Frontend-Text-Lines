@@ -5,15 +5,18 @@ import { useEffect, useState } from 'react';
 import { useConsultarTipoPagos } from '@Hooks/Pagos/useConsultarTipoPagos';
 
 const TarjetaConfiguracionPagos = () => {
-  const { tipoPagos, cargando } = useConsultarTipoPagos();
+  const { tipoPagos, tipoPagosMapeado, cargando } = useConsultarTipoPagos();
+
   const [creditoHabilitado, setCreditoHabilitado] = useState(false);
   const [debitoHabilitado, setDebitoHabilitado] = useState(false);
   const [puntosHabilitado, setPuntosHabilitado] = useState(false);
+
   const [estadoInicial, setEstadoInicial] = useState({
     credito: false,
     debito: false,
     puntos: false,
   });
+
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
 
   useEffect(() => {
@@ -39,7 +42,6 @@ const TarjetaConfiguracionPagos = () => {
         }
       });
 
-      // Guardar el estado inicial
       setEstadoInicial({
         credito,
         debito,
@@ -61,42 +63,51 @@ const TarjetaConfiguracionPagos = () => {
         break;
     }
 
-    // Mostrar botón de confirmación cuando hay cambios
     setMostrarConfirmacion(true);
   };
 
   const confirmarCambios = () => {
-    // Aquí iría la lógica para guardar los cambios
-    console.log('Guardando cambios:', {
-      credito: creditoHabilitado,
-      debito: debitoHabilitado,
-      puntos: puntosHabilitado,
-    });
+    const cambios = [
+      {
+        id: tipoPagosMapeado['Tarjeta de Crédito']?.id,
+        metodo: 'Tarjeta de Crédito',
+        habilitado: creditoHabilitado,
+      },
+      {
+        id: tipoPagosMapeado['Tarjeta de Débito']?.id,
+        metodo: 'Tarjeta de Débito',
+        habilitado: debitoHabilitado,
+      },
+      {
+        id: tipoPagosMapeado['Puntos']?.id,
+        metodo: 'Puntos',
+        habilitado: puntosHabilitado,
+      },
+    ];
 
-    // Actualizar el estado inicial con los nuevos valores
+    console.log('Guardando cambios:', cambios);
+
+    // Aquí puedes hacer la petición al backend con axios o un repositorio
+
     setEstadoInicial({
       credito: creditoHabilitado,
       debito: debitoHabilitado,
       puntos: puntosHabilitado,
     });
 
-    // Ocultar el botón de confirmación
     setMostrarConfirmacion(false);
   };
 
   const cancelarCambios = () => {
-    // Restaurar al estado inicial
     setCreditoHabilitado(estadoInicial.credito);
     setDebitoHabilitado(estadoInicial.debito);
     setPuntosHabilitado(estadoInicial.puntos);
 
-    // Ocultar el botón de confirmación
     setMostrarConfirmacion(false);
   };
 
   return (
     <>
-      {/* Contenedor de los switches */}
       <Contenedor
         sx={{
           display: 'flex',
@@ -122,7 +133,6 @@ const TarjetaConfiguracionPagos = () => {
         />
       </Contenedor>
 
-      {/* Botones de confirmación (sin contenedor adicional) */}
       {mostrarConfirmacion && (
         <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginTop: '15px' }}>
           <Boton

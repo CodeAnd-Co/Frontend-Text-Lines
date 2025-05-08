@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '@Hooks/AuthProvider';
 import { RepositorioConsultarTipoPagos } from '@Repositorios/Pagos/RepositorioConsultarTipoPagos';
 import { PERMISOS } from '@Constantes/permisos';
@@ -10,6 +10,7 @@ export function useConsultarTipoPagos() {
   const [error, setError] = useState(null);
   const { usuario } = useAuth();
   const [recargarToken, setRecargarToken] = useState(1);
+
   useEffect(() => {
     const cargar = async () => {
       setCargando(true);
@@ -25,7 +26,7 @@ export function useConsultarTipoPagos() {
         setTipoPagos(resultado.listaTipoPagos);
         setMensaje(resultado.mensaje || 'Consulta exitosa');
       } catch (err) {
-        console.log(err);
+        console.error(err);
         setTipoPagos([]);
         setMensaje('');
         setError(err.message);
@@ -39,5 +40,23 @@ export function useConsultarTipoPagos() {
 
   const recargar = () => setRecargarToken((prev) => prev + 1);
 
-  return { tipoPagos, mensaje, cargando, error, recargar };
+  // ✅ Objeto con los métodos como claves e id/habilitado como valores
+  const tipoPagosMapeado = useMemo(() => {
+    return tipoPagos.reduce((acc, tipo) => {
+      acc[tipo.metodo] = {
+        id: tipo.idTipoPago,
+        habilitado: tipo.habilitado,
+      };
+      return acc;
+    }, {});
+  }, [tipoPagos]);
+
+  return {
+    tipoPagos, // arreglo original con idTipoPago, metodo, habilitado
+    tipoPagosMapeado, // objeto: { credito: { id, habilitado }, ... }
+    mensaje,
+    cargando,
+    error,
+    recargar,
+  };
 }

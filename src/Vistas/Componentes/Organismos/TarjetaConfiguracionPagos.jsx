@@ -61,6 +61,15 @@ const TarjetaConfiguracionPagos = () => {
     }
   }, [tipoPagos, cargandoConsulta]);
 
+  // Monitor changes in mensaje or error from the hook to show alerts
+  useEffect(() => {
+    if (mensaje) {
+      setAlerta({ tipo: 'success', mensaje });
+    } else if (error) {
+      setAlerta({ tipo: 'error', mensaje: error });
+    }
+  }, [mensaje, error]);
+
   const handleCambioSwitch = (tipo, nuevoEstado) => {
     switch (tipo) {
       case 'credito':
@@ -77,6 +86,9 @@ const TarjetaConfiguracionPagos = () => {
   };
 
   const confirmarCambios = async () => {
+    // Clear any existing alert first
+    setAlerta(null);
+
     // Obtener estado actual
     const estadoActual = {
       credito: creditoHabilitado,
@@ -95,7 +107,7 @@ const TarjetaConfiguracionPagos = () => {
 
     // Solo enviar si hay cambios
     if (cambios.length > 0) {
-      await actualizar(cambios);
+      const resultado = await actualizar(cambios);
 
       // Actualizar el estado inicial con los nuevos valores
       setEstadoInicial({
@@ -104,11 +116,7 @@ const TarjetaConfiguracionPagos = () => {
         puntos: puntosHabilitado,
       });
 
-      if (mensaje) {
-        setAlerta({ tipo: 'success', mensaje });
-      } else if (error) {
-        setAlerta({ tipo: 'error', mensaje: error });
-      }
+      // The alert will be shown via the useEffect that monitors mensaje and error
     }
 
     setMostrarConfirmacion(false);

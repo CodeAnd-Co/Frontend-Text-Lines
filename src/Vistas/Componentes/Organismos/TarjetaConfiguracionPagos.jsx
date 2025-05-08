@@ -5,8 +5,12 @@ import { useEffect, useState } from 'react';
 import { useConsultarTipoPagos } from '@Hooks/Pagos/useConsultarTipoPagos';
 import { useActualizarTipoPago } from '@Hooks/Pagos/useActualizarTipoPago';
 import Alerta from '@Moleculas/Alerta';
+import { tokens } from '@SRC/theme';
+import { useTheme } from '@mui/material';
 
 const TarjetaConfiguracionPagos = () => {
+  const tema = useTheme();
+  const colores = tokens(tema.palette.mode);
   const { tipoPagos, tipoPagosMapeado, cargando: cargandoConsulta } = useConsultarTipoPagos();
   const { actualizar, cargando: cargandoActualizacion, error, mensaje } = useActualizarTipoPago();
 
@@ -139,7 +143,8 @@ const TarjetaConfiguracionPagos = () => {
         <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginTop: '15px' }}>
           <Boton
             variant='contained'
-            color='primary'
+            color='error'
+            backgroundColor={colores.altertex[1]}
             label={cargandoActualizacion ? 'Guardando...' : 'Confirmar cambios'}
             onClick={confirmarCambios}
             disabled={cargandoActualizacion}
@@ -149,6 +154,7 @@ const TarjetaConfiguracionPagos = () => {
             label='Cancelar'
             onClick={cancelarCambios}
             disabled={cargandoActualizacion}
+            outlineColor={colores.primario[10]}
           />
         </div>
       )}

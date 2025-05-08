@@ -1,12 +1,12 @@
 import React from 'react';
-import CustomDataGrid from '../componentes/organismos/dataGrid';
+import Tabla from '../componentes/organismos/Tabla';
 
 export default {
-  title: 'Organismos/CustomDataGrid',
-  component: CustomDataGrid,
+  title: 'Organismos/Tabla',
+  component: Tabla,
 };
 
-const Template = (args) => <CustomDataGrid {...args} />;
+const Template = (args) => <Tabla {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

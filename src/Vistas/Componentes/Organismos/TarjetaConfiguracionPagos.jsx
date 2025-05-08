@@ -3,9 +3,12 @@ import Switch from '@Atomos/Switch';
 import Boton from '@Atomos/Boton';
 import { useEffect, useState } from 'react';
 import { useConsultarTipoPagos } from '@Hooks/Pagos/useConsultarTipoPagos';
+import { useActualizarTipoPago } from '@Hooks/Pagos/useActualizarTipoPago';
+import Alerta from '@Moleculas/Alerta';
 
 const TarjetaConfiguracionPagos = () => {
-  const { tipoPagos, tipoPagosMapeado, cargando } = useConsultarTipoPagos();
+  const { tipoPagos, tipoPagosMapeado, cargando: cargandoConsulta } = useConsultarTipoPagos();
+  const { actualizar, cargando: cargandoActualizacion, error, mensaje } = useActualizarTipoPago();
 
   const [creditoHabilitado, setCreditoHabilitado] = useState(false);
   const [debitoHabilitado, setDebitoHabilitado] = useState(false);
@@ -18,9 +21,10 @@ const TarjetaConfiguracionPagos = () => {
   });
 
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
+  const [alerta, setAlerta] = useState(null);
 
   useEffect(() => {
-    if (!cargando && tipoPagos.length > 0) {
+    if (!cargandoConsulta && tipoPagos.length > 0) {
       let credito = false;
       let debito = false;
       let puntos = false;
@@ -42,13 +46,9 @@ const TarjetaConfiguracionPagos = () => {
         }
       });
 
-      setEstadoInicial({
-        credito,
-        debito,
-        puntos,
-      });
+      setEstadoInicial({ credito, debito, puntos });
     }
-  }, [tipoPagos, cargando]);
+  }, [tipoPagos, cargandoConsulta]);
 
   const handleCambioSwitch = (tipo, nuevoEstado) => {
     switch (tipo) {
@@ -62,11 +62,10 @@ const TarjetaConfiguracionPagos = () => {
         setPuntosHabilitado(nuevoEstado);
         break;
     }
-
     setMostrarConfirmacion(true);
   };
 
-  const confirmarCambios = () => {
+  const confirmarCambios = async () => {
     const cambios = [
       {
         id: tipoPagosMapeado['Tarjeta de Crédito']?.id,
@@ -85,9 +84,7 @@ const TarjetaConfiguracionPagos = () => {
       },
     ];
 
-    console.log('Guardando cambios:', cambios);
-
-    // Aquí puedes hacer la petición al backend con axios o un repositorio
+    await actualizar(cambios);
 
     setEstadoInicial({
       credito: creditoHabilitado,
@@ -96,13 +93,18 @@ const TarjetaConfiguracionPagos = () => {
     });
 
     setMostrarConfirmacion(false);
+
+    if (mensaje) {
+      setAlerta({ tipo: 'success', mensaje });
+    } else if (error) {
+      setAlerta({ tipo: 'error', mensaje: error });
+    }
   };
 
   const cancelarCambios = () => {
     setCreditoHabilitado(estadoInicial.credito);
     setDebitoHabilitado(estadoInicial.debito);
     setPuntosHabilitado(estadoInicial.puntos);
-
     setMostrarConfirmacion(false);
   };
 
@@ -138,11 +140,28 @@ const TarjetaConfiguracionPagos = () => {
           <Boton
             variant='contained'
             color='primary'
-            label='Confirmar cambios'
+            label={cargandoActualizacion ? 'Guardando...' : 'Confirmar cambios'}
             onClick={confirmarCambios}
+            disabled={cargandoActualizacion}
           />
-          <Boton variant='outlined' label='Cancelar' onClick={cancelarCambios} />
+          <Boton
+            variant='outlined'
+            label='Cancelar'
+            onClick={cancelarCambios}
+            disabled={cargandoActualizacion}
+          />
         </div>
+      )}
+
+      {alerta && (
+        <Alerta
+          tipo={alerta.tipo}
+          mensaje={alerta.mensaje}
+          cerrable
+          duracion={5000}
+          centradoInferior
+          onClose={() => setAlerta(null)}
+        />
       )}
     </>
   );

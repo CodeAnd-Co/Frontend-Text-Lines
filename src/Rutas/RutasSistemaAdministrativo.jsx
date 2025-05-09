@@ -8,7 +8,6 @@ import LIstaEmpleados from '@Empleados/ListaEmpleados';
 import EditarCuotas from '@Cuotas/EditarCuotas';
 import ListaGrupoEmpleados from '@Empleados/ListaGrupoEmpleados';
 import SistemaAdministrativo from '@Paginas/SistemaAdministrativo';
-import Configuracion from '@Configuracion/ConfiguracionGeneral';
 import Error404 from '@Errores/Error404';
 import ListaRoles from '@Roles/ListaRoles';
 import ListaUsuarios from '@Usuarios/ListaUsuarios';
@@ -33,7 +32,6 @@ const RutasSistemaAdministrativo = () => {
           </RutaProtegida>
         }
       />
-      <Route path={RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION} element={<Configuracion />} />
       {/* Rutas del tablero */}
       <Route
         path={RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO}

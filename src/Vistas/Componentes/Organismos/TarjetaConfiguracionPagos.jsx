@@ -109,7 +109,7 @@ const TarjetaConfiguracionPagos = () => {
 
     // Solo enviar si hay cambios
     if (cambios.length > 0) {
-      const resultado = await actualizar(cambios);
+      await actualizar(cambios);
 
       // Actualizar el estado inicial con los nuevos valores
       setEstadoInicial({
@@ -144,17 +144,17 @@ const TarjetaConfiguracionPagos = () => {
         <Switch
           label='Tarjeta de Crédito'
           checked={creditoHabilitado}
-          onChange={(e) => handleCambioSwitch('credito', e.target.checked)}
+          onChange={(evento) => handleCambioSwitch('credito', evento.target.checked)}
         />
         <Switch
           label='Tarjeta de Débito'
           checked={debitoHabilitado}
-          onChange={(e) => handleCambioSwitch('debito', e.target.checked)}
+          onChange={(evento) => handleCambioSwitch('debito', evento.target.checked)}
         />
         <Switch
           label='Puntos'
           checked={puntosHabilitado}
-          onChange={(e) => handleCambioSwitch('puntos', e.target.checked)}
+          onChange={(evento) => handleCambioSwitch('puntos', evento.target.checked)}
         />
       </Contenedor>
 

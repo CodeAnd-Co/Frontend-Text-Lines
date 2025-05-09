@@ -31,7 +31,7 @@ const ModalFlotante = ({
       variant: 'contained',
       onClick: onConfirm,
       color: 'error',
-      backgroundColor: colores.altertex[4],
+      backgroundColor: colores.altertex[1],
     },
   ];
 

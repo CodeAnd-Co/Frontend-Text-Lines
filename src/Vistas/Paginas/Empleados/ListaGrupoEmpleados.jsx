@@ -12,6 +12,8 @@ import { useState, React } from 'react';
 import PopUpEliminar from '@Moleculas/PopUp';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
+import ModalCrearGrupoEmpleado from '@Organismos/ModalCrearGrupoEmpleado';
+ 
 
 const ListaEmpleados = () => {
   const { grupos, cargando, error, refetch } = useConsultarGrupos();
@@ -20,6 +22,8 @@ const ListaEmpleados = () => {
   const MENSAJE_POPUP_ELIMINAR
     = '¿Estás seguro de que deseas eliminar los grupos seleccionados? Esta acción no se puede deshacer.';
 
+
+  const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
   const [gruposSeleccionados, setGruposSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
   const { eliminar } = useEliminarGrupoEmpleados();
@@ -28,6 +32,20 @@ const ListaEmpleados = () => {
     setAbrirPopUpEliminar(false);
   };
   const { usuario } = useAuth();
+
+
+  const manejarGrupoCreadoExitosamente = async () => {
+    await refetch(); 
+    setAlerta({
+      tipo: 'success',
+      mensaje: 'Grupo de empleados creado exitosamente.',
+      icono: true,
+      cerrable: true,
+      centradoInferior: true,
+      duracion: 3000,
+    });
+  };
+
   const manejarConfirmarEliminar = async () => {
     try {
       await eliminar(gruposSeleccionados);
@@ -83,19 +101,24 @@ const ListaEmpleados = () => {
     },
   ];
 
-  const filas = grupos.map((grupo) => ({
-    id: grupo.idGrupo,
-    nombre: grupo.geNombre,
-    descripcion: grupo.descripcion,
-    idSetProducto: grupo.idSetProducto,
-    setProducto: grupo.spNombre,
-    totalEmpleados: grupo.totalEmpleados,
-  }));
+  const filas = Array.isArray(grupos)
+    ? grupos.map((grupo) => ({
+        id: grupo.idGrupo,
+        nombre: grupo.geNombre,
+        descripcion: grupo.descripcion,
+        idSetProducto: grupo.idSetProducto,
+        setProducto: grupo.spNombre,
+        totalEmpleados: grupo.totalEmpleados,
+      }))
+    : [];
 
+    const handleAbrirModalCrear = () => setModalCrearAbierto(true);
+    const handleCerrarModalCrear = () => setModalCrearAbierto(false);
+  
   const botones = [
     {
       label: 'Añadir',
-      onClick: () => console.log('Añadir'),
+      onClick: handleAbrirModalCrear,
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
@@ -154,6 +177,12 @@ const ListaEmpleados = () => {
           />
         </Box>
       </ContenedorLista>
+
+      <ModalCrearGrupoEmpleado
+        abierto={modalCrearAbierto}
+        onCerrar={handleCerrarModalCrear}
+        onCreado={manejarGrupoCreadoExitosamente}
+      />      
       {alerta && (
         <Alerta
           tipo={alerta.tipo}

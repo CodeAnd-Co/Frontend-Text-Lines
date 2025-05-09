@@ -7,6 +7,8 @@ import CuerpoPrincipal from '@Organismos/Cuotas/CuerpoPrincipal';
 import { useAuth } from '@Hooks/AuthProvider';
 import { RUTAS } from '@Constantes/rutas';
 
+//RF[31] Consulta crear set de cuota - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF31]
+
 const EditarCuotas = () => {
   const ubicacion = useLocation();
   const navegar = useNavigate();

@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import obtenerProductos from '@Servicios/obtenerProductos';
 import ProductosModal from '@Organismos/ProductosModal';
 
+//RF[31] Consulta crear set de cuota - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF31]
+
 const columns = [
   { field: 'id', headerName: 'Id', width: 100 },
   { field: 'nombreProducto', headerName: 'Nombre', width: 220 },

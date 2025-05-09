@@ -35,10 +35,7 @@ const ListaGrupoEmpleados = () => {
   const manejarCancelarEliminar = () => {
     setAbrirPopUpEliminar(false);
   };
-  const { importar, errores } = useImportarEmpleados();
-  const handleConfirmImport = (empleadosArray) => {
-    importar(empleadosArray);
-  };
+  const { importar, errores, exito, cargando: cargandoImportacion } = useImportarEmpleados();
 
   const manejarConfirmarEliminar = async () => {
     try {
@@ -233,16 +230,12 @@ const ListaGrupoEmpleados = () => {
       <ModalImportarEmpleados 
        abierto = {modalImportarAbierto}
        onCerrar={() => setModalImportarAbierto(false)}
-       onConfirm={handleConfirmImport}>
+       onConfirm={importar}
+       cargando={cargandoImportacion}
+       errores={errores}
+       exito={exito}
+       recargar={recargar}>
        </ModalImportarEmpleados>
-       {cargando && <p>Importando...</p>}
-      {errores.length > 0 && (
-        <ul>
-          {errores.map((eh, ih) => (
-            <li key={ih}>Fila {eh.fila}: {eh.error}</li>
-          ))}
-        </ul>
-      )}
     </>
   );
 };

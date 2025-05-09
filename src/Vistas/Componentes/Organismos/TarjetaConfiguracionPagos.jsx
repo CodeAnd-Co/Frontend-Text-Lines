@@ -1,4 +1,5 @@
-//RF[54] Consulta Lista de Pagos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF54]
+//RF[54] Actualiza Lista de Pagos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF54]
+//RF[52] Consulta Lista de Pago - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF52]
 
 import Contenedor from '@Atomos/Contenedor';
 import Switch from '@Atomos/Switch';
@@ -183,7 +184,7 @@ const TarjetaConfiguracionPagos = () => {
           tipo={alerta.tipo}
           mensaje={alerta.mensaje}
           cerrable
-          duracion={5000}
+          duracion={2500}
           centradoInferior
           onClose={() => setAlerta(null)}
         />

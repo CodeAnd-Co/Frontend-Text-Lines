@@ -1,5 +1,5 @@
 import ModalCliente from '@Organismos/Clientes/ModalLeerCliente';
-import InfoCliente from '@Moleculas/ClienteInfo';
+import InfoCliente from '@Moleculas/InfoCliente';
 import Texto from '@Atomos/Texto';
 
 export const DetalleClienteModal = ({

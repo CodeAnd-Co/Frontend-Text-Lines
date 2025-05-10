@@ -1,5 +1,6 @@
 // RF42 - Super Administrador, Cliente Consulta Lista de Sets de Productos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF42
 // RF45 - Eliminar set de productos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF45
+// RF48 - Super Administrador, Cliente Lee Categoria de Productos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/rf48/
 
 import React, { useState } from 'react';
 import Tabla from '@Organismos/Tabla';
@@ -8,6 +9,8 @@ import Alerta from '@Moleculas/Alerta';
 import Chip from '@Atomos/Chip';
 import { useEliminarSetProductos } from '@Hooks/SetsProductos/useEliminarSetProductos';
 import PopUp from '@Moleculas/PopUp';
+import ModalFlotante from '@Organismos/ModalFlotante';
+import InfoSetProductos from '@Moleculas/SetProductosInfo';
 import { Box, useTheme } from '@mui/material';
 import { useConsultarSetsProductos } from '@Hooks/SetsProductos/useConsultarSetsProductos';
 import { tokens } from '@SRC/theme';
@@ -18,18 +21,21 @@ const ListaSetsProductos = () => {
   const { setsDeProductos, cargando, error, recargar } = useConsultarSetsProductos();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
-  const MENSAJE_POPUP_ELIMINAR
-    = '¿Estás seguro de que deseas eliminar los sets de productos seleccionados?';
+  const MENSAJE_POPUP_ELIMINAR =
+    '¿Estás seguro de que deseas eliminar los sets de productos seleccionados?';
 
   const [seleccionados, setSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
-  const { eliminar } = useEliminarSetProductos();
-  // Estado para controlar la visualización del modal eliminar
   const [abrirEliminar, setAbrirPopUpEliminar] = useState(false);
+  const [setSeleccionado, setSetSeleccionado] = useState(null);
+  const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
+  const { eliminar } = useEliminarSetProductos();
+  const { usuario } = useAuth();
+
   const manejarCancelarEliminar = () => {
     setAbrirPopUpEliminar(false);
   };
-  const { usuario } = useAuth();
+
   const manejarConfirmarEliminar = async () => {
     try {
       await eliminar(seleccionados);
@@ -93,6 +99,17 @@ const ListaSetsProductos = () => {
     nombre: setProducto.nombre,
     descripcion: setProducto.descripcion,
     activo: setProducto.activo,
+    datosCompletos: {
+      ...setProducto,
+      productos:
+        typeof setProducto.productos === 'string'
+          ? setProducto.productos.split(',').map((prod) => prod.trim())
+          : setProducto.productos || [],
+      grupos:
+        typeof setProducto.grupos === 'string'
+          ? setProducto.grupos.split(',').map((grp) => grp.trim())
+          : setProducto.grupos || [],
+    },
   }));
 
   const botones = [
@@ -152,6 +169,10 @@ const ListaSetsProductos = () => {
             rows={rows}
             loading={cargando}
             checkboxSelection
+            onRowClick={(params) => {
+              setSetSeleccionado(params.row.datosCompletos);
+              setModalDetalleAbierto(true);
+            }}
             onRowSelectionModelChange={(selectionModel) => {
               const ids = Array.isArray(selectionModel)
                 ? selectionModel
@@ -161,6 +182,7 @@ const ListaSetsProductos = () => {
           />
         </Box>
       </ContenedorLista>
+
       {alerta && (
         <Alerta
           tipo={alerta.tipo}
@@ -172,12 +194,49 @@ const ListaSetsProductos = () => {
           onClose={() => setAlerta(null)}
         />
       )}
+
       <PopUp
         abrir={abrirEliminar}
         cerrar={manejarCancelarEliminar}
         confirmar={manejarConfirmarEliminar}
         dialogo={MENSAJE_POPUP_ELIMINAR}
       />
+
+      {/* MODAL DETALLE */}
+      {modalDetalleAbierto && setSeleccionado && (
+        <ModalFlotante
+          open={modalDetalleAbierto}
+          onClose={() => {
+            setModalDetalleAbierto(false);
+            setSetSeleccionado(null);
+          }}
+          onConfirm={() => setModalDetalleAbierto(false)}
+          titulo={setSeleccionado.nombre || 'Detalles del Set'}
+          tituloVariant='h4'
+          botones={[
+            {
+              label: 'EDITAR',
+              variant: 'contained',
+              color: 'error',
+              backgroundColor: colores.altertex[1],
+            },
+            {
+              label: 'SALIR',
+              variant: 'outlined',
+              color: 'primary',
+              outlineColor: colores.primario[10],
+              onClick: () => setModalDetalleAbierto(false),
+            },
+          ]}
+        >
+          <InfoSetProductos
+            nombre={''}
+            descripcion={setSeleccionado.descripcion}
+            productos={setSeleccionado.productos || []}
+            grupos={setSeleccionado.grupos || []}
+          />
+        </ModalFlotante>
+      )}
     </>
   );
 };

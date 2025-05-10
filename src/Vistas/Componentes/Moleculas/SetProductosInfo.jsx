@@ -30,9 +30,10 @@ const InfoSetProductos = ({ nombre, descripcion, productos, grupos }) => {
       )}
 
       <Box sx={{ mb: 4 }}>
-        <Texto variant='subtitle2' sx={{ fontWeight: 'bold', mb: 1 }}>
-          Productos
+        <Texto variant='h6' gutterBottom sx={{ mb: 2 }}>
+          <strong>Productos</strong>
         </Texto>
+
         {productosList.map((producto, idx) => (
           <Box key={idx}>
             <Texto variant='body2' sx={{ py: 1 }}>
@@ -44,8 +45,8 @@ const InfoSetProductos = ({ nombre, descripcion, productos, grupos }) => {
       </Box>
 
       <Box sx={{ mb: 6 }}>
-        <Texto variant='subtitle2' sx={{ fontWeight: 'bold', mb: 1 }}>
-          Grupos de empleados asignados
+        <Texto variant='h6' gutterBottom sx={{ mb: 2 }}>
+          <strong>Grupos de empleados asignados</strong>
         </Texto>
         {gruposList.map((grupo, idx) => (
           <Box key={idx}>

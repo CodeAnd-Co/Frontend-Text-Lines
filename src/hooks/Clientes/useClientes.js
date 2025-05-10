@@ -165,7 +165,16 @@ export const useClientes = () => {
 
         if (clienteEditado) {
           setClientes((prevClientes) =>
-            prevClientes.map((c) => (c.idCliente === clienteEditado.idCliente ? clienteEditado : c))
+            prevClientes.map((c) => {
+              if (c.idCliente === clienteEditado.idCliente) {
+                return {
+                  ...c,
+                  ...clienteEditado,
+                  nombreComercial: clienteEditado.nombreVisible,
+                };
+              }
+              return c;
+            })
           );
         }
 

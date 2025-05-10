@@ -28,7 +28,7 @@ export const DetalleClienteModal = ({
           {
             label: modoEdicion ? 'GUARDAR' : 'EDITAR',
             variant: 'contained',
-            color: 'primary',
+            color: 'error',
             backgroundColor: colores.altertex[1],
             onClick: onToggleEdicion,
             disabled: !cliente,
@@ -36,8 +36,7 @@ export const DetalleClienteModal = ({
           {
             label: 'SALIR',
             variant: 'outlined',
-            color: 'primary',
-            outlineColor: colores.altertex[1],
+            outlineColor: colores.primario[10],
             onClick: onClose,
           },
         ]}

@@ -71,9 +71,9 @@ const FormaCrearGrupoEmpleados = ({
       {mostrarAlerta && (
         <Alerta
           tipo='warning'
-          mensaje='Ingresa el nombre y selecciona al menos un empleado.'
+          mensaje='Completa todos los campos y selecciona al menos un empleado.'
           cerrable
-          duracion={10000}
+          duracion={4000}
           onClose={() => setMostrarAlerta(false)}
           sx={{ mb: 2, mt: 2 }}
         />

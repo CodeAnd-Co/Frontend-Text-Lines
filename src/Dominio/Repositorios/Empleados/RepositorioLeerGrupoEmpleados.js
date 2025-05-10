@@ -34,8 +34,8 @@ export class RepositorioLeerGrupoEmpleados {
         mensaje,
       };
     } catch (error) {
-      const mensaje =
-        error.response?.data?.mensaje || 'Error al obtener datos del grupo de empleados.';
+      const mensaje
+        = error.response?.data?.mensaje || 'Error al obtener datos del grupo de empleados.';
       throw new Error(mensaje);
     }
   }

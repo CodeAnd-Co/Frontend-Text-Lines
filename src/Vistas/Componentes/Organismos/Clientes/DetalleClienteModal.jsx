@@ -1,6 +1,7 @@
 import ModalCliente from '@Organismos/Clientes/ModalLeerCliente';
 import InfoCliente from '@Moleculas/InfoCliente';
 import Texto from '@Atomos/Texto';
+import PropTypes from 'prop-types';
 
 export const DetalleClienteModal = ({
   open,
@@ -11,6 +12,9 @@ export const DetalleClienteModal = ({
   onClose,
   onToggleEdicion,
   onChange,
+  onImageChange,
+  imagenSubiendo,
+  imagenError,
 }) => {
   return (
     open && (
@@ -48,8 +52,11 @@ export const DetalleClienteModal = ({
             nombreVisible={cliente?.nombreVisible}
             empleados={cliente?.numeroEmpleados}
             usuariosAsignados={cliente?.usuariosAsignados}
-            imagenURL={cliente?.imagenCliente}
+            urlImagen={cliente?.urlImagen} // Changed to use consistent property name
             onChange={onChange}
+            onImageChange={onImageChange}
+            imagenSubiendo={imagenSubiendo}
+            imagenError={imagenError}
           />
         ) : (
           <Texto>No se encontró información del cliente.</Texto>
@@ -58,3 +65,19 @@ export const DetalleClienteModal = ({
     )
   );
 };
+
+DetalleClienteModal.propTypes = {
+  open: PropTypes.bool.isRequired,
+  cliente: PropTypes.object,
+  modoEdicion: PropTypes.bool.isRequired,
+  cargando: PropTypes.bool.isRequired,
+  colores: PropTypes.object.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onToggleEdicion: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onImageChange: PropTypes.func,
+  imagenSubiendo: PropTypes.bool,
+  imagenError: PropTypes.string,
+};
+
+export default DetalleClienteModal;

@@ -28,6 +28,12 @@ export const useClientes = () => {
   const [modoEdicion, setModoEdicion] = useState(false);
   const [clienteEditado, setClienteEditado] = useState(null);
 
+  // Estado para manejo de imágenes
+  const [imagenSubiendo, setImagenSubiendo] = useState(false);
+  const [imagenError, setImagenError] = useState(null);
+  const [imagenPreview, setImagenPreview] = useState(null);
+  const [imagenFile, setImagenFile] = useState(null);
+
   // Hooks para eliminar y obtener detalles
   const { error: errorEliminacion } = useEliminarCliente(
     idEliminar,
@@ -58,8 +64,19 @@ export const useClientes = () => {
   useEffect(() => {
     if (cliente) {
       setClienteEditado(cliente);
+      setImagenPreview(cliente.imagenURL || null);
+      setImagenFile(null);
+      setImagenError(null);
     }
   }, [cliente]);
+
+  useEffect(() => {
+    return () => {
+      if (imagenPreview && imagenPreview.startsWith('blob:')) {
+        URL.revokeObjectURL(imagenPreview);
+      }
+    };
+  }, [imagenPreview]);
 
   // Manejar click fuera para desactivar modo eliminación
   useEffect(() => {
@@ -133,15 +150,33 @@ export const useClientes = () => {
   const cerrarModalDetalle = () => {
     setModoEdicion(false);
     setModalDetalleAbierto(false);
+    // Limpiar estados de imagen al cerrar
+    setImagenPreview(null);
+    setImagenFile(null);
+    setImagenError(null);
   };
 
-  const toggleModoEdicion = () => {
+  const toggleModoEdicion = async () => {
     if (modoEdicion) {
-      // Aquí iría la lógica para guardar los cambios
-      console.log('Guardando cambios:', clienteEditado);
-      // Después de guardar, podrías querer refrescar los datos del cliente
+      try {
+        if (imagenFile) {
+          await handleGuardarImagen();
+        }
+
+        if (clienteEditado) {
+          setClientes((prevClientes) =>
+            prevClientes.map((c) => (c.idCliente === clienteEditado.idCliente ? clienteEditado : c))
+          );
+        }
+
+        setModoEdicion(false);
+      } catch (error) {
+        console.error('Error saving changes:', error);
+        return;
+      }
+    } else {
+      setModoEdicion(true);
     }
-    setModoEdicion((prev) => !prev);
   };
 
   const handleClienteChange = (event) => {
@@ -150,6 +185,56 @@ export const useClientes = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleImagenChange = (imageData) => {
+    if (imageData.error) {
+      setImagenError(imageData.error);
+      return;
+    }
+
+    setImagenError(null);
+
+    if (imageData.file) {
+      setImagenFile(imageData.file);
+
+      const preview = imageData.preview || URL.createObjectURL(imageData.file);
+      setImagenPreview(preview);
+
+      setClienteEditado((prev) => ({
+        ...prev,
+        urlImagen: preview,
+      }));
+    }
+  };
+
+  const handleGuardarImagen = async () => {
+    if (!imagenFile || !clienteEditado) return;
+
+    try {
+      setImagenSubiendo(true);
+      setImagenError(null);
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      const imageUrl = imagenPreview;
+
+      setClienteEditado((prev) => ({
+        ...prev,
+        urlImagen: imageUrl,
+      }));
+
+      setClientes((prevClientes) =>
+        prevClientes.map((c) =>
+          c.idCliente === clienteEditado.idCliente ? { ...c, urlImagen: imageUrl } : c
+        )
+      );
+
+      return imageUrl;
+    } catch (error) {
+    } finally {
+      setImagenSubiendo(false);
+    }
   };
 
   const cerrarAlertaExito = () => {
@@ -173,6 +258,11 @@ export const useClientes = () => {
     eliminacionExitosa,
     errorEliminacion,
 
+    // Estados de imagen
+    imagenSubiendo,
+    imagenError,
+    imagenPreview,
+
     // Handlers
     handleClienteClick,
     handleIconoClick,
@@ -184,5 +274,9 @@ export const useClientes = () => {
     toggleModoEdicion,
     handleClienteChange,
     cerrarAlertaExito,
+
+    // Handlers de imagen
+    handleImagenChange,
+    handleGuardarImagen,
   };
 };

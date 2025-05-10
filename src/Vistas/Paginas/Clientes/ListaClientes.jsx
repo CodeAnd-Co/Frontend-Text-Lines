@@ -55,6 +55,9 @@ const ListaClientes = () => {
     toggleModoEdicion,
     handleClienteChange,
     cerrarAlertaExito,
+    handleImagenChange,
+    imagenSubiendo,
+    imagenError,
   } = useClientes();
 
   const manejarCerrarSesion = async () => {
@@ -172,6 +175,9 @@ const ListaClientes = () => {
         onClose={cerrarModalDetalle}
         onToggleEdicion={toggleModoEdicion}
         onChange={handleClienteChange}
+        onImageChange={handleImagenChange}
+        imagenSubiendo={imagenSubiendo}
+        imagenError={imagenError}
       />
     </>
   );

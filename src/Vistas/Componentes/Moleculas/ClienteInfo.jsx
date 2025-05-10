@@ -3,46 +3,90 @@ import PropTypes from 'prop-types';
 import { Grid, Box, useTheme } from '@mui/material';
 import Texto from '@Atomos/Texto';
 import Icono from '@Atomos/Icono';
+import CampoTexto from '@Atomos/CampoTexto';
 import { tokens } from '@SRC/theme';
 
 const InfoCliente = ({
+  modoEdicion = false,
   idCliente,
   nombreLegal,
   nombreVisible,
   empleados,
   usuariosAsignados,
   imagenURL,
+  onChange,
 }) => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
+
   return (
     <Box>
       <Grid container spacing={6} mb={4}>
         {/* Información principal */}
-        <Grid item xs={12} sm={6}>
+        <Grid>
           <Texto gutterBottom mb={2.5}>
             <strong>INFORMACIÓN</strong>{' '}
           </Texto>
-          <Texto gutterBottom mb={4}>
-            ID de Cliente:{' '}
-            <a style={{ color: colores.texto[4], fontWeight: 500, textDecoration: 'none' }}>
-              {idCliente}
-            </a>
-          </Texto>
-          <Texto gutterBottom mb={4}>
-            Nombre Legal:{' '}
-            <a style={{ color: colores.texto[4], textDecoration: 'none' }}>{nombreLegal}</a>
-          </Texto>
-          <Texto gutterBottom>
-            Nombre visible: <span style={{ color: colores.texto[4] }}>{nombreVisible}</span>
-          </Texto>
+
+          {modoEdicion ? (
+            <Box sx={{ maxWidth: 325 }}>
+              <CampoTexto
+                label='ID de Cliente'
+                name='idCliente'
+                value={idCliente}
+                onChange={onChange}
+                type='text'
+                fullWidth
+                required
+                disabled={true}
+                sx={{ mb: 4 }}
+              />
+              <CampoTexto
+                label='Nombre Legal'
+                name='nombreLegal'
+                value={nombreLegal}
+                onChange={onChange}
+                type='text'
+                fullWidth
+                required
+                sx={{ mb: 4 }}
+              />
+              <CampoTexto
+                label='Nombre Visible'
+                name='nombreVisible'
+                value={nombreVisible}
+                onChange={onChange}
+                type='text'
+                fullWidth
+                required
+                sx={{ mb: 4 }}
+              />
+            </Box>
+          ) : (
+            <>
+              <Texto gutterBottom mb={4}>
+                ID de Cliente:{' '}
+                <a style={{ color: colores.texto[4], fontWeight: 500, textDecoration: 'none' }}>
+                  {idCliente}
+                </a>
+              </Texto>
+              <Texto gutterBottom mb={4}>
+                Nombre Legal:{' '}
+                <a style={{ color: colores.texto[4], textDecoration: 'none' }}>{nombreLegal}</a>
+              </Texto>
+              <Texto gutterBottom>
+                Nombre visible: <span style={{ color: colores.texto[4] }}>{nombreVisible}</span>
+              </Texto>
+            </>
+          )}
         </Grid>
 
-        {/* Información adicional */}
-        <Grid item xs={12} sm={6}>
+        {/* Información adicional (siempre no editable) */}
+        <Grid>
           <Texto gutterBottom mb={2.5}>
             <strong>INFORMACIÓN ADICIONAL</strong>{' '}
           </Texto>
+
           <Texto gutterBottom mb={4}>
             Usuarios asignados:{' '}
             <a style={{ color: colores.texto[4], textDecoration: 'none' }}>{usuariosAsignados}</a>
@@ -106,12 +150,14 @@ const InfoCliente = ({
 };
 
 InfoCliente.propTypes = {
+  modoEdicion: PropTypes.bool,
   idCliente: PropTypes.string.isRequired,
   nombreLegal: PropTypes.string.isRequired,
   nombreVisible: PropTypes.string.isRequired,
   empleados: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   usuariosAsignados: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   imagenURL: PropTypes.string,
+  onChange: PropTypes.func,
 };
 
 export default InfoCliente;

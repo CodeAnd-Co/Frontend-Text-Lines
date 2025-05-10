@@ -112,7 +112,8 @@ const ListaPedidos = () => {
     {
       label: 'Eliminar',
       onClick: () => {
-        if (seleccionados.length === 0) {
+        console.log(seleccionados);
+        if (seleccionados.length === 0 || seleccionados.size === 0) {
           setAlerta({
             tipo: 'error',
             mensaje: 'Selecciona al menos un pedido para eliminar.',
@@ -124,7 +125,7 @@ const ListaPedidos = () => {
           setAbrirPopUpEliminar(true);
         }
       },
-      disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_GRUPO_EMPLEADOS),
+      disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_PEDIDO),
       size: 'large',
       color: 'error',
       backgroundColor: colores.altertex[1],
@@ -163,10 +164,10 @@ const ListaPedidos = () => {
               columns={columnas}
               rows={filas}
               checkboxSelection
-              onRowSelectionModelChange={(seleccionados) => {
-                const ids = Array.isArray(seleccionados)
-                  ? seleccionados
-                  : Array.from(seleccionados?.ids || []);
+              onRowSelectionModelChange={(selectionModel) => {
+                const ids = Array.isArray(selectionModel)
+                  ? selectionModel
+                  : Array.from(selectionModel?.ids || []);
                 setSeleccionados(ids);
               }}
             />

@@ -1,4 +1,4 @@
-//RF23 - Consulta Lista de Grupo Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF22
+//RF22 - Consulta Lista de Grupo Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF22
 import { GrupoEmpleados } from '@Modelos/Empleados/GrupoEmpleados';
 
 export class ListaGrupoEmpleados {

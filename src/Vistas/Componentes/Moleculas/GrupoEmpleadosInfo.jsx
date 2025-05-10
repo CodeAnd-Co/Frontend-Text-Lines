@@ -4,6 +4,8 @@ import Chip from '@Atomos/Chip';
 import { tokens } from '@SRC/theme';
 import Tabla from '@Organismos/Tabla';
 
+// RF[23] Lee grupo de empleados -https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF23
+
 const InfoGrupoEmpleados = ({ descripcion, setsProductos, empleados }) => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);

@@ -4,6 +4,7 @@ import { useConsultarClientes } from '@Hooks/Clientes/useConsultarClientes';
 import { useSeleccionarCliente } from '@Hooks/Clientes/useSeleccionarCliente';
 import { useEliminarCliente } from '@Hooks/Clientes/useEliminarCliente';
 import { useClientePorId } from '@Hooks/Clientes/useLeerCliente';
+import { RepositorioActualizarCliente } from '@Repositorios/Clientes/repositorioActualizarCliente';
 
 export const useClientes = () => {
   // Clientes data
@@ -64,7 +65,7 @@ export const useClientes = () => {
   useEffect(() => {
     if (cliente) {
       setClienteEditado(cliente);
-      setImagenPreview(cliente.imagenURL || null);
+      setImagenPreview(cliente.urlImagen || null);
       setImagenFile(null);
       setImagenError(null);
     }
@@ -159,11 +160,48 @@ export const useClientes = () => {
   const toggleModoEdicion = async () => {
     if (modoEdicion) {
       try {
-        if (imagenFile) {
+        // Determine what has changed
+        const cambios = {};
+        let tieneImagenNueva = false;
+        let tieneOtrosCambios = false;
+
+        if (cliente) {
+          // Check for non-image changes by comparing with original client
+          Object.keys(clienteEditado).forEach((key) => {
+            if (key !== 'urlImagen' && clienteEditado[key] !== cliente[key]) {
+              cambios[key] = clienteEditado[key];
+              tieneOtrosCambios = true;
+            }
+          });
+
+          // Special check for nombreVisible to update nombreComercial
+          if (clienteEditado.nombreVisible !== cliente.nombreVisible) {
+            cambios.nombreComercial = clienteEditado.nombreVisible;
+          }
+
+          // Check if we have a new image file
+          tieneImagenNueva = !!imagenFile;
+        }
+
+        // If we have a new image, upload it first
+        if (tieneImagenNueva) {
           await handleGuardarImagen();
         }
 
-        if (clienteEditado) {
+        // If we have other changes, update client data
+        if (tieneOtrosCambios) {
+          // Create data object with only changed properties
+          const datosActualizados = {
+            idCliente: clienteEditado.idCliente,
+            ...cambios,
+          };
+
+          // Call the repository with changed data
+          await RepositorioActualizarCliente.actualizarCliente(datosActualizados);
+        }
+
+        // Update local state after successful API calls
+        if (tieneImagenNueva || tieneOtrosCambios) {
           setClientes((prevClientes) =>
             prevClientes.map((c) => {
               if (c.idCliente === clienteEditado.idCliente) {
@@ -181,6 +219,7 @@ export const useClientes = () => {
         setModoEdicion(false);
       } catch (error) {
         console.error('Error saving changes:', error);
+        setImagenError('Error al guardar los cambios. Intente nuevamente.');
         return;
       }
     } else {
@@ -224,23 +263,17 @@ export const useClientes = () => {
       setImagenSubiendo(true);
       setImagenError(null);
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Create FormData to send the file to backend
+      const formData = new FormData();
+      formData.append('imagen', imagenFile);
+      formData.append('idCliente', clienteEditado.idCliente);
 
-      const imageUrl = imagenPreview;
-
-      setClienteEditado((prev) => ({
-        ...prev,
-        urlImagen: imageUrl,
-      }));
-
-      setClientes((prevClientes) =>
-        prevClientes.map((c) =>
-          c.idCliente === clienteEditado.idCliente ? { ...c, urlImagen: imageUrl } : c
-        )
-      );
-
-      return imageUrl;
+      // Just call the repository with no return value
+      await RepositorioActualizarCliente.subirImagenS3(formData);
     } catch (error) {
+      console.error('Error al subir imagen a S3:', error);
+      setImagenError('Error al subir la imagen. Intente nuevamente.');
+      throw error; // Re-throw to handle in toggleModoEdicion
     } finally {
       setImagenSubiendo(false);
     }

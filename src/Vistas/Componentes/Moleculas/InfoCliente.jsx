@@ -1,10 +1,11 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Box, useTheme, Button, CircularProgress } from '@mui/material';
+import { Grid, Box, useTheme, Button, CircularProgress, Alert } from '@mui/material';
 import Texto from '@Atomos/Texto';
 import Icono from '@Atomos/Icono';
 import CampoTexto from '@Atomos/CampoTexto';
 import { tokens } from '@SRC/theme';
+import Alerta from '@Moleculas/Alerta';
 
 const InfoCliente = ({
   modoEdicion = false,
@@ -210,11 +211,7 @@ const InfoCliente = ({
         )}
       </Box>
 
-      {imagenError && (
-        <Texto color='error' variant='caption' sx={{ display: 'block', mb: 1 }}>
-          {imagenError}
-        </Texto>
-      )}
+      {imagenError && <Alerta tipo='error' mensaje={imagenError}></Alerta>}
 
       {modoEdicion && (
         <>

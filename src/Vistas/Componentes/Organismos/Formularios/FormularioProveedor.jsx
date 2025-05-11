@@ -1,10 +1,10 @@
 //RF[26] Crea Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF26]
 import { memo, useCallback, useState } from 'react';
 import { Box, Grid } from '@mui/material';
-import Alerta from '../../moleculas/Alerta';
-import CampoTexto from '../../Atomos/CampoTexto';
-import ModalFlotante from '../../organismos/ModalFlotante';
-import { useCrearProveedor } from '../../../../hooks/Proveedores/useCrearProveedor';
+import CampoTexto from '@Atomos/CampoTexto';
+import Alerta from '@Moleculas/Alerta';
+import ModalFlotante from '@Organismos/ModalFlotante';
+import { useCrearProveedor } from '@Hooks/Proveedores/useCrearProveedor';
 
 const CampoTextoForm = memo(({ label, name, value, onChange, placeholder, error, helperText }) => (
   <Grid item size={6}>

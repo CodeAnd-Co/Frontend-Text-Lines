@@ -141,7 +141,7 @@ const ListaClientes = () => {
     },
   ];
 
-  const handleClickCliente = (clienteId, urlImagen, nombreComercial) => {
+  const manejarClickCliente = (clienteId, urlImagen, nombreComercial) => {
     const idCliente = parseInt(clienteId, 10);
     seleccionarCliente(idCliente);
     Cookies.set('imagenClienteSeleccionado', urlImagen, { expires: 1 });
@@ -188,11 +188,11 @@ const ListaClientes = () => {
         alturaImagen='250px'
         tooltipIcono={
           modoEliminacion ? 'Eliminar cliente' : `Ver información de ${cliente.nombreComercial}`
-        } // nuevo
+        }
         clickeableImagen={true}
         elevacion={3}
         alClicImagen={() =>
-          handleClickCliente(cliente.idCliente, cliente.urlImagen, cliente.nombreComercial)
+          manejarClickCliente(cliente.idCliente, cliente.urlImagen, cliente.nombreComercial)
         }
         alClicIcono={() => {
           if (modoEliminacion) {
@@ -254,12 +254,13 @@ const ListaClientes = () => {
             width='100%'
           >
             {clientes.map(renderTarjetaCliente)}
-            {              
+            {
               <TarjetaAccion
                 icono='Add'
                 texto='Agregar cliente'
                 onClick={() => console.log('Agregar cliente')}
-              />}
+              />
+            }
           </Box>
         )}
       </Box>

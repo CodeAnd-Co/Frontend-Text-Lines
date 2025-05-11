@@ -6,7 +6,18 @@ import CampoTexto from '@Atomos/CampoTexto';
 import CampoSelect from '@Atomos/CampoSelect';
 
 const CampoTextoForm = memo(
-  ({ label, name, value, onChange, placeholder, type = 'text', multiline = false, rows = 1 }) => (
+  ({
+    label,
+    name,
+    value,
+    onChange,
+    placeholder,
+    textoAyuda,
+    type = 'text',
+    multiline = false,
+    rows = 1,
+    error,
+  }) => (
     <Grid size={6}>
       <CampoTexto
         label={label}
@@ -19,6 +30,8 @@ const CampoTextoForm = memo(
         placeholder={placeholder}
         multiline={multiline}
         rows={rows}
+        error={error}
+        helperText={textoAyuda}
       />
     </Grid>
   )
@@ -67,78 +80,96 @@ const BotonForm = memo(({ selected, fullWidth, backgroundColor, outlineColor, la
   </Grid>
 ));
 
-const CamposOpcion = memo(({ opcion, index, varianteId, onActualizarOpcion, onEliminarOpcion }) => {
-  const handleOpcionChange = useCallback(
-    (campo, valor) => {
-      onActualizarOpcion(varianteId, index, campo, valor);
-    },
-    [varianteId, index, onActualizarOpcion]
-  );
+const CamposOpcion = memo(
+  ({ opcion, index, varianteId, erroresOpciones, alActualizarOpcion, alEliminarOpcion }) => {
+    const manejarActualizarOpcion = useCallback(
+      (campo, valor) => {
+        alActualizarOpcion(varianteId, index, campo, valor);
+      },
+      [varianteId, index, alActualizarOpcion]
+    );
 
-  const handleEliminar = useCallback(() => {
-    onEliminarOpcion(varianteId, index);
-  }, [varianteId, index, onEliminarOpcion]);
+    const manejarEliminarOpcion = useCallback(() => {
+      alEliminarOpcion(varianteId, index);
+    }, [varianteId, index, alEliminarOpcion]);
 
-  return (
-    <Grid container spacing={2}>
-      <TituloForm
-        titulo={`Opcion ${opcion.valorOpcion || index + 1}`}
-        tituloVariant='h6'
-        size={6}
-      />
-      <BotonForm label='Eliminar' onClick={handleEliminar} />
-      <CampoTextoForm
-        label='Valor Opción'
-        name={`valorOpcion-${varianteId}-${index}`}
-        value={opcion.valorOpcion}
-        onChange={(evento) => handleOpcionChange('valorOpcion', evento.target.value)}
-      />
-      <CampoTextoForm
-        label='Cantidad'
-        type='number'
-        name={`cantidad-${varianteId}-${index}`}
-        value={opcion.cantidad}
-        onChange={(evento) => handleOpcionChange('cantidad', evento.target.value)}
-      />
-      <CampoTextoForm
-        label='SKU Automático'
-        name={`SKUautomatico-${varianteId}-${index}`}
-        value={opcion.SKUautomatico}
-        onChange={(evento) => handleOpcionChange('SKUautomatico', evento.target.value)}
-      />
-      <CampoTextoForm
-        label='SKU Comercial'
-        name={`SKUcomercial-${varianteId}-${index}`}
-        value={opcion.SKUcomercial}
-        onChange={(evento) => handleOpcionChange('SKUcomercial', evento.target.value)}
-      />
-      <CampoTextoForm
-        label='Costo Adicional'
-        type='number'
-        name={`costoAdicional-${varianteId}-${index}`}
-        value={opcion.costoAdicional}
-        onChange={(evento) => handleOpcionChange('costoAdicional', evento.target.value)}
-      />
-      <CampoTextoForm
-        label='Descuento (%)'
-        type='number'
-        name={`descuento-${varianteId}-${index}`}
-        value={opcion.descuento}
-        onChange={(evento) => handleOpcionChange('descuento', evento.target.value)}
-      />
-      <CampoSelectForm
-        label='Estado'
-        name={`estado-${varianteId}-${index}`}
-        options={[
-          { value: 1, label: 'Activo' },
-          { value: 0, label: 'Inactivo' },
-        ]}
-        value={opcion.estado}
-        onChange={(evento) => handleOpcionChange('estado', evento.target.value)}
-        size={6}
-      />
-    </Grid>
-  );
-});
+    const errores = erroresOpciones && erroresOpciones[index] ? erroresOpciones[index] : {};
+
+    return (
+      <Grid container spacing={2}>
+        <TituloForm
+          titulo={`Opcion ${opcion.valorOpcion || index + 1}`}
+          tituloVariant='h6'
+          size={6}
+        />
+        <BotonForm label='Eliminar' onClick={manejarEliminarOpcion} />
+        <CampoTextoForm
+          label='Valor Opción'
+          name={`valorOpcion-${varianteId}-${index}`}
+          value={opcion.valorOpcion}
+          onChange={(evento) => manejarActualizarOpcion('valorOpcion', evento.target.value)}
+          error={errores?.valorOpcion}
+          textoAyuda={errores?.valorOpcion}
+        />
+        <CampoTextoForm
+          label='Cantidad'
+          type='number'
+          name={`cantidad-${varianteId}-${index}`}
+          value={opcion.cantidad}
+          onChange={(evento) => manejarActualizarOpcion('cantidad', evento.target.value)}
+          error={errores?.cantidad}
+          textoAyuda={errores?.cantidad}
+        />
+        <CampoTextoForm
+          label='SKU Automático'
+          name={`SKUautomatico-${varianteId}-${index}`}
+          value={opcion.SKUautomatico}
+          onChange={(evento) => manejarActualizarOpcion('SKUautomatico', evento.target.value)}
+          error={errores?.SKUautomatico}
+          textoAyuda={errores?.SKUautomatico}
+        />
+        <CampoTextoForm
+          label='SKU Comercial'
+          name={`SKUcomercial-${varianteId}-${index}`}
+          value={opcion.SKUcomercial}
+          onChange={(evento) => manejarActualizarOpcion('SKUcomercial', evento.target.value)}
+          error={errores?.SKUcomercial}
+          textoAyuda={errores?.SKUcomercial}
+        />
+        <CampoTextoForm
+          label='Costo Adicional'
+          type='number'
+          name={`costoAdicional-${varianteId}-${index}`}
+          value={opcion.costoAdicional}
+          onChange={(evento) => manejarActualizarOpcion('costoAdicional', evento.target.value)}
+          error={errores?.costoAdicional}
+          textoAyuda={errores?.costoAdicional}
+        />
+        <CampoTextoForm
+          label='Descuento (%)'
+          type='number'
+          name={`descuento-${varianteId}-${index}`}
+          value={opcion.descuento}
+          onChange={(evento) => manejarActualizarOpcion('descuento', evento.target.value)}
+          error={errores?.descuento}
+          textoAyuda={errores?.descuento}
+        />
+        <CampoSelectForm
+          label='Estado'
+          name={`estado-${varianteId}-${index}`}
+          options={[
+            { value: 1, label: 'Activo' },
+            { value: 0, label: 'Inactivo' },
+          ]}
+          value={opcion.estado}
+          onChange={(evento) => manejarActualizarOpcion('estado', evento.target.value)}
+          error={errores?.estado}
+          textoAyuda={errores?.estado}
+          size={6}
+        />
+      </Grid>
+    );
+  }
+);
 
 export default CamposOpcion;

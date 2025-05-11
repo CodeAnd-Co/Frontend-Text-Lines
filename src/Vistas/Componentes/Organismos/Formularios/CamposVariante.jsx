@@ -8,7 +8,18 @@ import TarjetaElementoAccion from '@Moleculas/TarjetaElementoAccion';
 import CamposOpcion from '@Organismos/Formularios/CamposOpcion';
 
 const CampoTextoForm = memo(
-  ({ label, name, value, onChange, placeholder, type = 'text', multiline = false, rows = 1 }) => (
+  ({
+    label,
+    name,
+    value,
+    onChange,
+    placeholder,
+    textoAyuda,
+    type = 'text',
+    multiline = false,
+    rows = 1,
+    error,
+  }) => (
     <Grid size={6}>
       <CampoTexto
         label={label}
@@ -21,6 +32,8 @@ const CampoTextoForm = memo(
         placeholder={placeholder}
         multiline={multiline}
         rows={rows}
+        error={error}
+        helperText={textoAyuda}
       />
     </Grid>
   )
@@ -57,7 +70,7 @@ const CampoCrear = memo(({ etiqueta, onClic }) => (
 ));
 
 const CampoImagenesVariante = memo(
-  ({ varianteId, imagenesVariante, onAgregarImagen, onEliminarImagen }) => {
+  ({ varianteId, imagenesVariante, alAgregarImagenVariante, alEliminarImagenVariante }) => {
     const fileInputRef = useRef();
 
     const handleFileSelect = useCallback(
@@ -65,10 +78,10 @@ const CampoImagenesVariante = memo(
         const files = Array.from(evento.target.files);
         if (files.length === 0) return;
 
-        onAgregarImagen(varianteId, files);
+        alAgregarImagenVariante(varianteId, files);
         evento.target.value = '';
       },
-      [varianteId, onAgregarImagen]
+      [varianteId, alAgregarImagenVariante]
     );
 
     return (
@@ -84,7 +97,7 @@ const CampoImagenesVariante = memo(
                 <TarjetaElementoAccion
                   icono='Image'
                   texto={imagen.file.name}
-                  onEliminar={() => onEliminarImagen(varianteId, imagen.id)}
+                  onEliminar={() => alEliminarImagenVariante(varianteId, imagen.id)}
                   tooltipEliminar='Eliminar'
                   borderColor='primary.light'
                   backgroundColor='primary.lighter'
@@ -125,28 +138,33 @@ const CamposVariante = memo(
     varianteId,
     variante,
     imagenesVariante,
-    onUpdateVariante,
-    onEliminarVariante,
-    onAgregarOpcion,
-    onActualizarOpcion,
-    onEliminarOpcion,
-    onAgregarImagen,
-    onEliminarImagen,
+    erroresVariantes,
+    alActualizarVariante,
+    alEliminarVariante,
+    alAgregarOpcion,
+    alActualizarOpcion,
+    alEliminarOpcion,
+    alAgregarImagenVariante,
+    alEliminarImagenVariante,
   }) => {
-    const handleVarianteChange = useCallback(
+    const manejarActualizarVariante = useCallback(
       (campo, valor) => {
-        onUpdateVariante(varianteId, campo, valor);
+        alActualizarVariante(varianteId, campo, valor);
       },
-      [varianteId, onUpdateVariante]
+      [varianteId, alActualizarVariante]
     );
 
-    const handleEliminarVariante = useCallback(() => {
-      onEliminarVariante(varianteId);
-    }, [varianteId, onEliminarVariante]);
+    const manejarEliminarVariante = useCallback(() => {
+      alEliminarVariante(varianteId);
+    }, [varianteId, alEliminarVariante]);
 
-    const handleAgregarOpcion = useCallback(() => {
-      onAgregarOpcion(varianteId);
-    }, [varianteId, onAgregarOpcion]);
+    const manejarAgregarOpcion = useCallback(() => {
+      alAgregarOpcion(varianteId);
+    }, [varianteId, alAgregarOpcion]);
+
+    // prettier-ignore
+    const errores 
+    = erroresVariantes && erroresVariantes[varianteId] ? erroresVariantes[varianteId] : {};
 
     return (
       <>
@@ -155,29 +173,33 @@ const CamposVariante = memo(
           tituloVariant='h6'
           size={6}
         />
-        <BotonForm label='Eliminar' onClick={handleEliminarVariante} />
+        <BotonForm label='Eliminar' onClick={manejarEliminarVariante} />
 
         <CampoImagenesVariante
           varianteId={varianteId}
           imagenesVariante={imagenesVariante}
-          onAgregarImagen={onAgregarImagen}
-          onEliminarImagen={onEliminarImagen}
+          alAgregarImagenVariante={alAgregarImagenVariante}
+          alEliminarImagenVariante={alEliminarImagenVariante}
         />
 
         <CampoTextoForm
           label='Nombre de la Variante'
           name={`nombreVariante-${varianteId}`}
           value={variante.nombreVariante || ''}
-          onChange={(evento) => handleVarianteChange('nombreVariante', evento.target.value)}
+          onChange={(evento) => manejarActualizarVariante('nombreVariante', evento.target.value)}
           placeholder='Ej: Color, Talla, Material...'
+          error={errores?.nombreVariante}
+          textoAyuda={errores?.nombreVariante}
         />
 
         <CampoTextoForm
           label='Descripción de la Variante'
           name={`descripcion-${varianteId}`}
           value={variante.descripcion || ''}
-          onChange={(evento) => handleVarianteChange('descripcion', evento.target.value)}
+          onChange={(evento) => manejarActualizarVariante('descripcion', evento.target.value)}
           placeholder='Descripción de la variante'
+          error={errores?.descripcion}
+          textoAyuda={errores?.descripcion}
         />
 
         {(variante.opciones || []).map((opcion, index) => (
@@ -186,12 +208,13 @@ const CamposVariante = memo(
             index={index}
             opcion={opcion}
             varianteId={varianteId}
+            erroresOpciones={errores?.opciones}
             ss
-            onActualizarOpcion={onActualizarOpcion}
-            onEliminarOpcion={onEliminarOpcion}
+            alActualizarOpcion={alActualizarOpcion}
+            alEliminarOpcion={alEliminarOpcion}
           />
         ))}
-        <CampoCrear etiqueta='Crear Opción' onClic={handleAgregarOpcion} />
+        <CampoCrear etiqueta='Crear Opción' onClic={manejarAgregarOpcion} />
       </>
     );
   }

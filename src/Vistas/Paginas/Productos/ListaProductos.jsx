@@ -20,8 +20,9 @@ const ListaProductos = () => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const { usuario } = useAuth();
-  const MENSAJE_POPUP_ELIMINAR =
-    '¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.';
+  // prettier-ignore
+  const MENSAJE_POPUP_ELIMINAR 
+  = '¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.';
 
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [mostrarModalProveedor, setMostrarModalProveedor] = useState(false);
@@ -199,15 +200,15 @@ const ListaProductos = () => {
       >
         {mostrarModalProducto && (
           <FormularioProducto
-            open={mostrarModalProducto}
-            onCerrarFormularioProducto={cerrarFormularioProducto}
-            onMostrarFormularioProveedor={mostrarFormularioProveedor}
+            formularioAbierto={mostrarModalProducto}
+            alCerrarFormularioProducto={cerrarFormularioProducto}
+            alMostrarFormularioProveedor={mostrarFormularioProveedor}
           />
         )}
         {mostrarModalProveedor && (
           <FormularioProveedor
-            open={mostrarModalProveedor}
-            onCerrarFormularioProveedor={cerrarFormularioProveedor}
+            formularioAbierto={mostrarModalProveedor}
+            alCerrarFormularioProveedor={cerrarFormularioProveedor}
           />
         )}
         <Box width='100%'>

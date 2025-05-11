@@ -5,7 +5,7 @@ import CampoTexto from '../../Atomos/CampoTexto';
 import ModalFlotante from '../../organismos/ModalFlotante';
 import { useCrearProveedor } from '../../../../hooks/Proveedores/useCrearProveedor';
 
-const CampoTextoForm = memo(({ label, name, value, onChange, placeholder, error, helperText}) => (
+const CampoTextoForm = memo(({ label, name, value, onChange, placeholder, error, helperText }) => (
   <Grid item size={6}>
     <CampoTexto
       label={label}
@@ -21,7 +21,7 @@ const CampoTextoForm = memo(({ label, name, value, onChange, placeholder, error,
   </Grid>
 ));
 
-const FormularioProveedor = memo(({ open, onCerrarFormularioProveedor }) => {
+const FormularioProveedor = memo(({ formularioAbierto, alCerrarFormularioProveedor }) => {
   const [alerta, setAlerta] = useState(null);
   const [proveedor, setProveedor] = useState({
     nombre: '',
@@ -78,8 +78,8 @@ const FormularioProveedor = memo(({ open, onCerrarFormularioProveedor }) => {
 
   return (
     <ModalFlotante
-      open={open}
-      onClose={onCerrarFormularioProveedor}
+      open={formularioAbierto}
+      onClose={alCerrarFormularioProveedor}
       titulo='Datos del Proveedor'
       onConfirm={manejarGuardarProveedor}
       confirmLabel='Guardar'

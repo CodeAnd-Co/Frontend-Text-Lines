@@ -29,7 +29,11 @@ export const RUTAS = {
       CONSULTAR_CATEGORIAS: `${BASE_PRODUCTOS}/consultar-categorias`,
     },
     PEDIDOS: { BASE: `${BASE_PEDIDOS}`, CONSULTAR_PEDIDOS: `${BASE_PEDIDOS}/consultar-lista` },
-    CUOTAS: { BASE: `${BASE_CUOTAS}`, EDITAR_CUOTAS: `${BASE_CUOTAS}/editar-cuotas` },
+    CUOTAS: {
+      BASE: `${BASE_CUOTAS}`,
+      EDITAR_CUOTAS: `${BASE_CUOTAS}/editar-cuotas`,
+      LEER_CUOTAS: `${BASE_CUOTAS}/leer-set-cuotas`,
+    },
 
     EVENTOS: {
       BASE: `${BASE_EVENTOS}`,

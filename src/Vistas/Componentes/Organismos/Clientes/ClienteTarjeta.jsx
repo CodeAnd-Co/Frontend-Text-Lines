@@ -1,13 +1,13 @@
 import TarjetaConImagen from '@Moleculas/TarjetaConImagen';
 
 export const ClienteTarjeta = ({ cliente, modoEliminacion, onClienteClick, onIconoClick }) => {
-  const displayName = cliente.nombreComercial || cliente.nombreVisible || 'Cliente sin nombre';
+  const nombreCliente = cliente.nombreComercial || cliente.nombreVisible || 'Cliente sin nombre';
 
   return (
     <TarjetaConImagen
       src={cliente.urlImagen}
-      alt={displayName}
-      titulo={displayName}
+      alt={nombreCliente}
+      titulo={nombreCliente}
       nombreIcono={modoEliminacion ? 'Delete' : 'Info'}
       varianteIcono='outlined'
       tamanoIcono='large'
@@ -16,10 +16,10 @@ export const ClienteTarjeta = ({ cliente, modoEliminacion, onClienteClick, onIco
       ajuste='contain'
       anchoImagen='100%'
       alturaImagen='250px'
-      tooltipIcono={modoEliminacion ? 'Eliminar cliente' : `Ver información de ${displayName}`}
+      tooltipIcono={modoEliminacion ? 'Eliminar cliente' : `Ver información de ${nombreCliente}`}
       clickeableImagen={true}
       elevacion={3}
-      alClicImagen={() => onClienteClick(cliente.idCliente, cliente.urlImagen, displayName)}
+      alClicImagen={() => onClienteClick(cliente.idCliente, cliente.urlImagen, nombreCliente)}
       alClicIcono={() => onIconoClick(cliente, modoEliminacion)}
     />
   );

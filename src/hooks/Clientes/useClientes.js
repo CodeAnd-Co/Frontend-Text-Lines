@@ -160,55 +160,78 @@ export const useClientes = () => {
   const toggleModoEdicion = async () => {
     if (modoEdicion) {
       try {
-        // Determine what has changed
+        // Only proceed if we have the original client data to compare against
+        if (!cliente) return;
+
+        // Extract only changed fields
         const cambios = {};
-        let tieneImagenNueva = false;
+
+        // Track if we have any non-image changes
         let tieneOtrosCambios = false;
 
-        if (cliente) {
-          // Check for non-image changes by comparing with original client
-          Object.keys(clienteEditado).forEach((key) => {
-            if (key !== 'urlImagen' && clienteEditado[key] !== cliente[key]) {
-              cambios[key] = clienteEditado[key];
-              tieneOtrosCambios = true;
-            }
-          });
-
-          // Special check for nombreVisible to update nombreComercial
-          if (clienteEditado.nombreVisible !== cliente.nombreVisible) {
-            cambios.nombreComercial = clienteEditado.nombreVisible;
+        // Compare each field to find changes (excluding urlImagen which is handled separately)
+        Object.keys(clienteEditado).forEach((key) => {
+          // Skip urlImagen and internal/technical fields
+          if (key === 'urlImagen' || key === 'createdAt' || key === 'updatedAt') {
+            return;
           }
 
-          // Check if we have a new image file
-          tieneImagenNueva = !!imagenFile;
+          // Only include fields that have actually changed
+          if (clienteEditado[key] !== cliente[key]) {
+            cambios[key] = clienteEditado[key];
+            tieneOtrosCambios = true;
+          }
+        });
+
+        // Special case for nombreVisible/nombreComercial relationship
+        if (clienteEditado.nombreVisible !== cliente.nombreVisible) {
+          cambios.nombreComercial = clienteEditado.nombreVisible;
         }
 
-        // If we have a new image, upload it first
-        if (tieneImagenNueva) {
-          await handleGuardarImagen();
-        }
+        // Only make API call if we have changes or a new image
+        if (tieneOtrosCambios || imagenFile) {
+          setImagenSubiendo(true);
+          setImagenError(null);
 
-        // If we have other changes, update client data
-        if (tieneOtrosCambios) {
-          // Create data object with only changed properties
-          const datosActualizados = {
+          // Create request data object
+          const datosActualizacion = {
+            // Add the client ID (required)
             idCliente: clienteEditado.idCliente,
+
+            // Include all changed fields
             ...cambios,
           };
 
-          // Call the repository with changed data
-          await RepositorioActualizarCliente.actualizarCliente(datosActualizados);
-        }
+          // If we have an image file, convert it to base64 to include in the request
+          if (imagenFile) {
+            try {
+              const base64Image = await convertFileToBase64(imagenFile);
+              // Add image data with metadata
+              datosActualizacion.imagenData = {
+                contenido: base64Image,
+                nombre: imagenFile.name,
+                tipo: imagenFile.type,
+              };
+            } catch (imageError) {
+              console.error('Error converting image to base64:', imageError);
+              setImagenError('Error al procesar la imagen. Intente nuevamente.');
+              setImagenSubiendo(false);
+              return;
+            }
+          }
 
-        // Update local state after successful API calls
-        if (tieneImagenNueva || tieneOtrosCambios) {
+          // Make a single API call to update both client data and image
+          await RepositorioActualizarCliente.actualizarClienteConImagen(datosActualizacion);
+
+          // Update local state after successful API call
           setClientes((prevClientes) =>
             prevClientes.map((c) => {
               if (c.idCliente === clienteEditado.idCliente) {
                 return {
                   ...c,
-                  ...clienteEditado,
-                  nombreComercial: clienteEditado.nombreVisible,
+                  ...cambios, // Only apply the actual changes
+                  // Include the new image preview if we uploaded one
+                  ...(imagenFile ? { urlImagen: imagenPreview } : {}),
                 };
               }
               return c;
@@ -221,10 +244,22 @@ export const useClientes = () => {
         console.error('Error saving changes:', error);
         setImagenError('Error al guardar los cambios. Intente nuevamente.');
         return;
+      } finally {
+        setImagenSubiendo(false);
       }
     } else {
       setModoEdicion(true);
     }
+  };
+
+  // Helper function to convert File object to base64 string
+  const convertFileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(',')[1]); // Remove data URL prefix
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(file);
+    });
   };
 
   const handleClienteChange = (event) => {
@@ -253,29 +288,6 @@ export const useClientes = () => {
         ...prev,
         urlImagen: preview,
       }));
-    }
-  };
-
-  const handleGuardarImagen = async () => {
-    if (!imagenFile || !clienteEditado) return;
-
-    try {
-      setImagenSubiendo(true);
-      setImagenError(null);
-
-      // Create FormData to send the file to backend
-      const formData = new FormData();
-      formData.append('imagen', imagenFile);
-      formData.append('idCliente', clienteEditado.idCliente);
-
-      // Just call the repository with no return value
-      await RepositorioActualizarCliente.subirImagenS3(formData);
-    } catch (error) {
-      console.error('Error al subir imagen a S3:', error);
-      setImagenError('Error al subir la imagen. Intente nuevamente.');
-      throw error; // Re-throw to handle in toggleModoEdicion
-    } finally {
-      setImagenSubiendo(false);
     }
   };
 
@@ -319,6 +331,5 @@ export const useClientes = () => {
 
     // Handlers de imagen
     handleImagenChange,
-    handleGuardarImagen,
   };
 };

@@ -30,6 +30,7 @@ export const PERMISOS = {
   LEER_EMPLEADO: 'Leer Empleado',
   ACTUALIZAR_EMPLEADO: 'Actualizar Empleado',
   ELIMINAR_EMPLEADO: 'Eliminar Empleado',
+  IMPORTAR_EMPLEADOS: 'Importar Empleados',
 
   // Grupo de Empleados
   CREAR_GRUPO_EMPLEADOS: 'Crear Grupo de Empleados',

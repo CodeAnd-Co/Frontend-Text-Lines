@@ -1,22 +1,9 @@
+//RF[26] Crea Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF26]
 import { useState } from 'react';
 import { RepositorioCrearProducto } from '@Repositorios/Productos/RepositorioCrearProducto';
 import { validarProducto } from '@Utilidades/Validaciones/validarProducto';
 import { validarVariantes } from '@Utilidades/Validaciones/validarVariantes';
 
-/**
- * Hook `useCrearProducto`
- *
- * Maneja la lógica para crear un nuevo producto. Este hook realiza:
- * - Manejo del estado de errores
- * - Envío de los datos al backend usando el repositorio
- * - Manejo de errores y respuestas
- *
- * @returns {{
- *   errores: Object,
- *   handleGuardarProducto: Function
- * }}
- * Retorna el estado de errores y la función para guardar el producto
- */
 export const useCrearProducto = () => {
   const [erroresProducto, setErroresProducto] = useState({});
   const [erroresVariantes, setErroresVariantes] = useState({});

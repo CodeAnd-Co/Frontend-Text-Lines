@@ -1,4 +1,4 @@
-//RF17 - Consulta Lista Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF17
+//RF[26] Crea Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF26]
 import { useEffect, useState } from 'react';
 import { RepositorioConsultarProveedores } from '@Repositorios/Proveedores/RepositorioConsultarProveedores';
 import { useAuth } from '@Hooks/AuthProvider';
@@ -11,17 +11,6 @@ export function useConsultarProveedores() {
   const [error, setError] = useState(null);
   const { usuario } = useAuth();
 
-  /**
-   * Hook para consultar la lista de proveedores.
-   * @param void
-   * @returns {{
-   *   proveedores: Proveedor[],
-   *   mensaje: string,
-   *   cargando: boolean,
-   *   error: string | null
-   * }}
-   */
-
   useEffect(() => {
     const cargar = async () => {
       setCargando(true);
@@ -32,9 +21,10 @@ export function useConsultarProveedores() {
         return;
       }
 
+      // prettier-ignore
       try {
         const { mensaje, listaProveedores } 
-            = await RepositorioConsultarProveedores.consultarLista();
+        = await RepositorioConsultarProveedores.consultarLista();
         setProveedores(listaProveedores);
         setMensaje(mensaje);
       } catch (err) {

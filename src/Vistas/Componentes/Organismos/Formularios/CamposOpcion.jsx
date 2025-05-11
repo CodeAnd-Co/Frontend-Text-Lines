@@ -1,3 +1,4 @@
+//RF[26] Crea Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF26]
 import { memo, useCallback } from 'react';
 import { Grid } from '@mui/material';
 import Texto from '@Atomos/Texto';

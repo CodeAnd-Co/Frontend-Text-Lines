@@ -1,3 +1,4 @@
+//RF[26] Crea Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF26]
 import axios from 'axios';
 import { RUTAS_API } from '@Utilidades/Constantes/rutasAPI';
 import { Proveedor } from '@Modelos/Proveedores/Proveedor';

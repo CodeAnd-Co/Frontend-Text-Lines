@@ -2,6 +2,8 @@ import ModalCliente from '@Organismos/Clientes/ModalLeerCliente';
 import InfoCliente from '@Moleculas/InfoCliente';
 import Texto from '@Atomos/Texto';
 import PropTypes from 'prop-types';
+import { useAuth } from '@Hooks/AuthProvider';
+import { PERMISOS } from '@Constantes/permisos';
 
 export const DetalleClienteModal = ({
   open,
@@ -16,6 +18,8 @@ export const DetalleClienteModal = ({
   imagenSubiendo,
   imagenError,
 }) => {
+  const { usuario } = useAuth();
+
   return (
     open && (
       <ModalCliente
@@ -31,7 +35,7 @@ export const DetalleClienteModal = ({
             color: 'error',
             backgroundColor: colores.altertex[1],
             onClick: onToggleEdicion,
-            disabled: !cliente,
+            disabled: !cliente || !usuario?.permisos?.includes(PERMISOS.ACTUALIZAR_CLIENTE),
           },
           {
             label: 'SALIR',

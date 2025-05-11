@@ -10,16 +10,19 @@ export class RepositorioActualizarCliente {
     }
     try {
       console.log(nuevosDatosCliente);
-      // await axios.put(
-      //   RUTAS_API.CLIENTES.ACTUALIZAR_CLIENTE,
-      //   { imagenData },
-      //   {
-      //     headers: {
-      //       'x-api-key': API_KEY,
-      //     },
-      //   }
-      // );
-    } catch {
+      const respuesta = await axios.put(
+        RUTAS_API.CLIENTES.ACTUALIZAR_CLIENTE,
+        { nuevosDatosCliente },
+        {
+          headers: {
+            'x-api-key': API_KEY,
+          },
+          withCredentials: true,
+        }
+      );
+      console.log(respuesta);
+    } catch (error) {
+      console.log(error);
       throw new Error('Error en el repositorio');
     }
   }

@@ -112,7 +112,6 @@ const ListaPedidos = () => {
     {
       label: 'Eliminar',
       onClick: () => {
-        console.log(seleccionados);
         if (seleccionados.length === 0 || seleccionados.size === 0) {
           setAlerta({
             tipo: 'error',
@@ -164,10 +163,8 @@ const ListaPedidos = () => {
               columns={columnas}
               rows={filas}
               checkboxSelection
-              onRowSelectionModelChange={(selectionModel) => {
-                const ids = Array.isArray(selectionModel)
-                  ? selectionModel
-                  : Array.from(selectionModel?.ids || []);
+              onRowSelectionModelChange={(seleccion) => {
+                const ids = Array.isArray(seleccion) ? seleccion : Array.from(seleccion?.ids || []);
                 setSeleccionados(ids);
               }}
             />

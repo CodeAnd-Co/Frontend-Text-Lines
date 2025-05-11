@@ -4,25 +4,20 @@ import { RUTAS_API } from '@Constantes/rutasAPI';
 const API_KEY = import.meta.env.VITE_API_KEY;
 
 export class RepositorioActualizarCliente {
-  static async actualizarClienteConImagen(nuevosDatosCliente) {
-    if (!nuevosDatosCliente) {
-      return;
-    }
+  static async actualizarClienteConImagen(formData) {
+    if (!formData) return;
+
     try {
-      console.log(nuevosDatosCliente);
-      const respuesta = await axios.put(
-        RUTAS_API.CLIENTES.ACTUALIZAR_CLIENTE,
-        { nuevosDatosCliente },
-        {
-          headers: {
-            'x-api-key': API_KEY,
-          },
-          withCredentials: true,
-        }
-      );
+      console.log(formData);
+      const respuesta = await axios.put(RUTAS_API.CLIENTES.ACTUALIZAR_CLIENTE, formData, {
+        headers: {
+          'x-api-key': API_KEY,
+        },
+        withCredentials: true,
+      });
       console.log(respuesta);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       throw new Error('Error en el repositorio');
     }
   }

@@ -160,77 +160,50 @@ export const useClientes = () => {
   const toggleModoEdicion = async () => {
     if (modoEdicion) {
       try {
-        // Only proceed if we have the original client data to compare against
         if (!cliente) return;
 
-        // Extract only changed fields
         const cambios = {};
-
-        // Track if we have any non-image changes
         let tieneOtrosCambios = false;
 
-        // Compare each field to find changes (excluding urlImagen which is handled separately)
         Object.keys(clienteEditado).forEach((key) => {
-          // Skip urlImagen and internal/technical fields
           if (key === 'urlImagen' || key === 'createdAt' || key === 'updatedAt') {
             return;
           }
-
-          // Only include fields that have actually changed
           if (clienteEditado[key] !== cliente[key]) {
             cambios[key] = clienteEditado[key];
             tieneOtrosCambios = true;
           }
         });
 
-        // Special case for nombreVisible/nombreComercial relationship
         if (clienteEditado.nombreVisible !== cliente.nombreVisible) {
           cambios.nombreComercial = clienteEditado.nombreVisible;
         }
 
-        // Only make API call if we have changes or a new image
         if (tieneOtrosCambios || imagenFile) {
           setImagenSubiendo(true);
           setImagenError(null);
 
-          // Create request data object
-          const datosActualizacion = {
-            // Add the client ID (required)
-            idCliente: clienteEditado.idCliente,
+          const formData = new FormData();
+          formData.append('idCliente', clienteEditado.idCliente);
 
-            // Include all changed fields
-            ...cambios,
-          };
+          // Agregar campos modificados al FormData
+          Object.entries(cambios).forEach(([key, value]) => {
+            formData.append(key, value);
+          });
 
-          // If we have an image file, convert it to base64 to include in the request
+          // Agregar imagen al FormData
           if (imagenFile) {
-            try {
-              const base64Image = await convertFileToBase64(imagenFile);
-              // Add image data with metadata
-              datosActualizacion.imagenData = {
-                contenido: base64Image,
-                nombre: imagenFile.name,
-                tipo: imagenFile.type,
-              };
-            } catch (imageError) {
-              console.error('Error converting image to base64:', imageError);
-              setImagenError('Error al procesar la imagen. Intente nuevamente.');
-              setImagenSubiendo(false);
-              return;
-            }
+            formData.append('imagen', imagenFile); // clave debe coincidir con el backend
           }
 
-          // Make a single API call to update both client data and image
-          await RepositorioActualizarCliente.actualizarClienteConImagen(datosActualizacion);
+          await RepositorioActualizarCliente.actualizarClienteConImagen(formData);
 
-          // Update local state after successful API call
           setClientes((prevClientes) =>
             prevClientes.map((c) => {
               if (c.idCliente === clienteEditado.idCliente) {
                 return {
                   ...c,
-                  ...cambios, // Only apply the actual changes
-                  // Include the new image preview if we uploaded one
+                  ...cambios,
                   ...(imagenFile ? { urlImagen: imagenPreview } : {}),
                 };
               }
@@ -241,25 +214,14 @@ export const useClientes = () => {
 
         setModoEdicion(false);
       } catch (error) {
-        console.error('Error saving changes:', error);
+        console.error('Error guardando cambios:', error);
         setImagenError('Error al guardar los cambios. Intente nuevamente.');
-        return;
       } finally {
         setImagenSubiendo(false);
       }
     } else {
       setModoEdicion(true);
     }
-  };
-
-  // Helper function to convert File object to base64 string
-  const convertFileToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result.split(',')[1]); // Remove data URL prefix
-      reader.onerror = (error) => reject(error);
-      reader.readAsDataURL(file);
-    });
   };
 
   const handleClienteChange = (event) => {

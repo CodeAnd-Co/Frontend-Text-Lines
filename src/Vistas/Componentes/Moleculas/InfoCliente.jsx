@@ -211,7 +211,7 @@ const InfoCliente = ({
         )}
       </Box>
 
-      {imagenError && <Alerta tipo='error' mensaje={imagenError}></Alerta>}
+      {imagenError && <Alerta tipo='error' mensaje={imagenError} cerrable></Alerta>}
 
       {modoEdicion && (
         <>
@@ -234,6 +234,8 @@ const InfoCliente = ({
           </Button>
         </>
       )}
+
+      {imagenError && <Alerta tipo='error' mensaje={imagenError} cerrable sx={{ mb: 2 }}></Alerta>}
     </Box>
   );
 };

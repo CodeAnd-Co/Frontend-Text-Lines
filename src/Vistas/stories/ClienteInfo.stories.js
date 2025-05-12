@@ -1,4 +1,4 @@
-import InfoCliente from '../componentes/moleculas/ClienteInfo';
+import InfoCliente from '../Componentes/Moleculas/InfoCliente';
 
 export default {
   title: 'Componentes/Moléculas/InfoCliente',
@@ -28,7 +28,7 @@ const baseArgs = {
 };
 
 export const InformacionCliente = {
-    args: {
-      ...baseArgs,
-    },
-  };
+  args: {
+    ...baseArgs,
+  },
+};

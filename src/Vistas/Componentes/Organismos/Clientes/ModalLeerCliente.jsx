@@ -15,6 +15,7 @@ const ModalLeerCliente = ({
   cancelLabel = 'Cancelar',
   botones = null,
   children,
+  errorPanel = null, // Nuevo prop para el panel de error
 }) => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
@@ -77,6 +78,9 @@ const ModalLeerCliente = ({
 
         {children}
 
+        {/* Panel de error arriba de los botones */}
+        {errorPanel}
+
         <GrupoBotones buttons={botones ?? defaultBotones} spacing={1} direction='row' align='end' />
       </Paper>
     </Modal>
@@ -93,6 +97,7 @@ ModalLeerCliente.propTypes = {
   cancelLabel: PropTypes.string,
   botones: PropTypes.array,
   children: PropTypes.node.isRequired,
+  errorPanel: PropTypes.node, // Nuevo prop
 };
 
 export default ModalLeerCliente;

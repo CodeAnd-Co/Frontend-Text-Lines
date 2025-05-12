@@ -7,7 +7,7 @@ const obtenerPermisos = async () => {
   try {
     const respuesta = await axios.post(
       `${API_URL}/api/roles/obtener-opciones`,
-      {}, 
+      {},
       {
         headers: {
           'x-api-key': API_KEY,
@@ -22,8 +22,7 @@ const obtenerPermisos = async () => {
     }));
 
     return permisosFormateados;
-  } catch (error) {
-    console.error('Error al obtener permisos:', error);
+  } catch {
     return [];
   }
 };

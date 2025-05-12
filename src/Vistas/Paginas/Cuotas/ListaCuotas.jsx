@@ -10,7 +10,7 @@ import { useAuth } from '@Hooks/AuthProvider';
 import ContenedorLista from '@Organismos/ContenedorLista';
 import Tabla from '@Organismos/Tabla';
 import Chip from '@Atomos/Chip';
-import ModalCrearCuotaSet from '@Organismos/ModalCrearCuotaSet';
+import ModalCrearCuotaSet from '@Organismos/Cuotas/ModalCrearCuotaSet';
 import Alerta from '@Moleculas/Alerta';
 import PopUpEliminar from '@Moleculas/PopUp';
 import { RUTAS } from '@Constantes/rutas';

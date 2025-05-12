@@ -28,7 +28,6 @@ export function useConsultarTipoPagos() {
         setTipoPagos(resultado.listaTipoPagos);
         setMensaje(resultado.mensaje || 'Consulta exitosa');
       } catch (err) {
-        console.error(err);
         setTipoPagos([]);
         setMensaje('');
         setError(err.message);

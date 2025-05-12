@@ -12,15 +12,24 @@ export const useCrearProducto = () => {
     const erroresValidacionProducto = validarProducto(producto);
     setErroresProducto(erroresValidacionProducto);
     if (Object.keys(erroresValidacionProducto).length > 0) {
-      return { exito: false, mensaje: 'Error en los campos de datos del producto' };
+      return {
+        exito: false,
+        mensaje: 'Por favor revisa los campos del producto. Algunos datos no son válidos.',
+      };
     }
 
     if (!imagenProducto) {
-      return { exito: false, mensaje: 'Selecciona una imagen para el producto' };
+      return {
+        exito: false,
+        mensaje: 'Debes seleccionar una imagen principal para el producto.',
+      };
     }
 
     if (!variantes || variantes.length === 0) {
-      return { exito: false, mensaje: 'Crea al menos una variante del producto' };
+      return {
+        exito: false,
+        mensaje: 'Agrega al menos una variante para continuar con el registro del producto.',
+      };
     }
 
     const variantesSinOpciones = variantes.filter(
@@ -28,14 +37,21 @@ export const useCrearProducto = () => {
     );
 
     if (variantesSinOpciones.length > 0) {
-      return { exito: false, mensaje: 'Cada variante debe tener al menos una opción' };
+      return {
+        exito: false,
+        mensaje: 'Cada variante debe incluir al menos una opción disponible.',
+      };
     }
 
     const erroresValidacionVariantes = validarVariantes(variantes);
     setErroresVariantes(erroresValidacionVariantes);
 
     if (Object.keys(erroresValidacionVariantes).length > 0) {
-      return { exito: false, mensaje: 'Error en los campos de datos de variantes' };
+      return {
+        exito: false,
+        mensaje:
+          'Revisa los campos de las variantes. Algunos datos son inválidos o están incompletos.',
+      };
     }
 
     // prettier-ignore
@@ -44,7 +60,10 @@ export const useCrearProducto = () => {
       || Object.keys(imagenesVariantes).length !== Object.keys(variantes).length 
       || Object.values(imagenesVariantes).some((lista) => !Array.isArray(lista) || lista.length === 0)
     ) {
-      return { exito: false, mensaje: 'Selecciona al menos una imagen para cada variante' };
+      return {
+        exito: false,
+        mensaje: 'Cada variante debe tener al menos una imagen seleccionada.',
+      };
     }
 
     // prettier-ignore
@@ -55,10 +74,15 @@ export const useCrearProducto = () => {
         imagenProducto,
         imagenesVariantes,
       });
-      return { exito: true, mensaje: 'Producto creado correctamente' };
+      return {
+        exito: true,
+        mensaje: 'El producto se ha creado correctamente.',
+      };
     } catch (error) {
       const mensaje 
-      = error.response?.data?.mensaje || error.message || 'Hubo un error al crear el producto.';
+        = error.response?.data?.mensaje 
+        || error.message 
+        || 'Ocurrió un error inesperado al crear el producto.';
       return { exito: false, mensaje };
     }
   };

@@ -4,7 +4,7 @@ import Texto from '@Atomos/Texto';
 import PropTypes from 'prop-types';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
-import { Alert } from '@mui/material'; // Añadir importación de Alert
+import { Alert, Box } from '@mui/material'; // Añadir Box
 
 export const DetalleClienteModal = ({
   open,
@@ -21,6 +21,10 @@ export const DetalleClienteModal = ({
 }) => {
   const { usuario } = useAuth();
 
+  // Verificar si hay campos vacíos para deshabilitar el botón
+  const camposInvalidos =
+    modoEdicion && cliente ? !cliente.nombreLegal?.trim() || !cliente.nombreVisible?.trim() : false;
+
   return (
     open && (
       <ModalCliente
@@ -36,11 +40,12 @@ export const DetalleClienteModal = ({
             color: 'error',
             backgroundColor: colores.altertex[1],
             onClick: onToggleEdicion,
-            // Deshabilitar botón si hay error o no se tienen permisos
+            // Deshabilitar botón si campos vacíos, hay error o no se tienen permisos
             disabled:
-              !cliente
-              || !usuario?.permisos?.includes(PERMISOS.ACTUALIZAR_CLIENTE)
-              || !!imagenError,
+              !cliente ||
+              !usuario?.permisos?.includes(PERMISOS.ACTUALIZAR_CLIENTE) ||
+              !!imagenError ||
+              camposInvalidos,
           },
           {
             label: 'SALIR',
@@ -49,31 +54,30 @@ export const DetalleClienteModal = ({
             onClick: onClose,
           },
         ]}
+        errorPanel={
+          imagenError && (
+            <Alert severity='error' sx={{ mt: 3, mb: 2 }}>
+              {imagenError}
+            </Alert>
+          )
+        }
       >
         {cargando ? (
           <Texto>Cargando cliente...</Texto>
         ) : cliente ? (
-          <>
-            {/* Mostrar alerta de error de forma persistente */}
-            {imagenError && (
-              <Alert severity='error' sx={{ mb: 2 }}>
-                {imagenError}
-              </Alert>
-            )}
-            <InfoCliente
-              modoEdicion={modoEdicion}
-              idCliente={cliente?.idCliente}
-              nombreLegal={cliente?.nombreLegal}
-              nombreVisible={cliente?.nombreVisible}
-              empleados={cliente?.numeroEmpleados}
-              usuariosAsignados={cliente?.usuariosAsignados}
-              urlImagen={cliente?.urlImagen}
-              onChange={onChange}
-              onImageChange={onImageChange}
-              imagenSubiendo={imagenSubiendo}
-              imagenError={imagenError}
-            />
-          </>
+          <InfoCliente
+            modoEdicion={modoEdicion}
+            idCliente={cliente?.idCliente}
+            nombreLegal={cliente?.nombreLegal}
+            nombreVisible={cliente?.nombreVisible}
+            empleados={cliente?.numeroEmpleados}
+            usuariosAsignados={cliente?.usuariosAsignados}
+            urlImagen={cliente?.urlImagen}
+            onChange={onChange}
+            onImageChange={onImageChange}
+            imagenSubiendo={imagenSubiendo}
+            imagenError={imagenError}
+          />
         ) : (
           <Texto>No se encontró información del cliente.</Texto>
         )}

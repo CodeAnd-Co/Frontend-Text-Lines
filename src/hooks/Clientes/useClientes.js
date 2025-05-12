@@ -246,7 +246,8 @@ export const useClientes = () => {
                 };
               }
               return cliente;
-            }));
+            })
+          );
         }
 
         setModoEdicion(false);
@@ -264,27 +265,32 @@ export const useClientes = () => {
     const { name, value } = event.target;
     const MAX_LENGTH = 100;
 
-    // Si el campo es nombre o apellido, validar que no sea solo espacios
-    if ((name === 'nombreLegal' || name === 'nombreVisible') && value.trim() === '') {
-      setImagenError(`Los campos no pueden contener solo espacios en blanco`);
-      // Mantener el valor anterior para evitar espacios en blanco
-      return;
-    }
-
-    // Validar longitud máxima de texto
+    // Validar longitud máxima de texto sin prohibir texto vacío
     if (value.length > MAX_LENGTH) {
       setImagenError(`El campo ${name} no puede exceder los ${MAX_LENGTH} caracteres`);
       return;
     }
 
+    // Actualizar el valor del campo sin importar si está vacío
     setClienteEditado((prev) => ({
       ...prev,
       [name]: value,
     }));
 
     // Limpiar error si existe y se ha corregido
-    if (imagenError && (imagenError.includes(name) || imagenError.includes('caracteres'))) {
-      setImagenError(null);
+    if (imagenError) {
+      // Si el error era sobre caracteres y ahora cumplimos el requisito
+      if (imagenError.includes('caracteres') && value.length <= MAX_LENGTH) {
+        setImagenError(null);
+      }
+      // Si el error era sobre espacios en blanco y ahora tiene contenido válido
+      else if (imagenError.includes('espacios en blanco') && value.trim() !== '') {
+        setImagenError(null);
+      }
+      // Si el error era sobre este campo específico
+      else if (imagenError.includes(name)) {
+        setImagenError(null);
+      }
     }
   };
 

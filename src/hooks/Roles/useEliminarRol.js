@@ -24,7 +24,6 @@ export function useEliminarRol() {
 
     try {
       const { mensaje } = await RepositorioEliminarRol.eliminarRol(idsRol);
-      console.log(mensaje);
       setMensaje(mensaje);
     } catch (err) {
       setMensaje('');

@@ -1,4 +1,6 @@
 // RF[32] - Consulta Lista de Cuotas - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF32
+//RF[31] Consulta crear set de cuota - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF31]
+
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme, Box } from '@mui/material';
@@ -8,7 +10,7 @@ import { useAuth } from '@Hooks/AuthProvider';
 import ContenedorLista from '@Organismos/ContenedorLista';
 import Tabla from '@Organismos/Tabla';
 import Chip from '@Atomos/Chip';
-import ModalCrearCuotaSet from '@Organismos/ModalCrearCuotaSet';
+import ModalCrearCuotaSet from '@Organismos/Cuotas/ModalCrearCuotaSet';
 import Alerta from '@Moleculas/Alerta';
 import PopUpEliminar from '@Moleculas/PopUp';
 import { RUTAS } from '@Constantes/rutas';
@@ -137,7 +139,15 @@ const ListaCuotas = () => {
         descripcion='Consulta y administra los sets de cuotas registrados para cada cliente.'
         informacionBotones={botones}
       >
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '10px', mb: '20px' }}></Box>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            gap: '10px',
+            mb: '20px',
+          }}
+        ></Box>
 
         <Box width='100%'>
           {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}

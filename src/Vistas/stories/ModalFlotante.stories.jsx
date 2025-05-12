@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { fn } from '@storybook/test';
 import ModalFlotante from '../componentes/organismos/ModalFlotante';
 import Texto from '../componentes/atomos/Texto';
-import InfoUsuario from '../componentes/moleculas/UsuarioInfo';
+import InfoUsuario from '../Componentes/Moleculas/InfoUsuario';
 
 export default {
   title: '@Organismos/ModalFlotante',

@@ -4,7 +4,8 @@ import axios from 'axios';
 import CuotaSetModelo from '@Modelos/Cuotas/CuotaSetModelo';
 import { RUTAS_API } from '@Constantes/rutasAPI';
 
-const API_URL = import.meta.env.VITE_API_URL;
+//RF[31] Consulta crear set de cuota - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF31]
+
 const API_KEY = import.meta.env.VITE_API_KEY;
 
 export const useCrearCuotaSet = ({

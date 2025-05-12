@@ -27,6 +27,8 @@ const TarjetaConImagen = ({
   bordeRedondeado = '10px',
   alClicImagen,
   alClicIcono,
+  truncarTitulo = true,
+  maxLineasTitulo = 2,
 }) => (
   <Contenedor
     elevation={elevacion}
@@ -65,9 +67,24 @@ const TarjetaConImagen = ({
     </Box>
 
     <Box sx={{ padding: 2 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
         {titulo && (
-          <Texto variant='h6' gutterBottom sx={{ flexGrow: 1 }}>
+          <Texto
+            variant='h6'
+            gutterBottom
+            sx={{
+              flexGrow: 1,
+              overflow: 'hidden',
+              textOverflow: truncarTitulo ? 'ellipsis' : 'clip',
+              display: '-webkit-box',
+              WebkitLineClamp: maxLineasTitulo,
+              WebkitBoxOrient: 'vertical',
+              wordBreak: 'break-word',
+              lineHeight: '1.2em',
+              maxHeight: `${1.2 * maxLineasTitulo}em`,
+            }}
+            tooltip={titulo} // Para mostrar el título completo al hacer hover
+          >
             {titulo}
           </Texto>
         )}
@@ -80,6 +97,7 @@ const TarjetaConImagen = ({
             clickable={iconoClickeable}
             tooltip={tooltipIcono}
             onClick={alClicIcono}
+            sx={{ flexShrink: 0, ml: 1 }}
           />
         )}
       </Box>
@@ -109,6 +127,8 @@ TarjetaConImagen.propTypes = {
   bordeRedondeado: PropTypes.string,
   alClicImagen: PropTypes.func,
   alClicIcono: PropTypes.func,
+  truncarTitulo: PropTypes.bool,
+  maxLineasTitulo: PropTypes.number,
 };
 
 TarjetaConImagen.defaultProps = {
@@ -120,6 +140,8 @@ TarjetaConImagen.defaultProps = {
   ajuste: 'cover',
   clickeableImagen: false,
   estiloImagen: {},
+  truncarTitulo: true,
+  maxLineasTitulo: 2,
 };
 
 export default TarjetaConImagen;

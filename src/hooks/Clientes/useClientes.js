@@ -158,11 +158,28 @@ export const useClientes = () => {
     setImagenFile(null);
     setImagenError(null);
   };
-
   const toggleModoEdicion = async () => {
     if (modoEdicion) {
       try {
         if (!cliente) return;
+
+        // Validar campos antes de enviar
+        const camposObligatorios = ['nombre', 'apellido', 'nombreVisible'];
+        for (const campo of camposObligatorios) {
+          if (clienteEditado[campo] && clienteEditado[campo].trim() === '') {
+            setImagenError(`El campo ${campo} no puede contener solo espacios en blanco`);
+            return;
+          }
+        }
+
+        // Validar tamaño de imagen antes de enviar
+        if (imagenFile) {
+          const MAX_SIZE = 4 * 1024 * 1024; // 4MB en bytes
+          if (imagenFile.size > MAX_SIZE) {
+            setImagenError('La imagen no debe exceder 4MB de tamaño');
+            return;
+          }
+        }
 
         const cambios = {};
         let tieneOtrosCambios = false;
@@ -227,10 +244,23 @@ export const useClientes = () => {
 
   const handleClienteChange = (event) => {
     const { name, value } = event.target;
+
+    // Si el campo es nombre o apellido, validar que no sea solo espacios
+    if ((name === 'nombreLegal' || name === 'nombreVisible') && value.trim() === '') {
+      setImagenError(`Los campos no pueden contener solo espacios en blanco`);
+      // Mantener el valor anterior para evitar espacios en blanco
+      return;
+    }
+
     setClienteEditado((prev) => ({
       ...prev,
       [name]: value,
     }));
+
+    // Limpiar error si existe y se ha corregido
+    if (imagenError && imagenError.includes(name)) {
+      setImagenError(null);
+    }
   };
 
   const handleImagenChange = (imageData) => {

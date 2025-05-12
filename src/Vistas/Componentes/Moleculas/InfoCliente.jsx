@@ -233,7 +233,9 @@ const InfoCliente = ({
         </>
       )}
 
-      {imagenError && <Alerta tipo='error' mensaje={imagenError} cerrable sx={{ mb: 2 }}></Alerta>}
+      {imagenError && (
+        <Alerta tipo='error' mensaje={imagenError} cerrable sx={{ mb: 2 }} duracion={2500}></Alerta>
+      )}
     </Box>
   );
 };

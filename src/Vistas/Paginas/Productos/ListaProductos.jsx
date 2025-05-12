@@ -31,8 +31,13 @@ const ListaProductos = () => {
 
   const manejarConfirmarEliminar = async () => {
     try {
-      await eliminar(productosSeleccionados);
-      await recargar();
+      const urlsImagenes = productos
+      .filter((p) => productosSeleccionados.includes(p.idProducto))
+      .map((p) => p.urlImagen);
+      
+      
+      await eliminar(productosSeleccionados, urlsImagenes);
+      recargar();
       setAlerta({
         tipo: 'success',
         mensaje: 'Productos eliminados correctamente.',

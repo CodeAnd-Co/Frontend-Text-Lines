@@ -13,7 +13,9 @@ import Alerta from '@Moleculas/Alerta';
 import PopUpEliminar from '@Moleculas/PopUp';
 import { RUTAS } from '@Constantes/rutas';
 import { RepositorioEliminarSetCuotas } from '@Dominio/Repositorios/Cuotas/repositorioEliminarSetCuotas';
-
+import { PERMISOS } from '@Utilidades/Constantes/permisos';
+import { useConsultarCuotas } from '@Hooks/Cuotas/useConsultarCuotas';
+import ModalFlotante from '@Organismos/ModalFlotante';
 const ListaCuotas = () => {
   const navegar = useNavigate();
   const { usuario } = useAuth();
@@ -137,7 +139,15 @@ const ListaCuotas = () => {
         descripcion='Consulta y administra los sets de cuotas registrados para cada cliente.'
         informacionBotones={botones}
       >
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '10px', mb: '20px' }}></Box>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            gap: '10px',
+            mb: '20px',
+          }}
+        ></Box>
 
         <Box width='100%'>
           {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}

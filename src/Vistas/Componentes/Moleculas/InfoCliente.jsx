@@ -17,7 +17,6 @@ const InfoCliente = ({
   onChange,
   onImageChange,
   imagenSubiendo = false,
-  imagenError = null,
 }) => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);

@@ -38,9 +38,9 @@ export const DetalleClienteModal = ({
             onClick: onToggleEdicion,
             // Deshabilitar botón si hay error o no se tienen permisos
             disabled:
-              !cliente ||
-              !usuario?.permisos?.includes(PERMISOS.ACTUALIZAR_CLIENTE) ||
-              !!imagenError,
+              !cliente
+              || !usuario?.permisos?.includes(PERMISOS.ACTUALIZAR_CLIENTE)
+              || !!imagenError,
           },
           {
             label: 'SALIR',

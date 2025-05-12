@@ -23,7 +23,7 @@ const InfoCliente = ({
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const fileInputRef = useRef(null);
-  const MAX_LENGTH = 100; // Definimos el límite de caracteres
+  const MAX_LENGTH = 100;
 
   const handleFileSelect = () => {
     fileInputRef.current.click();
@@ -33,17 +33,19 @@ const InfoCliente = ({
     const file = evento.target.files[0];
     if (!file) return;
 
-    if (!file.type.startsWith('image/')) {
+    // Verificar que sea un archivo JPG o JPEG
+    const validJpgTypes = ['image/jpeg', 'image/jpg'];
+    if (!validJpgTypes.includes(file.type.toLowerCase())) {
       if (onImageChange) {
         onImageChange({
-          error:
-            'El archivo seleccionado no es una imagen válida. Por favor, seleccione un archivo de imagen (JPG, PNG, GIF, etc).',
+          error: 'Solo se permiten imágenes en formato JPG o JPEG.',
         });
       }
       evento.target.value = '';
       return;
     }
 
+    // Verificar el tamaño del archivo (ya existente)
     const maxSize = 5 * 1024 * 1024;
     if (file.size > maxSize) {
       if (onImageChange) {
@@ -222,7 +224,7 @@ const InfoCliente = ({
             type='file'
             ref={fileInputRef}
             onChange={handleFileChange}
-            accept='image/*'
+            accept='image/jpeg,image/jpg' // Modificado para solo aceptar JPG
             style={{ display: 'none' }}
           />
           <Button
@@ -233,8 +235,15 @@ const InfoCliente = ({
             disabled={imagenSubiendo}
             sx={{ mb: 4 }}
           >
-            {imagenSubiendo ? 'Subiendo...' : 'Subir imagen'}
+            {imagenSubiendo ? 'Subiendo...' : 'Subir imagen JPG'}
           </Button>
+          <Texto
+            variant='caption'
+            display='block'
+            sx={{ mb: 4, color: theme.palette.text.secondary }}
+          >
+            Solo se permiten imágenes en formato JPG/JPEG, máximo 5MB.
+          </Texto>
         </>
       )}
 

@@ -164,19 +164,37 @@ export const useClientes = () => {
         if (!cliente) return;
 
         // Validar campos antes de enviar
-        const camposObligatorios = ['nombre', 'apellido', 'nombreVisible'];
+        const camposObligatorios = ['nombreLegal', 'nombreVisible'];
+        const MAX_LENGTH = 100;
+
         for (const campo of camposObligatorios) {
-          if (clienteEditado[campo] && clienteEditado[campo].trim() === '') {
+          if (!clienteEditado[campo]) {
+            setImagenError(`El campo ${campo} es obligatorio`);
+            return;
+          }
+
+          if (clienteEditado[campo].trim() === '') {
             setImagenError(`El campo ${campo} no puede contener solo espacios en blanco`);
+            return;
+          }
+
+          if (clienteEditado[campo].length > MAX_LENGTH) {
+            setImagenError(`El campo ${campo} no puede exceder los ${MAX_LENGTH} caracteres`);
             return;
           }
         }
 
-        // Validar tamaño de imagen antes de enviar
+        // Validar formato y tamaño de imagen antes de enviar
         if (imagenFile) {
-          const MAX_SIZE = 4 * 1024 * 1024; // 4MB en bytes
+          const validJpgTypes = ['image/jpeg', 'image/jpg'];
+          if (!validJpgTypes.includes(imagenFile.type.toLowerCase())) {
+            setImagenError('Solo se permiten imágenes en formato JPG o JPEG.');
+            return;
+          }
+
+          const MAX_SIZE = 5 * 1024 * 1024; // 5MB en bytes
           if (imagenFile.size > MAX_SIZE) {
-            setImagenError('La imagen no debe exceder 4MB de tamaño');
+            setImagenError('La imagen no debe exceder 5MB de tamaño');
             return;
           }
         }
@@ -279,10 +297,17 @@ export const useClientes = () => {
     setImagenError(null);
 
     if (imageData.file) {
-      // Validar tamaño de la imagen (2MB = 2 * 1024 * 1024 bytes)
-      const MAX_SIZE = 2 * 1024 * 1024; // 2MB en bytes
+      // Validar que sea un archivo JPG o JPEG
+      const validJpgTypes = ['image/jpeg', 'image/jpg'];
+      if (!validJpgTypes.includes(imageData.file.type.toLowerCase())) {
+        setImagenError('Solo se permiten imágenes en formato JPG o JPEG.');
+        return;
+      }
+
+      // Validar tamaño de la imagen (5MB)
+      const MAX_SIZE = 5 * 1024 * 1024;
       if (imageData.file.size > MAX_SIZE) {
-        setImagenError('La imagen no debe exceder 2MB de tamaño');
+        setImagenError('La imagen no debe exceder 5MB de tamaño');
         return;
       }
 
@@ -297,6 +322,7 @@ export const useClientes = () => {
       }));
     }
   };
+
   const cerrarAlertaExito = () => {
     setEliminacionExitosa(false);
   };

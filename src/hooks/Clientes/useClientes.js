@@ -199,22 +199,20 @@ export const useClientes = () => {
           await RepositorioActualizarCliente.actualizarClienteConImagen(formData);
 
           setClientes((prevClientes) =>
-            prevClientes.map((c) => {
-              if (c.idCliente === clienteEditado.idCliente) {
+            prevClientes.map((cliente) => {
+              if (cliente.idCliente === clienteEditado.idCliente) {
                 return {
-                  ...c,
+                  ...cliente,
                   ...cambios,
                   ...(imagenFile ? { urlImagen: imagenPreview } : {}),
                 };
               }
-              return c;
-            })
-          );
+              return cliente;
+            }));
         }
 
         setModoEdicion(false);
-      } catch (error) {
-        console.error('Error guardando cambios:', error);
+      } catch {
         setImagenError('Error al guardar los cambios. Intente nuevamente.');
       } finally {
         setImagenSubiendo(false);

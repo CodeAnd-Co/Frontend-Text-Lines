@@ -28,8 +28,8 @@ const InfoCliente = ({
     fileInputRef.current.click();
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
+  const handleFileChange = (evento) => {
+    const file = evento.target.files[0];
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
@@ -39,7 +39,7 @@ const InfoCliente = ({
             'El archivo seleccionado no es una imagen válida. Por favor, seleccione un archivo de imagen (JPG, PNG, GIF, etc).',
         });
       }
-      e.target.value = '';
+      evento.target.value = '';
       return;
     }
 
@@ -50,7 +50,7 @@ const InfoCliente = ({
           error: 'La imagen es demasiado grande. El tamaño máximo permitido es 5MB.',
         });
       }
-      e.target.value = '';
+      evento.target.value = '';
       return;
     }
 
@@ -210,8 +210,6 @@ const InfoCliente = ({
           />
         )}
       </Box>
-
-      {imagenError && <Alerta tipo='error' mensaje={imagenError} cerrable></Alerta>}
 
       {modoEdicion && (
         <>

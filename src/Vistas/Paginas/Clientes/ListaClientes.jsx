@@ -30,7 +30,7 @@ const ListaClientes = () => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const navigate = useNavigate();
-  const { usuario, cerrarSesion } = useAuth();
+  const { cerrarSesion } = useAuth();
 
   const {
     clientes,
@@ -120,7 +120,7 @@ const ListaClientes = () => {
         pb={6}
       >
         <Texto variant='h1' align='center' sx={estiloTitulo}>
-          Bienvenid@ {usuario.nombre.split(' ')[0]}
+          Bienvenid@
         </Texto>
         <Texto variant='h4' align='center' color='text.secondary' sx={estiloSubtitulo}>
           Selecciona un cliente para gestionar su sistema o crea uno nuevo

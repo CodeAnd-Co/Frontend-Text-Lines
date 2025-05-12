@@ -8,14 +8,13 @@ export class RepositorioActualizarCliente {
     if (!formData) return;
 
     try {
-      const respuesta = await axios.put(RUTAS_API.CLIENTES.ACTUALIZAR_CLIENTE, formData, {
+      await axios.put(RUTAS_API.CLIENTES.ACTUALIZAR_CLIENTE, formData, {
         headers: {
           'x-api-key': API_KEY,
         },
         withCredentials: true,
       });
-    } catch (error) {
-      console.error(error);
+    } catch {
       throw new Error('Error en el repositorio');
     }
   }

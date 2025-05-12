@@ -44,11 +44,11 @@ const InfoCliente = ({
     }
 
     // Verificar el tamaño del archivo
-    const maxSize = 5 * 1024 * 1024;
+    const maxSize = 4 * 1024 * 1024;
     if (file.size > maxSize) {
       if (onImageChange) {
         onImageChange({
-          error: 'La imagen es demasiado grande. El tamaño máximo permitido es 5MB.',
+          error: 'La imagen es demasiado grande. El tamaño máximo permitido es 4MB.',
         });
       }
       evento.target.value = ''; // Limpiar el input para permitir seleccionar el mismo archivo nuevamente

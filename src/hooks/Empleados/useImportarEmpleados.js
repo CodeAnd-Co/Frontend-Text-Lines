@@ -1,5 +1,5 @@
 // src/hooks/useImportarEmpleados.js
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { importarEmpleados as repoImportarEmpleados } from '@Repositorios/Empleados/RepositorioImportarEmpleados';
 
 /**
@@ -33,8 +33,12 @@ const useImportarEmpleados = () => {
     direccion: row.direccion?.trim().normalize('NFC'),
     fechaNacimiento: formatDate(row.fechaNacimiento),
     genero: row.genero?.trim(),
-    estatus: row.estatus === '1' || row.estatus?.toLowerCase() === 'true',
-    idRol: Number(row.idRol),
+    estatus: (() => {
+    const raw = row.estatus?.toString().trim().toLowerCase();
+    if (raw === '1'  || raw === 'true')  return true;
+    if (raw === '0'  || raw === 'false') return false;
+    return null;      // viene vacío o letras → lo marcamos inválido
+    })(),
     idCliente: Number(row.idCliente),
     numeroEmergencia: row.numeroEmergencia?.trim(),
     areaTrabajo: row.areaTrabajo?.trim().normalize('NFC'),
@@ -70,6 +74,13 @@ const useImportarEmpleados = () => {
       setCargando(false);
     }
   };
+
+  useEffect(() => {
+    if (exito) {
+      const timer = setTimeout(() => setExito(false), 0);
+      return () => clearTimeout(timer);
+    }
+  }, [exito]);
 
   return { importar, cargando, errores, exito };
 };

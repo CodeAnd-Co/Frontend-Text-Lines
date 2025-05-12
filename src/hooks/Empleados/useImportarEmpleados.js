@@ -1,12 +1,21 @@
-// src/hooks/useImportarEmpleados.js
 import { useState, useEffect } from 'react';
 import { importarEmpleados as repoImportarEmpleados } from '@Repositorios/Empleados/RepositorioImportarEmpleados';
 
 /**
- * Hook para importar un array de empleados:
- * - Normaliza cada fila (tipos, fechas, acentos)
- * - Envía al backend vía repositorio
- * - Maneja estados de carga, éxito y errores parciales
+ * Hook para gestionar la importación masiva de empleados desde un CSV.
+ *
+ * - Normaliza cada fila (tipos, fechas, normalización Unicode).
+ * - Envia datos al backend mediante el repositorio correspondiente.
+ * - Maneja estados de carga, errores parciales y éxito.
+ *
+ * @see [RF[23]] Importar empleados - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF57])
+ * @returns {Object} Estado y función de importación.
+ * @returns {function(Array<Object>): Promise<void>} return.importar - Función que recibe el array crudo de filas
+ *   del CSV y lanza la importación.
+ * @returns {boolean} return.cargando - Indicador de estado de carga.
+ * @returns {Array<{fila: number|string, error: string}>} return.errores - Lista de errores parciales
+ *   con número de fila y mensaje.
+ * @returns {boolean} return.exito - Pulso de éxito (true tras importación completa, se resetea automáticamente).
  */
 const useImportarEmpleados = () => {
   const [cargando, setCargando] = useState(false);
@@ -24,7 +33,7 @@ const useImportarEmpleados = () => {
     return str;
   };
 
-  // Transforma una fila cruda del CSV a tipos correctos
+  // Transformar una fila cruda del CSV a tipos correctos
   const transformRow = (row) => ({
     nombreCompleto: row.nombreCompleto?.trim().normalize('NFC'),
     correoElectronico: row.correoElectronico?.trim(),
@@ -37,7 +46,7 @@ const useImportarEmpleados = () => {
     const raw = row.estatus?.toString().trim().toLowerCase();
     if (raw === '1'  || raw === 'true')  return true;
     if (raw === '0'  || raw === 'false') return false;
-    return null;      // viene vacío o letras → lo marcamos inválido
+    return null; 
     })(),
     idCliente: Number(row.idCliente),
     numeroEmergencia: row.numeroEmergencia?.trim(),
@@ -47,14 +56,9 @@ const useImportarEmpleados = () => {
     antiguedad: formatDate(row.antiguedad),
   });
 
-  /**
-   * Toma el JSON “crudo” del CSV, lo transforma y lo envía al backend.
-   * @param {object[]} empleadosRaw - Array de objetos tal cual viene de Papa.parse
-   */
   const importar = async (empleadosRaw) => {
-    // 1) Transformar filas
+    
     const empleados = empleadosRaw.map(transformRow);
-    console.log('▶ Filas transformadas a enviar:', empleados);
 
     setCargando(true);
     setErrores([]);

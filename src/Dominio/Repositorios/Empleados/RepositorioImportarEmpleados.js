@@ -10,6 +10,7 @@ const API_KEY = import.meta.env.VITE_API_KEY;
  * @param {Object[]} empleados - Array de objetos con los datos ya parseados del CSV.
  * @returns {Promise<Object>} La respuesta del servidor (puede incluir lista de errores parciales).
  * @throws {Error} Si la petición falla o devuelve un mensaje de error.
+ * @see [RF[23]] Importar Empleados - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF57])
  */
 export const importarEmpleados = async (empleados) => {
   try {

@@ -6,6 +6,7 @@ import ContenedorImportar from '@Organismos/ContenedorImportar';
 import Alerta from '@Moleculas/Alerta';
 import { tokens } from '@SRC/theme';
 import InfoImportar from '@Organismos/InfoImportar';
+import CajaDesplazable from '@Organismos/CajaDesplazable';
 
 const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errores, exito, recargar }) => {
   const [file, setFile] = useState(null);
@@ -15,6 +16,7 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const [abririnfo, setAbrirInfo] = useState(false);
+  const [mensajeErrores, setMensajeErrores] = useState('');
 
   // Manejo de errores en la importación
   useEffect(() => {
@@ -22,13 +24,9 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
       const mensaje = errores
         .map(elemento => `Fila ${elemento.fila}: ${elemento.error}`)
         .join('\n');
-      setAlerta({
-        tipo: 'error',
-        mensaje,
-        icono: true,
-        cerrable: true,
-        centradoInferior: true,
-      });
+      setMensajeErrores(mensaje);
+    } else {
+      setMensajeErrores('');
     }
   }, [errores]);
 
@@ -48,6 +46,7 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
       setFile(null);
       setStatus('idle');
       onCerrar(false);
+      setMensajeErrores('');
     }
   }, [exito, onCerrar, recargar]);
 
@@ -58,6 +57,7 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
     setFile(null);
     setStatus('idle');
     setAlerta(null);
+    setMensajeErrores('');
   }, [onCerrar]);
 
   // Manejo de archivo aceptados
@@ -159,13 +159,20 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
               {`Contraseñas: mínimo 8 caracteres, al menos una mayúscula y un carácter especial (!@#$%^&*(),.?":{}|<>)`}<br/>
               Correo electrónico: formato válido (usuario@dominio.com).<br/>
               Teléfonos: exactamente 10 dígitos, sin espacios ni guiones.<br/>
-              Textos largos: máximo 100 caracteres por campo.<br/>
+              Textos largos: máximo 75 caracteres por campo.<br/>
               Estatus: 1 → activo, 0 → inactivo.<br/>
               idCliente: identificador numérico del cliente (p. ej. Toyota → 101).
            </InfoImportar>
-      </Box>
-      
-      
+            </Box><br/>
+                {mensajeErrores && (
+                <Box mb={2} width="100%">
+                  <CajaDesplazable maxHeight={150}>
+                    <Box sx={{ whiteSpace: 'pre-line' }}>
+                      {mensajeErrores}
+                    </Box>
+                  </CajaDesplazable>
+                </Box>
+              )}
     </ModalFlotante>
     
 

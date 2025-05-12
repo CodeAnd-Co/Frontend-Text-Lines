@@ -15,6 +15,7 @@ const ModalFlotante = ({
   cancelLabel = 'Cancelar',
   botones = null,
   children,
+  customWidth,
 }) => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
@@ -60,7 +61,7 @@ const ModalFlotante = ({
           borderRadius: 2,
           padding: 3,
           outline: 'none',
-          width: 620,
+          width: customWidth || 620,
         }}
       >
         {titulo && (
@@ -87,6 +88,7 @@ ModalFlotante.propTypes = {
   cancelLabel: PropTypes.string,
   botones: PropTypes.array,
   children: PropTypes.node.isRequired,
+  customWidth: PropTypes.number,
 };
 
 export default ModalFlotante;

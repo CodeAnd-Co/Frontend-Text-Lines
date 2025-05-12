@@ -6,6 +6,8 @@ import { useEliminarCliente } from '@Hooks/Clientes/useEliminarCliente';
 import { useClientePorId } from '@Hooks/Clientes/useLeerCliente';
 import { RepositorioActualizarCliente } from '@Repositorios/Clientes/repositorioActualizarCliente';
 
+// RF14 - Actualiza Cliente - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF14
+
 export const useClientes = () => {
   // Clientes data
   const { clientes: clientesOriginales, cargando, error } = useConsultarClientes();
@@ -208,7 +210,8 @@ export const useClientes = () => {
                 };
               }
               return cliente;
-            }));
+            })
+          );
         }
 
         setModoEdicion(false);

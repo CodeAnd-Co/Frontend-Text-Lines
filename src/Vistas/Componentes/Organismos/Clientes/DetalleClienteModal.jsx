@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
 
+// RF14 - Actualiza Cliente - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF14
+
 export const DetalleClienteModal = ({
   open,
   cliente,

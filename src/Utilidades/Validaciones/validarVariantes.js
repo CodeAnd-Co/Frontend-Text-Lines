@@ -48,6 +48,8 @@ export const validarVariantes = (variantes) => {
 
       if (!normalizadosOpcion.valorOpcion) {
         erroresOpcion.valorOpcion = 'El valor de la opción es obligatorio';
+      } else if (normalizadosOpcion.valorOpcion.length > 50) {
+        erroresOpcion.valorOpcion = 'El valor de la opción debe tener máximo 50 caracteres';
       }
 
       if (!Number.isFinite(normalizadosOpcion.cantidad) || normalizadosOpcion.cantidad <= 0) {

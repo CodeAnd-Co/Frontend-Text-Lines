@@ -116,7 +116,6 @@ const FormularioProducto = memo(
   }
 );
 
-// Componente del modal que utiliza el contexto
 const FormularioModal = memo(
   ({ formularioAbierto, alCerrarFormularioProducto, alMostrarFormularioProveedor }) => {
     const { manejarCrearProducto, alerta, setAlerta } = useProductoForm();

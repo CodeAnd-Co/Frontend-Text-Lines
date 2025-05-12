@@ -23,6 +23,7 @@ const InfoCliente = ({
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const fileInputRef = useRef(null);
+  const MAX_LENGTH = 100; // Definimos el límite de caracteres
 
   const handleFileSelect = () => {
     fileInputRef.current.click();
@@ -92,21 +93,25 @@ const InfoCliente = ({
               <CampoTexto
                 label='Nombre Legal'
                 name='nombreLegal'
-                value={nombreLegal}
+                value={nombreLegal || ''}
                 onChange={onChange}
                 type='text'
                 fullWidth
                 required
+                inputProps={{ maxLength: MAX_LENGTH }}
+                helperText={`${(nombreLegal || '').length}/${MAX_LENGTH} caracteres`}
                 sx={{ mb: 4 }}
               />
               <CampoTexto
                 label='Nombre Visible'
                 name='nombreVisible'
-                value={nombreVisible}
+                value={nombreVisible || ''}
                 onChange={onChange}
                 type='text'
                 fullWidth
                 required
+                inputProps={{ maxLength: MAX_LENGTH }}
+                helperText={`${(nombreVisible || '').length}/${MAX_LENGTH} caracteres`}
                 sx={{ mb: 4 }}
               />
             </Box>

@@ -32,8 +32,8 @@ const ListaProductos = () => {
   const manejarConfirmarEliminar = async () => {
     try {
       const urlsImagenes = productos
-      .filter((p) => productosSeleccionados.includes(p.idProducto))
-      .map((p) => p.urlImagen);
+      .filter((pro) => productosSeleccionados.includes(pro.idProducto))
+      .map((pro) => pro.urlImagen);
       
       
       await eliminar(productosSeleccionados, urlsImagenes);

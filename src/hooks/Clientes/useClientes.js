@@ -246,8 +246,7 @@ export const useClientes = () => {
                 };
               }
               return cliente;
-            })
-          );
+            }));
         }
 
         setModoEdicion(false);
@@ -282,13 +281,9 @@ export const useClientes = () => {
       // Si el error era sobre caracteres y ahora cumplimos el requisito
       if (imagenError.includes('caracteres') && value.length <= MAX_LENGTH) {
         setImagenError(null);
-      }
-      // Si el error era sobre espacios en blanco y ahora tiene contenido válido
-      else if (imagenError.includes('espacios en blanco') && value.trim() !== '') {
+      } else if (imagenError.includes('espacios en blanco') && value.trim() !== '') {
         setImagenError(null);
-      }
-      // Si el error era sobre este campo específico
-      else if (imagenError.includes(name)) {
+      } else if (imagenError.includes(name)) {
         setImagenError(null);
       }
     }

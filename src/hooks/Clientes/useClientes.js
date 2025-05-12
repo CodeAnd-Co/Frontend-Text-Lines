@@ -275,7 +275,7 @@ export const useClientes = () => {
       // Validar tamaño de la imagen (2MB = 2 * 1024 * 1024 bytes)
       const MAX_SIZE = 2 * 1024 * 1024; // 2MB en bytes
       if (imageData.file.size > MAX_SIZE) {
-        setImagenError('La imagen no debe exceder 4MB de tamaño');
+        setImagenError('La imagen no debe exceder 2MB de tamaño');
         return;
       }
 

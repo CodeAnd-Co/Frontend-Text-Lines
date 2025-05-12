@@ -26,8 +26,6 @@ const CampoCrear = memo(({ etiqueta, onClick }) => (
 const ContenidoFormulario = memo(({ alMostrarFormularioProveedor }) => {
   const {
     refInputArchivo,
-    alerta,
-    setAlerta,
     variantes,
     idsVariantes,
     producto,
@@ -100,17 +98,6 @@ const ContenidoFormulario = memo(({ alMostrarFormularioProveedor }) => {
           <CampoCrear etiqueta='Crear Variante' onClick={manejarCrearVariante} />
         </Grid>
       </Box>
-
-      {alerta && (
-        <Alerta
-          sx={{ bottom: 10 }}
-          tipo={alerta.tipo}
-          mensaje={alerta.mensaje}
-          duracion='2000'
-          centradoInferior={true}
-          onClose={() => setAlerta(null)}
-        />
-      )}
     </>
   );
 });
@@ -132,19 +119,31 @@ const FormularioProducto = memo(
 // Componente del modal que utiliza el contexto
 const FormularioModal = memo(
   ({ formularioAbierto, alCerrarFormularioProducto, alMostrarFormularioProveedor }) => {
-    const { manejarCrearProducto } = useProductoForm();
+    const { manejarCrearProducto, alerta, setAlerta } = useProductoForm();
 
     return (
-      <ModalFlotante
-        open={formularioAbierto}
-        onClose={alCerrarFormularioProducto}
-        onConfirm={manejarCrearProducto}
-        titulo='Crear Producto'
-        confirmLabel='Guardar'
-        cancelLabel='Cerrar'
-      >
-        <ContenidoFormulario alMostrarFormularioProveedor={alMostrarFormularioProveedor} />
-      </ModalFlotante>
+      <>
+        <ModalFlotante
+          open={formularioAbierto}
+          onClose={alCerrarFormularioProducto}
+          onConfirm={manejarCrearProducto}
+          titulo='Crear Producto'
+          confirmLabel='Guardar'
+          cancelLabel='Cerrar'
+        >
+          <ContenidoFormulario alMostrarFormularioProveedor={alMostrarFormularioProveedor} />
+        </ModalFlotante>
+        {alerta && (
+          <Alerta
+            sx={{ bottom: 10 }}
+            tipo={alerta.tipo}
+            mensaje={alerta.mensaje}
+            duracion='2000'
+            centradoInferior={true}
+            onClose={() => setAlerta(null)}
+          />
+        )}
+      </>
     );
   }
 );

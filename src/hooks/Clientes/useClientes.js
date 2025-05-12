@@ -158,6 +158,7 @@ export const useClientes = () => {
     setImagenFile(null);
     setImagenError(null);
   };
+
   const toggleModoEdicion = async () => {
     if (modoEdicion) {
       try {
@@ -294,33 +295,37 @@ export const useClientes = () => {
       return;
     }
 
+    // Si no hay archivo, solo limpiamos error
+    if (!imageData.file) {
+      setImagenError(null);
+      return;
+    }
+
+    // Validar que sea un archivo JPG o JPEG
+    const validJpgTypes = ['image/jpeg', 'image/jpg'];
+    if (!validJpgTypes.includes(imageData.file.type.toLowerCase())) {
+      setImagenError('Solo se permiten imágenes en formato JPG o JPEG.');
+      return;
+    }
+
+    // Validar tamaño de la imagen (5MB)
+    const MAX_SIZE = 5 * 1024 * 1024;
+    if (imageData.file.size > MAX_SIZE) {
+      setImagenError('La imagen no debe exceder 5MB de tamaño');
+      return;
+    }
+
+    // Si llegamos hasta aquí, eliminar cualquier error previo
     setImagenError(null);
 
-    if (imageData.file) {
-      // Validar que sea un archivo JPG o JPEG
-      const validJpgTypes = ['image/jpeg', 'image/jpg'];
-      if (!validJpgTypes.includes(imageData.file.type.toLowerCase())) {
-        setImagenError('Solo se permiten imágenes en formato JPG o JPEG.');
-        return;
-      }
+    setImagenFile(imageData.file);
+    const preview = imageData.preview || URL.createObjectURL(imageData.file);
+    setImagenPreview(preview);
 
-      // Validar tamaño de la imagen (5MB)
-      const MAX_SIZE = 5 * 1024 * 1024;
-      if (imageData.file.size > MAX_SIZE) {
-        setImagenError('La imagen no debe exceder 5MB de tamaño');
-        return;
-      }
-
-      setImagenFile(imageData.file);
-
-      const preview = imageData.preview || URL.createObjectURL(imageData.file);
-      setImagenPreview(preview);
-
-      setClienteEditado((prev) => ({
-        ...prev,
-        urlImagen: preview,
-      }));
-    }
+    setClienteEditado((prev) => ({
+      ...prev,
+      urlImagen: preview,
+    }));
   };
 
   const cerrarAlertaExito = () => {

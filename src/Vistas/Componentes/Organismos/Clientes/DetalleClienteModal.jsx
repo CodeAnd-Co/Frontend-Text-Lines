@@ -4,8 +4,7 @@ import Texto from '@Atomos/Texto';
 import PropTypes from 'prop-types';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
-
-// RF14 - Actualiza Cliente - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF14
+import { Alert } from '@mui/material'; // Añadir importación de Alert
 
 export const DetalleClienteModal = ({
   open,
@@ -37,7 +36,11 @@ export const DetalleClienteModal = ({
             color: 'error',
             backgroundColor: colores.altertex[1],
             onClick: onToggleEdicion,
-            disabled: !cliente || !usuario?.permisos?.includes(PERMISOS.ACTUALIZAR_CLIENTE),
+            // Deshabilitar botón si hay error o no se tienen permisos
+            disabled:
+              !cliente ||
+              !usuario?.permisos?.includes(PERMISOS.ACTUALIZAR_CLIENTE) ||
+              !!imagenError,
           },
           {
             label: 'SALIR',
@@ -50,19 +53,27 @@ export const DetalleClienteModal = ({
         {cargando ? (
           <Texto>Cargando cliente...</Texto>
         ) : cliente ? (
-          <InfoCliente
-            modoEdicion={modoEdicion}
-            idCliente={cliente?.idCliente}
-            nombreLegal={cliente?.nombreLegal}
-            nombreVisible={cliente?.nombreVisible}
-            empleados={cliente?.numeroEmpleados}
-            usuariosAsignados={cliente?.usuariosAsignados}
-            urlImagen={cliente?.urlImagen} // Changed to use consistent property name
-            onChange={onChange}
-            onImageChange={onImageChange}
-            imagenSubiendo={imagenSubiendo}
-            imagenError={imagenError}
-          />
+          <>
+            {/* Mostrar alerta de error de forma persistente */}
+            {imagenError && (
+              <Alert severity='error' sx={{ mb: 2 }}>
+                {imagenError}
+              </Alert>
+            )}
+            <InfoCliente
+              modoEdicion={modoEdicion}
+              idCliente={cliente?.idCliente}
+              nombreLegal={cliente?.nombreLegal}
+              nombreVisible={cliente?.nombreVisible}
+              empleados={cliente?.numeroEmpleados}
+              usuariosAsignados={cliente?.usuariosAsignados}
+              urlImagen={cliente?.urlImagen}
+              onChange={onChange}
+              onImageChange={onImageChange}
+              imagenSubiendo={imagenSubiendo}
+              imagenError={imagenError}
+            />
+          </>
         ) : (
           <Texto>No se encontró información del cliente.</Texto>
         )}

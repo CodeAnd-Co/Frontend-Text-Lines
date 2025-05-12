@@ -1,11 +1,10 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Box, useTheme, Button, CircularProgress, Alert } from '@mui/material';
+import { Grid, Box, useTheme, Button, CircularProgress } from '@mui/material';
 import Texto from '@Atomos/Texto';
 import Icono from '@Atomos/Icono';
 import CampoTexto from '@Atomos/CampoTexto';
 import { tokens } from '@SRC/theme';
-import Alerta from '@Moleculas/Alerta';
 
 const InfoCliente = ({
   modoEdicion = false,
@@ -28,7 +27,6 @@ const InfoCliente = ({
   const handleFileSelect = () => {
     fileInputRef.current.click();
   };
-
   const handleFileChange = (evento) => {
     const file = evento.target.files[0];
     if (!file) return;
@@ -41,11 +39,11 @@ const InfoCliente = ({
           error: 'Solo se permiten imágenes en formato JPG o JPEG.',
         });
       }
-      evento.target.value = '';
+      evento.target.value = ''; // Limpiar el input para permitir seleccionar el mismo archivo nuevamente
       return;
     }
 
-    // Verificar el tamaño del archivo (ya existente)
+    // Verificar el tamaño del archivo
     const maxSize = 5 * 1024 * 1024;
     if (file.size > maxSize) {
       if (onImageChange) {
@@ -53,7 +51,7 @@ const InfoCliente = ({
           error: 'La imagen es demasiado grande. El tamaño máximo permitido es 5MB.',
         });
       }
-      evento.target.value = '';
+      evento.target.value = ''; // Limpiar el input para permitir seleccionar el mismo archivo nuevamente
       return;
     }
 
@@ -69,7 +67,6 @@ const InfoCliente = ({
       });
     }
   };
-
   return (
     <Box>
       <Grid container spacing={6} mb={4}>
@@ -224,7 +221,7 @@ const InfoCliente = ({
             type='file'
             ref={fileInputRef}
             onChange={handleFileChange}
-            accept='image/jpeg,image/jpg' // Modificado para solo aceptar JPG
+            accept='image/jpeg,image/jpg'
             style={{ display: 'none' }}
           />
           <Button
@@ -247,9 +244,9 @@ const InfoCliente = ({
         </>
       )}
 
-      {imagenError && (
+      {/* {imagenError && (
         <Alerta tipo='error' mensaje={imagenError} cerrable sx={{ mb: 2 }} duracion={2500}></Alerta>
-      )}
+      )} */}
     </Box>
   );
 };

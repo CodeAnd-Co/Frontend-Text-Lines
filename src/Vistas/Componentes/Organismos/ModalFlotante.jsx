@@ -65,7 +65,12 @@ const ModalFlotante = ({
         }}
       >
         {titulo && (
-          <Texto variant={tituloVariant} gutterBottom sx={{ color: colores.texto[1] }} mb={3}>
+          <Texto
+            variant={tituloVariant}
+            gutterBottom
+            sx={{ color: colores.texto[1], fontWeight: 'bold' }}
+            mb={3}
+          >
             {titulo}
           </Texto>
         )}

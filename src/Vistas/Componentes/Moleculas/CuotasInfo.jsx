@@ -18,11 +18,6 @@ const CuotasInfo = ({
     <Box>
       <Grid container spacing={6} mb={4}>
         <Grid item xs={12} sm={6}>
-          <Box display='flex' alignItems='center' gap={2} mb={2}>
-            <Texto variant='h6' gutterBottom>
-              <strong>Información de la Cuota</strong>
-            </Texto>
-          </Box>
           <Texto gutterBottom sx={{ mb: 2, pb: 1 }}>
             <strong>Nombre:</strong>{' '}
             <span style={{ color: colores.altertex[4], fontWeight: 500 }}>

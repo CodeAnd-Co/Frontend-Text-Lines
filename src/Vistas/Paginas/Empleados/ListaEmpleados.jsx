@@ -29,8 +29,8 @@ const ListaGrupoEmpleados = () => {
   const [empleadoSeleccionado, setEmpleadoSeleccionado] = useState(null);
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
 
-  const MENSAJE_POPUP_ELIMINAR =
-    '¿Estás seguro de que deseas eliminar los empleados seleccionados? Esta acción no se puede deshacer.';
+  const MENSAJE_POPUP_ELIMINAR
+    = '¿Estás seguro de que deseas eliminar los empleados seleccionados? Esta acción no se puede deshacer.';
 
   const manejarCancelarEliminar = () => {
     setAbrirPopUpEliminar(false);

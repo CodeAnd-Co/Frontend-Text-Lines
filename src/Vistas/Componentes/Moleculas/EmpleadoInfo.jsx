@@ -18,6 +18,7 @@ const InfoEmpleado = ({
   antiguedad,
   estadoEmpleado,
   idEmpleado,
+  idUsuario,
 }) => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
@@ -103,6 +104,10 @@ const InfoEmpleado = ({
             ID de Empleado:{' '}
             <span style={{ color: colores.texto[4] }}>{idEmpleado || 'No disponible'}</span>
           </Texto>
+          <Texto gutterBottom sx={{ mb: 4 }}>
+            ID del Usuario:{' '}
+            <span style={{ color: colores.texto[4] }}>{idUsuario || 'No disponible'}</span>
+          </Texto>
         </Grid>
       </Grid>
     </Box>
@@ -117,6 +122,7 @@ InfoEmpleado.propTypes = {
   posicion: PropTypes.string,
   cantidadPuntos: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   antiguedad: PropTypes.string,
+  idUsuario: PropTypes.string,
   estadoEmpleado: PropTypes.shape({
     label: PropTypes.string.isRequired,
     color: PropTypes.string,

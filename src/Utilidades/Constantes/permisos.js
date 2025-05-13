@@ -30,7 +30,6 @@ export const PERMISOS = {
   LEER_EMPLEADO: 'Leer Empleado',
   ACTUALIZAR_EMPLEADO: 'Actualizar Empleado',
   ELIMINAR_EMPLEADO: 'Eliminar Empleado',
-  IMPORTAR_EMPLEADOS: 'Importar Empleados',
 
   // Grupo de Empleados
   CREAR_GRUPO_EMPLEADOS: 'Crear Grupo de Empleados',
@@ -85,7 +84,6 @@ export const PERMISOS = {
   IMPORTAR_PRODUCTOS: 'Importar Productos',
   IMPORTAR_EMPLEADOS: 'Importar Empleados',
   EXPORTAR_PRODUCTOS: 'Exportar Productos',
-  EXPORTAR_EMPLEADOS: 'Exportar Empleados',
 
   // Pedido
   CONSULTAR_PEDIDOS: 'Consultar Lista de Pedidos',

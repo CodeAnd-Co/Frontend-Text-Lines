@@ -109,7 +109,6 @@ const ListaGrupoEmpleados = () => {
     {
       label: 'Eliminar',
       onClick: () => {
-        console.log('Grupos a eliminar:', gruposSeleccionados);
         if (gruposSeleccionados.length === 0) {
           setAlerta({
             tipo: 'error',
@@ -199,6 +198,7 @@ const ListaGrupoEmpleados = () => {
               modoEdicion={false}
               nombre={grupoEmpleados?.nombre || ''}
               descripcion={grupoEmpleados?.descripcion || ''}
+              setsProductos={grupoEmpleados?.setsProductos || []}
               empleados={grupoEmpleados?.empleados || []}
             />
           )}

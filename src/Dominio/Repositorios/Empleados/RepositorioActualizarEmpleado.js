@@ -7,7 +7,6 @@ const API_KEY = import.meta.env.VITE_API_KEY;
 export class RepositorioActualizarEmpleado {
   static async actualizar(cambios) {
     try {
-      console.log('Enviando datos de actualización:', cambios);
       const respuesta = await axios.put(
         RUTAS_API.EMPLEADOS.ACTUALIZAR_EMPLEADO,
         { cambios },
@@ -20,7 +19,6 @@ export class RepositorioActualizarEmpleado {
       );
       return respuesta.data;
     } catch (error) {
-      console.error('Error en la respuesta:', error.response?.data || error.message);
       const mensaje = error?.response?.data?.mensaje || 'Error al actualizar';
       throw new Error(mensaje);
     }

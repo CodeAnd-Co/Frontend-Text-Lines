@@ -9,8 +9,8 @@ import InfoImportar from '@Organismos/InfoImportar';
 import CajaDesplazable from '@Organismos/CajaDesplazable';
 
 const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errores, exito, recargar }) => {
-  const [file, setFile] = useState(null);
-  const [status, setStatus] = useState('idle'); 
+  const [archivo, setFile] = useState(null);
+  const [estado, setEstado] = useState('idle'); 
   const [empleadosJson, setEmpleadosJson] = useState([]);
   const [alerta, setAlerta] = useState(null); 
   const theme = useTheme();
@@ -44,7 +44,7 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
       recargar();
       setEmpleadosJson([]);
       setFile(null);
-      setStatus('idle');
+      setEstado('idle');
       onCerrar(false);
       setMensajeErrores('');
     }
@@ -55,7 +55,7 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
     onCerrar(false);
     setEmpleadosJson([]);
     setFile(null);
-    setStatus('idle');
+    setEstado('idle');
     setAlerta(null);
     setMensajeErrores('');
   }, [onCerrar]);
@@ -63,15 +63,15 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
   // Manejo de archivo aceptados
   const handleFileAccepted = (archivo, data) => {
     setFile(archivo);
-    setStatus('loading');
+    setEstado('loading');
     setEmpleadosJson(data);
-    setStatus('complete');
+    setEstado('complete');
   };
 
   // Manejo de eliminación de archivo
   const handleEliminar = () => {
     setFile(null);
-    setStatus('idle');
+    setEstado('idle');
     setEmpleadosJson([]);
   };
 
@@ -89,7 +89,7 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
     }
     onConfirm(empleadosJson);
     setFile(null);
-    setStatus('idle');
+    setEstado('idle');
     setAlerta(null);
     setEmpleadosJson([]);
 
@@ -121,7 +121,7 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
 
       <ContenedorImportar onFileAccepted={handleFileAccepted} cargando={cargando} />
 
-      {file && (
+      {archivo && (
         <List disablePadding>
           <ListItem
             secondaryAction={
@@ -130,16 +130,16 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
             }
           >
             <ListItemIcon>
-              {status === 'Cargando...' ? (
+              {estado === 'Cargando...' ? (
                 <CircularProgress size={24} />
               ) : (
                 <Icono nombre="CheckCircle" color='success'/>
               )}
             </ListItemIcon>
             <ListItemText
-              primary={file.name}
-                secondary={`${(file.size / 1024).toFixed(1)} KB · ${
-                  status === 'complete' ? 'Cargado' : 'Cargando…'
+              primary={archivo.name}
+                secondary={`${(archivo.size / 1024).toFixed(1)} KB · ${
+                  estado === 'complete' ? 'Cargado' : 'Cargando…'
               }`}
             />
           </ListItem>
@@ -160,7 +160,7 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
               Correo electrónico: formato válido (usuario@dominio.com).<br/>
               Teléfonos: exactamente 10 dígitos, sin espacios ni guiones.<br/>
               Textos largos: máximo 75 caracteres por campo.<br/>
-              Estatus: 1 → activo, 0 → inactivo.<br/>
+              EEstado: 1 → activo, 0 → inactivo.<br/>
               idCliente: identificador numérico del cliente (p. ej. Toyota → 101).
            </InfoImportar>
             </Box><br/>

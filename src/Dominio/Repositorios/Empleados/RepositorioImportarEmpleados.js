@@ -1,4 +1,4 @@
-import { RUTAS_API } from '@SRC/Utilidades/Constantes/rutasAPI';
+import { RUTAS_API } from '@Constantes/rutasAPI';
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL;

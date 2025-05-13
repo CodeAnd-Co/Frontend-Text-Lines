@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { IconButton, Popover, Typography } from '@mui/material';
 import Icono from '@Atomos/Icono';
+import { tokens } from '@SRC/theme';
+import { useTheme } from '@mui/material/styles';
 
 /**
  * Componente Popover que despliega contenido al hacer click en un icono.
@@ -10,12 +12,12 @@ import Icono from '@Atomos/Icono';
  */
 const InfoImportar = ({
   iconName = 'Info',
-  iconColor = 'grey',
   iconSize = 'large',
   children,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-
+  const theme = useTheme();
+  const colores = tokens(theme.palette.mode);
   const handleClick = (elemento) => {
     setAnchorEl(elemento.currentTarget);
   };
@@ -30,7 +32,7 @@ const InfoImportar = ({
       <IconButton size="small" onClick={handleClick}>
         <Icono
           nombre={iconName}
-          color={iconColor}
+          color={colores.texto[3]}
           size={iconSize}
           clickable={false}
         />

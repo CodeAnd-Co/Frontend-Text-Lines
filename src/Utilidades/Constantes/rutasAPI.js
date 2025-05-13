@@ -1,3 +1,5 @@
+import { A } from 'storybook/internal/components';
+
 const BASE_URL = import.meta.env.VITE_API_URL;
 const BASE_USUARIOS = `${BASE_URL}/api/usuarios`;
 const BASE_CATEGORIAS = `${BASE_URL}/api/categorias`;
@@ -49,6 +51,7 @@ export const RUTAS_API = {
     ELIMINAR_EMPLEADO: `${BASE_EMPLEADOS}/eliminar`,
     ELIMINAR_GRUPO: `${BASE_EMPLEADOS}/eliminar-grupo`,
     LEER_GRUPO: `${BASE_EMPLEADOS}/leer-grupo`,
+    ACTUALIZAR_GRUPO: `${BASE_EMPLEADOS}/actualizar-grupo`,
   },
   CUOTAS: {
     BASE: BASE_CUOTAS,

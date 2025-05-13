@@ -14,6 +14,7 @@ import { PERMISOS } from '@Constantes/permisos';
 import InfoGrupoEmpleados from '@Moleculas/GrupoEmpleadosInfo';
 import { useGrupoEmpleadosId } from '@Hooks/Empleados/useLeerGrupoEmpleados';
 import ModalFlotante from '@Organismos/ModalFlotante';
+import InfoGrupoEmpleadosEditable from '@Moleculas/GrupoEmpleadosInfoEditable';
 
 const ListaGrupoEmpleados = () => {
   const { grupos, cargando, error, refetch } = useConsultarGrupos();
@@ -29,6 +30,7 @@ const ListaGrupoEmpleados = () => {
   const [abrirPopUpEliminar, setAbrirPopUpEliminar] = useState(false);
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
   const [idGrupoSeleccionado, setIdGrupoSeleccionado] = useState(null);
+  const [abrirModalEditar, setAbrirModalEditar] = useState(false);
 
   const {
     grupoEmpleados,
@@ -97,14 +99,6 @@ const ListaGrupoEmpleados = () => {
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
-    },
-    {
-      variant: 'outlined',
-      label: 'Editar',
-      onClick: () => console.log('Editar'),
-      color: 'primary',
-      size: 'large',
-      outlineColor: colores.primario[10],
     },
     {
       label: 'Eliminar',
@@ -181,6 +175,16 @@ const ListaGrupoEmpleados = () => {
           customWidth={800}
           botones={[
             {
+              label: 'Editar',
+              variant: 'contained',
+              color: 'primary',
+              outlineColor: colores.primario[10],
+              onClick: () => {
+                setModalDetalleAbierto(false);
+                setAbrirModalEditar(true);
+              },
+            },
+            {
               label: 'Salir',
               variant: 'outlined',
               color: 'primary',
@@ -196,6 +200,47 @@ const ListaGrupoEmpleados = () => {
           ) : (
             <InfoGrupoEmpleados
               modoEdicion={false}
+              nombre={grupoEmpleados?.nombre || ''}
+              descripcion={grupoEmpleados?.descripcion || ''}
+              setsProductos={grupoEmpleados?.setsProductos || []}
+              empleados={grupoEmpleados?.empleados || []}
+            />
+          )}
+        </ModalFlotante>
+      )}
+      {abrirModalEditar && (
+        <ModalFlotante
+          open={abrirModalEditar}
+          onClose={() => setAbrirModalEditar(false)}
+          titulo='Editar Grupo de Empleados'
+          tituloVariant='h4'
+          customWidth={700}
+          botones={[
+            {
+              label: 'Guardar',
+              variant: 'contained',
+              color: 'primary',
+              outlineColor: colores.primario[10],
+              onClick: () => {
+                setAbrirModalEditar(false);
+                refetch();
+              },
+            },
+            {
+              label: 'Cancelar',
+              variant: 'outlined',
+              color: 'primary',
+              outlineColor: colores.primario[10],
+              onClick: () => setAbrirModalEditar(false),
+            },
+          ]}
+        >
+          {cargandoDetalle ? (
+            <p>Cargando información del grupo de empleados...</p>
+          ) : errorDetalle ? (
+            <p>Error al cargar la información del grupo de empleados: {errorDetalle}</p>
+          ) : (
+            <InfoGrupoEmpleadosEditable
               nombre={grupoEmpleados?.nombre || ''}
               descripcion={grupoEmpleados?.descripcion || ''}
               setsProductos={grupoEmpleados?.setsProductos || []}

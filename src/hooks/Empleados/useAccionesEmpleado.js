@@ -17,17 +17,16 @@ export const useAccionesEmpleado = () => {
       // Determinar si es edición o creación basado en la existencia de ID
       const esEdicion = !!datos.id;
 
-      let resultado;
       if (esEdicion) {
         console.log('Enviando datos para actualización desde hook:', datos);
 
-        resultado = await RepositorioActualizarEmpleado.actualizar(datos);
+        await RepositorioActualizarEmpleado.actualizar(datos);
         return {
           exito: true,
           mensaje: 'Empleado actualizado correctamente',
         };
       } else {
-        // Lógica para crear...
+        // Lógica para crear
         console.log('Crear empleado');
       }
     } catch (error) {
@@ -51,24 +50,22 @@ export const useAccionesEmpleado = () => {
       // Determinar si es edición o creación basado en la existencia de ID
       const esEdicion = !!datos.id;
 
-      let resultado;
+      //let resultado;
       if (esEdicion) {
-        // Asegúrate de incluir el ID del empleado para la actualización
         console.log('Enviando datos para actualización:', datos);
 
-        // Asegúrate de que el ID esté correctamente establecido
         const datosActualizacion = {
           ...datos,
           id: datos.id || datos.idEmpleado, // Asegura que exista un campo 'id'
         };
 
-        resultado = await RepositorioActualizarEmpleado.actualizar(datosActualizacion);
+        await RepositorioActualizarEmpleado.actualizar(datosActualizacion);
         return {
           exito: true,
           mensaje: 'Empleado actualizado correctamente',
         };
       } else {
-        // Lógica existente para crear
+        // Lógica para crear
       }
     } catch (error) {
       console.error('Error completo:', error);

@@ -5,9 +5,6 @@ import Texto from '@Atomos/Texto';
 import Chip from '@Atomos/Chip';
 import { tokens } from '@SRC/theme';
 
-/**
- * Componente para mostrar la información detallada de un empleado
- */
 const InfoEmpleado = ({
   nombreCompleto,
   correoElectronico,
@@ -18,7 +15,6 @@ const InfoEmpleado = ({
   antiguedad,
   estadoEmpleado,
   idEmpleado,
-  idUsuario,
 }) => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
@@ -26,7 +22,7 @@ const InfoEmpleado = ({
   return (
     <Box>
       <Grid container spacing={6} mb={4}>
-        <Grid item xs={12} sm={6}>
+        <Grid xs={12} sm={6}>
           <Box display='flex' alignItems='center' gap={2} mb={2}>
             <Texto variant='h6' gutterBottom>
               <strong>Información del Empleado</strong>
@@ -70,11 +66,11 @@ const InfoEmpleado = ({
           </Texto>
         </Grid>
 
-        <Grid item xs={12} sm={6} />
+        <Grid xs={12} sm={6} />
       </Grid>
 
       <Grid container spacing={6} wrap='nowrap'>
-        <Grid item xs>
+        <Grid xs>
           <Box sx={{ maxWidth: '100%' }}>
             <Texto variant='subtitle1' sx={{ fontWeight: 'bold', mb: 4 }}>
               INFORMACIÓN DE CONTACTO
@@ -92,7 +88,7 @@ const InfoEmpleado = ({
           </Box>
         </Grid>
 
-        <Grid item xs>
+        <Grid xs>
           <Texto variant='subtitle1' sx={{ fontWeight: 'bold', mb: 4 }}>
             DATOS REGISTRADOS
           </Texto>
@@ -103,10 +99,6 @@ const InfoEmpleado = ({
           <Texto gutterBottom sx={{ mb: 4 }}>
             ID de Empleado:{' '}
             <span style={{ color: colores.texto[4] }}>{idEmpleado || 'No disponible'}</span>
-          </Texto>
-          <Texto gutterBottom sx={{ mb: 4 }}>
-            ID del Usuario:{' '}
-            <span style={{ color: colores.texto[4] }}>{idUsuario || 'No disponible'}</span>
           </Texto>
         </Grid>
       </Grid>
@@ -122,7 +114,6 @@ InfoEmpleado.propTypes = {
   posicion: PropTypes.string,
   cantidadPuntos: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   antiguedad: PropTypes.string,
-  idUsuario: PropTypes.string,
   estadoEmpleado: PropTypes.shape({
     label: PropTypes.string.isRequired,
     color: PropTypes.string,

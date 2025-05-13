@@ -76,6 +76,7 @@ const ListaGrupoEmpleados = () => {
 
   const filas = empleados.map((empleado) => ({
     id: empleado.idEmpleado,
+    idUsuario: empleado.idUsuario,
     nombreCompleto: empleado.nombreCompleto,
     correoElectronico: empleado.correoElectronico,
     numeroEmergencia: empleado.numeroEmergencia,

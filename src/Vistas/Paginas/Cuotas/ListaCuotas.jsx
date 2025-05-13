@@ -193,6 +193,15 @@ const ListaCuotas = () => {
           onClose={() => setModalAbierto(false)}
           titulo='Detalles del Set de Cuotas'
         >
+          botones ={' '}
+          {[
+            {
+              label: 'Cerrar',
+              variant: 'contained',
+              onClick: () => setModalAbierto(false),
+              color: 'error',
+            },
+          ]}
           {cargandoDetalle || !cuota ? <span>Cargando...</span> : <CuotasInfo {...cuota} />}
         </ModalFlotante>
       )}

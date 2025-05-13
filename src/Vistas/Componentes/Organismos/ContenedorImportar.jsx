@@ -10,6 +10,7 @@ const ContenedorImportar = ({ onFileAccepted, cargando = false }) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { 'text/csv': ['.csv'] },
     multiple: false,
+    maxSize: 3145728, // 3 MB
     disabled: cargando,
     onDrop: (acceptedFiles) => {
       if (!acceptedFiles.length) return;

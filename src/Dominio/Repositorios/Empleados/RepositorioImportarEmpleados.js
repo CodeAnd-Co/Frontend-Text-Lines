@@ -14,7 +14,7 @@ const API_KEY = import.meta.env.VITE_API_KEY;
  */
 export const importarEmpleados = async (empleados) => {
   try {
-    const response = await axios.post(
+    const respuesta = await axios.post(
       RUTAS_API.EMPLEADOS.IMPORTAR_EMPLEADOS,
       empleados,
       {
@@ -22,10 +22,10 @@ export const importarEmpleados = async (empleados) => {
         headers: { 'x-api-key': API_KEY },
       }
     );
-    return response.data;
+    return respuesta.data;
   } catch (error) {
     throw new Error(
-      error.response?.data?.mensaje
+      error.respuesta?.data?.mensaje
        || 'Error al importar empleados en el servidor'
     );
   }

@@ -9,7 +9,6 @@ import Tabla from '@Organismos/Tabla';
 const InfoGrupoEmpleados = ({ descripcion, setsProductos, empleados }) => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
-
   // Columnas para la tabla
   const columnas = [
     { field: 'nombreCompleto', headerName: 'Nombre del Empleado', flex: 0.9 },
@@ -53,7 +52,11 @@ const InfoGrupoEmpleados = ({ descripcion, setsProductos, empleados }) => {
             Sets de Productos:
           </Texto>
           <Box display='flex' gap={1} flexWrap='wrap' mb={2}>
-            {setsProductos?.length ? (
+            {setsProductos === 'Sin sets de productos asociados' ? (
+              <Texto variant='body1' sx={{ color: colores.texto[4] }}>
+                {setsProductos}
+              </Texto>
+            ) : setsProductos?.length > 0 ? (
               setsProductos.map((set, index) => (
                 <Chip
                   key={index}
@@ -77,15 +80,21 @@ const InfoGrupoEmpleados = ({ descripcion, setsProductos, empleados }) => {
           <Texto variant='h6' sx={{ color: colores.texto[1] }}>
             Empleados:
           </Texto>
-          <Box width={'700px'} mt={2}>
-            {filas.length > 0 ? (
-              <Tabla columns={columnas} rows={filas} pageSize={3} />
-            ) : (
-              <Texto variant='body1' sx={{ color: colores.texto[4] }}>
-                No especificada
-              </Texto>
-            )}
-          </Box>
+          {empleados === 'Sin empleados asociados' ? (
+            <Texto variant='body1' sx={{ color: colores.texto[4] }}>
+              {empleados}
+            </Texto>
+          ) : (
+            <Box width={'700px'} mt={2}>
+              {filas.length > 0 ? (
+                <Tabla columns={columnas} rows={filas} pageSize={3} />
+              ) : (
+                <Texto variant='body1' sx={{ color: colores.texto[4] }}>
+                  No especificada
+                </Texto>
+              )}
+            </Box>
+          )}
         </Grid>
       </Grid>
     </Box>

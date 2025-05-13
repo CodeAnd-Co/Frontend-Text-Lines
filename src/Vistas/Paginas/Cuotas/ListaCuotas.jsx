@@ -1,14 +1,15 @@
 // RF[32] - Consulta Lista de Cuotas - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF32
+//RF[31] Consulta crear set de cuota - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF31]
+
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme, Box } from '@mui/material';
 import { tokens } from '@SRC/theme';
-import { useConsultarCuotas } from '@Hooks/Cuotas/useConsultarCuotas';
 import { useAuth } from '@Hooks/AuthProvider';
 import ContenedorLista from '@Organismos/ContenedorLista';
 import Tabla from '@Organismos/Tabla';
 import Chip from '@Atomos/Chip';
-import ModalCrearCuotaSet from '@Organismos/ModalCrearCuotaSet';
+import ModalCrearCuotaSet from '@Organismos/Cuotas/ModalCrearCuotaSet';
 import Alerta from '@Moleculas/Alerta';
 import PopUpEliminar from '@Moleculas/PopUp';
 import { RUTAS } from '@Constantes/rutas';
@@ -16,6 +17,7 @@ import { RepositorioEliminarSetCuotas } from '@Dominio/Repositorios/Cuotas/repos
 import { PERMISOS } from '@Utilidades/Constantes/permisos';
 import { useConsultarCuotas } from '@Hooks/Cuotas/useConsultarCuotas';
 import ModalFlotante from '@Organismos/ModalFlotante';
+import CuotasInfo from '@Moleculas/CuotasInfo';
 const ListaCuotas = () => {
   const navegar = useNavigate();
   const { usuario } = useAuth();
@@ -69,12 +71,15 @@ const ListaCuotas = () => {
         nombre: cuota.nombre,
         periodoRenovacion: cuota.periodoRenovacion,
         renovacionHabilitada: cuota.renovacionHabilitada === 1,
+        descripcion: cuota.descripcion,
+        ultimaActualizacion: cuota.ultimaActualizacion,
       }))
     : [];
 
   const handleAbrirModalCrear = () => setModalCrearAbierto(true);
   const handleCerrarModalCrear = () => setModalCrearAbierto(false);
-
+  const [cuotaSeleccionada, setCuotaSeleccionada] = useState(null);
+  const [modalAbierto, setModalAbierto] = useState(false);
   const manejarCancelarEliminar = () => setAbrirPopUpEliminar(false);
 
   const manejarConfirmarEliminar = async () => {
@@ -160,6 +165,10 @@ const ListaCuotas = () => {
               const ids = Array.isArray(nuevosIds) ? nuevosIds : Array.from(nuevosIds?.ids || []);
               setSeleccionados(ids);
             }}
+            onRowClick={(params) => {
+              setCuotaSeleccionada(params.row);
+              setModalAbierto(true);
+            }}
           />
         </Box>
       </ContenedorLista>
@@ -172,6 +181,21 @@ const ListaCuotas = () => {
         confirmar={manejarConfirmarEliminar}
         dialogo='¿Estás seguro de que deseas eliminar los sets de cuotas seleccionados? Esta acción no se puede deshacer.'
       />
+      {modalAbierto && cuotaSeleccionada && (
+        <ModalFlotante
+          open={modalAbierto}
+          onClose={() => setModalAbierto(false)}
+          titulo='Detalles del Set de Cuotas'
+        >
+          <CuotasInfo
+            nombre={cuotaSeleccionada.nombre}
+            periodoRenovacion={cuotaSeleccionada.periodoRenovacion}
+            renovacionHabilitada={cuotaSeleccionada.renovacionHabilitada}
+            descripcion={cuotaSeleccionada.descripcion}
+            ultimaActualizacion={cuotaSeleccionada.ultimaActualizacion}
+          />
+        </ModalFlotante>
+      )}
 
       {alerta && (
         <Alerta

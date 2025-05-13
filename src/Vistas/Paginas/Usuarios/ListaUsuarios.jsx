@@ -15,7 +15,7 @@ import { RUTAS } from '@Constantes/rutas';
 import { useMode, tokens } from '@SRC/theme';
 import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
 import { useUsuarioId } from '@Hooks/Usuarios/useLeerUsuario';
-import InfoUsuario from '@Moleculas/UsuarioInfo';
+import InfoUsuario from '@Moleculas/InfoUsuario';
 import PopUp from '@Moleculas/PopUp';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';

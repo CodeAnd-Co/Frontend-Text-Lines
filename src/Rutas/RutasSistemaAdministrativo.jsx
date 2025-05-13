@@ -8,7 +8,6 @@ import LIstaEmpleados from '@Empleados/ListaEmpleados';
 import EditarCuotas from '@Cuotas/EditarCuotas';
 import ListaGrupoEmpleados from '@Empleados/ListaGrupoEmpleados';
 import SistemaAdministrativo from '@Paginas/SistemaAdministrativo';
-import Configuracion from '@Configuracion/ConfiguracionGeneral';
 import Error404 from '@Errores/Error404';
 import ListaRoles from '@Roles/ListaRoles';
 import ListaUsuarios from '@Usuarios/ListaUsuarios';
@@ -18,6 +17,7 @@ import ListaEventos from '@Eventos/ListaEventos';
 import RutaProtegida from '@Rutas/RutaProtegida';
 import VerificarClienteSeleccionado from '@Rutas/VerificarClienteSeleccionado';
 import ListaPedidos from '@Pedidos/ListaPedidos';
+import ConfiguracionGeneral from '@Configuracion/ConfiguracionGeneral';
 
 const RutasSistemaAdministrativo = () => {
   return (
@@ -32,7 +32,6 @@ const RutasSistemaAdministrativo = () => {
           </RutaProtegida>
         }
       />
-      <Route path={RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION} element={<Configuracion />} />
       {/* Rutas del tablero */}
       <Route
         path={RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO}
@@ -83,6 +82,10 @@ const RutasSistemaAdministrativo = () => {
         <Route
           path={RUTAS.SISTEMA_ADMINISTRATIVO.PEDIDOS.CONSULTAR_PEDIDOS}
           element={<ListaPedidos />}
+        />
+        <Route
+          path={RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION}
+          element={<ConfiguracionGeneral />}
         />
       </Route>
       {/* Rutas fuera del tablero */}

@@ -17,12 +17,12 @@ export function useEliminarProductos() {
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
 
-  const eliminar = async (idsProductos) => {
+  const eliminar = async (idsProductos, urlsImagenes) => {
     setCargando(true);
     setError(null);
 
     try {
-      const { mensaje } = await RepositorioEliminarProductos.eliminarProducto(idsProductos);
+      const { mensaje } = await RepositorioEliminarProductos.eliminarProducto(idsProductos, urlsImagenes);
       setMensaje(mensaje);
     } catch (err) {
       setMensaje('');

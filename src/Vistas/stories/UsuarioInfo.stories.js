@@ -1,4 +1,4 @@
-import InfoUsuario from '../componentes/moleculas/UsuarioInfo';
+import InfoUsuario from '../Componentes/Moleculas/InfoUsuario';
 
 export default {
   title: 'Componentes/Moléculas/InfoUsuario',
@@ -49,11 +49,11 @@ export const Lectura = {
     ...baseArgs,
     modoEdicion: false,
     estadoUsuario: {
-        label: 'Activo',
-        color: 'primary',
-        shape: 'circular',
-        backgroundColor: 'rgba(24, 50, 165, 1)',
-      },
+      label: 'Activo',
+      color: 'primary',
+      shape: 'circular',
+      backgroundColor: 'rgba(24, 50, 165, 1)',
+    },
   },
 };
 
@@ -62,10 +62,10 @@ export const Edicion = {
     ...baseArgs,
     modoEdicion: true,
     estadoUsuario: {
-        label: 'Activo',
-        color: 'primary',
-        shape: 'circular',
-        backgroundColor: 'rgba(24, 50, 165, 1)',
-      },
+      label: 'Activo',
+      color: 'primary',
+      shape: 'circular',
+      backgroundColor: 'rgba(24, 50, 165, 1)',
+    },
   },
 };

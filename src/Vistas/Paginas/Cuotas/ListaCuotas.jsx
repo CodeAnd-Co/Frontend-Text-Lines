@@ -1,5 +1,6 @@
 // RF[32] - Consulta Lista de Cuotas - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF32
 //RF[31] Consulta crear set de cuota - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF31]
+//RF[33] Leer cuota - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF33]
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +12,7 @@ import Tabla from '@Organismos/Tabla';
 import Chip from '@Atomos/Chip';
 import ModalCrearCuotaSet from '@Organismos/Cuotas/ModalCrearCuotaSet';
 import Alerta from '@Moleculas/Alerta';
+import { useCuotaId } from '@Hooks/Cuotas/useLeerCuota';
 import PopUpEliminar from '@Moleculas/PopUp';
 import { RUTAS } from '@Constantes/rutas';
 import { RepositorioEliminarSetCuotas } from '@Dominio/Repositorios/Cuotas/repositorioEliminarSetCuotas';
@@ -18,10 +20,12 @@ import { PERMISOS } from '@Utilidades/Constantes/permisos';
 import { useConsultarCuotas } from '@Hooks/Cuotas/useConsultarCuotas';
 import ModalFlotante from '@Organismos/ModalFlotante';
 import CuotasInfo from '@Moleculas/CuotasInfo';
+
 const ListaCuotas = () => {
   const navegar = useNavigate();
   const { usuario } = useAuth();
   const { cuotas, cargando, error } = useConsultarCuotas();
+  const [idCuotaDetalle, setIdCuotaDetalle] = useState(null);
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
 
@@ -30,6 +34,9 @@ const ListaCuotas = () => {
   const [idsSetCuotas, setIdsSetCuotas] = useState([]);
   const [alerta, setAlerta] = useState(null);
   const [abrirPopUpEliminar, setAbrirPopUpEliminar] = useState(false);
+  const [modalAbierto, setModalAbierto] = useState(false);
+
+  const { cuota, cargando: cargandoDetalle } = useCuotaId(idCuotaDetalle);
 
   useEffect(() => {
     if (!usuario?.clienteSeleccionado) {
@@ -68,6 +75,7 @@ const ListaCuotas = () => {
   const filas = Array.isArray(cuotas)
     ? cuotas.map((cuota) => ({
         id: cuota.idCuotaSet,
+        idCuotaSet: cuota.idCuotaSet,
         nombre: cuota.nombre,
         periodoRenovacion: cuota.periodoRenovacion,
         renovacionHabilitada: cuota.renovacionHabilitada === 1,
@@ -78,8 +86,6 @@ const ListaCuotas = () => {
 
   const handleAbrirModalCrear = () => setModalCrearAbierto(true);
   const handleCerrarModalCrear = () => setModalCrearAbierto(false);
-  const [cuotaSeleccionada, setCuotaSeleccionada] = useState(null);
-  const [modalAbierto, setModalAbierto] = useState(false);
   const manejarCancelarEliminar = () => setAbrirPopUpEliminar(false);
 
   const manejarConfirmarEliminar = async () => {
@@ -136,7 +142,6 @@ const ListaCuotas = () => {
       backgroundColor: colores.altertex[1],
     },
   ];
-
   return (
     <>
       <ContenedorLista
@@ -166,7 +171,7 @@ const ListaCuotas = () => {
               setSeleccionados(ids);
             }}
             onRowClick={(params) => {
-              setCuotaSeleccionada(params.row);
+              setIdCuotaDetalle(params.row.idCuotaSet);
               setModalAbierto(true);
             }}
           />
@@ -181,19 +186,14 @@ const ListaCuotas = () => {
         confirmar={manejarConfirmarEliminar}
         dialogo='¿Estás seguro de que deseas eliminar los sets de cuotas seleccionados? Esta acción no se puede deshacer.'
       />
-      {modalAbierto && cuotaSeleccionada && (
+
+      {modalAbierto && (
         <ModalFlotante
           open={modalAbierto}
           onClose={() => setModalAbierto(false)}
           titulo='Detalles del Set de Cuotas'
         >
-          <CuotasInfo
-            nombre={cuotaSeleccionada.nombre}
-            periodoRenovacion={cuotaSeleccionada.periodoRenovacion}
-            renovacionHabilitada={cuotaSeleccionada.renovacionHabilitada}
-            descripcion={cuotaSeleccionada.descripcion}
-            ultimaActualizacion={cuotaSeleccionada.ultimaActualizacion}
-          />
+          {cargandoDetalle || !cuota ? <span>Cargando...</span> : <CuotasInfo {...cuota} />}
         </ModalFlotante>
       )}
 

@@ -12,11 +12,11 @@ export class RepositorioLeerCuota {
    *
    * @see [RF[38] Leer cuota - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF38)]
    */
-  static async obtenerPorId(idCuota) {
+  static async obtenerPorId(idSetCuota) {
     try {
       const respuesta = await axios.post(
-        RUTAS_API.CUOTAS.CONSULTAR_CUOTA,
-        { idCuota },
+        RUTAS_API.CUOTAS.LEER_SET_CUOTAS,
+        { idSetCuota },
         {
           headers: {
             'x-api-key': API_KEY,
@@ -24,13 +24,10 @@ export class RepositorioLeerCuota {
           withCredentials: true,
         }
       );
-
-      const { cuota, mensaje } = respuesta.data;
-
-      const cuotaInstancia = new LeerCuota(cuota);
+      const { setCuota, mensaje } = respuesta.data;
 
       return {
-        cuota: cuotaInstancia,
+        cuota: setCuota,
         mensaje,
       };
     } catch (error) {

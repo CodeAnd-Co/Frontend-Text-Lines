@@ -9,12 +9,13 @@ export class RepositorioEliminarProductos {
   /**
    * Elimina una o más productos desde la API
    * @param {array} idsProducto - ID de los productos a eliminar
+   * @param {array} imagenes - Array de imágenes a eliminar
    * @returns {Promise<{mensaje: string}>}
    */
-  static async eliminarProducto(idsProducto) {
+  static async eliminarProducto(idsProducto, imagenes = []) {
     try {
       const respuesta = await axios.delete(RUTAS_API.PRODUCTOS.ELIMINAR_PRODUCTO, {
-        data: { ids: idsProducto },
+        data: { ids: idsProducto, imagenes },
         headers: {
           'x-api-key': API_KEY,
         },

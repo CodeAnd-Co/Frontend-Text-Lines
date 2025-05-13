@@ -1,4 +1,6 @@
- export class CuotaSetModelo {
+//RF[31] Consulta crear set de cuota - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF31]
+
+export class CuotaSetModelo {
   constructor({
     nombreCuotaSet,
     descripcion,

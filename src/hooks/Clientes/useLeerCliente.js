@@ -26,10 +26,19 @@ export const useClientePorId = (idCliente) => {
 
       try {
         const { cliente, mensaje } = await RepositorioClientes.obtenerPorId(idCliente);
-        setCliente(cliente);
+
+        const clienteNormalizado = cliente
+          ? {
+              ...cliente,
+              urlImagen: cliente.urlImagen || cliente.imagenURL || cliente.imagenCliente || null,
+            }
+          : null;
+
+        setCliente(clienteNormalizado);
         setMensaje(mensaje);
       } catch (err) {
         setError(err.message);
+        setCliente(null);
       } finally {
         setCargando(false);
       }
@@ -37,6 +46,11 @@ export const useClientePorId = (idCliente) => {
 
     if (idCliente) {
       obtenerCliente();
+    } else {
+      setCliente(null);
+      setMensaje('');
+      setCargando(false);
+      setError(null);
     }
   }, [idCliente]);
 

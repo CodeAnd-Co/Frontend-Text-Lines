@@ -3,6 +3,7 @@ const BASE_PRODUCTOS = 'productos';
 const BASE_PEDIDOS = 'pedidos';
 const BASE_CUOTAS = 'cuotas';
 const BASE_EVENTOS = 'eventos';
+const BASE_CONFIGURACION = 'configuracion';
 
 const BASE_ADMIN = 'admin';
 const BASE_TABLERO = 'tablero';
@@ -36,7 +37,7 @@ export const RUTAS = {
       CONSULTAR_EVENTOS: `${BASE_EVENTOS}/consultar-lista`,
       CONSULTAR_EVENTO: `${BASE_EVENTOS}/consultar-evento`,
     },
-    CONFIGURACION: '/configuracion',
+    CONFIGURACION: `${BASE_CONFIGURACION}`,
     USUARIOS: {
       BASE: '/usuarios',
       CONSULTAR_ROLES: '/consultar-roles',

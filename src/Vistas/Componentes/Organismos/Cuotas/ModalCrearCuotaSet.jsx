@@ -4,6 +4,8 @@ import FormaCrearCuotaSet from '@Organismos/Formularios/FormaCrearCuotaSet';
 import ModalFlotante from '@Organismos/ModalFlotante';
 import { RUTAS } from '@Constantes/rutas';
 
+//RF[31] Consulta crear set de cuota - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF31]
+
 /**
  * Modal para crear un nuevo set de cuotas.
  *

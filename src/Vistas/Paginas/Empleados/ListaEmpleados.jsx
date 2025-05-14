@@ -5,6 +5,7 @@ import { Box, useTheme } from '@mui/material';
 import Tabla from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';
 import ModalFlotante from '@Organismos/ModalFlotante';
+import ModalEmpleados from '@Organismos/ModalEmpleados';
 import InfoEmpleado from '@Moleculas/EmpleadoInfo';
 import PopUp from '@Moleculas/PopUp';
 import Alerta from '@Moleculas/Alerta';
@@ -13,6 +14,8 @@ import { useConsultarEmpleados } from '@Hooks/Empleados/useConsultarEmpleados';
 import { useEliminarEmpleado } from '@Hooks/Empleados/useEliminarEmpleado';
 import { tokens } from '@SRC/theme';
 import { PERMISOS } from '@Constantes/permisos';
+import ModalImportarEmpleados from '@Organismos/ModalImportarEmpleados';
+import useImportarEmpleados from '@Hooks/Empleados/useImportarEmpleados';
 
 const ListaGrupoEmpleados = () => {
   const { empleados, cargando, error, recargar } = useConsultarEmpleados();
@@ -20,19 +23,24 @@ const ListaGrupoEmpleados = () => {
   const { usuario } = useAuth();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
-
+  const [modalImportarAbierto, setModalImportarAbierto] = useState(false);
+  const [modalAgregarAbierto, setModalAgregarAbierto] = useState(false);
+  const [modalActualizarAbierto, setModalActualizarAbierto] = useState(false);
   const [empleadosSeleccionados, setEmpleadosSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
   const [openModalEliminar, setAbrirPopUpEliminar] = useState(false);
   const [empleadoSeleccionado, setEmpleadoSeleccionado] = useState(null);
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
-
-  const MENSAJE_POPUP_ELIMINAR
-    = '¿Estás seguro de que deseas eliminar los empleados seleccionados? Esta acción no se puede deshacer.';
-
+  const MENSAJE_POPUP_ELIMINAR =
+    '¿Estás seguro de que deseas eliminar los empleados seleccionados? Esta acción no se puede deshacer.';
+  const handleAbrirImportar = () => setModalImportarAbierto(true);
   const manejarCancelarEliminar = () => {
     setAbrirPopUpEliminar(false);
   };
+  const { importar, errores, exito, cargando: cargandoImportacion } = useImportarEmpleados();
+
+  const manejarAbrirAgregar = () => setModalAgregarAbierto(true);
+  const manejarCerrarAgregar = () => setModalAgregarAbierto(false);
 
   const manejarConfirmarEliminar = async () => {
     try {
@@ -71,6 +79,7 @@ const ListaGrupoEmpleados = () => {
 
   const filas = empleados.map((empleado) => ({
     id: empleado.idEmpleado,
+    idUsuario: empleado.idUsuario,
     nombreCompleto: empleado.nombreCompleto,
     correoElectronico: empleado.correoElectronico,
     numeroEmergencia: empleado.numeroEmergencia,
@@ -83,18 +92,20 @@ const ListaGrupoEmpleados = () => {
   const botones = [
     {
       label: 'Añadir',
-      onClick: () => console.log('Añadir'),
+      onClick: manejarAbrirAgregar,
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
+      disabled: !usuario?.permisos?.includes(PERMISOS.CREAR_EMPLEADO),
     },
     {
       variant: 'outlined',
       label: 'Importar',
-      onClick: () => console.log('Importar'),
+      onClick: handleAbrirImportar,
       color: 'primary',
       size: 'large',
       outlineColor: colores.primario[10],
+      //disabled: !usuario?.permisos?.includes(PERMISOS.IMPORTAR_EMPLEADOS),
     },
     {
       variant: 'outlined',
@@ -174,7 +185,10 @@ const ListaGrupoEmpleados = () => {
               variant: 'contained',
               color: 'error',
               backgroundColor: colores.altertex[1],
-              onClick: () => console.log('Editar empleado', empleadoSeleccionado.id),
+              onClick: () => {
+                setModalActualizarAbierto(true);
+                setModalDetalleAbierto(false);
+              },
             },
             {
               label: 'SALIR',
@@ -203,6 +217,24 @@ const ListaGrupoEmpleados = () => {
           />
         </ModalFlotante>
       )}
+      {/* Modal para agregar empleado */}
+      {modalAgregarAbierto && (
+        <ModalEmpleados
+          open={modalAgregarAbierto}
+          onClose={manejarCerrarAgregar}
+          onUsuarioCreado={recargar}
+        />
+      )}
+
+      {/* Modal para actualizar empleado */}
+      {modalActualizarAbierto && (
+        <ModalEmpleados
+          open={modalActualizarAbierto}
+          onClose={() => setModalActualizarAbierto(false)}
+          onAccion={recargar}
+          empleadoEdicion={empleadoSeleccionado}
+        />
+      )}
 
       {/* PopUp de confirmación para eliminar */}
       <PopUp
@@ -224,6 +256,15 @@ const ListaGrupoEmpleados = () => {
           onClose={() => setAlerta(null)}
         />
       )}
+      <ModalImportarEmpleados
+        abierto={modalImportarAbierto}
+        onCerrar={() => setModalImportarAbierto(false)}
+        onConfirm={importar}
+        cargando={cargandoImportacion}
+        errores={errores}
+        exito={exito}
+        recargar={recargar}
+      ></ModalImportarEmpleados>
     </>
   );
 };

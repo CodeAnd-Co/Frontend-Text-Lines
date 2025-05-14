@@ -138,6 +138,17 @@ const ListaGrupoEmpleados = () => {
     },
   ];
 
+  const manejarGrupoCreadoExitosamente = () => {
+  refetch(); // Recarga la lista de grupos
+  setAlerta({
+    tipo: 'success',
+    mensaje: 'Grupo de empleados creado correctamente.',
+    icono: true,
+    cerrable: true,
+    centradoInferior: true,
+  });
+};
+
   return (
     <>
       <ContenedorLista

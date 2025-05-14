@@ -23,7 +23,6 @@ const FormaCrearRol = ({
   useEffect(() => {
     const cargarPermisos = async () => {
       const permisos = await obtenerPermisos();
-      console.log('🟡 Permisos cargados:', permisos);
       setRows(permisos);
     };
     cargarPermisos();
@@ -52,10 +51,7 @@ const FormaCrearRol = ({
             ? selectionModel
             : Array.from(selectionModel?.ids || []);
 
-          console.log('🟣 IDs seleccionados:', ids);
-
           const seleccionados = rows.filter((permiso) => ids.includes(permiso.id));
-          console.log('🟣 Permisos seleccionados:', seleccionados);
 
           setPermisosSeleccionados(seleccionados);
         }}

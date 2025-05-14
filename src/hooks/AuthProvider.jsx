@@ -24,6 +24,7 @@ export const AuthProvider = ({ children }) => {
           headers: { 'x-api-key': API_KEY },
         }
       );
+      localStorage.removeItem('usuario');
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     } finally {

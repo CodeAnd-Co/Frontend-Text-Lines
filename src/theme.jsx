@@ -1,4 +1,5 @@
-import { createContext, useState, useMemo } from 'react';
+import { createContext, useState, useMemo, useContext, useEffect } from 'react';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 
 // color design tokens export
@@ -205,8 +206,11 @@ export const ColorModeContext = createContext({
   toggleColorMode: () => {},
 });
 
-export const useMode = () => {
-  const [mode, setMode] = useState('light');
+export const ColorModeProvider = ({ children }) => {
+  const [mode, setMode] = useState(() => {
+    const storedMode = localStorage.getItem('themeMode');
+    return storedMode ? JSON.parse(storedMode) : 'light';
+  });
 
   const colorMode = useMemo(
     () => ({
@@ -215,6 +219,25 @@ export const useMode = () => {
     []
   );
 
+  useEffect(() => {
+    localStorage.setItem('themeMode', JSON.stringify(mode));
+  }, [mode]);
+
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
-  return [theme, colorMode];
+  return (
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
+    </ColorModeContext.Provider>
+  );
+};
+
+export const useMode = () => {
+  const context = useContext(ColorModeContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 };

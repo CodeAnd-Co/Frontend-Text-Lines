@@ -22,8 +22,8 @@ const ListaGrupoEmpleados = () => {
   const { usuario } = useAuth();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
-  const MENSAJE_POPUP_ELIMINAR
-    = '¿Estás seguro de que deseas eliminar los grupos seleccionados? Esta acción no se puede deshacer.';
+  const MENSAJE_POPUP_ELIMINAR =
+    '¿Estás seguro de que deseas eliminar los grupos seleccionados? Esta acción no se puede deshacer.';
 
 
   const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
@@ -79,17 +79,6 @@ const ListaGrupoEmpleados = () => {
       flex: 3,
     },
     {
-      field: 'idSetProducto',
-      headerName: 'ID Set de Productos',
-      type: 'number',
-      flex: 1,
-    },
-    {
-      field: 'setProducto',
-      headerName: 'Nombre del Set de Productos',
-      flex: 2,
-    },
-    {
       field: 'totalEmpleados',
       headerName: 'Total de Empleados',
       type: 'number',
@@ -130,7 +119,6 @@ const ListaGrupoEmpleados = () => {
     {
       label: 'Eliminar',
       onClick: () => {
-        console.log('Grupos a eliminar:', gruposSeleccionados);
         if (gruposSeleccionados.length === 0) {
           setAlerta({
             tipo: 'error',

@@ -6,51 +6,50 @@ import Icono from '@Atomos/Icono';
 import CampoTexto from '@Atomos/CampoTexto';
 import { tokens } from '@SRC/theme';
 
-const InfoCliente = ({
-  modoEdicion = false,
-  idCliente,
-  nombreLegal,
-  nombreVisible,
-  empleados,
-  usuariosAsignados,
-  urlImagen,
+const ClientInfo = ({
+  editMode = false,
+  clientId,
+  legalName,
+  displayName,
+  employees,
+  assignedUsers,
+  imageUrl,
   onChange,
   onImageChange,
-  imagenSubiendo = false,
+  imageUploading = false,
 }) => {
   const theme = useTheme();
-  const colores = tokens(theme.palette.mode);
+  const colors = tokens(theme.palette.mode);
   const fileInputRef = useRef(null);
   const MAX_LENGTH = 100;
 
   const handleFileSelect = () => {
     fileInputRef.current.click();
   };
-  const handleFileChange = (evento) => {
-    const file = evento.target.files[0];
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
     if (!file) return;
 
-    // Verificar que sea un archivo JPG o JPEG
     const validJpgTypes = ['image/jpeg', 'image/jpg'];
     if (!validJpgTypes.includes(file.type.toLowerCase())) {
       if (onImageChange) {
         onImageChange({
-          error: 'Solo se permiten imágenes en formato JPG o JPEG.',
+          error: 'Only JPG or JPEG images are allowed.',
         });
       }
-      evento.target.value = ''; // Limpiar el input para permitir seleccionar el mismo archivo nuevamente
+      event.target.value = '';
       return;
     }
 
-    // Verificar el tamaño del archivo
     const maxSize = 4 * 1024 * 1024;
     if (file.size > maxSize) {
       if (onImageChange) {
         onImageChange({
-          error: 'La imagen es demasiado grande. El tamaño máximo permitido es 4MB.',
+          error: 'Image is too large. Maximum allowed size is 4MB.',
         });
       }
-      evento.target.value = ''; // Limpiar el input para permitir seleccionar el mismo archivo nuevamente
+      event.target.value = '';
       return;
     }
 
@@ -66,21 +65,22 @@ const InfoCliente = ({
       });
     }
   };
+
   return (
     <Box>
       <Grid container spacing={6} mb={4}>
-        {/* Información principal */}
+        {/* Main Information */}
         <Grid>
           <Texto gutterBottom mb={2.5}>
-            <strong>INFORMACIÓN</strong>{' '}
+            <strong>INFORMATION</strong>{' '}
           </Texto>
 
-          {modoEdicion ? (
+          {editMode ? (
             <Box sx={{ maxWidth: 325 }}>
               <CampoTexto
-                label='ID de Cliente'
-                name='idCliente'
-                value={idCliente}
+                label='Client ID'
+                name='clientId'
+                value={clientId}
                 onChange={onChange}
                 type='text'
                 fullWidth
@@ -89,69 +89,68 @@ const InfoCliente = ({
                 sx={{ mb: 4 }}
               />
               <CampoTexto
-                label='Nombre Legal'
-                name='nombreLegal'
-                value={nombreLegal || ''}
+                label='Legal Name'
+                name='legalName'
+                value={legalName || ''}
                 onChange={onChange}
                 type='text'
                 fullWidth
                 required
                 inputProps={{ maxLength: MAX_LENGTH }}
-                helperText={`${(nombreLegal || '').length}/${MAX_LENGTH} caracteres`}
+                helperText={`${(legalName || '').length}/${MAX_LENGTH} characters`}
                 sx={{ mb: 4 }}
               />
               <CampoTexto
-                label='Nombre Visible'
-                name='nombreVisible'
-                value={nombreVisible || ''}
+                label='Display Name'
+                name='displayName'
+                value={displayName || ''}
                 onChange={onChange}
                 type='text'
                 fullWidth
                 required
                 inputProps={{ maxLength: MAX_LENGTH }}
-                helperText={`${(nombreVisible || '').length}/${MAX_LENGTH} caracteres`}
+                helperText={`${(displayName || '').length}/${MAX_LENGTH} characters`}
                 sx={{ mb: 4 }}
               />
             </Box>
           ) : (
             <>
               <Texto gutterBottom mb={4}>
-                ID de Cliente:{' '}
-                <a style={{ color: colores.texto[4], fontWeight: 500, textDecoration: 'none' }}>
-                  {idCliente}
+                Client ID:{' '}
+                <a style={{ color: colors.texto[4], fontWeight: 500, textDecoration: 'none' }}>
+                  {clientId}
                 </a>
               </Texto>
               <Texto gutterBottom mb={4}>
-                Nombre Legal:{' '}
-                <a style={{ color: colores.texto[4], textDecoration: 'none' }}>{nombreLegal}</a>
+                Legal Name:{' '}
+                <a style={{ color: colors.texto[4], textDecoration: 'none' }}>{legalName}</a>
               </Texto>
               <Texto gutterBottom>
-                Nombre visible: <span style={{ color: colores.texto[4] }}>{nombreVisible}</span>
+                Display Name: <span style={{ color: colors.texto[4] }}>{displayName}</span>
               </Texto>
             </>
           )}
         </Grid>
 
-        {/* Información adicional (siempre no editable) */}
+        {/* Additional Information (always read-only) */}
         <Grid>
           <Texto gutterBottom mb={2.5}>
-            <strong>INFORMACIÓN ADICIONAL</strong>{' '}
+            <strong>ADDITIONAL INFORMATION</strong>{' '}
           </Texto>
 
           <Texto gutterBottom mb={4}>
-            Usuarios asignados:{' '}
-            <a style={{ color: colores.texto[4], textDecoration: 'none' }}>{usuariosAsignados}</a>
+            Assigned Users:{' '}
+            <a style={{ color: colors.texto[4], textDecoration: 'none' }}>{assignedUsers}</a>
           </Texto>
           <Texto gutterBottom mb={4}>
-            Empleados:{' '}
-            <a style={{ color: colores.texto[4], textDecoration: 'none' }}>{empleados}</a>
+            Employees: <a style={{ color: colors.texto[4], textDecoration: 'none' }}>{employees}</a>
           </Texto>
         </Grid>
       </Grid>
 
-      {/* Previsualización imagen */}
+      {/* Image Preview */}
       <Texto variant='subtitle1' sx={{ fontWeight: 'bold', mb: 2 }}>
-        PREVISUALIZAR IMAGEN
+        IMAGE PREVIEW
       </Texto>
       <Box
         sx={{
@@ -168,16 +167,16 @@ const InfoCliente = ({
         }}
       >
         <img
-          src={urlImagen}
-          alt='Previsualización'
+          src={imageUrl}
+          alt='Preview'
           style={{
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            display: urlImagen ? 'block' : 'none',
+            display: imageUrl ? 'block' : 'none',
           }}
         />
-        {imagenSubiendo && (
+        {imageUploading && (
           <CircularProgress
             size={40}
             sx={{
@@ -196,10 +195,10 @@ const InfoCliente = ({
             left: 0,
             width: '100%',
             height: '100%',
-            backgroundColor: !urlImagen ? colores.acciones[3] : 'transparent',
+            backgroundColor: !imageUrl ? colors.acciones[3] : 'transparent',
           }}
         />
-        {!urlImagen && (
+        {!imageUrl && (
           <Icono
             nombre='ImageOutlined'
             size='large'
@@ -214,7 +213,7 @@ const InfoCliente = ({
         )}
       </Box>
 
-      {modoEdicion && (
+      {editMode && (
         <>
           <input
             type='file'
@@ -228,40 +227,41 @@ const InfoCliente = ({
             size='small'
             onClick={handleFileSelect}
             startIcon={<Icono nombre='Upload' />}
-            disabled={imagenSubiendo}
+            disabled={imageUploading}
             sx={{ mb: 4 }}
           >
-            {imagenSubiendo ? 'Subiendo...' : 'Subir imagen JPG'}
+            {imageUploading ? 'Uploading...' : 'Upload JPG Image'}
           </Button>
           <Texto
             variant='caption'
             display='block'
             sx={{ mb: 4, color: theme.palette.text.secondary }}
           >
-            Solo se permiten imágenes en formato JPG/JPEG, máximo 5MB.
+            Only JPG/JPEG images allowed, up to 5MB.
           </Texto>
         </>
       )}
 
-      {/* {imagenError && (
-        <Alerta tipo='error' mensaje={imagenError} cerrable sx={{ mb: 2 }} duracion={2500}></Alerta>
+      {/* Error message block was commented out in original */}
+      {/* {imageError && (
+        <Alerta type='error' message={imageError} closable sx={{ mb: 2 }} duration={2500}></Alerta>
       )} */}
     </Box>
   );
 };
 
-InfoCliente.propTypes = {
-  modoEdicion: PropTypes.bool,
-  idCliente: PropTypes.string.isRequired,
-  nombreLegal: PropTypes.string.isRequired,
-  nombreVisible: PropTypes.string.isRequired,
-  empleados: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  usuariosAsignados: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  urlImagen: PropTypes.string,
+ClientInfo.propTypes = {
+  editMode: PropTypes.bool,
+  clientId: PropTypes.string.isRequired,
+  legalName: PropTypes.string.isRequired,
+  displayName: PropTypes.string.isRequired,
+  employees: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  assignedUsers: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  imageUrl: PropTypes.string,
   onChange: PropTypes.func,
   onImageChange: PropTypes.func,
-  imagenSubiendo: PropTypes.bool,
-  imagenError: PropTypes.string,
+  imageUploading: PropTypes.bool,
+  imageError: PropTypes.string,
 };
 
-export default InfoCliente;
+export default ClientInfo;

@@ -1,6 +1,3 @@
-// ListaClientes.jsx
-// RF14 - Actualiza Cliente - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF14
-
 import { useNavigate } from 'react-router-dom';
 import { Box, useTheme } from '@mui/material';
 import { useAuth } from '@Hooks/AuthProvider';
@@ -15,8 +12,7 @@ import { AgregarClienteTarjeta } from '@Organismos/Clientes/AgregarClienteTarjet
 import { EliminarClienteModal } from '@Organismos/Clientes/EliminarClientesModal';
 import { DetalleClienteModal } from '@Organismos/Clientes/DetalleClienteModal';
 
-// Estilos
-const estiloImagenLogo = { marginRight: '1rem' };
+const estiloLogo = { marginRight: '1rem' };
 const estiloTitulo = {
   marginTop: { xs: '2rem', sm: '4rem', md: '6rem' },
   fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem', lg: '3.5rem' },
@@ -29,9 +25,9 @@ const estiloSubtitulo = {
 };
 
 const ListaClientes = () => {
-  const theme = useTheme();
-  const colores = tokens(theme.palette.mode);
-  const navigate = useNavigate();
+  const tema = useTheme();
+  const colores = tokens(tema.palette.mode);
+  const redirigir = useNavigate();
   const { cerrarSesion } = useAuth();
 
   const {
@@ -39,7 +35,7 @@ const ListaClientes = () => {
     cargando,
     error,
     modoEliminacion,
-    clienteEliminar,
+    clienteAEliminar,
     modalEliminacionAbierto,
     idClienteDetalle,
     modalDetalleAbierto,
@@ -47,19 +43,19 @@ const ListaClientes = () => {
     modoEdicion,
     eliminacionExitosa,
     errorEliminacion,
-    handleClienteClick,
-    handleIconoClick,
-    handleInicioPresionado,
-    handleFinPresionado,
+    alClicCliente,
+    alClicIcono,
+    alPresionarInicio,
+    alPresionarFin,
     confirmarEliminacion,
     cancelarEliminacion,
     cerrarModalDetalle,
-    toggleModoEdicion,
-    handleClienteChange,
+    alternarModoEdicion,
+    alCambiarCliente,
     cerrarAlertaExito,
-    handleImagenChange,
+    alCambiarImagen,
     imagenSubiendo,
-    imagenError,
+    errorImagen,
   } = useClientes();
 
   const manejarCerrarSesion = async () => {
@@ -67,17 +63,17 @@ const ListaClientes = () => {
   };
 
   const redirigirATienda = () => {
-    navigate(RUTAS.SISTEMA_TIENDA.BASE, { replace: true });
+    redirigir(RUTAS.SISTEMA_TIENDA.BASE, { replace: true });
   };
 
-  const informacionBotones = [
+  const botonesNavegacion = [
     {
       label: 'Usuarios',
       variant: 'outlined',
       color: 'secondary',
       size: 'large',
       onClick: () =>
-        navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE),
+        redirigir(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE),
     },
     {
       label: 'Configuración',
@@ -85,7 +81,7 @@ const ListaClientes = () => {
       color: 'secondary',
       size: 'large',
       onClick: () =>
-        navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION),
+        redirigir(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION),
     },
     {
       label: 'Cerrar sesión',
@@ -105,9 +101,9 @@ const ListaClientes = () => {
         anchoImagen={{ xs: '150px', sm: '250px', md: '400px' }}
         ajuste='contain'
         clickeableImagen={false}
-        estiloImagen={estiloImagenLogo}
+        estiloImagen={estiloLogo}
         alClicIcono={redirigirATienda}
-        informacionBotones={informacionBotones}
+        informacionBotones={botonesNavegacion}
       />
 
       <Box
@@ -146,12 +142,12 @@ const ListaClientes = () => {
             <ClientesLista
               clientes={clientes}
               modoEliminacion={modoEliminacion}
-              onClienteClick={handleClienteClick}
-              onIconoClick={handleIconoClick}
-              onMouseDown={handleInicioPresionado}
-              onMouseUp={handleFinPresionado}
-              onTouchStart={handleInicioPresionado}
-              onTouchEnd={handleFinPresionado}
+              onClienteClick={alClicCliente}
+              onIconoClick={alClicIcono}
+              onMouseDown={alPresionarInicio}
+              onMouseUp={alPresionarFin}
+              onTouchStart={alPresionarInicio}
+              onTouchEnd={alPresionarFin}
             />
             <AgregarClienteTarjeta />
           </Box>
@@ -160,7 +156,7 @@ const ListaClientes = () => {
 
       <EliminarClienteModal
         open={modalEliminacionAbierto}
-        cliente={clienteEliminar}
+        cliente={clienteAEliminar}
         onConfirm={confirmarEliminacion}
         onCancel={cancelarEliminacion}
         eliminacionExitosa={eliminacionExitosa}
@@ -175,11 +171,11 @@ const ListaClientes = () => {
         cargando={idClienteDetalle && !clienteEditado}
         colores={colores}
         onClose={cerrarModalDetalle}
-        onToggleEdicion={toggleModoEdicion}
-        onChange={handleClienteChange}
-        onImageChange={handleImagenChange}
+        onToggleEdicion={alternarModoEdicion}
+        onChange={alCambiarCliente}
+        onImageChange={alCambiarImagen}
         imagenSubiendo={imagenSubiendo}
-        imagenError={imagenError}
+        imagenError={errorImagen}
       />
     </>
   );

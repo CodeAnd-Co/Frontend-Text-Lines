@@ -4,26 +4,27 @@ import Texto from '@Atomos/Texto';
 import PropTypes from 'prop-types';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
-import { Alert, Box } from '@mui/material'; // Añadir Box
+import { Alert, Box } from '@mui/material'; // Importa Box y Alert de MUI
 
+// Componente que muestra un modal con los detalles de un cliente
 export const DetalleClienteModal = ({
-  open,
-  cliente,
-  modoEdicion,
-  cargando,
-  colores,
-  onClose,
-  onToggleEdicion,
-  onChange,
-  onImageChange,
-  imagenSubiendo,
-  imagenError,
+  open, // Booleano que indica si el modal está abierto
+  cliente, // Objeto con la información del cliente
+  modoEdicion, // Booleano que indica si está en modo de edición
+  cargando, // Booleano que indica si los datos están cargando
+  colores, // Objeto con la paleta de colores
+  onClose, // Función para cerrar el modal
+  onToggleEdicion, // Función para alternar entre edición y visualización
+  onChange, // Función que se llama cuando hay cambios en los datos
+  onImageChange, // Función que se llama cuando se cambia la imagen
+  imagenSubiendo, // Booleano que indica si una imagen se está subiendo
+  imagenError, // Mensaje de error si falla la carga de imagen
 }) => {
-  const { usuario } = useAuth();
+  const { usuario } = useAuth(); // Obtiene el usuario autenticado
 
-  // Verificar si hay campos vacíos para deshabilitar el botón
-  const camposInvalidos
-    = modoEdicion && cliente ? !cliente.nombreLegal?.trim() || !cliente.nombreVisible?.trim() : false;
+  // Verifica si los campos obligatorios están vacíos cuando se está editando
+  const camposInvalidos =
+    modoEdicion && cliente ? !cliente.nombreLegal?.trim() || !cliente.nombreVisible?.trim() : false;
 
   return (
     open && (
@@ -40,12 +41,16 @@ export const DetalleClienteModal = ({
             color: 'error',
             backgroundColor: colores.altertex[1],
             onClick: onToggleEdicion,
-            // Deshabilitar botón si campos vacíos, hay error o no se tienen permisos
+            // Desactiva el botón si:
+            // - no hay cliente
+            // - el usuario no tiene permiso
+            // - hay error de imagen
+            // - campos requeridos están vacíos
             disabled:
-              !cliente
-              || !usuario?.permisos?.includes(PERMISOS.ACTUALIZAR_CLIENTE)
-              || !!imagenError
-              || camposInvalidos,
+              !cliente ||
+              !usuario?.permisos?.includes(PERMISOS.ACTUALIZAR_CLIENTE) ||
+              !!imagenError ||
+              camposInvalidos,
           },
           {
             label: 'SALIR',
@@ -86,6 +91,7 @@ export const DetalleClienteModal = ({
   );
 };
 
+// Validación de props para el componente
 DetalleClienteModal.propTypes = {
   open: PropTypes.bool.isRequired,
   cliente: PropTypes.object,

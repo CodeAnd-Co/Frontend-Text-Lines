@@ -6,39 +6,39 @@ import GrupoBotones from '@Moleculas/GrupoBotones';
 import { tokens } from '@SRC/theme';
 
 const ModalLeerCliente = ({
-  open,
-  onClose,
-  onConfirm,
+  abierto,
+  alCerrar,
+  alConfirmar,
   titulo = 'Título',
-  tituloVariant = 'h6',
-  confirmLabel = 'Guardar',
-  cancelLabel = 'Cancelar',
+  varianteTitulo = 'h6',
+  etiquetaConfirmar = 'Guardar',
+  etiquetaCancelar = 'Cancelar',
   botones = null,
-  children,
-  errorPanel = null, // Nuevo prop para el panel de error
+  contenido,
+  panelError = null,
 }) => {
-  const theme = useTheme();
-  const colores = tokens(theme.palette.mode);
+  const tema = useTheme();
+  const colores = tokens(tema.palette.mode);
 
-  const defaultBotones = [
+  const botonesPredeterminados = [
     {
-      label: cancelLabel,
+      label: etiquetaCancelar,
       variant: 'outlined',
-      onClick: onClose,
+      onClick: alCerrar,
       outlineColor: colores.altertex[1],
     },
     {
-      label: confirmLabel,
+      label: etiquetaConfirmar,
       variant: 'contained',
-      onClick: onConfirm,
+      onClick: alConfirmar,
       backgroundColor: colores.altertex[1],
     },
   ];
 
   return (
     <Modal
-      open={open}
-      onClose={onClose}
+      open={abierto}
+      onClose={alCerrar}
       slotProps={{
         backdrop: {
           sx: {
@@ -56,7 +56,7 @@ const ModalLeerCliente = ({
           transform: 'translate(-50%, -50%)',
           maxHeight: '80vh',
           overflowY: 'auto',
-          bgcolor: theme.palette.background.paper,
+          bgcolor: tema.palette.background.paper,
           boxShadow: 24,
           borderRadius: 2,
           padding: 3,
@@ -67,37 +67,41 @@ const ModalLeerCliente = ({
       >
         {titulo && (
           <Texto
-            variant={tituloVariant}
+            variant={varianteTitulo}
             gutterBottom
-            sx={{ color: theme.palette.text.primary }}
+            sx={{ color: tema.palette.text.primary }}
             mb={4}
           >
             {titulo}
           </Texto>
         )}
 
-        {children}
+        {contenido}
 
-        {/* Panel de error arriba de los botones */}
-        {errorPanel}
+        {panelError}
 
-        <GrupoBotones buttons={botones ?? defaultBotones} spacing={1} direction='row' align='end' />
+        <GrupoBotones
+          buttons={botones ?? botonesPredeterminados}
+          spacing={1}
+          direction='row'
+          align='end'
+        />
       </Paper>
     </Modal>
   );
 };
 
 ModalLeerCliente.propTypes = {
-  open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  onConfirm: PropTypes.func.isRequired,
+  abierto: PropTypes.bool.isRequired,
+  alCerrar: PropTypes.func.isRequired,
+  alConfirmar: PropTypes.func.isRequired,
   titulo: PropTypes.string,
-  tituloVariant: PropTypes.string,
-  confirmLabel: PropTypes.string,
-  cancelLabel: PropTypes.string,
+  varianteTitulo: PropTypes.string,
+  etiquetaConfirmar: PropTypes.string,
+  etiquetaCancelar: PropTypes.string,
   botones: PropTypes.array,
-  children: PropTypes.node.isRequired,
-  errorPanel: PropTypes.node, // Nuevo prop
+  contenido: PropTypes.node.isRequired,
+  panelError: PropTypes.node,
 };
 
 export default ModalLeerCliente;

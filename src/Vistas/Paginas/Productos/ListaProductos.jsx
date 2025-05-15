@@ -1,7 +1,7 @@
 //RF[26] Crea Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF26]
 //RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
 //RF[30] Elimina Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF30]
-import { Box, useTheme } from '@mui/material';
+import { Box, useTheme, Chip } from '@mui/material';
 import { useState, useCallback } from 'react';
 import Tabla from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';
@@ -14,7 +14,6 @@ import { useEliminarProductos } from '@Hooks/Productos/useEliminarProductos';
 import { tokens } from '@SRC/theme';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
-
 const ListaProductos = () => {
   const { productos, cargando, error, recargar } = useConsultarProductos();
   const { eliminar } = useEliminarProductos();
@@ -117,20 +116,15 @@ const ListaProductos = () => {
       flex: 1,
       cellClassName: 'estado-row--cell',
       renderCell: ({ row: { estado } }) => (
-        <Box
-          width='110px'
-          height='50%'
-          m='10px auto'
-          p='15px'
-          display='flex'
-          justifyContent='center'
-          alignItems='center'
-          color={estado === 1 ? colores.primario[4] : colores.texto[1]}
-          backgroundColor={estado === 1 ? colores.altertex[1] : colores.acciones[1]}
-          borderRadius='4px'
-        >
-          {estado === 1 ? 'Disponible' : 'No disponible'}
-        </Box>
+        <Chip
+          label={estado === 1 ? 'Disponible' : 'No disponible'}
+          variant='filled'
+          color={estado === 1 ? 'primary' : undefined}
+          size='medium'
+          shape='cuadrada'
+          backgroundColor={estado === 1 ? undefined : '#f0f0f0'}
+          textColor={estado === 1 ? undefined : '#000000'}
+        />
       ),
     },
   ];

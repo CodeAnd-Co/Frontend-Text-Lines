@@ -117,7 +117,7 @@ const ModalCrearGrupoEmpleado = ({ abierto = false, onCerrar, onCreado }) => {
           mensaje={mensajeError}
           cerrable
           onClose={() => setMensajeError('')}
-          sx={{ mt: 2 }}
+          sx={{ mt: 2, mb: 2 }}
         />
       )}
     </ModalFlotante>

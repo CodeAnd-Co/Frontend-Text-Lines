@@ -81,6 +81,9 @@ const FormaCrearGrupoEmpleados = ({
         onChange={(evento) => setNombreGrupo(evento.target.value)}
         error={!!errores.nombreGrupo}
         helperText={errores.nombreGrupo}
+        inputProps={{
+          maxLength: 50,
+        }}
       />
 
       {/* Modal para selección de empleados mediante checkboxes */}
@@ -114,6 +117,9 @@ const FormaCrearGrupoEmpleados = ({
         onChange={(evento) => setDescripcion(evento.target.value)}
         error={!!errores.descripcion}
         helperText={errores.descripcion}
+        inputProps={{
+          maxLength: 150,
+        }}
       />
     </>
   );

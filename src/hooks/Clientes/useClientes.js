@@ -1,341 +1,354 @@
 import { useState, useEffect, useRef } from 'react';
 import Cookies from 'js-cookie';
-import { useConsultarClientes as useFetchClients } from '@Hooks/Clientes/useConsultarClientes';
-import { useSeleccionarCliente as useSelectClient } from '@Hooks/Clientes/useSeleccionarCliente';
-import { useEliminarCliente as useDeleteClient } from '@Hooks/Clientes/useEliminarCliente';
-import { useClientePorId as useClientById } from '@Hooks/Clientes/useLeerCliente';
-import { RepositorioActualizarCliente as ClientUpdateRepository } from '@Repositorios/Clientes/repositorioActualizarCliente';
+import { useConsultarClientes } from '@Hooks/Clientes/useConsultarClientes';
+import { useSeleccionarCliente } from '@Hooks/Clientes/useSeleccionarCliente';
+import { useEliminarCliente } from '@Hooks/Clientes/useEliminarCliente';
+import { useClientePorId } from '@Hooks/Clientes/useLeerCliente';
+import { RepositorioActualizarCliente } from '@Repositorios/Clientes/repositorioActualizarCliente';
 
-// RF14 - Update Client - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF14
+// RF14 - Actualiza Cliente - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF14
 
-export const useClients = () => {
-  // Clients data
-  const { clientes: originalClients, cargando: loading, error } = useFetchClients();
-  const [clients, setClients] = useState([]);
-  const { seleccionarCliente: selectClient } = useSelectClient();
+export const useClientes = () => {
+  // Datos de clientes
+  const { clientes: clientesOriginales, cargando, error } = useConsultarClientes();
+  const [clientes, setClientes] = useState([]);
+  const { seleccionarCliente } = useSeleccionarCliente();
 
-  // Deletion state
-  const [deleteId, setDeleteId] = useState(null);
-  const [deletionSuccess, setDeletionSuccess] = useState(false);
-  const [deletionMode, setDeletionMode] = useState(false);
-  const [clientToDelete, setClientToDelete] = useState(null);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  // Estados relacionados con la eliminación
+  const [idEliminar, setIdEliminar] = useState(null);
+  const [eliminacionExitosa, setEliminacionExitosa] = useState(false);
+  const [modoEliminacion, setModoEliminacion] = useState(false);
+  const [clienteEliminar, setClienteEliminar] = useState(null);
+  const [modalEliminacionAbierto, setModalEliminacionAbierto] = useState(false);
 
-  // Refs for long press handling
-  const pressTimer = useRef(null);
-  const ignoreFirstClick = useRef(false);
+  // Referencias para manejar gestos
+  const tiempoPresionado = useRef(null);
+  const ignorarPrimerClick = useRef(false);
 
-  // Detail modal state
-  const [clientDetailId, setClientDetailId] = useState(null);
-  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [editedClient, setEditedClient] = useState(null);
+  // Estados del modal de detalle
+  const [idClienteDetalle, setIdClienteDetalle] = useState(null);
+  const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
+  const [modoEdicion, setModoEdicion] = useState(false);
+  const [clienteEditado, setClienteEditado] = useState(null);
 
-  // Image handling state
-  const [uploadingImage, setUploadingImage] = useState(false);
-  const [imageError, setImageError] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [imageFile, setImageFile] = useState(null);
+  // Estados para imagen
+  const [imagenSubiendo, setImagenSubiendo] = useState(false);
+  const [imagenError, setImagenError] = useState(null);
+  const [imagenPreview, setImagenPreview] = useState(null);
+  const [imagenFile, setImagenFile] = useState(null);
 
-  // Hooks for deletion and detail fetching
-  const { error: deletionError } = useDeleteClient(
-    deleteId,
-    setDeletionSuccess,
-    (deletedClientId) => {
-      setClients((prev) => prev.filter((c) => c.idCliente !== deletedClientId));
+  // Hook de eliminación y detalles
+  const { error: errorEliminacion } = useEliminarCliente(
+    idEliminar,
+    setEliminacionExitosa,
+    (idClienteEliminado) => {
+      setClientes((prev) => prev.filter((cliente) => cliente.idCliente !== idClienteEliminado));
       Cookies.remove('imagenClienteSeleccionado');
       Cookies.remove('nombreClienteSeleccionado');
-      selectClient(null);
-      setDeleteId(null);
+      seleccionarCliente(null);
+      setIdEliminar(null);
     }
   );
 
   const {
-    cliente: client,
-    cargando: loadingDetail,
-    error: detailError,
-  } = useClientById(isDetailModalOpen ? clientDetailId : null);
+    cliente,
+    cargando: cargandoDetalle,
+    error: errorDetalle,
+  } = useClientePorId(modalDetalleAbierto ? idClienteDetalle : null);
 
+  // Sincronizar clientes
   useEffect(() => {
-    if (originalClients) {
-      setClients(originalClients);
+    if (clientesOriginales) {
+      setClientes(clientesOriginales);
     }
-  }, [originalClients]);
+  }, [clientesOriginales]);
 
+  // Cuando se abre el modal, cargar el cliente en edición
   useEffect(() => {
-    if (client) {
-      setEditedClient(client);
-      setImagePreview(client.urlImagen || null);
-      setImageFile(null);
-      setImageError(null);
+    if (cliente) {
+      setClienteEditado(cliente);
+      setImagenPreview(cliente.urlImagen || null);
+      setImagenFile(null);
+      setImagenError(null);
     }
-  }, [client]);
+  }, [cliente]);
 
+  // Liberar memoria del preview cuando se desmonta
   useEffect(() => {
     return () => {
-      if (imagePreview && imagePreview.startsWith('blob:')) {
-        URL.revokeObjectURL(imagePreview);
+      if (imagenPreview && imagenPreview.startsWith('blob:')) {
+        URL.revokeObjectURL(imagenPreview);
       }
     };
-  }, [imagePreview]);
+  }, [imagenPreview]);
 
+  // Manejar clic fuera para cerrar modo eliminación
   useEffect(() => {
-    const handleClickOutside = () => {
-      if (ignoreFirstClick.current) {
-        ignoreFirstClick.current = false;
+    const manejarClickFuera = () => {
+      if (ignorarPrimerClick.current) {
+        ignorarPrimerClick.current = false;
         return;
       }
-      if (deletionMode) {
-        setDeletionMode(false);
+      if (modoEliminacion) {
+        setModoEliminacion(false);
       }
     };
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, [deletionMode]);
+    document.addEventListener('click', manejarClickFuera);
+    return () => document.removeEventListener('click', manejarClickFuera);
+  }, [modoEliminacion]);
 
-  const handlePressStart = () => {
-    pressTimer.current = setTimeout(() => {
-      setDeletionMode(true);
-      ignoreFirstClick.current = true;
+  // Manejo de presionado largo
+  const handleInicioPresionado = () => {
+    tiempoPresionado.current = setTimeout(() => {
+      setModoEliminacion(true);
+      ignorarPrimerClick.current = true;
     }, 800);
   };
 
-  const handlePressEnd = () => {
-    if (!deletionMode) {
-      clearTimeout(pressTimer.current);
+  const handleFinPresionado = () => {
+    if (!modoEliminacion) {
+      clearTimeout(tiempoPresionado.current);
     }
   };
 
-  const handleClientClick = (clientId, imageUrl, commercialName) => {
-    const id = parseInt(clientId, 10);
-    selectClient(id);
-    Cookies.set('imagenClienteSeleccionado', imageUrl, { expires: 1 });
-    Cookies.set('nombreClienteSeleccionado', commercialName, { expires: 1 });
+  // Clic en cliente
+  const handleClienteClick = (clienteId, urlImagen, nombreComercial) => {
+    const idCliente = parseInt(clienteId, 10);
+    seleccionarCliente(idCliente);
+    Cookies.set('imagenClienteSeleccionado', urlImagen, { expires: 1 });
+    Cookies.set('nombreClienteSeleccionado', nombreComercial, { expires: 1 });
   };
 
-  const handleIconClick = (client, inDeletionMode) => {
-    if (inDeletionMode) {
-      openDeleteModal(client);
+  const handleIconoClick = (cliente, enModoEliminacion) => {
+    if (enModoEliminacion) {
+      abrirModalEliminar(cliente);
     } else {
-      openDetailModal(client.idCliente);
+      abrirModalDetalle(cliente.idCliente);
     }
   };
 
-  const openDeleteModal = (client) => {
-    setClientToDelete(client);
-    setIsDeleteModalOpen(true);
+  // Modal de eliminación
+  const abrirModalEliminar = (cliente) => {
+    setClienteEliminar(cliente);
+    setModalEliminacionAbierto(true);
   };
 
-  const confirmDelete = () => {
-    if (!clientToDelete) return;
-    setDeleteId(clientToDelete.idCliente);
-    setIsDeleteModalOpen(false);
-    setClientToDelete(null);
+  const confirmarEliminacion = () => {
+    if (!clienteEliminar) return;
+    setIdEliminar(clienteEliminar.idCliente);
+    setModalEliminacionAbierto(false);
+    setClienteEliminar(null);
   };
 
-  const cancelDelete = () => {
-    setIsDeleteModalOpen(false);
-    setClientToDelete(null);
+  const cancelarEliminacion = () => {
+    setModalEliminacionAbierto(false);
+    setClienteEliminar(null);
   };
 
-  const openDetailModal = (clientId) => {
-    setClientDetailId(clientId);
-    setIsDetailModalOpen(true);
+  // Modal de detalle
+  const abrirModalDetalle = (clienteId) => {
+    setIdClienteDetalle(clienteId);
+    setModalDetalleAbierto(true);
   };
 
-  const closeDetailModal = () => {
-    setIsEditMode(false);
-    setIsDetailModalOpen(false);
-    setImagePreview(null);
-    setImageFile(null);
-    setImageError(null);
+  const cerrarModalDetalle = () => {
+    setModoEdicion(false);
+    setModalDetalleAbierto(false);
+    setImagenPreview(null);
+    setImagenFile(null);
+    setImagenError(null);
   };
 
-  const toggleEditMode = async () => {
-    if (isEditMode) {
+  // Cambiar entre modo edición y guardar cambios
+  const toggleModoEdicion = async () => {
+    if (modoEdicion) {
       try {
-        if (!client) return;
+        if (!cliente) return;
 
-        const requiredFields = ['nombreLegal', 'nombreVisible'];
+        // Validaciones
+        const camposObligatorios = ['nombreLegal', 'nombreVisible'];
         const MAX_LENGTH = 100;
 
-        for (const field of requiredFields) {
-          const value = editedClient[field];
-          if (!value || value.trim() === '') {
-            setImageError(`The field ${field} is required and cannot be blank`);
+        for (const campo of camposObligatorios) {
+          if (!clienteEditado[campo]) {
+            setImagenError(`El campo ${campo} es obligatorio`);
             return;
           }
-          if (value.length > MAX_LENGTH) {
-            setImageError(`The field ${field} must be less than ${MAX_LENGTH} characters`);
+
+          if (clienteEditado[campo].trim() === '') {
+            setImagenError(`El campo ${campo} no puede contener solo espacios en blanco`);
+            return;
+          }
+
+          if (clienteEditado[campo].length > MAX_LENGTH) {
+            setImagenError(`El campo ${campo} no puede exceder los ${MAX_LENGTH} caracteres`);
             return;
           }
         }
 
-        if (imageFile) {
-          const validTypes = ['image/jpeg', 'image/jpg'];
-          if (!validTypes.includes(imageFile.type.toLowerCase())) {
-            setImageError('Only JPG or JPEG images are allowed.');
+        if (imagenFile) {
+          const validJpgTypes = ['image/jpeg', 'image/jpg'];
+          if (!validJpgTypes.includes(imagenFile.type.toLowerCase())) {
+            setImagenError('Solo se permiten imágenes en formato JPG o JPEG.');
             return;
           }
 
           const MAX_SIZE = 5 * 1024 * 1024;
-          if (imageFile.size > MAX_SIZE) {
-            setImageError('Image must be smaller than 5MB.');
+          if (imagenFile.size > MAX_SIZE) {
+            setImagenError('La imagen no debe exceder 5MB de tamaño');
             return;
           }
         }
 
-        const changes = {};
-        let hasChanges = false;
+        const cambios = {};
+        let tieneOtrosCambios = false;
 
-        Object.keys(editedClient).forEach((key) => {
+        Object.keys(clienteEditado).forEach((key) => {
           if (['urlImagen', 'createdAt', 'updatedAt'].includes(key)) return;
-          if (editedClient[key] !== client[key]) {
-            changes[key] = editedClient[key];
-            hasChanges = true;
+          if (clienteEditado[key] !== cliente[key]) {
+            cambios[key] = clienteEditado[key];
+            tieneOtrosCambios = true;
           }
         });
 
-        if (editedClient.nombreVisible !== client.nombreVisible) {
-          changes.nombreComercial = editedClient.nombreVisible;
+        if (clienteEditado.nombreVisible !== cliente.nombreVisible) {
+          cambios.nombreComercial = clienteEditado.nombreVisible;
         }
 
-        if (hasChanges || imageFile) {
-          setUploadingImage(true);
-          setImageError(null);
+        if (tieneOtrosCambios || imagenFile) {
+          setImagenSubiendo(true);
+          setImagenError(null);
 
           const formData = new FormData();
-          formData.append('idCliente', editedClient.idCliente);
-
-          Object.entries(changes).forEach(([key, value]) => {
+          formData.append('idCliente', clienteEditado.idCliente);
+          Object.entries(cambios).forEach(([key, value]) => {
             formData.append(key, value);
           });
 
-          if (imageFile) {
-            formData.append('imagen', imageFile);
+          if (imagenFile) {
+            formData.append('imagen', imagenFile);
           }
 
-          await ClientUpdateRepository.actualizarClienteConImagen(formData);
+          await RepositorioActualizarCliente.actualizarClienteConImagen(formData);
 
-          setClients((prev) =>
-            prev.map((c) =>
-              c.idCliente === editedClient.idCliente
-                ? { ...c, ...changes, ...(imageFile ? { urlImagen: imagePreview } : {}) }
-                : c
-            )
+          setClientes((prevClientes) =>
+            prevClientes.map((cliente) => {
+              if (cliente.idCliente === clienteEditado.idCliente) {
+                return {
+                  ...cliente,
+                  ...cambios,
+                  ...(imagenFile ? { urlImagen: imagenPreview } : {}),
+                };
+              }
+              return cliente;
+            })
           );
         }
 
-        setIsEditMode(false);
+        setModoEdicion(false);
       } catch {
-        setImageError('Error saving changes. Please try again.');
+        setImagenError('Error al guardar los cambios. Intente nuevamente.');
       } finally {
-        setUploadingImage(false);
+        setImagenSubiendo(false);
       }
     } else {
-      setIsEditMode(true);
+      setModoEdicion(true);
     }
   };
 
-  const handleClientChange = (event) => {
+  // Cambios en inputs
+  const handleClienteChange = (event) => {
     const { name, value } = event.target;
     const MAX_LENGTH = 100;
 
     if (value.length > MAX_LENGTH) {
-      setImageError(`The field ${name} must be less than ${MAX_LENGTH} characters`);
+      setImagenError(`El campo ${name} no puede exceder los ${MAX_LENGTH} caracteres`);
       return;
     }
 
-    setEditedClient((prev) => ({
+    setClienteEditado((prev) => ({
       ...prev,
       [name]: value,
     }));
 
-    if (imageError) {
-      if (imageError.includes('characters') && value.length <= MAX_LENGTH) {
-        setImageError(null);
-      } else if (imageError.includes('blank') && value.trim() !== '') {
-        setImageError(null);
-      } else if (imageError.includes(name)) {
-        setImageError(null);
+    if (imagenError) {
+      if (imagenError.includes('caracteres') && value.length <= MAX_LENGTH) {
+        setImagenError(null);
+      } else if (imagenError.includes('espacios en blanco') && value.trim() !== '') {
+        setImagenError(null);
+      } else if (imagenError.includes(name)) {
+        setImagenError(null);
       }
     }
   };
 
-  const handleImageChange = (imageData) => {
+  // Manejo de imagen subida
+  const handleImagenChange = (imageData) => {
     if (imageData.error) {
-      setImageError(imageData.error);
+      setImagenError(imageData.error);
       return;
     }
 
     if (!imageData.file) {
-      setImageError(null);
+      setImagenError(null);
       return;
     }
 
-    const validTypes = ['image/jpeg', 'image/jpg'];
-    if (!validTypes.includes(imageData.file.type.toLowerCase())) {
-      setImageError('Only JPG or JPEG images are allowed.');
+    const validJpgTypes = ['image/jpeg', 'image/jpg'];
+    if (!validJpgTypes.includes(imageData.file.type.toLowerCase())) {
+      setImagenError('Solo se permiten imágenes en formato JPG o JPEG.');
       return;
     }
 
     const MAX_SIZE = 5 * 1024 * 1024;
     if (imageData.file.size > MAX_SIZE) {
-      setImageError('Image must be smaller than 5MB.');
+      setImagenError('La imagen no debe exceder 5MB de tamaño');
       return;
     }
 
-    setImageError(null);
-
-    setImageFile(imageData.file);
+    setImagenError(null);
+    setImagenFile(imageData.file);
     const preview = imageData.preview || URL.createObjectURL(imageData.file);
-    setImagePreview(preview);
+    setImagenPreview(preview);
 
-    setEditedClient((prev) => ({
+    setClienteEditado((prev) => ({
       ...prev,
       urlImagen: preview,
     }));
   };
 
-  const closeSuccessAlert = () => {
-    setDeletionSuccess(false);
+  const cerrarAlertaExito = () => {
+    setEliminacionExitosa(false);
   };
 
   return {
-    // State
-    clients,
-    loading,
+    clientes,
+    cargando,
     error,
-    deletionMode,
-    clientToDelete,
-    isDeleteModalOpen,
-    clientDetailId,
-    isDetailModalOpen,
-    editedClient,
-    isEditMode,
-    loadingDetail,
-    detailError,
-    deletionSuccess,
-    deletionError,
-
-    // Image state
-    uploadingImage,
-    imageError,
-    imagePreview,
-
-    // Handlers
-    handleClientClick,
-    handleIconClick,
-    handlePressStart,
-    handlePressEnd,
-    confirmDelete,
-    cancelDelete,
-    closeDetailModal,
-    toggleEditMode,
-    handleClientChange,
-    closeSuccessAlert,
-
-    // Image handlers
-    handleImageChange,
+    modoEliminacion,
+    clienteEliminar,
+    modalEliminacionAbierto,
+    idClienteDetalle,
+    modalDetalleAbierto,
+    clienteEditado,
+    modoEdicion,
+    cargandoDetalle,
+    errorDetalle,
+    eliminacionExitosa,
+    errorEliminacion,
+    imagenSubiendo,
+    imagenError,
+    imagenPreview,
+    handleClienteClick,
+    handleIconoClick,
+    handleInicioPresionado,
+    handleFinPresionado,
+    confirmarEliminacion,
+    cancelarEliminacion,
+    cerrarModalDetalle,
+    toggleModoEdicion,
+    handleClienteChange,
+    cerrarAlertaExito,
+    handleImagenChange,
   };
 };

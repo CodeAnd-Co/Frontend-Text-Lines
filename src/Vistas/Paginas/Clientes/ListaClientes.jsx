@@ -14,6 +14,7 @@ import { DetalleClienteModal } from '@Organismos/Clientes/DetalleClienteModal';
 import { RUTAS } from '@Utilidades/Constantes/rutas';
 import { useClientes } from '@Hooks/Clientes/useClientes';
 import { useAuth } from '@Hooks/AuthProvider';
+import { PERMISOS } from '@SRC/Utilidades/Constantes/permisos';
 
 // Estilos
 const estiloImagenLogo = { marginRight: '1rem' };
@@ -32,7 +33,7 @@ const ListaClientes = () => {
   const tema = useTheme();
   const colores = tokens(tema.palette.mode);
   const navegar = useNavigate();
-  const { cerrarSesion } = useAuth();
+  const { usuario, cerrarSesion } = useAuth();
 
   const {
     clientes,
@@ -151,11 +152,13 @@ const ListaClientes = () => {
               onClienteClick={handleClienteClick}
               onIconoClick={handleIconoClick}
             />
-            <TarjetaAccion
-              icono='Add'
-              texto='Agregar cliente'
-              onClick={() => console.log('Agregar cliente')}
-            />
+            {usuario?.permisos?.includes(PERMISOS.CREAR_CLIENTE) && (
+              <TarjetaAccion
+                icono='Add'
+                texto='Agregar cliente'
+                onClick={() => console.log('Agregar cliente')}
+              />
+            )}
           </Box>
         )}
       </Box>

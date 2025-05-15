@@ -1,4 +1,3 @@
-// Importación de hooks de React y componentes del sistema de diseño.
 import { useState, useEffect } from 'react';
 import { useCrearGrupoEmpleados } from '@Hooks/Empleados/useCrearGrupoEmpleados';
 import FormaCrearGrupoEmpleados from '@Organismos/Formularios/FormaCrearGrupoEmpleado';
@@ -26,7 +25,6 @@ const ModalCrearGrupoEmpleado = ({ abierto = false, onCerrar, onCreado }) => {
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const [intentoEnviar, setIntentoEnviar] = useState(false);
 
-  // Hook personalizado para guardar el grupo
   const {
     handleGuardarGrupoEmpleados,
     errores,
@@ -44,9 +42,8 @@ const ModalCrearGrupoEmpleado = ({ abierto = false, onCerrar, onCreado }) => {
       setIntentoEnviar(false);
       limpiarErrores();
     }
-  }, [abierto]); // ✅ gracias a useCallback, no incluimos limpiarErrores
+  }, [abierto, limpiarErrores]); 
 
-  // Efecto: muestra mensaje de error por 3 segundos
   useEffect(() => {
     if (mensajeError) {
       const tiempo = setTimeout(() => {

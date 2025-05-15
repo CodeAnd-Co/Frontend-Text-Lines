@@ -1,6 +1,3 @@
-// RepositorioCrearGrupoEmpleado.js
-
-// Importa Axios para realizar solicitudes HTTP al backend.
 import axios from 'axios';
 
 // URL base y clave API definidas en variables de entorno (.env).

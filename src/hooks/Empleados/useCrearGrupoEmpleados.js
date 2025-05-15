@@ -3,6 +3,17 @@ import { crearGrupoEmpleados } from '@Repositorios/Empleados/RepositorioCrearGru
 import { validarDatosCrearGrupoEmpleado } from '@Modelos/Empleados/modeloCrearGrupoEmpleado';
 import { useConsultarGrupos } from '@Hooks/Empleados/useConsultarGrupos';
 
+/**
+ * Hook personalizado para gestionar la creación de grupos de empleados.
+ * Proporciona manejo de errores, validación y envío de datos al backend.
+ *
+ * @returns {{
+ *   errores: Object,
+ *   handleGuardarGrupoEmpleados: (datosGrupo: Object) => Promise<{exito: boolean, mensaje?: string, errores?: Object}>,
+ *   limpiarErrores: () => void
+ * }}
+ */
+
 export const useCrearGrupoEmpleados = () => {
   const { grupos } = useConsultarGrupos();
 
@@ -48,6 +59,9 @@ export const useCrearGrupoEmpleados = () => {
     }
   };
 
+    /**
+   * Limpia los errores de validación actuales.
+   */
   const limpiarErrores = () => {
     setErrores({});
   };

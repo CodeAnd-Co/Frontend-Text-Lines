@@ -1,4 +1,3 @@
-// Importación de hooks y componentes necesarios desde React y el sistema de diseño del proyecto.
 import { useEffect, useState } from 'react';
 import CampoTexto from '@Atomos/CampoTexto';
 import Alerta from '@Moleculas/Alerta';
@@ -35,7 +34,7 @@ const FormaCrearGrupoEmpleados = ({
   errores,
   intentoEnviar,
 }) => {
-  const { empleados, cargando, error } = useConsultarEmpleados(); // Hook para obtener empleados desde el backend.
+  const { empleados, cargando, error } = useConsultarEmpleados(); 
 
   const [mostrarAlertaEmpleados, setMostrarAlertaEmpleados] = useState(false); // Controla visibilidad de la alerta de validación de empleados.
 

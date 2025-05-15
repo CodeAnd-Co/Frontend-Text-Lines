@@ -4,7 +4,7 @@ import Texto from '@Atomos/Texto';
 import PropTypes from 'prop-types';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
-import { Alert, Box } from '@mui/material'; // Añadir Box
+import { Alert } from '@mui/material'; // Añadir Box
 
 export const DetalleClienteModal = ({
   open,
@@ -14,6 +14,7 @@ export const DetalleClienteModal = ({
   colores,
   onClose,
   onToggleEdicion,
+  onToggleEliminar,
   onChange,
   onImageChange,
   imagenSubiendo,
@@ -34,6 +35,12 @@ export const DetalleClienteModal = ({
         titulo={cliente?.nombreVisible || 'Cargando...'}
         tituloVariant='h4'
         botones={[
+          {
+            label: 'ELIMINAR',
+            variant: 'outlined',
+            outlineColor: colores.rojo[2],
+            onClick: onToggleEliminar,
+          },
           {
             label: modoEdicion ? 'GUARDAR' : 'EDITAR',
             variant: 'contained',
@@ -94,6 +101,7 @@ DetalleClienteModal.propTypes = {
   colores: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
   onToggleEdicion: PropTypes.func.isRequired,
+  onToggleEliminar: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onImageChange: PropTypes.func,
   imagenSubiendo: PropTypes.bool,

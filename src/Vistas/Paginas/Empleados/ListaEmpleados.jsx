@@ -98,6 +98,7 @@ const ListaGrupoEmpleados = () => {
       color: 'primary',
       size: 'large',
       outlineColor: colores.primario[10],
+      disabled: !usuario?.permisos?.includes(PERMISOS.IMPORTAR_EMPLEADOS),
     },
     {
       variant: 'outlined',

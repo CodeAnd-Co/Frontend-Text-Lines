@@ -1,5 +1,5 @@
 //RF1 - Crear Usuario - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF1
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Box, Grid } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -33,15 +33,43 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
   const { errores, handleGuardarUsuario } = useCrearUsuario();
   const { roles, cargando } = useConsultarRoles();
   const { clientes } = useConsultarClientes();
-
+  const esSuperAdmin = datosUsuario.rol === 1;
   const CAMPO_OBLIGATORIO = 'Este campo es obligatorio';
+
+  const rolAnterior = useRef(null);
+
+useEffect(() => {
+  // Solo limpiar clientes si el rol cambió desde Super Admin a otro
+  if (rolAnterior.current === 1 && datosUsuario.rol !== 1) {
+    manejarCambio({
+      target: {
+        name: 'cliente',
+        value: [],
+      },
+    });
+  }
+
+  // Si es Super Admin, seleccionar todos los clientes
+  if (datosUsuario.rol === 1 && clientes.length > 0) {
+    manejarCambio({
+      target: {
+        name: 'cliente',
+        value: clientes.map((cliente) => cliente.idCliente),
+      },
+    });
+  }
+
+  // Guardar el rol actual para la próxima ejecución
+  rolAnterior.current = datosUsuario.rol;
+}, [datosUsuario.rol, clientes]);
 
   const manejarConfirmacion = async () => {
     const resultado = await handleGuardarUsuario(datosUsuario);
 
     if (resultado?.mensaje) {
+      console.log(datosUsuario)
       if (resultado.exito) {
-        if (onUsuarioCreado) await onUsuarioCreado();
+        //if (onUsuarioCreado) await onUsuarioCreado();
         const resumenUsuario = `
           Usuario ${datosUsuario.nombreCompleto} ${datosUsuario.apellido} creado exitosamente.
         `;
@@ -65,6 +93,10 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
           cliente: [],
           rol: '',
         });
+        setTimeout(async () => {
+          if (onUsuarioCreado) await onUsuarioCreado(); // mover aquí
+          manejarCierre();
+        }, 2500);
       } else {
         setAlerta({
           tipo: 'error',
@@ -96,6 +128,7 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
   };
 
   return (
+    <>
     <ModalFlotante
       open={open}
       onClose={manejarCierre}
@@ -238,6 +271,26 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
           </Grid>
 
           <Grid size={6} sx={estiloCuadricula}>
+            <CampoSelect
+              label='Rol'
+              name='rol'
+              value={datosUsuario.rol}
+              onChange={manejarCambio}
+              required
+              size='medium'
+              error={!!errores.rol}
+              helperText={errores.rol && CAMPO_OBLIGATORIO}
+              options={roles
+                .filter((rol) => rol.idRol !== 3)
+                .map((rol) => ({
+                value: rol.idRol,
+                label: rol.nombre,
+              }))}
+              disabled={cargando}
+            />
+          </Grid>
+
+          <Grid size={6} sx={estiloCuadricula}>
             <CampoSelectMultiple
               label='Cliente'
               name='cliente'
@@ -251,24 +304,7 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
                 value: cliente.idCliente,
                 label: cliente.nombreComercial,
               }))}
-            />
-          </Grid>
-
-          <Grid size={6} sx={estiloCuadricula}>
-            <CampoSelect
-              label='Rol'
-              name='rol'
-              value={datosUsuario.rol}
-              onChange={manejarCambio}
-              required
-              size='medium'
-              error={!!errores.rol}
-              helperText={errores.rol && CAMPO_OBLIGATORIO}
-              options={roles.map((rol) => ({
-                value: rol.idRol,
-                label: rol.nombre,
-              }))}
-              disabled={cargando}
+              disabled={esSuperAdmin}
             />
           </Grid>
 
@@ -309,17 +345,18 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
           </Grid>
         </Grid>
       </Box>
-
-      {alerta && (
+    </ModalFlotante>
+    {alerta && (
         <Alerta
           sx={{ marginBottom: 2 }}
           tipo={alerta.tipo}
           mensaje={alerta.mensaje}
           duracion='4000'
           onClose={() => setAlerta(null)}
+          centradoInferior
         />
       )}
-    </ModalFlotante>
+    </>
   );
 };
 

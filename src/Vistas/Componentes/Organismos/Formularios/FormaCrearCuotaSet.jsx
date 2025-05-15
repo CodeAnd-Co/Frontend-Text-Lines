@@ -45,6 +45,18 @@ const FormaCrearCuotaSet = ({
     }
   };
 
+  const handleRowSeleccion = (itemSeleccion) => {
+    const ids = Array.isArray(itemSeleccion) ? itemSeleccion : Array.from(itemSeleccion?.ids || []);
+
+    const nuevasFilas = ids
+      .map((id) => rows.find((row) => row.id === id))
+      .filter((fila) => fila && !productos.some((producto) => producto.id === fila.id));
+
+    if (nuevasFilas.length > 0) {
+      setProductos((prev) => [...prev, ...nuevasFilas]);
+    }
+  };
+
   return (
     <>
       <CampoTexto
@@ -63,6 +75,7 @@ const FormaCrearCuotaSet = ({
         paginacion={4}
         checkBox={true}
         onRowClick={handleClickFila}
+        onRowSeleccion={(ids) => handleRowSeleccion(ids)}
       />
 
       <CampoTexto

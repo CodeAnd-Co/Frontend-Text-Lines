@@ -142,7 +142,7 @@ const Tabla = ({
       checkboxSelection={checkboxSelection}
       disableSelectionOnClick={disableRowSelectionOnClick}
       onRowSelectionModelChange={(seleccion) => {
-        (onRowSelectionModelChange || (() => {}))(seleccion);
+        onRowSelectionModelChange(seleccion);
       }}
       paginationModel={paginationModel}
       onPaginationModelChange={setPaginationModel}

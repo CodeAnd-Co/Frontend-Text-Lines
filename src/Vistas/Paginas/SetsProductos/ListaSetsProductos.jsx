@@ -120,14 +120,7 @@ const ListaSetsProductos = () => {
       size: 'large',
       backgroundColor: colores.altertex[1],
       onClick: () => console.log('Añadir'),
-    },
-    {
-      variant: 'outlined',
-      label: 'Editar',
-      onClick: () => console.log('Editar'),
-      color: 'primary',
-      size: 'large',
-      outlineColor: colores.primario[10],
+      deshabilitado: true,
     },
     {
       label: 'Eliminar',

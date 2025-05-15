@@ -1,11 +1,14 @@
+//RF[26] Crea Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF26]
 //RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
 //RF[30] Elimina Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF30]
 import { Box, useTheme } from '@mui/material';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Tabla from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';
 import Alerta from '@Moleculas/Alerta';
 import PopUp from '@Moleculas/PopUp';
+import FormularioProducto from '@Organismos/Formularios/FormularioProducto';
+import FormularioProveedor from '@Organismos/Formularios/FormularioProveedor';
 import { useConsultarProductos } from '@Hooks/Productos/useConsultarProductos';
 import { useEliminarProductos } from '@Hooks/Productos/useEliminarProductos';
 import { tokens } from '@SRC/theme';
@@ -18,12 +21,35 @@ const ListaProductos = () => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const { usuario } = useAuth();
-  const MENSAJE_POPUP_ELIMINAR
-    = '¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.';
+  // prettier-ignore
+  const MENSAJE_POPUP_ELIMINAR 
+  = '¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.';
 
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
+  const [mostrarModalProveedor, setMostrarModalProveedor] = useState(false);
+  const [mostrarModalProducto, setMostrarModalProducto] = useState(false);
   const [alerta, setAlerta] = useState(null);
   const [openModalEliminar, setAbrirPopUp] = useState(false);
+
+  const mostrarFormularioProducto = useCallback(() => {
+    setMostrarModalProducto(true);
+    setMostrarModalProveedor(false);
+  }, []);
+
+  const mostrarFormularioProveedor = useCallback(() => {
+    setMostrarModalProducto(false);
+    setMostrarModalProveedor(true);
+  }, []);
+
+  const cerrarFormularioProducto = useCallback(() => {
+    setMostrarModalProducto(false);
+    recargar();
+  }, [recargar]);
+
+  const cerrarFormularioProveedor = useCallback(() => {
+    setMostrarModalProveedor(false);
+    setMostrarModalProducto(true);
+  }, []);
 
   const manejarCancelarEliminar = () => {
     setAbrirPopUp(false);
@@ -32,10 +58,9 @@ const ListaProductos = () => {
   const manejarConfirmarEliminar = async () => {
     try {
       const urlsImagenes = productos
-      .filter((pro) => productosSeleccionados.includes(pro.idProducto))
-      .map((pro) => pro.urlImagen);
-      
-      
+        .filter((pro) => productosSeleccionados.includes(pro.idProducto))
+        .map((pro) => pro.urlImagen);
+
       await eliminar(productosSeleccionados, urlsImagenes);
       recargar();
       setAlerta({
@@ -121,9 +146,7 @@ const ListaProductos = () => {
   const botones = [
     {
       label: 'Añadir',
-      onClick: () => console.log('Añadir'),
-      variant: 'contained',
-      color: 'error',
+      onClick: mostrarFormularioProducto,
       size: 'large',
       backgroundColor: colores.altertex[1],
     },
@@ -134,6 +157,7 @@ const ListaProductos = () => {
       color: 'primary',
       size: 'large',
       outlineColor: colores.primario[10],
+      deshabilitado: true,
     },
     {
       variant: 'outlined',
@@ -142,14 +166,7 @@ const ListaProductos = () => {
       color: 'primary',
       size: 'large',
       outlineColor: colores.primario[10],
-    },
-    {
-      variant: 'outlined',
-      label: 'Editar',
-      onClick: () => console.log('Editar'),
-      color: 'primary',
-      size: 'large',
-      outlineColor: colores.primario[10],
+      deshabilitado: true,
     },
     {
       label: 'Eliminar',
@@ -180,6 +197,19 @@ const ListaProductos = () => {
         descripcion='Gestiona y organiza los productos registrados en el sistema.'
         informacionBotones={botones}
       >
+        {mostrarModalProducto && (
+          <FormularioProducto
+            formularioAbierto={mostrarModalProducto}
+            alCerrarFormularioProducto={cerrarFormularioProducto}
+            alMostrarFormularioProveedor={mostrarFormularioProveedor}
+          />
+        )}
+        {mostrarModalProveedor && (
+          <FormularioProveedor
+            formularioAbierto={mostrarModalProveedor}
+            alCerrarFormularioProveedor={cerrarFormularioProveedor}
+          />
+        )}
         <Box width='100%'>
           {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}
           <Tabla

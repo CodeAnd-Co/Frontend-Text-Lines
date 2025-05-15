@@ -10,18 +10,15 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
   const [productos, setProductos] = useState([]);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
 
-  // Track if the form has been reset to prevent multiple resets
-  const hasReset = useRef(false);
+  const tieneReseteo = useRef(false);
 
-  const { crearCategoria, cargando, exito, error, mensaje, setError, resetEstado }
-    = useCrearCategoria();
+  const { crearCategoria, cargando, exito, error, mensaje, setError, resetEstado } =
+    useCrearCategoria();
 
-  // Reset the form only once when the modal closes
   useEffect(() => {
-    if (!abierto && !hasReset.current) {
-      hasReset.current = true;
+    if (!abierto && !tieneReseteo.current) {
+      tieneReseteo.current = true;
       resetEstado();
-      // Delay state updates to prevent render loop
       setTimeout(() => {
         setNombreCategoria('');
         setDescripcionCategoria('');
@@ -29,12 +26,10 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
         setMostrarAlerta(false);
       }, 0);
     } else if (abierto) {
-      // Reset the flag when modal opens
-      hasReset.current = false;
+      tieneReseteo.current = false;
     }
   }, [abierto, resetEstado]);
 
-  // Handle successful creation
   useEffect(() => {
     let timeoutId;
     if (exito) {
@@ -59,14 +54,11 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
   }, [onCerrar]);
 
   const handleConfirmar = async () => {
-    // Validate that category name is not empty after removing spaces
-    // and that there is at least one selected product
     if (!nombreCategoria.trim() || productos.length === 0) {
       setMostrarAlerta(true);
       return;
     }
 
-    // Send data with clean names (without unnecessary spaces)
     await crearCategoria({
       nombreCategoria: nombreCategoria.trim(),
       descripcion: descripcionCategoria.trim(),

@@ -4,6 +4,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Box, useTheme } from '@mui/material';
 import { useAuth } from '@Hooks/AuthProvider';
+import { useState } from 'react'
 import Texto from '@Atomos/Texto';
 import Cargador from '@Atomos/Cargador';
 import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
@@ -14,6 +15,8 @@ import { ClientesLista } from '@Organismos/Clientes/ClientesLista';
 import { AgregarClienteTarjeta } from '@Organismos/Clientes/AgregarClienteTarjeta';
 import { EliminarClienteModal } from '@Organismos/Clientes/EliminarClientesModal';
 import { DetalleClienteModal } from '@Organismos/Clientes/DetalleClienteModal';
+import Boton from '@Atomos/Boton'
+import ModalCrearCliente from '@Organismos/Clientes/ModalCrearCliente'
 
 // Estilos
 const estiloImagenLogo = { marginRight: '1rem' };
@@ -33,6 +36,22 @@ const ListaClientes = () => {
   const colores = tokens(theme.palette.mode);
   const navigate = useNavigate();
   const { cerrarSesion } = useAuth();
+  const [abrirCrearCliente, setAbrirCrearCliente] = useState(false);
+
+  const handleAbrirCrearCliente = () => setAbrirCrearCliente(true);
+
+  // Manejador para cerrar el modal
+  const handleCerrarCrearCliente = () => {
+    setAbrirCrearCliente(false);
+  };
+
+  // Manejador para cuando se crea una nueva categoría
+  const handleClienteCreadoExitosamente = () => {
+    handleCerrarCrearCliente();
+    // Recarga la lista de categorías
+    recargar();
+  };
+
 
   const {
     clientes,
@@ -94,6 +113,13 @@ const ListaClientes = () => {
       size: 'large',
       onClick: manejarCerrarSesion,
     },
+    {
+      label: 'Crear cliente',
+      variant: 'outlined',
+      color: 'secondary',
+      size: 'large',
+      onClick: handleAbrirCrearCliente,
+    }
   ];
 
   return (
@@ -134,14 +160,14 @@ const ListaClientes = () => {
           <Texto variant='body1' color='error'>{`Error: ${error}`}</Texto>
         ) : (
           <Box
-            display='grid'
-            gridTemplateColumns={{
-              xs: '1fr',
-              sm: 'repeat(2, 1fr)',
-              md: 'repeat(3, 1fr)',
-            }}
-            gap={2}
-            width='100%'
+          display='grid'
+          gridTemplateColumns={{
+            xs: '1fr',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
+          }}
+          gap={2}
+          width='100%'
           >
             <ClientesLista
               clientes={clientes}
@@ -154,9 +180,16 @@ const ListaClientes = () => {
               onTouchEnd={handleFinPresionado}
             />
             <AgregarClienteTarjeta />
+            {/* <Boton onClick={setAbrirCrearCliente(true)}/> */}
           </Box>
         )}
       </Box>
+
+      <ModalCrearCliente 
+        abierto={abrirCrearCliente}
+        onCerrar={handleCerrarCrearCliente}
+        onCreado={handleClienteCreadoExitosamente}
+      />
 
       <EliminarClienteModal
         open={modalEliminacionAbierto}

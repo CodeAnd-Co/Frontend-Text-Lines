@@ -97,6 +97,7 @@ const ListaGrupoEmpleados = () => {
       size: 'large',
       backgroundColor: colores.altertex[1],
       disabled: !usuario?.permisos?.includes(PERMISOS.CREAR_EMPLEADO),
+      deshabilitado: true,
     },
     {
       variant: 'outlined',
@@ -105,6 +106,7 @@ const ListaGrupoEmpleados = () => {
       color: 'primary',
       size: 'large',
       outlineColor: colores.primario[10],
+      disabled: !usuario?.permisos?.includes(PERMISOS.IMPORTAR_EMPLEADOS),
       //disabled: !usuario?.permisos?.includes(PERMISOS.IMPORTAR_EMPLEADOS),
     },
     {
@@ -114,6 +116,7 @@ const ListaGrupoEmpleados = () => {
       color: 'primary',
       size: 'large',
       outlineColor: colores.primario[10],
+      deshabilitado: true,
     },
     {
       label: 'Eliminar',

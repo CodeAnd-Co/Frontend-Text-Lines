@@ -48,7 +48,6 @@ const useImportarEmpleados = () => {
     if (raw === '0'  || raw === 'false') return false;
     return null; 
     })(),
-    idCliente: Number(row.idCliente),
     numeroEmergencia: row.numeroEmergencia?.trim(),
     areaTrabajo: row.areaTrabajo?.trim().normalize('NFC'),
     posicion: row.posicion?.trim().normalize('NFC'),

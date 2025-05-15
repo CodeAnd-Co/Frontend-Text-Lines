@@ -14,22 +14,22 @@ const Boton = ({
   outlineColor = null,
   label,
   onClick,
-  deshabilitado = false,
+  construccion = false,
   ...props
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const outlinedStyle
-    = variant === 'outlined' && outlineColor
+  const outlinedStyle =
+    variant === 'outlined' && outlineColor
       ? {
           border: `1.5px solid ${outlineColor}`,
           color: outlineColor,
         }
       : {};
 
-  const selectedStyle
-    = selected && variant === 'contained'
+  const selectedStyle =
+    selected && variant === 'contained'
       ? {
           backgroundColor: colors.altertex[2],
           color: colors.primario[4],
@@ -41,13 +41,14 @@ const Boton = ({
         }
       : {};
 
-  const estiloDeshabilitado = {
-    '&.Mui-disabled': {
-      backgroundColor: colors.noImplementado[1],
-      color: colors.primario[4],
-      cursor: 'not-allowed',
-    },
-  };
+  const estiloDeshabilitado = construccion
+    ? {
+        backgroundColor: colors.noImplementado[1],
+        color: colors.primario[4],
+        cursor: 'not-allowed',
+        pointerEvents: 'none',
+      }
+    : {};
 
   return (
     <MUIButton
@@ -62,7 +63,7 @@ const Boton = ({
         ...estiloDeshabilitado,
       }}
       onClick={onClick}
-      disabled={deshabilitado}
+      construccion={estiloDeshabilitado}
       {...props}
     >
       {label}
@@ -81,7 +82,7 @@ Boton.propTypes = {
   align: PropTypes.string,
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func,
-  deshabilitado: PropTypes.bool,
+  construccion: PropTypes.bool,
 };
 
 export default Boton;

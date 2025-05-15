@@ -28,8 +28,8 @@ const ListaGrupoEmpleados = () => {
   const [openModalEliminar, setAbrirPopUpEliminar] = useState(false);
   const [empleadoSeleccionado, setEmpleadoSeleccionado] = useState(null);
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
-  const MENSAJE_POPUP_ELIMINAR
-    = '¿Estás seguro de que deseas eliminar los empleados seleccionados? Esta acción no se puede deshacer.';
+  const MENSAJE_POPUP_ELIMINAR =
+    '¿Estás seguro de que deseas eliminar los empleados seleccionados? Esta acción no se puede deshacer.';
   const handleAbrirImportar = () => setModalImportarAbierto(true);
   const manejarCancelarEliminar = () => {
     setAbrirPopUpEliminar(false);
@@ -89,7 +89,7 @@ const ListaGrupoEmpleados = () => {
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
-      deshabilitado: true,
+      construccion: true,
     },
     {
       variant: 'outlined',
@@ -100,13 +100,13 @@ const ListaGrupoEmpleados = () => {
       outlineColor: colores.primario[10],
     },
     {
-      variant: 'outlined',
+      //variant: 'outlined',
       label: 'Exportar',
       onClick: () => console.log('Exportar'),
       color: 'primary',
       size: 'large',
-      outlineColor: colores.primario[10],
-      deshabilitado: true,
+      //outlineColor: colores.primario[10],
+      construccion: true,
     },
     {
       label: 'Eliminar',

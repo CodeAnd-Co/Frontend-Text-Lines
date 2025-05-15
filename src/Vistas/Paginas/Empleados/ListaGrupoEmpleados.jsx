@@ -107,14 +107,7 @@ const ListaGrupoEmpleados = () => {
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
-    },
-    {
-      variant: 'outlined',
-      label: 'Editar',
-      onClick: () => console.log('Editar'),
-      color: 'primary',
-      size: 'large',
-      outlineColor: colores.primario[10],
+      deshabilitado: true,
     },
     {
       label: 'Eliminar',
@@ -207,6 +200,14 @@ const ListaGrupoEmpleados = () => {
           tituloVariant='h4'
           customWidth={800}
           botones={[
+            {
+              label: 'Editar',
+              variant: 'contained',
+              color: 'primary',
+              backgroundColor: colores.altertex[1],
+              onClick: () => console.log('Editar usuario'),
+              disabled: true, //disabled: !!errorDetalle,
+            },
             {
               label: 'Salir',
               variant: 'outlined',

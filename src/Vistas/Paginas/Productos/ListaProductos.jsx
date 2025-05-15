@@ -32,10 +32,9 @@ const ListaProductos = () => {
   const manejarConfirmarEliminar = async () => {
     try {
       const urlsImagenes = productos
-      .filter((pro) => productosSeleccionados.includes(pro.idProducto))
-      .map((pro) => pro.urlImagen);
-      
-      
+        .filter((pro) => productosSeleccionados.includes(pro.idProducto))
+        .map((pro) => pro.urlImagen);
+
       await eliminar(productosSeleccionados, urlsImagenes);
       recargar();
       setAlerta({
@@ -134,6 +133,7 @@ const ListaProductos = () => {
       color: 'primary',
       size: 'large',
       outlineColor: colores.primario[10],
+      deshabilitado: true,
     },
     {
       variant: 'outlined',
@@ -142,14 +142,7 @@ const ListaProductos = () => {
       color: 'primary',
       size: 'large',
       outlineColor: colores.primario[10],
-    },
-    {
-      variant: 'outlined',
-      label: 'Editar',
-      onClick: () => console.log('Editar'),
-      color: 'primary',
-      size: 'large',
-      outlineColor: colores.primario[10],
+      deshabilitado: true,
     },
     {
       label: 'Eliminar',

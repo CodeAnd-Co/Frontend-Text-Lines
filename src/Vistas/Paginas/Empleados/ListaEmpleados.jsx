@@ -13,9 +13,8 @@ import { useConsultarEmpleados } from '@Hooks/Empleados/useConsultarEmpleados';
 import { useEliminarEmpleado } from '@Hooks/Empleados/useEliminarEmpleado';
 import { tokens } from '@SRC/theme';
 import { PERMISOS } from '@Constantes/permisos';
-import  ModalImportarEmpleados from '@Organismos/ModalImportarEmpleados';
+import ModalImportarEmpleados from '@Organismos/ModalImportarEmpleados';
 import useImportarEmpleados from '@Hooks/Empleados/useImportarEmpleados';
-
 
 const ListaGrupoEmpleados = () => {
   const { empleados, cargando, error, recargar } = useConsultarEmpleados();
@@ -90,6 +89,7 @@ const ListaGrupoEmpleados = () => {
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
+      deshabilitado: true,
     },
     {
       variant: 'outlined',
@@ -106,14 +106,7 @@ const ListaGrupoEmpleados = () => {
       color: 'primary',
       size: 'large',
       outlineColor: colores.primario[10],
-    },
-    {
-      variant: 'outlined',
-      label: 'Editar',
-      onClick: () => console.log('Editar'),
-      color: 'primary',
-      size: 'large',
-      outlineColor: colores.primario[10],
+      deshabilitado: true,
     },
     {
       label: 'Eliminar',
@@ -227,15 +220,15 @@ const ListaGrupoEmpleados = () => {
           onClose={() => setAlerta(null)}
         />
       )}
-      <ModalImportarEmpleados 
-       abierto = {modalImportarAbierto}
-       onCerrar={() => setModalImportarAbierto(false)}
-       onConfirm={importar}
-       cargando={cargandoImportacion}
-       errores={errores}
-       exito={exito}
-       recargar={recargar}>
-       </ModalImportarEmpleados>
+      <ModalImportarEmpleados
+        abierto={modalImportarAbierto}
+        onCerrar={() => setModalImportarAbierto(false)}
+        onConfirm={importar}
+        cargando={cargandoImportacion}
+        errores={errores}
+        exito={exito}
+        recargar={recargar}
+      ></ModalImportarEmpleados>
     </>
   );
 };

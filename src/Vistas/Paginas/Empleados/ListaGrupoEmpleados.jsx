@@ -107,7 +107,6 @@ const ListaGrupoEmpleados = () => {
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
-      deshabilitado: true,
     },
     {
       label: 'Eliminar',

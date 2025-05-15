@@ -2,54 +2,62 @@ import { useState, useEffect } from 'react';
 import { useCrearGrupoEmpleados } from '@Hooks/Empleados/useCrearGrupoEmpleados';
 import FormaCrearGrupoEmpleados from '@Organismos/Formularios/FormaCrearGrupoEmpleado';
 import ModalFlotante from '@Organismos/ModalFlotante';
+import Alerta from '@Moleculas/Alerta';
 
 const ModalCrearGrupoEmpleado = ({ abierto = false, onCerrar, onCreado }) => {
   const [nombreGrupo, setNombreGrupo] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [listaEmpleados, setListaEmpleados] = useState([]);
+  const [mensajeError, setMensajeError] = useState('');
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
+  const [intentoEnviar, setIntentoEnviar] = useState(false);
 
-  const { handleGuardarGrupoEmpleados } = useCrearGrupoEmpleados();
+  const { handleGuardarGrupoEmpleados, errores, limpiarErrores } = useCrearGrupoEmpleados();
 
-  // Limpiar los campos cuando se cierra el modal
   useEffect(() => {
     if (!abierto) {
       setNombreGrupo('');
       setDescripcion('');
       setListaEmpleados([]);
+      setMensajeError('');
       setMostrarAlerta(false);
+      setIntentoEnviar(false);
+      limpiarErrores();
     }
   }, [abierto]);
 
-  const handleConfirmar = async () => {
-    if (!nombreGrupo.trim() || !descripcion.trim() || listaEmpleados.length === 0) {
-      setMostrarAlerta(true);
-      return;
+    useEffect(() => {
+    if (mensajeError) {
+      const tiempo = setTimeout(() => {
+        setMensajeError('');
+      }, 3000);
+      return () => clearTimeout(tiempo);
     }
-  
-    setMostrarAlerta(false);
-  
-    const resultado = await handleGuardarGrupoEmpleados({
-      nombreGrupo: nombreGrupo.trim(),
-      descripcion: descripcion.trim(),
-      listaEmpleados,
-    });
-  
-    console.log('Resultado creación grupo:', resultado); // 👈
-  
-    if (resultado.exito) {
-      if (onCreado) onCreado(); 
-      if (onCerrar) onCerrar(); 
-    } else {
-      setMostrarAlerta(true);
-    }
-  };
+  }, [mensajeError]);
 
-  const handleCerrar = () => {
-    if (onCerrar) {
-      onCerrar();
+const handleConfirmar = async () => {
+  setIntentoEnviar(true);
+
+  const resultado = await handleGuardarGrupoEmpleados({
+    nombreGrupo: nombreGrupo.trim(),
+    descripcion: descripcion.trim(),
+    listaEmpleados,
+  });
+  if (resultado.exito) {
+    setMensajeError('');
+    onCreado?.();
+    onCerrar?.();
+  } else {
+    if (resultado.errores) {
+      // errores de validación local
+      setMensajeError('');
+    } else {
+      // error del backend
+      setMensajeError(resultado.mensaje || 'Ocurrió un error al crear el grupo');
     }
-  };
+  }
+};
+  const handleCerrar = () => onCerrar?.();
 
   return (
     <ModalFlotante
@@ -67,9 +75,20 @@ const ModalCrearGrupoEmpleado = ({ abierto = false, onCerrar, onCreado }) => {
         setDescripcion={setDescripcion}
         listaEmpleados={listaEmpleados}
         setListaEmpleados={setListaEmpleados}
+        errores={errores} 
+        intentoEnviar={intentoEnviar}
         mostrarAlerta={mostrarAlerta}
         setMostrarAlerta={setMostrarAlerta}
       />
+      {mensajeError && (
+        <Alerta
+          tipo="error"
+          mensaje={mensajeError}
+          cerrable
+          onClose={() => setMensajeError('')}
+          sx={{ mt: 2 }}
+        />
+      )}
     </ModalFlotante>
   );
 };

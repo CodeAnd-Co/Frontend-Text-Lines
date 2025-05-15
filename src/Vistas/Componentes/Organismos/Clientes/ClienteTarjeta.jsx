@@ -8,7 +8,7 @@ export const ClienteTarjeta = ({ cliente, onClienteClick, onIconoClick }) => {
       src={cliente.urlImagen}
       alt={nombreCliente}
       titulo={nombreCliente}
-      nombreIcono={'Edit'}
+      nombreIcono='Info'
       varianteIcono='outlined'
       tamanoIcono='large'
       colorIcono={'action'}

@@ -49,8 +49,6 @@ const ListaClientes = () => {
     errorEliminacion,
     handleClienteClick,
     handleIconoClick,
-    handleInicioPresionado,
-    handleFinPresionado,
     confirmarEliminacion,
     cancelarEliminacion,
     cerrarModalDetalle,
@@ -148,10 +146,6 @@ const ListaClientes = () => {
               modoEliminacion={modoEliminacion}
               onClienteClick={handleClienteClick}
               onIconoClick={handleIconoClick}
-              onMouseDown={handleInicioPresionado}
-              onMouseUp={handleFinPresionado}
-              onTouchStart={handleInicioPresionado}
-              onTouchEnd={handleFinPresionado}
             />
             <AgregarClienteTarjeta />
           </Box>

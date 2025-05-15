@@ -4,7 +4,7 @@ import Texto from '@Atomos/Texto';
 import PropTypes from 'prop-types';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
-import { Alert, Box } from '@mui/material'; // Añadir Box
+import { Alert } from '@mui/material'; // Añadir Box
 
 export const DetalleClienteModal = ({
   open,

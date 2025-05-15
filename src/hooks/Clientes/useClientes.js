@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useConsultarClientes } from '@Hooks/Clientes/useConsultarClientes';
 import { useSeleccionarCliente } from '@Hooks/Clientes/useSeleccionarCliente';
@@ -17,13 +17,8 @@ export const useClientes = () => {
   // Eliminación state
   const [idEliminar, setIdEliminar] = useState(null);
   const [eliminacionExitosa, setEliminacionExitosa] = useState(false);
-  const [modoEliminacion, setModoEliminacion] = useState(false);
   const [clienteEliminar, setClienteEliminar] = useState(null);
   const [modalEliminacionAbierto, setModalEliminacionAbierto] = useState(false);
-
-  // Referencias para manejo de gestos
-  const tiempoPresionado = useRef(null);
-  const ignorarPrimerClick = useRef(false);
 
   // Modal de detalle state
   const [idClienteDetalle, setIdClienteDetalle] = useState(null);
@@ -80,35 +75,6 @@ export const useClientes = () => {
       }
     };
   }, [imagenPreview]);
-
-  // Manejar click fuera para desactivar modo eliminación
-  useEffect(() => {
-    const manejarClickFuera = () => {
-      if (ignorarPrimerClick.current) {
-        ignorarPrimerClick.current = false;
-        return;
-      }
-      if (modoEliminacion) {
-        setModoEliminacion(false);
-      }
-    };
-    document.addEventListener('click', manejarClickFuera);
-    return () => document.removeEventListener('click', manejarClickFuera);
-  }, [modoEliminacion]);
-
-  // Handlers para presionado largo
-  const handleInicioPresionado = () => {
-    tiempoPresionado.current = setTimeout(() => {
-      setModoEliminacion(true);
-      ignorarPrimerClick.current = true;
-    }, 800);
-  };
-
-  const handleFinPresionado = () => {
-    if (!modoEliminacion) {
-      clearTimeout(tiempoPresionado.current);
-    }
-  };
 
   // Handlers para clientes
   const handleClienteClick = (clienteId, urlImagen, nombreComercial) => {
@@ -337,7 +303,6 @@ export const useClientes = () => {
     clientes,
     cargando,
     error,
-    modoEliminacion,
     clienteEliminar,
     modalEliminacionAbierto,
     idClienteDetalle,
@@ -357,8 +322,6 @@ export const useClientes = () => {
     // Handlers
     handleClienteClick,
     handleIconoClick,
-    handleInicioPresionado,
-    handleFinPresionado,
     confirmarEliminacion,
     cancelarEliminacion,
     cerrarModalDetalle,

@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { useMode } from '@SRC/theme';
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -9,10 +10,24 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [usuario, setUsuario] = useState(null);
   const [cargando, setCargando] = useState(true);
+  const { toggleColorMode } = useMode();
 
   useEffect(() => {
     verificarSesion();
   }, []);
+
+  const resetTheme = () => {
+    // Obtener el tema actual del localStorage
+    const currentTheme = localStorage.getItem('themeMode');
+    
+    // Si el tema actual es oscuro, cambiarlo a claro
+    if (currentTheme && JSON.parse(currentTheme) === 'dark') {
+      toggleColorMode();
+    }
+    
+    // Borrar el tema del localStorage
+    localStorage.removeItem('themeMode');
+  };
 
   const cerrarSesion = async () => {
     try {
@@ -24,7 +39,8 @@ export const AuthProvider = ({ children }) => {
           headers: { 'x-api-key': API_KEY },
         }
       );
-      localStorage.removeItem('themeMode');
+      // Resetear el tema a modo claro
+      resetTheme();
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     } finally {
@@ -47,7 +63,14 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ usuario, setUsuario, cargando, cerrarSesion, verificarSesion }}>
+    <AuthContext.Provider value={{ 
+      usuario, 
+      setUsuario, 
+      cargando, 
+      cerrarSesion, 
+      verificarSesion,
+      resetTheme // Exponemos la función para usar desde otros componentes
+    }}>
       {children}
     </AuthContext.Provider>
   );

@@ -204,6 +204,7 @@ export const themeSettings = (mode) => {
 
 export const ColorModeContext = createContext({
   toggleColorMode: () => {},
+  mode: 'light',
 });
 
 export const ColorModeProvider = ({ children }) => {
@@ -215,8 +216,9 @@ export const ColorModeProvider = ({ children }) => {
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => setMode((prev) => (prev === 'dark' ? 'light' : 'dark')),
+      mode,
     }),
-    []
+    [mode]
   );
 
   useEffect(() => {
@@ -237,7 +239,7 @@ export const ColorModeProvider = ({ children }) => {
 export const useMode = () => {
   const context = useContext(ColorModeContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error('useMode must be used within a ColorModeProvider');
   }
   return context;
 };

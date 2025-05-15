@@ -1,4 +1,5 @@
-import { createContext, useState, useMemo } from 'react';
+import { createContext, useState, useMemo, useContext, useEffect } from 'react';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 
 // color design tokens export
@@ -209,18 +210,42 @@ export const themeSettings = (mode) => {
 
 export const ColorModeContext = createContext({
   toggleColorMode: () => {},
+  mode: 'light',
 });
 
-export const useMode = () => {
-  const [mode, setMode] = useState('light');
+export const ColorModeProvider = ({ children }) => {
+  const [mode, setMode] = useState(() => {
+    const modeAlmacenado = localStorage.getItem('tema');
+    return modeAlmacenado ? JSON.parse(modeAlmacenado) : 'light';
+  });
 
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => setMode((prev) => (prev === 'dark' ? 'light' : 'dark')),
+      mode,
     }),
-    []
+    [mode]
   );
 
-  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
-  return [theme, colorMode];
+  useEffect(() => {
+    localStorage.setItem('tema', JSON.stringify(mode));
+  }, [mode]);
+
+  const tema = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+  return (
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={tema}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
+    </ColorModeContext.Provider>
+  );
+};
+
+export const useMode = () => {
+  const context = useContext(ColorModeContext);
+  if (!context) {
+    throw new Error('useMode debe usarse dentro de un ColorModeProvider');
+  }
+  return context;
 };

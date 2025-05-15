@@ -12,13 +12,14 @@ import Chip from '@Atomos/Chip';
 import { useConsultarListaUsuarios } from '@Hooks/Usuarios/useConsultarListaUsuarios';
 import { useEliminarUsuarios } from '@Hooks/Usuarios/useEliminarUsuarios';
 import { RUTAS } from '@Constantes/rutas';
-import { useMode, tokens } from '@SRC/theme';
+import { tokens } from '@SRC/theme';
 import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
 import { useUsuarioId } from '@Hooks/Usuarios/useLeerUsuario';
 import InfoUsuario from '@Moleculas/InfoUsuario';
 import PopUp from '@Moleculas/PopUp';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
+import { useTheme } from '@mui/material';
 
 const estiloImagenLogo = { marginRight: '1rem' };
 
@@ -37,7 +38,7 @@ const estiloImagenLogo = { marginRight: '1rem' };
  */
 
 const ListaUsuarios = () => {
-  const [theme] = useMode();
+  const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const navigate = useNavigate();
   const [alerta, setAlerta] = useState(null);
@@ -328,7 +329,7 @@ const ListaUsuarios = () => {
                 color: 'primary',
                 backgroundColor: colores.altertex[1],
                 onClick: () => console.log('Editar usuario'),
-                disabled: !!errorDetalle,
+                disabled: true, //disabled: !!errorDetalle,
               },
               {
                 label: 'SALIR',

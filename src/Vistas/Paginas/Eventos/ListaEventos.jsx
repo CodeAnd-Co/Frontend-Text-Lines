@@ -86,14 +86,7 @@ const ListaEventos = () => {
       size: 'large',
       backgroundColor: colores.altertex[1],
       onClick: () => console.log('Añadir'),
-    },
-    {
-      variant: 'outlined',
-      label: 'Editar',
-      //onClick: () => console.log('Editar'),
-      color: 'primary',
-      size: 'large',
-      outlineColor: colores.primario[10],
+      deshabilitado: true,
     },
     {
       label: 'Eliminar',
@@ -165,6 +158,7 @@ const ListaEventos = () => {
               color: 'error',
               backgroundColor: colores.altertex[1],
               onClick: () => console.log('Editar Evento'),
+              disabled: true, //disabled: !!errorDetalle,
             },
             {
               label: 'SALIR',

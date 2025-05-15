@@ -3,7 +3,6 @@ import { memo } from 'react';
 import { Box, Grid } from '@mui/material';
 import Texto from '@Atomos/Texto';
 import TarjetaAccion from '@Moleculas/TarjetaAccion';
-import Alerta from '@Moleculas/Alerta';
 import ModalFlotante from '@Organismos/ModalFlotante';
 import CamposVariante from '@Organismos/Formularios/CamposVariante';
 import CamposProducto from '@Organismos/Formularios/CamposProducto';
@@ -73,9 +72,7 @@ const ContenidoFormulario = memo(({ alMostrarFormularioProveedor }) => {
             setImagenes={setImagenes}
             alMostrarFormularioProveedor={alMostrarFormularioProveedor}
           />
-
           <TituloFormulario titulo='Datos de las Variantes' varianteTitulo='h6' />
-
           {idsVariantes.map((idVariante) => (
             <CamposVariante
               key={`variante-${idVariante}`}
@@ -94,7 +91,6 @@ const ContenidoFormulario = memo(({ alMostrarFormularioProveedor }) => {
               alEliminarImagenVariante={manejarEliminarImagenVariante}
             />
           ))}
-
           <CampoCrear etiqueta='Crear Variante' onClick={manejarCrearVariante} />
         </Grid>
       </Box>
@@ -118,7 +114,7 @@ const FormularioProducto = memo(
 
 const FormularioModal = memo(
   ({ formularioAbierto, alCerrarFormularioProducto, alMostrarFormularioProveedor }) => {
-    const { manejarCrearProducto, alerta, setAlerta } = useProductoForm();
+    const { manejarCrearProducto, alerta, cargando, setAlerta } = useProductoForm();
 
     return (
       <>
@@ -129,19 +125,18 @@ const FormularioModal = memo(
           titulo='Crear Producto'
           confirmLabel='Guardar'
           cancelLabel='Cerrar'
+          loading={cargando}
+          alerta={
+            alerta
+              ? {
+                  ...alerta,
+                  onClose: () => setAlerta(null),
+                }
+              : null
+          }
         >
           <ContenidoFormulario alMostrarFormularioProveedor={alMostrarFormularioProveedor} />
         </ModalFlotante>
-        {alerta && (
-          <Alerta
-            sx={{ bottom: 10 }}
-            tipo={alerta.tipo}
-            mensaje={alerta.mensaje}
-            duracion='2000'
-            centradoInferior={true}
-            onClose={() => setAlerta(null)}
-          />
-        )}
       </>
     );
   }

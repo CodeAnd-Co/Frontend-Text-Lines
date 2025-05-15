@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useCallback, useMemo, useRef } from 'react';
 import { useConsultarProveedores } from '@Hooks/Proveedores/useConsultarProveedores';
 import { useCrearProducto } from '@Hooks/Productos/useCrearProducto';
+import { useGenerarSKU } from '@Hooks/Productos/useGenerarSKU';
 
 const ProductoFormContext = createContext();
 
@@ -14,6 +15,8 @@ export const useProductoForm = () => {
 
 export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) => {
   const refInputArchivo = useRef();
+
+  const [cargando, setCargando] = useState(false);
 
   const [alerta, setAlerta] = useState(null);
 
@@ -55,25 +58,7 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
   const { proveedores } = useConsultarProveedores();
   const { erroresProducto, erroresVariantes, guardarProducto } = useCrearProducto();
 
-  const generarSKUAutomatico = useCallback((nombreProducto, nombreVariante, valorOpcion) => {
-    const limpiarTexto = (texto) => {
-      return texto
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-zA-Z0-9]/g, '')
-        .toUpperCase();
-    };
-
-    const prefijo = limpiarTexto(nombreProducto).substring(0, 3);
-    const codigoVariante = limpiarTexto(nombreVariante).substring(0, 2);
-    const codigoOpcion = limpiarTexto(valorOpcion).substring(0, 3);
-
-    const numeroAleatorio = Math.floor(Math.random() * 1000)
-      .toString()
-      .padStart(3, '0');
-
-    return `${prefijo}-${codigoVariante}${codigoOpcion}-${numeroAleatorio}`;
-  }, []);
+  const generarSKUAutomatico = useGenerarSKU();
 
   const manejarCrearVariante = useCallback(() => {
     const nuevoId = siguienteIdVariante;
@@ -339,68 +324,83 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       mensaje: 'Guardando producto...',
     });
 
-    const resultado = await guardarProducto({
-      producto: productoFormateado,
-      variantes: datosVariantes,
-      imagenProducto: imagenes.imagenProducto,
-      imagenesVariantes: imagenes.imagenesVariantes,
-    });
+    setCargando(true);
 
-    if (resultado?.mensaje) {
-      if (resultado.exito) {
+    try {
+      const resultado = await guardarProducto({
+        producto: productoFormateado,
+        variantes: datosVariantes,
+        imagenProducto: imagenes.imagenProducto,
+        imagenesVariantes: imagenes.imagenesVariantes,
+      });
+
+      if (resultado?.exito) {
         const resumenProducto = `
         Producto ${producto.nombreComun} creado exitosamente.
-      `;
+        `;
 
         setAlerta({
           tipo: 'success',
           mensaje: resumenProducto,
         });
 
-        setTimeout(() => {
-          setProducto({
-            nombreComun: '',
-            nombreComercial: '',
+        setProducto({
+          nombreComun: '',
+          nombreComercial: '',
+          descripcion: '',
+          marca: '',
+          modelo: '',
+          tipoProducto: '',
+          precioPuntos: 0,
+          precioCliente: 0,
+          precioVenta: 0,
+          costo: 0,
+          impuesto: 16,
+          descuento: 0,
+          estado: 1,
+          envio: 1,
+          idProveedor: -1,
+        });
+
+        setVariantes({
+          1: {
+            nombreVariante: '',
             descripcion: '',
-            marca: '',
-            modelo: '',
-            tipoProducto: '',
-            precioPuntos: 0,
-            precioCliente: 0,
-            precioVenta: 0,
-            costo: 0,
-            impuesto: 16,
-            descuento: 0,
-            estado: 1,
-            envio: 1,
-            idProveedor: -1,
-          });
+            opciones: [],
+          },
+        });
 
-          setVariantes({
-            1: {
-              nombreVariante: '',
-              descripcion: '',
-              opciones: [],
-            },
-          });
+        setIdsVariantes([1]);
+        setSiguienteIdVariante(2);
+        setSiguienteIdImagen(1);
 
-          setIdsVariantes([1]);
-          setSiguienteIdVariante(2);
-          setSiguienteIdImagen(1);
+        setImagenes({
+          imagenProducto: null,
+          imagenesVariantes: { 1: [] },
+        });
 
-          setImagenes({
-            imagenProducto: null,
-            imagenesVariantes: { 1: [] },
-          });
-
+        setTimeout(() => {
           alCerrarFormularioProducto();
         }, 2000);
-      } else {
+      } else if (resultado?.mensaje) {
         setAlerta({
           tipo: 'error',
           mensaje: resultado.mensaje,
         });
+      } else {
+        setAlerta({
+          tipo: 'error',
+          mensaje: 'No se recibió respuesta del servidor al guardar el producto.',
+        });
       }
+    } catch (error) {
+      setAlerta({
+        tipo: 'error',
+        mensaje: 'Ocurrió un error inesperado al guardar el producto.',
+      });
+      console.error('Error al guardar producto:', error);
+    } finally {
+      setCargando(false);
     }
   }, [guardarProducto, imagenes, producto, variantes, alCerrarFormularioProducto]);
 
@@ -451,6 +451,7 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
     erroresProducto,
     erroresVariantes,
     listaProveedores,
+    cargando,
     manejarCrearVariante,
     manejarActualizarVariante,
     manejarEliminarVariante,

@@ -34,8 +34,8 @@ export const useClientes = () => {
   // Estado para manejo de imágenes
   const [imagenSubiendo, setImagenSubiendo] = useState(false);
   const [imagenError, setImagenError] = useState(null);
-  const [imagenPreview, setImagenPreview] = useState(null);
-  const [imagenFile, setImagenFile] = useState(null);
+  const [imagenPrevisualizacion, setImagenPrevisualizacion] = useState(null);
+  const [imagenArchivo, setImagenArchivo] = useState(null);
 
   // Hooks para eliminar y obtener detalles
   const { error: errorEliminacion } = useEliminarCliente(
@@ -67,19 +67,19 @@ export const useClientes = () => {
   useEffect(() => {
     if (cliente) {
       setClienteEditado(cliente);
-      setImagenPreview(cliente.urlImagen || null);
-      setImagenFile(null);
+      setImagenPrevisualizacion(cliente.urlImagen || null);
+      setImagenArchivo(null);
       setImagenError(null);
     }
   }, [cliente]);
 
   useEffect(() => {
     return () => {
-      if (imagenPreview && imagenPreview.startsWith('blob:')) {
-        URL.revokeObjectURL(imagenPreview);
+      if (imagenPrevisualizacion && imagenPrevisualizacion.startsWith('blob:')) {
+        URL.revokeObjectURL(imagenPrevisualizacion);
       }
     };
-  }, [imagenPreview]);
+  }, [imagenPrevisualizacion]);
 
   // Manejar click fuera para desactivar modo eliminación
   useEffect(() => {
@@ -154,8 +154,8 @@ export const useClientes = () => {
     setModoEdicion(false);
     setModalDetalleAbierto(false);
     // Limpiar estados de imagen al cerrar
-    setImagenPreview(null);
-    setImagenFile(null);
+    setImagenPrevisualizacion(null);
+    setImagenArchivo(null);
     setImagenError(null);
   };
 
@@ -186,15 +186,15 @@ export const useClientes = () => {
         }
 
         // Validar formato y tamaño de imagen antes de enviar
-        if (imagenFile) {
-          const validJpgTypes = ['image/jpeg', 'image/jpg'];
-          if (!validJpgTypes.includes(imagenFile.type.toLowerCase())) {
+        if (imagenArchivo) {
+          const tipoJpgValidos = ['image/jpeg', 'image/jpg'];
+          if (!tipoJpgValidos.includes(imagenArchivo.type.toLowerCase())) {
             setImagenError('Solo se permiten imágenes en formato JPG o JPEG.');
             return;
           }
 
-          const MAX_SIZE = 5 * 1024 * 1024; // 5MB en bytes
-          if (imagenFile.size > MAX_SIZE) {
+          const TAMANO_MAXIMO = 5 * 1024 * 1024; // 5MB en bytes
+          if (imagenArchivo.size > TAMANO_MAXIMO) {
             setImagenError('La imagen no debe exceder 5MB de tamaño');
             return;
           }
@@ -217,7 +217,7 @@ export const useClientes = () => {
           cambios.nombreComercial = clienteEditado.nombreVisible;
         }
 
-        if (tieneOtrosCambios || imagenFile) {
+        if (tieneOtrosCambios || imagenArchivo) {
           setImagenSubiendo(true);
           setImagenError(null);
 
@@ -230,8 +230,8 @@ export const useClientes = () => {
           });
 
           // Agregar imagen al FormData
-          if (imagenFile) {
-            formData.append('imagen', imagenFile); // clave debe coincidir con el backend
+          if (imagenArchivo) {
+            formData.append('imagen', imagenArchivo); // clave debe coincidir con el backend
           }
 
           await RepositorioActualizarCliente.actualizarClienteConImagen(formData);
@@ -242,11 +242,12 @@ export const useClientes = () => {
                 return {
                   ...cliente,
                   ...cambios,
-                  ...(imagenFile ? { urlImagen: imagenPreview } : {}),
+                  ...(imagenArchivo ? { urlImagen: imagenPrevisualizacion } : {}),
                 };
               }
               return cliente;
-            }));
+            })
+          );
         }
 
         setModoEdicion(false);
@@ -302,15 +303,15 @@ export const useClientes = () => {
     }
 
     // Validar que sea un archivo JPG o JPEG
-    const validJpgTypes = ['image/jpeg', 'image/jpg'];
-    if (!validJpgTypes.includes(imageData.file.type.toLowerCase())) {
+    const tiposJpgValidos = ['image/jpeg', 'image/jpg'];
+    if (!tiposJpgValidos.includes(imageData.file.type.toLowerCase())) {
       setImagenError('Solo se permiten imágenes en formato JPG o JPEG.');
       return;
     }
 
     // Validar tamaño de la imagen (5MB)
-    const MAX_SIZE = 5 * 1024 * 1024;
-    if (imageData.file.size > MAX_SIZE) {
+    const TAMANO_MAXIMO = 5 * 1024 * 1024;
+    if (imageData.file.size > TAMANO_MAXIMO) {
       setImagenError('La imagen no debe exceder 5MB de tamaño');
       return;
     }
@@ -318,13 +319,13 @@ export const useClientes = () => {
     // Si llegamos hasta aquí, eliminar cualquier error previo
     setImagenError(null);
 
-    setImagenFile(imageData.file);
-    const preview = imageData.preview || URL.createObjectURL(imageData.file);
-    setImagenPreview(preview);
+    setImagenArchivo(imageData.file);
+    const previsualizacion = imageData.preview || URL.createObjectURL(imageData.file);
+    setImagenPrevisualizacion(previsualizacion);
 
     setClienteEditado((prev) => ({
       ...prev,
-      urlImagen: preview,
+      urlImagen: previsualizacion,
     }));
   };
 
@@ -352,7 +353,7 @@ export const useClientes = () => {
     // Estados de imagen
     imagenSubiendo,
     imagenError,
-    imagenPreview,
+    imagenPreview: imagenPrevisualizacion,
 
     // Handlers
     handleClienteClick,

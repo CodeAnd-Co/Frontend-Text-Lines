@@ -18,21 +18,21 @@ const InfoCliente = ({
   onImageChange,
   imagenSubiendo = false,
 }) => {
-  const theme = useTheme();
-  const colores = tokens(theme.palette.mode);
-  const fileInputRef = useRef(null);
-  const MAX_LENGTH = 100;
+  const tema = useTheme();
+  const colores = tokens(tema.palette.mode);
+  const inputArchivoRef = useRef(null);
+  const LONGITUD_MAXIMA = 100;
 
-  const handleFileSelect = () => {
-    fileInputRef.current.click();
+  const handleSeleccionArchivo = () => {
+    inputArchivoRef.current.click();
   };
-  const handleFileChange = (evento) => {
-    const file = evento.target.files[0];
-    if (!file) return;
+  const handleCambioArchivo = (evento) => {
+    const archivo = evento.target.files[0];
+    if (!archivo) return;
 
     // Verificar que sea un archivo JPG o JPEG
-    const validJpgTypes = ['image/jpeg', 'image/jpg'];
-    if (!validJpgTypes.includes(file.type.toLowerCase())) {
+    const tipoJpgValido = ['image/jpeg', 'image/jpg'];
+    if (!tipoJpgValido.includes(archivo.type.toLowerCase())) {
       if (onImageChange) {
         onImageChange({
           error: 'Solo se permiten imágenes en formato JPG o JPEG.',
@@ -43,8 +43,8 @@ const InfoCliente = ({
     }
 
     // Verificar el tamaño del archivo
-    const maxSize = 4 * 1024 * 1024;
-    if (file.size > maxSize) {
+    const tamanoMaximo = 4 * 1024 * 1024;
+    if (archivo.size > tamanoMaximo) {
       if (onImageChange) {
         onImageChange({
           error: 'La imagen es demasiado grande. El tamaño máximo permitido es 4MB.',
@@ -55,14 +55,14 @@ const InfoCliente = ({
     }
 
     if (onImageChange) {
-      const preview = URL.createObjectURL(file);
+      const preview = URL.createObjectURL(archivo);
 
       onImageChange({
-        file,
+        file: archivo,
         preview,
-        name: file.name,
-        type: file.type,
-        size: file.size,
+        name: archivo.name,
+        type: archivo.type,
+        size: archivo.size,
       });
     }
   };
@@ -96,8 +96,8 @@ const InfoCliente = ({
                 type='text'
                 fullWidth
                 required
-                inputProps={{ maxLength: MAX_LENGTH }}
-                helperText={`${(nombreLegal || '').length}/${MAX_LENGTH} caracteres`}
+                inputProps={{ maxLength: LONGITUD_MAXIMA }}
+                helperText={`${(nombreLegal || '').length}/${LONGITUD_MAXIMA} caracteres`}
                 sx={{ mb: 4 }}
               />
               <CampoTexto
@@ -108,8 +108,8 @@ const InfoCliente = ({
                 type='text'
                 fullWidth
                 required
-                inputProps={{ maxLength: MAX_LENGTH }}
-                helperText={`${(nombreVisible || '').length}/${MAX_LENGTH} caracteres`}
+                inputProps={{ maxLength: LONGITUD_MAXIMA }}
+                helperText={`${(nombreVisible || '').length}/${LONGITUD_MAXIMA} caracteres`}
                 sx={{ mb: 4 }}
               />
             </Box>
@@ -218,15 +218,15 @@ const InfoCliente = ({
         <>
           <input
             type='file'
-            ref={fileInputRef}
-            onChange={handleFileChange}
+            ref={inputArchivoRef}
+            onChange={handleCambioArchivo}
             accept='image/jpeg,image/jpg'
             style={{ display: 'none' }}
           />
           <Button
             variant='outlined'
             size='small'
-            onClick={handleFileSelect}
+            onClick={handleSeleccionArchivo}
             startIcon={<Icono nombre='Upload' />}
             disabled={imagenSubiendo}
             sx={{ mb: 4 }}
@@ -236,7 +236,7 @@ const InfoCliente = ({
           <Texto
             variant='caption'
             display='block'
-            sx={{ mb: 4, color: theme.palette.text.secondary }}
+            sx={{ mb: 4, color: tema.palette.text.secondary }}
           >
             Solo se permiten imágenes en formato JPG/JPEG, máximo 5MB.
           </Texto>

@@ -125,7 +125,7 @@ export const useClientes = () => {
   };
 
   // Método para manejar cambios en el texto de confirmación
-  const handleChangeTextoConfirmacion = (event) => {
+  const onCambioTextoConfirmacion = (event) => {
     const value = event.target.value;
     setTextoConfirmacion(value);
     if (clienteEliminar) {
@@ -380,6 +380,6 @@ export const useClientes = () => {
     handleImagenChange,
 
     // Handlers de confirmación
-    handleChangeTextoConfirmacion,
+    onCambioTextoConfirmacion,
   };
 };

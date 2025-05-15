@@ -13,7 +13,7 @@ export const EliminarClienteModal = ({
   onCloseAlert,
   textoConfirmacion,
   botonDeshabilitado,
-  onChangeTextoConfirmacion,
+  onCambioTextoConfirmacion,
 }) => {
   // Obtener el nombre para confirmar
   const nombreConfirmacion = cliente?.nombreComercial || cliente?.nombreVisible || 'este cliente';
@@ -35,7 +35,7 @@ export const EliminarClienteModal = ({
           label={`Escribe "${nombreConfirmacion}" para confirmar`}
           tipo="text"
           valor={textoConfirmacion}
-          onChange={onChangeTextoConfirmacion}
+          onChange={onCambioTextoConfirmacion}
           placeholder={nombreConfirmacion}
           fullWidth
           autoFocus

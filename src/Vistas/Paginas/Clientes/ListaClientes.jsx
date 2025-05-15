@@ -62,7 +62,7 @@ const ListaClientes = () => {
     imagenError,
     textoConfirmacion,
     botonDeshabilitado,
-    handleChangeTextoConfirmacion,
+    onCambioTextoConfirmacion,
   } = useClientes();
 
   const manejarCerrarSesion = async () => {
@@ -173,7 +173,7 @@ const ListaClientes = () => {
         onCloseAlert={cerrarAlertaExito}
         textoConfirmacion={textoConfirmacion}
         botonDeshabilitado={botonDeshabilitado}
-        onChangeTextoConfirmacion={handleChangeTextoConfirmacion}
+        onCambioTextoConfirmacion={onCambioTextoConfirmacion}
       />
 
       <DetalleClienteModal

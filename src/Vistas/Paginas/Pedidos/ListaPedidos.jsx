@@ -94,22 +94,6 @@ const ListaPedidos = () => {
 
   const botones = [
     {
-      label: 'Añadir',
-      onClick: () => console.log('Añadir'),
-      color: 'error',
-      size: 'large',
-      backgroundColor: colores.altertex[1],
-    },
-
-    {
-      variant: 'outlined',
-      label: 'Editar',
-      onClick: () => console.log('Editar'),
-      color: 'primary',
-      size: 'large',
-      outlineColor: colores.primario[10],
-    },
-    {
       label: 'Eliminar',
       onClick: () => {
         if (seleccionados.length === 0 || seleccionados.size === 0) {

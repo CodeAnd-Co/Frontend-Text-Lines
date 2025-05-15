@@ -29,9 +29,9 @@ const estiloSubtitulo = {
 };
 
 const ListaClientes = () => {
-  const theme = useTheme();
-  const colores = tokens(theme.palette.mode);
-  const navigate = useNavigate();
+  const tema = useTheme();
+  const colores = tokens(tema.palette.mode);
+  const navegar = useNavigate();
   const { cerrarSesion } = useAuth();
 
   const {
@@ -67,7 +67,7 @@ const ListaClientes = () => {
   };
 
   const redirigirATienda = () => {
-    navigate(RUTAS.SISTEMA_TIENDA.BASE, { replace: true });
+    navegar(RUTAS.SISTEMA_TIENDA.BASE, { replace: true });
   };
 
   const informacionBotones = [
@@ -77,7 +77,7 @@ const ListaClientes = () => {
       color: 'secondary',
       size: 'large',
       onClick: () =>
-        navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE),
+        navegar(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE),
     },
     {
       label: 'Configuración',
@@ -85,7 +85,7 @@ const ListaClientes = () => {
       color: 'secondary',
       size: 'large',
       onClick: () =>
-        navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION),
+        navegar(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION),
     },
     {
       label: 'Cerrar sesión',

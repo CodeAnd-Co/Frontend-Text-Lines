@@ -1,6 +1,6 @@
 import Tabla from '@Organismos/Tabla';
 
-const ProductosModal = ({ columnas, filas, paginacion, checkBox, onRowClick }) => {
+const ProductosModal = ({ columnas, filas, paginacion, checkBox, onRowClick, onRowSeleccion }) => {
   return (
     <Tabla
       columns={columnas}
@@ -8,6 +8,7 @@ const ProductosModal = ({ columnas, filas, paginacion, checkBox, onRowClick }) =
       pageSize={paginacion}
       checkboxSelection={checkBox}
       onRowClick={onRowClick}
+      onRowSelectionModelChange={onRowSeleccion}
     />
   );
 };

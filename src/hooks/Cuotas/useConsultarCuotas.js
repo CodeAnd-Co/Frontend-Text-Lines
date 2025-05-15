@@ -7,25 +7,27 @@ export function useConsultarCuotas() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const cargar = async () => {
-      setCargando(true);
-      setError(null);
+  const cargar = async () => {
+    setCargando(true);
+    setError(null);
 
-      try {
-        const { cuotas, mensaje } = await RepositorioListaCuotas.obtenerLista();
-        setCuotas(cuotas);
-        setMensaje(mensaje);
-      } catch (err) {
-        setCuotas([]);
-        setMensaje('');
-        setError(err.message);
-      } finally {
-        setCargando(false);
-      }
-    };
+    try {
+      const { cuotas, mensaje } = await RepositorioListaCuotas.obtenerLista();
+      setCuotas(cuotas);
+      setMensaje(mensaje);
+    } catch (err) {
+      setCuotas([]);
+      setMensaje('');
+      setError(err.message);
+    } finally {
+      setCargando(false);
+    }
+  };
+
+  useEffect(() => {
     cargar();
   }, []);
 
-  return { cuotas, mensaje, cargando, error };
+  return { cuotas, mensaje, cargando, error, recargar: cargar };
 }
+

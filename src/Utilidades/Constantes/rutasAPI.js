@@ -41,7 +41,7 @@ export const RUTAS_API = {
     ELIMINAR_CLIENTE: `${BASE_CLIENTES}/eliminar`,
     CONSULTAR_CLIENTE: `${BASE_CLIENTES}/consultar-cliente`,
     ACTUALIZAR_CLIENTE: `${BASE_CLIENTES}/actualizar-cliente`,
-    CREAR_CLIENTE: `${BASE_CLIENTES}/crear`,
+    CREAR_CLIENTE: `${BASE_CLIENTES}/crear-cliente`,
   },
   EMPLEADOS: {
     BASE: BASE_EMPLEADOS,

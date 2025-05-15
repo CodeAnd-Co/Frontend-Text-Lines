@@ -16,17 +16,17 @@ export const AuthProvider = ({ children }) => {
     verificarSesion();
   }, []);
 
-  const resetTheme = () => {
+  const resetearTema = () => {
     // Obtener el tema actual del localStorage
-    const currentTheme = localStorage.getItem('themeMode');
+    const temaActual = localStorage.getItem('tema');
     
     // Si el tema actual es oscuro, cambiarlo a claro
-    if (currentTheme && JSON.parse(currentTheme) === 'dark') {
+    if (temaActual && JSON.parse(temaActual) === 'dark') {
       toggleColorMode();
     }
     
     // Borrar el tema del localStorage
-    localStorage.removeItem('themeMode');
+    localStorage.removeItem('tema');
   };
 
   const cerrarSesion = async () => {
@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
         }
       );
       // Resetear el tema a modo claro
-      resetTheme();
+      resetearTema();
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     } finally {
@@ -69,7 +69,6 @@ export const AuthProvider = ({ children }) => {
       cargando, 
       cerrarSesion, 
       verificarSesion,
-      resetTheme // Exponemos la función para usar desde otros componentes
     }}>
       {children}
     </AuthContext.Provider>

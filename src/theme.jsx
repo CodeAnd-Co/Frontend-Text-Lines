@@ -209,8 +209,8 @@ export const ColorModeContext = createContext({
 
 export const ColorModeProvider = ({ children }) => {
   const [mode, setMode] = useState(() => {
-    const storedMode = localStorage.getItem('themeMode');
-    return storedMode ? JSON.parse(storedMode) : 'light';
+    const modeAlmacenado = localStorage.getItem('tema');
+    return modeAlmacenado ? JSON.parse(modeAlmacenado) : 'light';
   });
 
   const colorMode = useMemo(
@@ -222,13 +222,13 @@ export const ColorModeProvider = ({ children }) => {
   );
 
   useEffect(() => {
-    localStorage.setItem('themeMode', JSON.stringify(mode));
+    localStorage.setItem('tema', JSON.stringify(mode));
   }, [mode]);
 
-  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+  const tema = useMemo(() => createTheme(themeSettings(mode)), [mode]);
   return (
     <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={tema}>
         <CssBaseline />
         {children}
       </ThemeProvider>
@@ -239,7 +239,7 @@ export const ColorModeProvider = ({ children }) => {
 export const useMode = () => {
   const context = useContext(ColorModeContext);
   if (!context) {
-    throw new Error('useMode must be used within a ColorModeProvider');
+    throw new Error('useMode debe usarse dentro de un ColorModeProvider');
   }
   return context;
 };

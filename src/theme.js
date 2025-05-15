@@ -52,6 +52,9 @@ export const tokens = (mode) => ({
           3: 'rgba(0, 0, 0, 0.5)',
           4: 'rgba(136, 136, 136, 0.62)',
         },
+        noImplementado: {
+          1: 'rgba(255, 149, 56, 0.63)',
+        },
       }
     : {
         texto: {
@@ -99,6 +102,9 @@ export const tokens = (mode) => ({
           2: 'rgba(0, 0, 0, 0.10)',
           3: 'rgba(0, 0, 0, 0.5)',
           4: 'rgba(0, 0, 0, 0.4)',
+        },
+        noImplementado: {
+          1: 'rgb(255, 149, 56)',
         },
       }),
 });

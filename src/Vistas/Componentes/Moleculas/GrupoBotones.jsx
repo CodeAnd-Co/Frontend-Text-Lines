@@ -33,6 +33,7 @@ GrupoBotones.propTypes = {
       backgroundColor: PropTypes.string,
       outlineColor: PropTypes.string,
       onClick: PropTypes.func,
+      deshabilitado: PropTypes.bool,
     })
   ).isRequired,
   spacing: PropTypes.number,

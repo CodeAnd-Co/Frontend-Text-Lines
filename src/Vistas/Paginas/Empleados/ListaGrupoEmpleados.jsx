@@ -20,8 +20,8 @@ const ListaGrupoEmpleados = () => {
   const { usuario } = useAuth();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
-  const MENSAJE_POPUP_ELIMINAR
-    = '¿Estás seguro de que deseas eliminar los grupos seleccionados? Esta acción no se puede deshacer.';
+  const MENSAJE_POPUP_ELIMINAR =
+    '¿Estás seguro de que deseas eliminar los grupos seleccionados? Esta acción no se puede deshacer.';
 
   const [gruposSeleccionados, setGruposSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
@@ -97,14 +97,7 @@ const ListaGrupoEmpleados = () => {
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
-    },
-    {
-      variant: 'outlined',
-      label: 'Editar',
-      onClick: () => console.log('Editar'),
-      color: 'primary',
-      size: 'large',
-      outlineColor: colores.primario[10],
+      deshabilitado: true,
     },
     {
       label: 'Eliminar',
@@ -180,6 +173,14 @@ const ListaGrupoEmpleados = () => {
           tituloVariant='h4'
           customWidth={800}
           botones={[
+            {
+              label: 'Editar',
+              variant: 'contained',
+              color: 'primary',
+              backgroundColor: colores.altertex[1],
+              onClick: () => console.log('Editar usuario'),
+              disabled: true, //disabled: !!errorDetalle,
+            },
             {
               label: 'Salir',
               variant: 'outlined',

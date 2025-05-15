@@ -328,7 +328,7 @@ const ListaUsuarios = () => {
                 color: 'primary',
                 backgroundColor: colores.altertex[1],
                 onClick: () => console.log('Editar usuario'),
-                disabled: !!errorDetalle,
+                disabled: true, //disabled: !!errorDetalle,
               },
               {
                 label: 'SALIR',

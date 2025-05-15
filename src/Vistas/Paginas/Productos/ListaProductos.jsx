@@ -18,8 +18,8 @@ const ListaProductos = () => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const { usuario } = useAuth();
-  const MENSAJE_POPUP_ELIMINAR
-    = '¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.';
+  const MENSAJE_POPUP_ELIMINAR =
+    '¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.';
 
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
@@ -32,10 +32,9 @@ const ListaProductos = () => {
   const manejarConfirmarEliminar = async () => {
     try {
       const urlsImagenes = productos
-      .filter((pro) => productosSeleccionados.includes(pro.idProducto))
-      .map((pro) => pro.urlImagen);
-      
-      
+        .filter((pro) => productosSeleccionados.includes(pro.idProducto))
+        .map((pro) => pro.urlImagen);
+
       await eliminar(productosSeleccionados, urlsImagenes);
       recargar();
       setAlerta({
@@ -134,6 +133,7 @@ const ListaProductos = () => {
       color: 'primary',
       size: 'large',
       outlineColor: colores.primario[10],
+      deshabilitado: true,
     },
     {
       variant: 'outlined',
@@ -142,14 +142,7 @@ const ListaProductos = () => {
       color: 'primary',
       size: 'large',
       outlineColor: colores.primario[10],
-    },
-    {
-      variant: 'outlined',
-      label: 'Editar',
-      onClick: () => console.log('Editar'),
-      color: 'primary',
-      size: 'large',
-      outlineColor: colores.primario[10],
+      deshabilitado: true,
     },
     {
       label: 'Eliminar',

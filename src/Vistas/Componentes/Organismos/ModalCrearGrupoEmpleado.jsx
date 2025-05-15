@@ -1,19 +1,39 @@
+// Importación de hooks de React y componentes del sistema de diseño.
 import { useState, useEffect } from 'react';
 import { useCrearGrupoEmpleados } from '@Hooks/Empleados/useCrearGrupoEmpleados';
 import FormaCrearGrupoEmpleados from '@Organismos/Formularios/FormaCrearGrupoEmpleado';
 import ModalFlotante from '@Organismos/ModalFlotante';
 import Alerta from '@Moleculas/Alerta';
 
+/**
+ * Componente modal para crear un grupo de empleados.
+ *
+ * @component
+ * @param {object} props - Props del componente.
+ * @param {boolean} [props.abierto=false] - Indica si el modal está abierto.
+ * @param {Function} props.onCerrar - Función que se ejecuta al cerrar el modal.
+ * @param {Function} props.onCreado - Función que se ejecuta cuando se crea exitosamente un grupo.
+ * @returns {JSX.Element} Modal con formulario y validación.
+ */
 const ModalCrearGrupoEmpleado = ({ abierto = false, onCerrar, onCreado }) => {
+  // Estados del formulario
   const [nombreGrupo, setNombreGrupo] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [listaEmpleados, setListaEmpleados] = useState([]);
+
+  // Manejo de errores y alertas
   const [mensajeError, setMensajeError] = useState('');
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const [intentoEnviar, setIntentoEnviar] = useState(false);
 
-  const { handleGuardarGrupoEmpleados, errores, limpiarErrores } = useCrearGrupoEmpleados();
+  // Hook personalizado para guardar el grupo
+  const {
+    handleGuardarGrupoEmpleados,
+    errores,
+    limpiarErrores,
+  } = useCrearGrupoEmpleados();
 
+  // Efecto: cuando se cierra el modal, se limpian los campos y errores
   useEffect(() => {
     if (!abierto) {
       setNombreGrupo('');
@@ -24,9 +44,10 @@ const ModalCrearGrupoEmpleado = ({ abierto = false, onCerrar, onCreado }) => {
       setIntentoEnviar(false);
       limpiarErrores();
     }
-  }, [abierto]);
+  }, [abierto, limpiarErrores]);
 
-    useEffect(() => {
+  // Efecto: muestra mensaje de error por 3 segundos
+  useEffect(() => {
     if (mensajeError) {
       const tiempo = setTimeout(() => {
         setMensajeError('');
@@ -35,28 +56,37 @@ const ModalCrearGrupoEmpleado = ({ abierto = false, onCerrar, onCreado }) => {
     }
   }, [mensajeError]);
 
-const handleConfirmar = async () => {
-  setIntentoEnviar(true);
+  /**
+   * Maneja la acción de confirmar el formulario.
+   * Valida los datos y llama al hook para guardar el grupo.
+   */
+  const handleConfirmar = async () => {
+    setIntentoEnviar(true);
 
-  const resultado = await handleGuardarGrupoEmpleados({
-    nombreGrupo: nombreGrupo.trim(),
-    descripcion: descripcion.trim(),
-    listaEmpleados,
-  });
-  if (resultado.exito) {
-    setMensajeError('');
-    onCreado?.();
-    onCerrar?.();
-  } else {
-    if (resultado.errores) {
-      // errores de validación local
+    const resultado = await handleGuardarGrupoEmpleados({
+      nombreGrupo: nombreGrupo.trim(),
+      descripcion: descripcion.trim(),
+      listaEmpleados,
+    });
+
+    if (resultado.exito) {
       setMensajeError('');
+      onCreado?.(); // Callback al crear exitosamente
+      onCerrar?.(); // Cierre del modal
     } else {
-      // error del backend
-      setMensajeError(resultado.mensaje || 'Ocurrió un error al crear el grupo');
+      if (resultado.errores) {
+        // Errores de validación controlada
+        setMensajeError('');
+      } else {
+        // Error inesperado del backend
+        setMensajeError(resultado.mensaje || 'Ocurrió un error al crear el grupo');
+      }
     }
-  }
-};
+  };
+
+  /**
+   * Maneja el cierre del modal.
+   */
   const handleCerrar = () => onCerrar?.();
 
   return (
@@ -75,11 +105,12 @@ const handleConfirmar = async () => {
         setDescripcion={setDescripcion}
         listaEmpleados={listaEmpleados}
         setListaEmpleados={setListaEmpleados}
-        errores={errores} 
+        errores={errores}
         intentoEnviar={intentoEnviar}
         mostrarAlerta={mostrarAlerta}
         setMostrarAlerta={setMostrarAlerta}
       />
+
       {mensajeError && (
         <Alerta
           tipo="error"

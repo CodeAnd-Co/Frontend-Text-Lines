@@ -30,7 +30,6 @@ export const EliminarClienteModal = ({
         confirmDisabled={confirmDisabled}
       >
         <Texto>Esta acción no se puede deshacer.</Texto>
-        <Texto sx={{ mt: 2, mb: 1 }}>Escribe el nombre del cliente para confirmar:</Texto>
         <CampoTexto
           id="confirm-deletion"
           label={`Escribe "${nombreConfirmacion}" para confirmar`}

@@ -3,7 +3,12 @@
 
 import { useNavigate } from 'react-router-dom';
 import { Box, useTheme } from '@mui/material';
+<<<<<<< HEAD
 import { tokens } from '@SRC/theme';
+=======
+import { useAuth } from '@Hooks/AuthProvider';
+import { useState } from 'react';
+>>>>>>> cce069c (Fix: Correción boton, forma de mandar datos de imagen, mostrar si se subio una imagen)
 import Texto from '@Atomos/Texto';
 import Cargador from '@Atomos/Cargador';
 import TarjetaAccion from '@Moleculas/TarjetaAccion';
@@ -11,10 +16,15 @@ import { ClientesLista } from '@Organismos/Clientes/ClientesLista';
 import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
 import { EliminarClienteModal } from '@Organismos/Clientes/EliminarClientesModal';
 import { DetalleClienteModal } from '@Organismos/Clientes/DetalleClienteModal';
+<<<<<<< HEAD
 import { RUTAS } from '@Utilidades/Constantes/rutas';
 import { useClientes } from '@Hooks/Clientes/useClientes';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@SRC/Utilidades/Constantes/permisos';
+=======
+import Boton from '@Atomos/Boton';
+import ModalCrearCliente from '@Organismos/Clientes/ModalCrearCliente';
+>>>>>>> cce069c (Fix: Correción boton, forma de mandar datos de imagen, mostrar si se subio una imagen)
 
 // Estilos
 const estiloImagenLogo = { marginRight: '1rem' };
@@ -30,10 +40,32 @@ const estiloSubtitulo = {
 };
 
 const ListaClientes = () => {
+<<<<<<< HEAD
   const tema = useTheme();
   const colores = tokens(tema.palette.mode);
   const navegar = useNavigate();
   const { usuario, cerrarSesion } = useAuth();
+=======
+  const theme = useTheme();
+  const colores = tokens(theme.palette.mode);
+  const navigate = useNavigate();
+  const { cerrarSesion } = useAuth();
+  const [abrirCrearCliente, setAbrirCrearCliente] = useState(false);
+
+  const handleAbrirCrearCliente = () => setAbrirCrearCliente(true);
+
+  // Manejador para cerrar el modal
+  const handleCerrarCrearCliente = () => {
+    setAbrirCrearCliente(false);
+  };
+
+  // Manejador para cuando se crea una nueva categoría
+  const handleClienteCreadoExitosamente = () => {
+    handleCerrarCrearCliente();
+    // Recarga la lista de categorías
+    recargar();
+  };
+>>>>>>> cce069c (Fix: Correción boton, forma de mandar datos de imagen, mostrar si se subio una imagen)
 
   const {
     clientes,
@@ -152,6 +184,7 @@ const ListaClientes = () => {
               onClienteClick={handleClienteClick}
               onIconoClick={handleIconoClick}
             />
+<<<<<<< HEAD
             {usuario?.permisos?.includes(PERMISOS.CREAR_CLIENTE) && (
               <TarjetaAccion
                 icono='Add'
@@ -159,10 +192,22 @@ const ListaClientes = () => {
                 onClick={() => console.log('Agregar cliente')}
               />
             )}
+=======
+            <AgregarClienteTarjeta handleAbrirCrearCliente={handleAbrirCrearCliente} />
+>>>>>>> cce069c (Fix: Correción boton, forma de mandar datos de imagen, mostrar si se subio una imagen)
           </Box>
         )}
       </Box>
 
+<<<<<<< HEAD
+=======
+      <ModalCrearCliente
+        abierto={abrirCrearCliente}
+        onCerrar={handleCerrarCrearCliente}
+        onCreado={handleClienteCreadoExitosamente}
+      />
+
+>>>>>>> cce069c (Fix: Correción boton, forma de mandar datos de imagen, mostrar si se subio una imagen)
       <EliminarClienteModal
         open={modalEliminacionAbierto}
         cliente={clienteEliminar}

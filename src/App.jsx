@@ -1,7 +1,6 @@
 import './App.css';
 
-import { ColorModeContext, useMode } from '@SRC/theme';
-import { CssBaseline, ThemeProvider } from '@mui/material';
+import { ColorModeProvider } from '@SRC/theme';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from '@Hooks/AuthProvider';
 
@@ -9,13 +8,9 @@ import RutasApp from '@Rutas/RutasApp';
 import { RUTAS } from '@Constantes/rutas';
 
 function App() {
-  const [theme, colorMode] = useMode();
-
   return (
     <div className='app'>
-      <ColorModeContext.Provider value={colorMode}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
+      <ColorModeProvider>
           <Router>
             <AuthProvider>
               <Routes>
@@ -23,8 +18,7 @@ function App() {
               </Routes>
             </AuthProvider>
           </Router>
-        </ThemeProvider>
-      </ColorModeContext.Provider>
+      </ColorModeProvider>
     </div>
   );
 }

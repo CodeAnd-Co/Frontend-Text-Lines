@@ -56,6 +56,7 @@ const ListaClientes = () => {
     handleClienteChange,
     cerrarAlertaExito,
     handleImagenChange,
+    handleToggleEliminar,
     imagenSubiendo,
     imagenError,
   } = useClientes();
@@ -170,6 +171,7 @@ const ListaClientes = () => {
         colores={colores}
         onClose={cerrarModalDetalle}
         onToggleEdicion={toggleModoEdicion}
+        onToggleEliminar={handleToggleEliminar}
         onChange={handleClienteChange}
         onImageChange={handleImagenChange}
         imagenSubiendo={imagenSubiendo}

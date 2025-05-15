@@ -17,7 +17,7 @@ export const EliminarClienteModal = ({
         open={open}
         onClose={onCancel}
         onConfirm={onConfirm}
-        titulo={`¿Estás seguro de que deseas eliminar a ${cliente?.nombreComercial}?`}
+        titulo={`¿Estás seguro de que deseas eliminar a ${cliente?.nombreComercial || cliente?.nombreVisible || 'este cliente'}?`}
         confirmLabel='Confirmar'
         cancelLabel='Cancelar'
       >

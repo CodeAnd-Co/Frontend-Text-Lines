@@ -125,6 +125,22 @@ export const useClientes = () => {
     setImagenError(null);
   };
 
+  // Handler para abrir modal de eliminación desde modal de detalle
+  const handleToggleEliminar = () => {
+    if (clienteEditado) {
+      // Asegurarse de que el objeto cliente tenga la propiedad nombreComercial
+      // Si no existe, usar nombreVisible como alternativa
+      const clienteParaEliminar = {
+        ...clienteEditado,
+        nombreComercial: clienteEditado.nombreComercial || clienteEditado.nombreVisible || 'Cliente sin nombre',
+      };
+      
+      setClienteEliminar(clienteParaEliminar);
+      setModalEliminacionAbierto(true);
+      setModalDetalleAbierto(false); // Cerrar modal de detalle al abrir modal de eliminación
+    }
+  };
+
   const toggleModoEdicion = async () => {
     if (modoEdicion) {
       try {
@@ -328,6 +344,7 @@ export const useClientes = () => {
     toggleModoEdicion,
     handleClienteChange,
     cerrarAlertaExito,
+    handleToggleEliminar,
 
     // Handlers de imagen
     handleImagenChange,

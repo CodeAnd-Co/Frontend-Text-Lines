@@ -14,6 +14,7 @@ import { useEliminarProductos } from '@Hooks/Productos/useEliminarProductos';
 import { tokens } from '@SRC/theme';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
+import { Chip } from '@mui/material';
 
 const ListaProductos = () => {
   const { productos, cargando, error, recargar } = useConsultarProductos();
@@ -117,20 +118,15 @@ const ListaProductos = () => {
       flex: 1,
       cellClassName: 'estado-row--cell',
       renderCell: ({ row: { estado } }) => (
-        <Box
-          width='110px'
-          height='50%'
-          m='10px auto'
-          p='15px'
-          display='flex'
-          justifyContent='center'
-          alignItems='center'
-          color={estado === 1 ? colores.primario[4] : colores.texto[1]}
-          backgroundColor={estado === 1 ? colores.altertex[1] : colores.acciones[1]}
-          borderRadius='4px'
-        >
-          {estado === 1 ? 'Disponible' : 'No disponible'}
-        </Box>
+        <Chip
+          label={estado === 1 ? 'Disponible' : 'No disponible'}
+          variant='filled'
+          color={estado === 1 ? 'primary' : undefined}
+          size='medium'
+          shape='cuadrada'
+          backgroundColor={estado === 1 ? undefined : '#f0f0f0'}
+          textColor={estado === 1 ? undefined : '#000000'}
+        />
       ),
     },
   ];

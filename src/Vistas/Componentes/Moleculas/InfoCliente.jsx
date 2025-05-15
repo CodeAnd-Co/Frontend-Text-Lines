@@ -1,10 +1,13 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Box, useTheme, Button, CircularProgress } from '@mui/material';
+import { Grid, Box, useTheme, CircularProgress } from '@mui/material';
 import Texto from '@Atomos/Texto';
 import Icono from '@Atomos/Icono';
 import CampoTexto from '@Atomos/CampoTexto';
 import { tokens } from '@SRC/theme';
+
+// Importa tu componente Boton aquí
+import Boton from '@Atomos/Boton';
 
 const InfoCliente = ({
   modoEdicion = false,
@@ -223,16 +226,15 @@ const InfoCliente = ({
             accept='image/jpeg,image/jpg'
             style={{ display: 'none' }}
           />
-          <Button
+          <Boton
             variant='outlined'
             size='small'
             onClick={handleSeleccionArchivo}
             startIcon={<Icono nombre='Upload' />}
             disabled={imagenSubiendo}
             sx={{ mb: 4 }}
-          >
-            {imagenSubiendo ? 'Subiendo...' : 'Subir imagen JPG'}
-          </Button>
+            label={imagenSubiendo ? 'Subiendo...' : 'Subir imagen JPG'}
+          />
           <Texto
             variant='caption'
             display='block'

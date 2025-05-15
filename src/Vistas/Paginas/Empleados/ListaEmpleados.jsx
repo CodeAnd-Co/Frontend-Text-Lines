@@ -96,7 +96,6 @@ const ListaGrupoEmpleados = () => {
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
-      disabled: !usuario?.permisos?.includes(PERMISOS.CREAR_EMPLEADO),
       deshabilitado: true,
     },
     {
@@ -107,7 +106,6 @@ const ListaGrupoEmpleados = () => {
       size: 'large',
       outlineColor: colores.primario[10],
       disabled: !usuario?.permisos?.includes(PERMISOS.IMPORTAR_EMPLEADOS),
-      //disabled: !usuario?.permisos?.includes(PERMISOS.IMPORTAR_EMPLEADOS),
     },
     {
       variant: 'outlined',

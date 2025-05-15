@@ -19,6 +19,9 @@ export const useClientes = () => {
   const [eliminacionExitosa, setEliminacionExitosa] = useState(false);
   const [clienteEliminar, setClienteEliminar] = useState(null);
   const [modalEliminacionAbierto, setModalEliminacionAbierto] = useState(false);
+  const [confirmText, setConfirmText] = useState('');
+  const [confirmDisabled, setConfirmDisabled] = useState(true);
+  const CONFIRM_WORD = "eliminar";
 
   // Modal de detalle state
   const [idClienteDetalle, setIdClienteDetalle] = useState(null);
@@ -100,14 +103,28 @@ export const useClientes = () => {
 
   const confirmarEliminacion = () => {
     if (!clienteEliminar) return;
-    setIdEliminar(clienteEliminar.idCliente);
-    setModalEliminacionAbierto(false);
-    setClienteEliminar(null);
+    if (confirmText.toLowerCase() === CONFIRM_WORD) {
+      setIdEliminar(clienteEliminar.idCliente);
+      setModalEliminacionAbierto(false);
+      setClienteEliminar(null);
+      setConfirmText('');
+      setConfirmDisabled(true);
+    }
   };
 
   const cancelarEliminacion = () => {
     setModalEliminacionAbierto(false);
     setClienteEliminar(null);
+    // Resetear el texto de confirmación
+    setConfirmText('');
+    setConfirmDisabled(true);
+  };
+
+  // Método para manejar cambios en el texto de confirmación
+  const handleConfirmTextChange = (event) => {
+    const value = event.target.value;
+    setConfirmText(value);
+    setConfirmDisabled(value.toLowerCase() !== CONFIRM_WORD);
   };
 
   // Handlers para modal de detalle
@@ -335,6 +352,11 @@ export const useClientes = () => {
     imagenError,
     imagenPreview,
 
+    // Estados de confirmación
+    confirmText,
+    confirmDisabled,
+    CONFIRM_WORD,
+
     // Handlers
     handleClienteClick,
     handleIconoClick,
@@ -348,5 +370,8 @@ export const useClientes = () => {
 
     // Handlers de imagen
     handleImagenChange,
+
+    // Handlers de confirmación
+    handleConfirmTextChange,
   };
 };

@@ -1,7 +1,7 @@
 //RF[26] Crea Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF26]
 //RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
 //RF[30] Elimina Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF30]
-import { Box, useTheme } from '@mui/material';
+import { Box, useTheme, Chip } from '@mui/material';
 import { useState, useCallback } from 'react';
 import Tabla from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';
@@ -14,8 +14,6 @@ import { useEliminarProductos } from '@Hooks/Productos/useEliminarProductos';
 import { tokens } from '@SRC/theme';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
-import { Chip } from '@mui/material';
-
 const ListaProductos = () => {
   const { productos, cargando, error, recargar } = useConsultarProductos();
   const { eliminar } = useEliminarProductos();

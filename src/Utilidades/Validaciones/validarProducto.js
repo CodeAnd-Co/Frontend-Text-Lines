@@ -81,7 +81,7 @@ export const validarProducto = (producto) => {
     errores.tipoProducto = 'El tipo de producto debe tener máximo 50 caracteres';
   }
 
-  if (normalizados.precioPuntos == null || normalizados.precioCliente < 0) {
+  if (normalizados.precioPuntos == null || normalizados.precioPuntos < 0) {
     errores.precioPuntos = 'El precio en puntos debe ser un número positivo';
   } else if (!Number.isInteger(normalizados.precioPuntos)) {
     errores.precioPuntos = 'El precio en puntos debe ser un número entero';

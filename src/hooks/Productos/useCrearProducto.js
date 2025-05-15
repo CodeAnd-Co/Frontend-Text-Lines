@@ -4,6 +4,8 @@ import { RepositorioCrearProducto } from '@Repositorios/Productos/RepositorioCre
 import { validarProducto } from '@Utilidades/Validaciones/validarProducto';
 import { validarVariantes } from '@Utilidades/Validaciones/validarVariantes';
 
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+
 export const useCrearProducto = () => {
   const [erroresProducto, setErroresProducto] = useState({});
   const [erroresVariantes, setErroresVariantes] = useState({});
@@ -22,6 +24,13 @@ export const useCrearProducto = () => {
       return {
         exito: false,
         mensaje: 'Debes seleccionar una imagen principal para el producto.',
+      };
+    }
+
+    if (imagenProducto.size > MAX_IMAGE_SIZE) {
+      return {
+        exito: false,
+        mensaje: 'La imagen principal del producto no debe superar los 5MB de tamaño.',
       };
     }
 
@@ -64,6 +73,17 @@ export const useCrearProducto = () => {
         exito: false,
         mensaje: 'Cada variante debe tener al menos una imagen seleccionada.',
       };
+    }
+
+    for (const [idVariante, listaImagenes] of Object.entries(imagenesVariantes)) {
+      for (const imagen of listaImagenes) {
+        if (imagen.file.size > MAX_IMAGE_SIZE) {
+          return {
+            exito: false,
+            mensaje: `La imagen "${imagen.file.name}" en la variante ${idVariante} supera el límite de 5MB.`,
+          };
+        }
+      }
     }
 
     // prettier-ignore

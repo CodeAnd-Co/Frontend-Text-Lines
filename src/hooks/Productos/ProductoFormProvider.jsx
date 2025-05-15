@@ -312,7 +312,7 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       precioCliente: Number(producto.precioCliente) || 0,
       precioVenta: Number(producto.precioVenta) || 0,
       costo: Number(producto.costo) || 0,
-      impuesto: Number(producto.impuesto) || 16,
+      impuesto: Number(producto.impuesto) || 0,
       descuento: Number(producto.descuento) || 0,
       estado: Number(producto.estado) || 1,
       envio: Number(producto.envio),

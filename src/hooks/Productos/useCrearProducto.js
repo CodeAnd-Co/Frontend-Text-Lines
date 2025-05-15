@@ -11,6 +11,7 @@ export const useCrearProducto = () => {
   const [erroresVariantes, setErroresVariantes] = useState({});
 
   const guardarProducto = async ({ producto, variantes, imagenProducto, imagenesVariantes }) => {
+    console.log(producto);
     const erroresValidacionProducto = validarProducto(producto);
     setErroresProducto(erroresValidacionProducto);
     if (Object.keys(erroresValidacionProducto).length > 0) {

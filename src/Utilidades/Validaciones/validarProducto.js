@@ -107,7 +107,7 @@ export const validarProducto = (producto) => {
 
   if (normalizados.impuesto == null) {
     errores.impuesto = 'El impuesto es obligatorio';
-  } else if (typeof normalizados.impuesto !== 'number' || normalizados.impuesto < 0) {
+  } else if (typeof normalizados.impuesto !== 'number' || normalizados.impuesto <= 0) {
     errores.impuesto = 'El impuesto debe ser un número positivo';
   }
 
@@ -116,7 +116,7 @@ export const validarProducto = (producto) => {
     errores.descuento = 'El descuento es obligatorio';
   } else if (
     typeof normalizados.descuento !== 'number' 
-    || normalizados.descuento < 0 
+    || normalizados.descuento <= 0 
     || normalizados.descuento > 100
   ) {
     errores.descuento = 'El descuento debe estar entre 0 y 100';

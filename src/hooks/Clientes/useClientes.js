@@ -21,7 +21,6 @@ export const useClientes = () => {
   const [modalEliminacionAbierto, setModalEliminacionAbierto] = useState(false);
   const [confirmText, setConfirmText] = useState('');
   const [confirmDisabled, setConfirmDisabled] = useState(true);
-  const CONFIRM_WORD = "eliminar";
 
   // Modal de detalle state
   const [idClienteDetalle, setIdClienteDetalle] = useState(null);
@@ -103,7 +102,12 @@ export const useClientes = () => {
 
   const confirmarEliminacion = () => {
     if (!clienteEliminar) return;
-    if (confirmText.toLowerCase() === CONFIRM_WORD) {
+    
+    // Obtener el nombre del cliente para confirmar
+    const nombreConfirmacion = clienteEliminar.nombreComercial || clienteEliminar.nombreVisible || '';
+    
+    // Verificar si el texto ingresado coincide con el nombre del cliente
+    if (confirmText.toLowerCase() === nombreConfirmacion.toLowerCase()) {
       setIdEliminar(clienteEliminar.idCliente);
       setModalEliminacionAbierto(false);
       setClienteEliminar(null);
@@ -124,7 +128,12 @@ export const useClientes = () => {
   const handleConfirmTextChange = (event) => {
     const value = event.target.value;
     setConfirmText(value);
-    setConfirmDisabled(value.toLowerCase() !== CONFIRM_WORD);
+    if (clienteEliminar) {
+      // Obtener el nombre del cliente para confirmar
+      const nombreConfirmacion = clienteEliminar.nombreComercial || clienteEliminar.nombreVisible || '';
+      // Comparar sin distinguir mayúsculas/minúsculas
+      setConfirmDisabled(value.toLowerCase() !== nombreConfirmacion.toLowerCase());
+    }
   };
 
   // Handlers para modal de detalle
@@ -355,7 +364,6 @@ export const useClientes = () => {
     // Estados de confirmación
     confirmText,
     confirmDisabled,
-    CONFIRM_WORD,
 
     // Handlers
     handleClienteClick,

@@ -167,7 +167,6 @@ const ListaClientes = () => {
         onCloseAlert={cerrarAlertaExito}
         confirmText={confirmText}
         confirmDisabled={confirmDisabled}
-        confirmWord={CONFIRM_WORD}
         onConfirmTextChange={handleConfirmTextChange}
       />
 

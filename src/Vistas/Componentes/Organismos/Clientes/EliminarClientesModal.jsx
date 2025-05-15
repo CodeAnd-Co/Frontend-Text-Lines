@@ -13,31 +13,31 @@ export const EliminarClienteModal = ({
   onCloseAlert,
   confirmText,
   confirmDisabled,
-  confirmWord,
   onConfirmTextChange,
 }) => {
+  // Obtener el nombre para confirmar
+  const nombreConfirmacion = cliente?.nombreComercial || cliente?.nombreVisible || 'este cliente';
+  
   return (
     <>
       <ModalFlotante
         open={open}
         onClose={onCancel}
         onConfirm={onConfirm}
-        titulo={`¿Estás seguro de que deseas eliminar a ${
-          cliente?.nombreComercial || cliente?.nombreVisible || 'este cliente'
-        }?`}
+        titulo={`¿Estás seguro de que deseas eliminar a ${nombreConfirmacion}?`}
         confirmLabel='Confirmar'
         cancelLabel='Cancelar'
         confirmDisabled={confirmDisabled}
       >
         <Texto>Esta acción no se puede deshacer.</Texto>
-        <Texto sx={{ mt: 2, mb: 1 }}>Escribe "{confirmWord}" para confirmar:</Texto>
+        <Texto sx={{ mt: 2, mb: 1 }}>Escribe el nombre del cliente para confirmar:</Texto>
         <CampoTexto
           id="confirm-deletion"
-          label={`Escribe "${confirmWord}" para confirmar`}
+          label={`Escribe "${nombreConfirmacion}" para confirmar`}
           tipo="text"
           valor={confirmText}
           onChange={onConfirmTextChange}
-          placeholder={`Escribe ${confirmWord} para confirmar`}
+          placeholder={nombreConfirmacion}
           fullWidth
           autoFocus
           error

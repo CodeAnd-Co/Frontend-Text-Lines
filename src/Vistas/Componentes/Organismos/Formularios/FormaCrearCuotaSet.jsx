@@ -45,7 +45,7 @@ const FormaCrearCuotaSet = ({
     }
   };
 
-  const handleRowSeleccion = (itemSeleccion) => {
+  const handleFilaSeleccion = (itemSeleccion) => {
     const ids = Array.isArray(itemSeleccion) ? itemSeleccion : Array.from(itemSeleccion?.ids || []);
 
     const nuevasFilas = ids
@@ -75,7 +75,7 @@ const FormaCrearCuotaSet = ({
         paginacion={4}
         checkBox={true}
         onRowClick={handleClickFila}
-        onRowSeleccion={(ids) => handleRowSeleccion(ids)}
+        onRowSeleccion={(ids) => handleFilaSeleccion(ids)}
       />
 
       <CampoTexto

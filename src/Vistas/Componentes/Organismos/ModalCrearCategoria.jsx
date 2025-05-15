@@ -10,14 +10,14 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
   const [productos, setProductos] = useState([]);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
 
-  const hasReset = useRef(false);
+  const tieneReseteo = useRef(false);
 
   const { crearCategoria, cargando, exito, error, mensaje, setError, resetEstado } =
     useCrearCategoria();
 
   useEffect(() => {
-    if (!abierto && !hasReset.current) {
-      hasReset.current = true;
+    if (!abierto && !tieneReseteo.current) {
+      tieneReseteo.current = true;
       resetEstado();
       setTimeout(() => {
         setNombreCategoria('');
@@ -26,7 +26,7 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
         setMostrarAlerta(false);
       }, 0);
     } else if (abierto) {
-      hasReset.current = false;
+      tieneReseteo.current = false;
     }
   }, [abierto, resetEstado]);
 

@@ -46,7 +46,7 @@ const FormaCrearCategorias = ({
     }
   };
 
-  const handleRowSeleccion = (itemSeleccion) => {
+  const handleFilaSeleccion = (itemSeleccion) => {
     const ids = Array.isArray(itemSeleccion) ? itemSeleccion : Array.from(itemSeleccion?.ids || []);
 
     const nuevasFilas = ids
@@ -76,7 +76,7 @@ const FormaCrearCategorias = ({
         paginacion={4}
         checkBox={true}
         onRowClick={handleClickFila}
-        onRowSeleccion={(ids) => handleRowSeleccion(ids)}
+        onRowSeleccion={(ids) => handleFilaSeleccion(ids)}
       />
 
       <CampoTexto

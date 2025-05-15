@@ -246,8 +246,7 @@ export const useClientes = () => {
                 };
               }
               return cliente;
-            })
-          );
+            }));
         }
 
         setModoEdicion(false);

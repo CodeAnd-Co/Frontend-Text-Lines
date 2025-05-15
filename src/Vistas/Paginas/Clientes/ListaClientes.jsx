@@ -50,8 +50,6 @@ const ListaClientes = () => {
     errorEliminacion,
     handleClienteClick,
     handleIconoClick,
-    handleInicioPresionado,
-    handleFinPresionado,
     confirmarEliminacion,
     cancelarEliminacion,
     cerrarModalDetalle,
@@ -59,8 +57,12 @@ const ListaClientes = () => {
     handleClienteChange,
     cerrarAlertaExito,
     handleImagenChange,
+    handleToggleEliminar,
     imagenSubiendo,
     imagenError,
+    textoConfirmacion,
+    botonDeshabilitado,
+    onCambioTextoConfirmacion,
   } = useClientes();
 
   const manejarCerrarSesion = async () => {
@@ -149,10 +151,6 @@ const ListaClientes = () => {
               modoEliminacion={modoEliminacion}
               onClienteClick={handleClienteClick}
               onIconoClick={handleIconoClick}
-              onMouseDown={handleInicioPresionado}
-              onMouseUp={handleFinPresionado}
-              onTouchStart={handleInicioPresionado}
-              onTouchEnd={handleFinPresionado}
             />
             {usuario?.permisos?.includes(PERMISOS.CREAR_CLIENTE) && (
               <TarjetaAccion
@@ -173,6 +171,9 @@ const ListaClientes = () => {
         eliminacionExitosa={eliminacionExitosa}
         errorEliminacion={errorEliminacion}
         onCloseAlert={cerrarAlertaExito}
+        textoConfirmacion={textoConfirmacion}
+        botonDeshabilitado={botonDeshabilitado}
+        onCambioTextoConfirmacion={onCambioTextoConfirmacion}
       />
 
       <DetalleClienteModal
@@ -183,6 +184,7 @@ const ListaClientes = () => {
         colores={colores}
         onClose={cerrarModalDetalle}
         onToggleEdicion={toggleModoEdicion}
+        onToggleEliminar={handleToggleEliminar}
         onChange={handleClienteChange}
         onImageChange={handleImagenChange}
         imagenSubiendo={imagenSubiendo}

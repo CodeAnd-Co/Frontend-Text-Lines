@@ -15,6 +15,7 @@ const ModalFlotante = ({
   tituloVariant = 'h6',
   confirmLabel = 'Guardar',
   cancelLabel = 'Cancelar',
+  botonDeshabilitado = false,
   botones = null,
   loading = false,
   children,
@@ -37,6 +38,7 @@ const ModalFlotante = ({
       onClick: onConfirm,
       color: 'error',
       backgroundColor: colores.altertex[1],
+      deshabilitado: botonDeshabilitado,
     },
   ];
 
@@ -111,6 +113,7 @@ ModalFlotante.propTypes = {
   tituloVariant: PropTypes.string,
   confirmLabel: PropTypes.string,
   cancelLabel: PropTypes.string,
+  botonDeshabilitado: PropTypes.bool,
   botones: PropTypes.array,
   children: PropTypes.node.isRequired,
   customWidth: PropTypes.number,

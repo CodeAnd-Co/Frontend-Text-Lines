@@ -1,9 +1,10 @@
 import TarjetaRenovacion from '@Organismos/Cuotas/TarjetaRenovacion';
 import ProductosConCuotas from '@Organismos/Cuotas/ProductosConCuotas';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import GrupoBotones from '@Moleculas/GrupoBotones';
 import PopUp from '@Moleculas/PopUp';
 import { useNavigate } from 'react-router-dom';
+import { tokens } from '@SRC/theme';
 
 const CuerpoPrincipal = ({
   periodoRenovacion,
@@ -17,6 +18,8 @@ const CuerpoPrincipal = ({
   abrirConfirmacion,
   setAbrirConfirmacion,
 }) => {
+  const theme = useTheme();
+  const colores = tokens(theme.palette.mode);
   const navegar = useNavigate();
 
   const manejarCancelar = () => {
@@ -41,20 +44,22 @@ const CuerpoPrincipal = ({
   const botonesEnviarCancelar = [
     {
       label: 'Cancelar',
+      variant: 'contained',
+      color: 'error',
       onClick: manejarCancelar,
-      variant: 'outlined',
-      color: 'secondary',
-      sx: { width: '120px', height: '52px' },
+      backgroundColor: colores.altertex[1],
     },
     {
-      label: cargando ? 'Enviando...' : 'Enviar',
+      label: cargando ? 'Creando...' : 'Crear',
+      variant: 'contained',
       onClick: enviarCuota,
       disabled: cargando,
-      variant: 'contained',
-      color: 'primary',
-      sx: { width: '120px', height: '52px' },
+      color: 'error',
+      backgroundColor: colores.altertex[1],
     },
   ];
+
+  [];
 
   return (
     <>

@@ -3,17 +3,17 @@
 
 import { useNavigate } from 'react-router-dom';
 import { Box, useTheme } from '@mui/material';
-import { useAuth } from '@Hooks/AuthProvider';
+import { tokens } from '@SRC/theme';
 import Texto from '@Atomos/Texto';
 import Cargador from '@Atomos/Cargador';
-import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
-import { tokens } from '@SRC/theme';
-import { RUTAS } from '@Utilidades/Constantes/rutas';
-import { useClientes } from '@Hooks/Clientes/useClientes';
+import TarjetaAccion from '@Moleculas/TarjetaAccion';
 import { ClientesLista } from '@Organismos/Clientes/ClientesLista';
-import { AgregarClienteTarjeta } from '@Organismos/Clientes/AgregarClienteTarjeta';
+import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
 import { EliminarClienteModal } from '@Organismos/Clientes/EliminarClientesModal';
 import { DetalleClienteModal } from '@Organismos/Clientes/DetalleClienteModal';
+import { RUTAS } from '@Utilidades/Constantes/rutas';
+import { useClientes } from '@Hooks/Clientes/useClientes';
+import { useAuth } from '@Hooks/AuthProvider';
 
 // Estilos
 const estiloImagenLogo = { marginRight: '1rem' };
@@ -153,7 +153,11 @@ const ListaClientes = () => {
               onTouchStart={handleInicioPresionado}
               onTouchEnd={handleFinPresionado}
             />
-            <AgregarClienteTarjeta />
+            <TarjetaAccion
+              icono='Add'
+              texto='Agregar cliente'
+              onClick={() => console.log('Agregar cliente')}
+            />
           </Box>
         )}
       </Box>

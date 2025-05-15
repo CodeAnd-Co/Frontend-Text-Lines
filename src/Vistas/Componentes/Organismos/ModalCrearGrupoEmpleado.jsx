@@ -44,7 +44,7 @@ const ModalCrearGrupoEmpleado = ({ abierto = false, onCerrar, onCreado }) => {
       setIntentoEnviar(false);
       limpiarErrores();
     }
-  }, [abierto, limpiarErrores]);
+  }, [abierto]); // ✅ gracias a useCallback, no incluimos limpiarErrores
 
   // Efecto: muestra mensaje de error por 3 segundos
   useEffect(() => {

@@ -59,10 +59,9 @@ const ListaClientes = () => {
     handleToggleEliminar,
     imagenSubiendo,
     imagenError,
-    confirmText,
-    confirmDisabled,
-    CONFIRM_WORD,
-    handleConfirmTextChange,
+    textoConfirmacion,
+    botonDeshabilitado,
+    handleChangeTextoConfirmacion,
   } = useClientes();
 
   const manejarCerrarSesion = async () => {
@@ -169,9 +168,9 @@ const ListaClientes = () => {
         eliminacionExitosa={eliminacionExitosa}
         errorEliminacion={errorEliminacion}
         onCloseAlert={cerrarAlertaExito}
-        confirmText={confirmText}
-        confirmDisabled={confirmDisabled}
-        onConfirmTextChange={handleConfirmTextChange}
+        textoConfirmacion={textoConfirmacion}
+        botonDeshabilitado={botonDeshabilitado}
+        onChangeTextoConfirmacion={handleChangeTextoConfirmacion}
       />
 
       <DetalleClienteModal

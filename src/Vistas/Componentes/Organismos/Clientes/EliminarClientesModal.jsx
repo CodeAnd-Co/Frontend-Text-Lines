@@ -11,9 +11,9 @@ export const EliminarClienteModal = ({
   eliminacionExitosa,
   errorEliminacion,
   onCloseAlert,
-  confirmText,
-  confirmDisabled,
-  onConfirmTextChange,
+  textoConfirmacion,
+  botonDeshabilitado,
+  onChangeTextoConfirmacion,
 }) => {
   // Obtener el nombre para confirmar
   const nombreConfirmacion = cliente?.nombreComercial || cliente?.nombreVisible || 'este cliente';
@@ -27,15 +27,15 @@ export const EliminarClienteModal = ({
         titulo={`¿Estás seguro de que deseas eliminar a ${nombreConfirmacion}?`}
         confirmLabel='Confirmar'
         cancelLabel='Cancelar'
-        confirmDisabled={confirmDisabled}
+        botonDeshabilitado={botonDeshabilitado}
       >
         <Texto>Esta acción no se puede deshacer.</Texto>
         <CampoTexto
           id="confirm-deletion"
           label={`Escribe "${nombreConfirmacion}" para confirmar`}
           tipo="text"
-          valor={confirmText}
-          onChange={onConfirmTextChange}
+          valor={textoConfirmacion}
+          onChange={onChangeTextoConfirmacion}
           placeholder={nombreConfirmacion}
           fullWidth
           autoFocus

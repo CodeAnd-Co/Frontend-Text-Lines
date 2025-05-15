@@ -19,8 +19,8 @@ export const useClientes = () => {
   const [eliminacionExitosa, setEliminacionExitosa] = useState(false);
   const [clienteEliminar, setClienteEliminar] = useState(null);
   const [modalEliminacionAbierto, setModalEliminacionAbierto] = useState(false);
-  const [confirmText, setConfirmText] = useState('');
-  const [confirmDisabled, setConfirmDisabled] = useState(true);
+  const [textoConfirmacion, setTextoConfirmacion] = useState('');
+  const [botonDeshabilitado, setBotonDeshabilitado] = useState(true);
 
   // Modal de detalle state
   const [idClienteDetalle, setIdClienteDetalle] = useState(null);
@@ -107,12 +107,12 @@ export const useClientes = () => {
     const nombreConfirmacion = clienteEliminar.nombreComercial || clienteEliminar.nombreVisible || '';
     
     // Verificar si el texto ingresado coincide con el nombre del cliente
-    if (confirmText.toLowerCase() === nombreConfirmacion.toLowerCase()) {
+    if (textoConfirmacion.toLowerCase() === nombreConfirmacion.toLowerCase()) {
       setIdEliminar(clienteEliminar.idCliente);
       setModalEliminacionAbierto(false);
       setClienteEliminar(null);
-      setConfirmText('');
-      setConfirmDisabled(true);
+      setTextoConfirmacion('');
+      setBotonDeshabilitado(true);
     }
   };
 
@@ -120,19 +120,19 @@ export const useClientes = () => {
     setModalEliminacionAbierto(false);
     setClienteEliminar(null);
     // Resetear el texto de confirmación
-    setConfirmText('');
-    setConfirmDisabled(true);
+    setTextoConfirmacion('');
+    setBotonDeshabilitado(true);
   };
 
   // Método para manejar cambios en el texto de confirmación
-  const handleConfirmTextChange = (event) => {
+  const handleChangeTextoConfirmacion = (event) => {
     const value = event.target.value;
-    setConfirmText(value);
+    setTextoConfirmacion(value);
     if (clienteEliminar) {
       // Obtener el nombre del cliente para confirmar
       const nombreConfirmacion = clienteEliminar.nombreComercial || clienteEliminar.nombreVisible || '';
       // Comparar sin distinguir mayúsculas/minúsculas
-      setConfirmDisabled(value.toLowerCase() !== nombreConfirmacion.toLowerCase());
+      setBotonDeshabilitado(value.toLowerCase() !== nombreConfirmacion.toLowerCase());
     }
   };
 
@@ -362,8 +362,8 @@ export const useClientes = () => {
     imagenPreview: imagenPrevisualizacion,
 
     // Estados de confirmación
-    confirmText,
-    confirmDisabled,
+    textoConfirmacion,
+    botonDeshabilitado,
 
     // Handlers
     handleClienteClick,
@@ -380,6 +380,6 @@ export const useClientes = () => {
     handleImagenChange,
 
     // Handlers de confirmación
-    handleConfirmTextChange,
+    handleChangeTextoConfirmacion,
   };
 };

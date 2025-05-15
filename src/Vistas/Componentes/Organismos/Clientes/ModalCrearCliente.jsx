@@ -1,35 +1,48 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import ModalFlotante from '@Organismos/ModalFlotante';
-// import FormaCrearCliente from '@Organismos/Formularios/FormaCrearCliente';
 import useCrearCliente from '@Hooks/Clientes/useCrearCliente';
 import Alerta from '@Moleculas/Alerta';
-import Boton from '@Atomos/Boton'
-import { Grid, Box, useTheme, Button, CircularProgress } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import CampoTexto from '@Atomos/CampoTexto';
 import Texto from '@Atomos/Texto';
-import atomo from '@Atomos/Imagen';
-import Icono from '@Atomos/Icono';
-import ContenedorImportarImagen from '@Organismos/ContenedorImportarImagen'
-import TarjetaConImagen from '../../Moleculas/TarjetaConImagen';
-
+import ContenedorImportarImagen from '@Organismos/ContenedorImportarImagen';
 import { tokens } from '@SRC/theme';
 
-const ModalCrearCliente = ({ abierto = false, onCerrar, onCreado, onImageChange}) => {
+// Constantes en español
+const MENSAJES = {
+  TITULO: 'Crear cliente',
+  CANCELAR: 'Cancelar',
+  CREAR: 'Crear',
+  CREANDO: 'Creando...',
+  NOMBRE_COMERCIAL: 'Nombre comercial',
+  NOMBRE_FISCAL: 'Nombre fiscal',
+  ERROR_VALIDACION: 'Ingresa el nombre fiscal y comercial.',
+  RESTRICCION_IMAGEN: 'Solo se permiten imágenes en formato JPG/JPEG/PNG, máximo 5MB.',
+};
+
+const ModalCrearCliente = ({ abierto = false, onCerrar, onCreado }) => {
   const [nombreComercial, setNombreComercial] = useState('');
   const [nombreFiscal, setNombreFiscal] = useState('');
-  const [imagen, setImagen] = useState([]);
+  const [imagen, setImagen] = useState(null);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
-  const fileInputRef = useRef(null);
-  const imagenSubiendo = false;
-
 
   // Track if the form has been reset to prevent multiple resets
   const hasReset = useRef(false);
 
-  const { crearCliente, cargando, exito, error, mensaje, setError, resetEstado }
-    = useCrearCliente();
+  const {
+    crearCliente,
+    cargando,
+    exito,
+    error,
+    mensaje,
+    setError,
+    resetEstado,
+    imagenSubiendo,
+    imagenError,
+    setImagenError,
+  } = useCrearCliente();
 
   // Reset the form only once when the modal closes
   useEffect(() => {
@@ -40,7 +53,7 @@ const ModalCrearCliente = ({ abierto = false, onCerrar, onCreado, onImageChange}
       setTimeout(() => {
         setNombreComercial('');
         setNombreFiscal('');
-        setImagen('');
+        setImagen(null);
         setMostrarAlerta(false);
       }, 0);
     } else if (abierto) {
@@ -74,24 +87,14 @@ const ModalCrearCliente = ({ abierto = false, onCerrar, onCreado, onImageChange}
   }, [onCerrar]);
 
   const handleConfirmar = async () => {
-    // Validate that category name is not empty after removing spaces
-    // and that there is at least one selected product
-    console.log('confirmar: ', nombreComercial)
-    if (!nombreComercial.trim()) {
-      console.log('Falta el nombre comercial.')
+    // Validar que los campos no estén vacíos
+    if (!nombreComercial.trim() || !nombreFiscal.trim()) {
+      console.log('Faltan campos obligatorios');
       setMostrarAlerta(true);
-      // return;
-    }
-    
-    console.log('confirmar: ', nombreFiscal)
-    if (!nombreFiscal.trim()) {
-      console.log('Falta el nombre fiscal.')
-      setMostrarAlerta(true);
-      // return;
+      return;
     }
 
-
-    // Send data with clean names (without unnecessary spaces)
+    // Enviar datos con nombres limpios (sin espacios innecesarios)
     await crearCliente({
       nombreComercial: nombreComercial.trim(),
       nombreFiscal: nombreFiscal.trim(),
@@ -99,139 +102,100 @@ const ModalCrearCliente = ({ abierto = false, onCerrar, onCreado, onImageChange}
     });
   };
 
-
-
-
-
-  const handleFileSelect = () => {
-    fileInputRef.current.click();
-  };
-  const handleFileChange = (evento) => {
-    const file = evento.target.files[0];
-    if (!file) return;
-
-    // Verificar que sea un archivo JPG o JPEG
-    const validJpgTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-    if (!validJpgTypes.includes(file.type.toLowerCase())) {
-      if (onImageChange) {
-        onImageChange({
-          error: 'Solo se permiten imágenes en formato JPG o JPEG.',
-        });
-      }
-      evento.target.value = ''; // Limpiar el input para permitir seleccionar el mismo archivo nuevamente
-      return;
-    }
-
-    // Verificar el tamaño del archivo
-    const maxSize = 4 * 1024 * 1024;
-    if (file.size > maxSize) {
-      if (onImageChange) {
-        onImageChange({
-          error: 'La imagen es demasiado grande. El tamaño máximo permitido es 4MB.',
-        });
-      }
-      evento.target.value = ''; // Limpiar el input para permitir seleccionar el mismo archivo nuevamente
-      return;
-    }
-
-    if (onImageChange) {
-      const preview = URL.createObjectURL(file);
-
-      onImageChange({
-        file,
-        preview,
-        name: file.name,
-        type: file.type,
-        size: file.size,
-      });
+  const handleFileAccepted = (archivo) => {
+    // Para imágenes solo guardamos el archivo
+    setImagen(archivo);
+    // Resetear errores de imagen previos
+    if (imagenError) {
+      setImagenError(null);
     }
   };
 
-  
   return (
-    <>
     <ModalFlotante
       open={abierto}
       onClose={handleCerrar}
       onConfirm={handleConfirmar}
-      titulo='Crear cliente'
-      cancelLabel='Cancelar'
-      // confirmLabel='Guardar'
-      confirmLabel={cargando ? 'Creando...' : 'Crear'}
-      // disabledConfirm={cargando}
+      titulo={MENSAJES.TITULO}
+      cancelLabel={MENSAJES.CANCELAR}
+      confirmLabel={cargando ? MENSAJES.CREANDO : MENSAJES.CREAR}
+      disabledConfirm={cargando || imagenSubiendo}
     >
-    <>
-    {/* <Texto>Nombre comercial.</Texto> */}
-    <CampoTexto
-      label={'Nombre comercial'}
-      name='nombreComercial'
-      onChange={(evento) => setNombreComercial(evento.target.value)}
-      fullWidth={true}
-      type={'text'}
-      required={true}
-      />
-    {/* <Texto>Nombre fiscal.</Texto> */}
-    <CampoTexto
-      label={'Nombre fiscal'}
-      name='nombreFiscal'
-      onChange={(evento) => setNombreFiscal(evento.target.value)}
-      fullWidth={true}
-      type={'text'}
-      required={true}
-      />
-
-    {/* <input
-      type='file'
-      ref={fileInputRef}
-      onChange={handleFileChange}
-      accept='image/jpeg,image/jpg,image/png'
-      style={{ display: 'none' }}
-    />
-    <Boton
-      variant='outlined'
-      size='large'
-      onClick={handleFileSelect}
-      startIcon={<Icono nombre='Upload' />}
-      disabled={imagenSubiendo}
-      sx={{ mb: 4 }}
-    >
-      {imagenSubiendo ? 'Subiendo...' : 'Subir imagen JPG'}
-    </Boton>*/}
-
-    <ContenedorImportarImagen></ContenedorImportarImagen>
-
-    <Texto
-      variant='caption'
-      display='block'
-      sx={{ mb: 4, color: theme.palette.text.secondary }}
-    > 
-      Solo se permiten imágenes en formato JPG/JPEG, máximo 5MB.
-    </Texto>
-
-    </>
-      {(exito || error) && (
-        <Alerta
-          tipo={exito ? 'success' : 'error'}
-          mensaje={mensaje}
-          duracion={exito ? 4000 : 6000}
-          sx={{ margin: 3 }}
-          cerrable
-          onClose={error ? () => setError(false) : undefined}
-          centrad
+      <>
+        <CampoTexto
+          label={MENSAJES.NOMBRE_COMERCIAL}
+          name='nombreComercial'
+          value={nombreComercial}
+          onChange={(evento) => setNombreComercial(evento.target.value)}
+          fullWidth={true}
+          type='text'
+          required={true}
+          disabled={cargando || imagenSubiendo}
+          sx={{ mb: 2 }}
         />
-      )}
-      {mostrarAlerta && (
-        <Alerta
-          tipo='warning'
-          mensaje={'Ingresa el nombre fiscal y comercial.'}
-          cerrable
-          duracion={10000}
-          onClose={() => setMostrarAlerta(false)}
-          sx={{ mb: 2, mt: 2 }}
+
+        <CampoTexto
+          label={MENSAJES.NOMBRE_FISCAL}
+          name='nombreFiscal'
+          value={nombreFiscal}
+          onChange={(evento) => setNombreFiscal(evento.target.value)}
+          fullWidth={true}
+          type='text'
+          required={true}
+          disabled={cargando || imagenSubiendo}
+          sx={{ mb: 3 }}
         />
-      )}
-      </ModalFlotante>
-    </>
+
+        <Box mb={2}>
+          <ContenedorImportarImagen
+            onFileAccepted={handleFileAccepted}
+            cargando={cargando || imagenSubiendo}
+          />
+        </Box>
+
+        <Texto
+          variant='caption'
+          display='block'
+          sx={{ mb: 4, color: theme.palette.text.secondary }}
+        >
+          {MENSAJES.RESTRICCION_IMAGEN}
+        </Texto>
+
+        {imagenError && (
+          <Alerta
+            tipo='error'
+            mensaje={imagenError}
+            cerrable
+            duracion={6000}
+            onClose={() => setImagenError(null)}
+            sx={{ mb: 2, mt: 0 }}
+          />
+        )}
+
+        {(exito || error) && (
+          <Alerta
+            tipo={exito ? 'success' : 'error'}
+            mensaje={mensaje}
+            duracion={exito ? 4000 : 6000}
+            sx={{ margin: 3 }}
+            cerrable
+            onClose={error ? () => setError(false) : undefined}
+            centrada
+          />
+        )}
+
+        {mostrarAlerta && (
+          <Alerta
+            tipo='warning'
+            mensaje={MENSAJES.ERROR_VALIDACION}
+            cerrable
+            duracion={10000}
+            onClose={() => setMostrarAlerta(false)}
+            sx={{ mb: 2, mt: 2 }}
+          />
+        )}
+      </>
+    </ModalFlotante>
   );
 };
 

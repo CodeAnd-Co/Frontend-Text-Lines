@@ -2,31 +2,67 @@ import { useDropzone } from 'react-dropzone';
 import { Box, Typography, CircularProgress, useTheme } from '@mui/material';
 import Icono from '@Atomos/Icono';
 import { tokens } from '@SRC/theme';
+import { useState } from 'react';
 
-const ContenedorImportarImagen = ({ onFileAccepted, cargando = false }) => {
+// Constantes en español
+const MENSAJES = {
+  CARGANDO: 'Cargando...',
+  SOLTAR_ARCHIVO: 'Suelta el archivo aquí...',
+  ARRASTRAR_ARCHIVO: 'Arrastra tu imagen o haz clic para seleccionarla',
+  ERROR_FORMAT:
+    'El formato de archivo no es compatible. Solo se permiten imágenes JPG, JPEG y PNG.',
+  ERROR_SIZE: 'El archivo excede el tamaño máximo permitido (5MB)',
+};
+
+const ContenedorImportarImagen = ({ onFileAccepted, onError, cargando = false }) => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
+  const [archivoActual, setArchivoActual] = useState(null);
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: { 'image/png': ['.png'], 'image/jpg':['.jpg'], 'image/jpeg':['.jpeg'] },
-    multiple: false,
-    maxSize: 5500000, // 3 MB
-    disabled: cargando,
-    onDrop: (acceptedFiles) => {
-      if (!acceptedFiles.length) return;
-      const archivo = acceptedFiles[0];
-
-      Papa.parse(archivo, {
-        header: true,
-        skipEmptyLines: true,
-        complete: (resultado) => {
-          onFileAccepted(archivo, resultado.data);
-        },
-        error: (error) => {
-          console.error('Error al parsear la imagen:', error.message);
-        }
-      });
+    accept: {
+      'image/jpeg': ['.jpg', '.jpeg'],
+      'image/png': ['.png'],
     },
+    multiple: false,
+    maxSize: 5242880, // 5 MB
+    disabled: cargando,
+    onDrop: (acceptedFiles, rejectedFiles) => {
+      // Manejar archivos rechazados (formato o tamaño inválido)
+      if (rejectedFiles && rejectedFiles.length > 0) {
+        const rejection = rejectedFiles[0];
+        setArchivoActual(null);
 
+        if (rejection.errors.some((e) => e.code === 'file-invalid-type')) {
+          onError?.(MENSAJES.ERROR_FORMAT);
+          console.error(MENSAJES.ERROR_FORMAT);
+          return;
+        }
+
+        if (rejection.errors.some((e) => e.code === 'file-too-large')) {
+          onError?.(MENSAJES.ERROR_SIZE);
+          console.error(MENSAJES.ERROR_SIZE);
+          return;
+        }
+      }
+
+      // Procesar archivo aceptado
+      if (acceptedFiles && acceptedFiles.length > 0) {
+        const archivo = acceptedFiles[0];
+        setArchivoActual(archivo);
+
+        // Crear una URL para previsualización
+        const preview = URL.createObjectURL(archivo);
+
+        onFileAccepted({
+          file: archivo,
+          preview,
+          name: archivo.name,
+          type: archivo.type,
+          size: archivo.size,
+        });
+      }
+    },
   });
 
   return (
@@ -52,15 +88,17 @@ const ContenedorImportarImagen = ({ onFileAccepted, cargando = false }) => {
       {cargando ? (
         <CircularProgress />
       ) : (
-        <Icono nombre="UploadFile" size="large" color={colores.altertex[1]} clickable={false} />
+        <Icono nombre='UploadFile' size='large' color={colores.altertex[1]} clickable={false} />
       )}
 
-      <Typography variant="body1" sx={{ mt: 1 }}>
+      <Typography variant='body1' sx={{ mt: 1 }}>
         {cargando
-          ? 'Cargando…'
+          ? MENSAJES.CARGANDO
           : isDragActive
-            ? 'Suelta el archivo aquí…'
-            : 'Arrastra tu imagen o haz clic para seleccionarla'}
+          ? MENSAJES.SOLTAR_ARCHIVO
+          : archivoActual
+          ? `Archivo cargado: ${archivoActual.name}`
+          : MENSAJES.ARRASTRAR_ARCHIVO}
       </Typography>
     </Box>
   );

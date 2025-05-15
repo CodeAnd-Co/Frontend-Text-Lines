@@ -4,23 +4,18 @@ import { RUTAS_API } from '@Constantes/rutasAPI';
 const API_KEY = import.meta.env.VITE_API_KEY;
 
 export class RepositorioCrearCliente {
-  static async crearCliente(cliente) {
+  static async crearCliente(formData) {
     try {
-      const respuesta = await axios.post(
-        RUTAS_API.CLIENTES.CREAR_CLIENTE,
-        { cliente },
-        {
-          headers: {
-            'x-api-key': API_KEY,
-          },
-          withCredentials: true,
-        }
-      );
-
+      const respuesta = await axios.post(RUTAS_API.CLIENTES.CREAR_CLIENTE, formData, {
+        headers: {
+          'x-api-key': API_KEY,
+          'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true,
+      });
       return respuesta;
     } catch (error) {
-      const mensaje = error.respuesta?.data?.mensaje;
-      throw new Error(mensaje);
+      throw error;
     }
   }
 }

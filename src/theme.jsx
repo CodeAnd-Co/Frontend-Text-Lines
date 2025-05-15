@@ -2,7 +2,6 @@ import { createContext, useState, useMemo, useContext, useEffect } from 'react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 
-// color design tokens export
 export const tokens = (mode) => ({
   ...(mode === 'dark'
     ? {

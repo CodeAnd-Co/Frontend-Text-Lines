@@ -3,17 +3,17 @@
 
 import { useNavigate } from 'react-router-dom';
 import { Box, useTheme } from '@mui/material';
-import { useAuth } from '@Hooks/AuthProvider';
+import { tokens } from '@SRC/theme';
 import Texto from '@Atomos/Texto';
 import Cargador from '@Atomos/Cargador';
-import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
-import { tokens } from '@SRC/theme';
-import { RUTAS } from '@Utilidades/Constantes/rutas';
-import { useClientes } from '@Hooks/Clientes/useClientes';
+import TarjetaAccion from '@Moleculas/TarjetaAccion';
 import { ClientesLista } from '@Organismos/Clientes/ClientesLista';
-import { AgregarClienteTarjeta } from '@Organismos/Clientes/AgregarClienteTarjeta';
+import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
 import { EliminarClienteModal } from '@Organismos/Clientes/EliminarClientesModal';
 import { DetalleClienteModal } from '@Organismos/Clientes/DetalleClienteModal';
+import { RUTAS } from '@Utilidades/Constantes/rutas';
+import { useClientes } from '@Hooks/Clientes/useClientes';
+import { useAuth } from '@Hooks/AuthProvider';
 
 // Estilos
 const estiloImagenLogo = { marginRight: '1rem' };
@@ -29,9 +29,9 @@ const estiloSubtitulo = {
 };
 
 const ListaClientes = () => {
-  const theme = useTheme();
-  const colores = tokens(theme.palette.mode);
-  const navigate = useNavigate();
+  const tema = useTheme();
+  const colores = tokens(tema.palette.mode);
+  const navegar = useNavigate();
   const { cerrarSesion } = useAuth();
 
   const {
@@ -70,7 +70,7 @@ const ListaClientes = () => {
   };
 
   const redirigirATienda = () => {
-    navigate(RUTAS.SISTEMA_TIENDA.BASE, { replace: true });
+    navegar(RUTAS.SISTEMA_TIENDA.BASE, { replace: true });
   };
 
   const informacionBotones = [
@@ -80,7 +80,7 @@ const ListaClientes = () => {
       color: 'secondary',
       size: 'large',
       onClick: () =>
-        navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE),
+        navegar(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE),
     },
     {
       label: 'Configuración',
@@ -88,7 +88,7 @@ const ListaClientes = () => {
       color: 'secondary',
       size: 'large',
       onClick: () =>
-        navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION),
+        navegar(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION),
     },
     {
       label: 'Cerrar sesión',
@@ -152,7 +152,11 @@ const ListaClientes = () => {
               onClienteClick={handleClienteClick}
               onIconoClick={handleIconoClick}
             />
-            <AgregarClienteTarjeta />
+            <TarjetaAccion
+              icono='Add'
+              texto='Agregar cliente'
+              onClick={() => console.log('Agregar cliente')}
+            />
           </Box>
         )}
       </Box>

@@ -103,8 +103,14 @@ const ModalCrearCliente = ({ abierto = false, onCerrar, onCreado }) => {
   };
 
   const handleFileAccepted = (archivo) => {
-    // Para imágenes solo guardamos el archivo
-    setImagen(archivo);
+    // Para mantener consistencia con InfoCliente.jsx
+    // Guardamos solo el objeto File, no toda la estructura
+    if (archivo && archivo.file) {
+      setImagen(archivo.file);
+    } else {
+      setImagen(archivo);
+    }
+
     // Resetear errores de imagen previos
     if (imagenError) {
       setImagenError(null);

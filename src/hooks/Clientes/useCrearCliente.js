@@ -77,8 +77,16 @@ const useCrearCliente = () => {
       formData.append('nombreComercial', nombreComercial.trim());
       formData.append('nombreFiscal', nombreFiscal.trim());
 
-      if (imagen?.file) {
-        formData.append('imagen', imagen.file);
+      // Modificación: Verificar si imagen es un objeto completo o directamente un File
+      if (imagen) {
+        // Si es un objeto con propiedad file (como en el componente InfoCliente)
+        if (imagen.file instanceof File) {
+          formData.append('imagen', imagen.file);
+        }
+        // Si es directamente un File
+        else if (imagen instanceof File) {
+          formData.append('imagen', imagen);
+        }
       }
 
       // Llamar al repositorio para crear el cliente
@@ -98,12 +106,9 @@ const useCrearCliente = () => {
       setError(true);
 
       // Manejar mensaje de error según su origen
-      if (err.response?.data?.error) {
+      if (err.response.data.mensaje) {
         // Error de API con mensaje específico
-        setMensaje(err.response.data.error);
-      } else if (err instanceof Error) {
-        // Error lanzado manualmente o de otras fuentes
-        setMensaje(err.message);
+        setMensaje(err.response.data.mensaje);
       } else {
         // Mensaje de error genérico
         setMensaje(MENSAJES.ERROR_GENERICO);

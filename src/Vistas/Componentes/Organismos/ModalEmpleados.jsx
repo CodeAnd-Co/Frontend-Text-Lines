@@ -26,10 +26,6 @@ const ModalEmpleados = ({ open, onClose, onAccion, empleadoEdicion }) => {
     if (resultado?.exito) {
       if (onAccion) await onAccion();
 
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
-
       if (!esEdicion) {
         limpiarFormulario();
       }

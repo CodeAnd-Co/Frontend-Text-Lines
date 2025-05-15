@@ -116,14 +116,6 @@ const ListaGrupoEmpleados = () => {
       outlineColor: colores.primario[10],
     },
     {
-      variant: 'outlined',
-      label: 'Editar',
-      onClick: () => console.log('Editar'),
-      color: 'primary',
-      size: 'large',
-      outlineColor: colores.primario[10],
-    },
-    {
       label: 'Eliminar',
       onClick: () => {
         if (empleadosSeleccionados.length === 0) {

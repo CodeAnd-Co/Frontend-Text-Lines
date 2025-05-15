@@ -99,7 +99,19 @@ export const useAccionesEmpleado = (empleadoInicial = null) => {
           : '',
     };
 
-    const nuevosErrores = validarDatosActualizarEmpleado(datosProcesados);
+    const erroresCampos = {};
+    if (!datosProcesados.areaTrabajo || datosProcesados.areaTrabajo.trim() === '') {
+      erroresCampos.areaTrabajo = 'El campo no puede estar vacío ni contener sólo espacios';
+    }
+    if (!datosProcesados.posicion || datosProcesados.posicion.trim() === '') {
+      erroresCampos.posicion = 'El campo no puede estar vacío ni contener sólo espacios';
+    }
+
+    const nuevosErrores = {
+      ...erroresCampos,
+      ...validarDatosActualizarEmpleado(datosProcesados),
+    };
+
     if (Object.keys(nuevosErrores).length > 0) {
       setErroresValidacion(nuevosErrores);
       setAlerta({

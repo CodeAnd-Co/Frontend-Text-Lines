@@ -154,6 +154,7 @@ const ListaGrupoEmpleados = () => {
             rows={filas}
             loading={cargando}
             checkboxSelection
+            disableRowSelectionOnClick={true}
             onRowSelectionModelChange={(selectionModel) => {
               const ids = Array.isArray(selectionModel)
                 ? selectionModel

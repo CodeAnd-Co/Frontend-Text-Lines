@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useConsultarClientes } from '@Hooks/Clientes/useConsultarClientes';
 import { useSeleccionarCliente } from '@Hooks/Clientes/useSeleccionarCliente';
@@ -17,13 +17,10 @@ export const useClientes = () => {
   // Eliminación state
   const [idEliminar, setIdEliminar] = useState(null);
   const [eliminacionExitosa, setEliminacionExitosa] = useState(false);
-  const [modoEliminacion, setModoEliminacion] = useState(false);
   const [clienteEliminar, setClienteEliminar] = useState(null);
   const [modalEliminacionAbierto, setModalEliminacionAbierto] = useState(false);
-
-  // Referencias para manejo de gestos
-  const tiempoPresionado = useRef(null);
-  const ignorarPrimerClick = useRef(false);
+  const [textoConfirmacion, setTextoConfirmacion] = useState('');
+  const [botonDeshabilitado, setBotonDeshabilitado] = useState(true);
 
   // Modal de detalle state
   const [idClienteDetalle, setIdClienteDetalle] = useState(null);
@@ -81,35 +78,6 @@ export const useClientes = () => {
     };
   }, [imagenPrevisualizacion]);
 
-  // Manejar click fuera para desactivar modo eliminación
-  useEffect(() => {
-    const manejarClickFuera = () => {
-      if (ignorarPrimerClick.current) {
-        ignorarPrimerClick.current = false;
-        return;
-      }
-      if (modoEliminacion) {
-        setModoEliminacion(false);
-      }
-    };
-    document.addEventListener('click', manejarClickFuera);
-    return () => document.removeEventListener('click', manejarClickFuera);
-  }, [modoEliminacion]);
-
-  // Handlers para presionado largo
-  const handleInicioPresionado = () => {
-    tiempoPresionado.current = setTimeout(() => {
-      setModoEliminacion(true);
-      ignorarPrimerClick.current = true;
-    }, 800);
-  };
-
-  const handleFinPresionado = () => {
-    if (!modoEliminacion) {
-      clearTimeout(tiempoPresionado.current);
-    }
-  };
-
   // Handlers para clientes
   const handleClienteClick = (clienteId, urlImagen, nombreComercial) => {
     const idCliente = parseInt(clienteId, 10);
@@ -134,14 +102,38 @@ export const useClientes = () => {
 
   const confirmarEliminacion = () => {
     if (!clienteEliminar) return;
-    setIdEliminar(clienteEliminar.idCliente);
-    setModalEliminacionAbierto(false);
-    setClienteEliminar(null);
+    
+    // Obtener el nombre del cliente para confirmar
+    const nombreConfirmacion = clienteEliminar.nombreComercial || clienteEliminar.nombreVisible || '';
+    
+    // Verificar si el texto ingresado coincide con el nombre del cliente
+    if (textoConfirmacion.toLowerCase() === nombreConfirmacion.toLowerCase()) {
+      setIdEliminar(clienteEliminar.idCliente);
+      setModalEliminacionAbierto(false);
+      setClienteEliminar(null);
+      setTextoConfirmacion('');
+      setBotonDeshabilitado(true);
+    }
   };
 
   const cancelarEliminacion = () => {
     setModalEliminacionAbierto(false);
     setClienteEliminar(null);
+    // Resetear el texto de confirmación
+    setTextoConfirmacion('');
+    setBotonDeshabilitado(true);
+  };
+
+  // Método para manejar cambios en el texto de confirmación
+  const onCambioTextoConfirmacion = (event) => {
+    const value = event.target.value;
+    setTextoConfirmacion(value);
+    if (clienteEliminar) {
+      // Obtener el nombre del cliente para confirmar
+      const nombreConfirmacion = clienteEliminar.nombreComercial || clienteEliminar.nombreVisible || '';
+      // Comparar sin distinguir mayúsculas/minúsculas
+      setBotonDeshabilitado(value.toLowerCase() !== nombreConfirmacion.toLowerCase());
+    }
   };
 
   // Handlers para modal de detalle
@@ -157,6 +149,22 @@ export const useClientes = () => {
     setImagenPrevisualizacion(null);
     setImagenArchivo(null);
     setImagenError(null);
+  };
+
+  // Handler para abrir modal de eliminación desde modal de detalle
+  const handleToggleEliminar = () => {
+    if (clienteEditado) {
+      // Asegurarse de que el objeto cliente tenga la propiedad nombreComercial
+      // Si no existe, usar nombreVisible como alternativa
+      const clienteParaEliminar = {
+        ...clienteEditado,
+        nombreComercial: clienteEditado.nombreComercial || clienteEditado.nombreVisible || 'Cliente sin nombre',
+      };
+      
+      setClienteEliminar(clienteParaEliminar);
+      setModalEliminacionAbierto(true);
+      setModalDetalleAbierto(false); // Cerrar modal de detalle al abrir modal de eliminación
+    }
   };
 
   const toggleModoEdicion = async () => {
@@ -337,7 +345,6 @@ export const useClientes = () => {
     clientes,
     cargando,
     error,
-    modoEliminacion,
     clienteEliminar,
     modalEliminacionAbierto,
     idClienteDetalle,
@@ -354,19 +361,25 @@ export const useClientes = () => {
     imagenError,
     imagenPreview: imagenPrevisualizacion,
 
+    // Estados de confirmación
+    textoConfirmacion,
+    botonDeshabilitado,
+
     // Handlers
     handleClienteClick,
     handleIconoClick,
-    handleInicioPresionado,
-    handleFinPresionado,
     confirmarEliminacion,
     cancelarEliminacion,
     cerrarModalDetalle,
     toggleModoEdicion,
     handleClienteChange,
     cerrarAlertaExito,
+    handleToggleEliminar,
 
     // Handlers de imagen
     handleImagenChange,
+
+    // Handlers de confirmación
+    onCambioTextoConfirmacion,
   };
 };

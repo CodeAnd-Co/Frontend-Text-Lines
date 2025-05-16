@@ -14,6 +14,7 @@ import { DetalleClienteModal } from '@Organismos/Clientes/DetalleClienteModal';
 import { RUTAS } from '@Utilidades/Constantes/rutas';
 import { useClientes } from '@Hooks/Clientes/useClientes';
 import { useAuth } from '@Hooks/AuthProvider';
+import { PERMISOS } from '@SRC/Utilidades/Constantes/permisos';
 
 // Estilos
 const estiloImagenLogo = { marginRight: '1rem' };
@@ -32,7 +33,7 @@ const ListaClientes = () => {
   const tema = useTheme();
   const colores = tokens(tema.palette.mode);
   const navegar = useNavigate();
-  const { cerrarSesion } = useAuth();
+  const { usuario, cerrarSesion } = useAuth();
 
   const {
     clientes,
@@ -49,8 +50,6 @@ const ListaClientes = () => {
     errorEliminacion,
     handleClienteClick,
     handleIconoClick,
-    handleInicioPresionado,
-    handleFinPresionado,
     confirmarEliminacion,
     cancelarEliminacion,
     cerrarModalDetalle,
@@ -58,8 +57,12 @@ const ListaClientes = () => {
     handleClienteChange,
     cerrarAlertaExito,
     handleImagenChange,
+    handleToggleEliminar,
     imagenSubiendo,
     imagenError,
+    textoConfirmacion,
+    botonDeshabilitado,
+    onCambioTextoConfirmacion,
   } = useClientes();
 
   const manejarCerrarSesion = async () => {
@@ -148,16 +151,14 @@ const ListaClientes = () => {
               modoEliminacion={modoEliminacion}
               onClienteClick={handleClienteClick}
               onIconoClick={handleIconoClick}
-              onMouseDown={handleInicioPresionado}
-              onMouseUp={handleFinPresionado}
-              onTouchStart={handleInicioPresionado}
-              onTouchEnd={handleFinPresionado}
             />
-            <TarjetaAccion
-              icono='Add'
-              texto='Agregar cliente'
-              onClick={() => console.log('Agregar cliente')}
-            />
+            {usuario?.permisos?.includes(PERMISOS.CREAR_CLIENTE) && (
+              <TarjetaAccion
+                icono='Add'
+                texto='Agregar cliente'
+                onClick={() => console.log('Agregar cliente')}
+              />
+            )}
           </Box>
         )}
       </Box>
@@ -170,6 +171,9 @@ const ListaClientes = () => {
         eliminacionExitosa={eliminacionExitosa}
         errorEliminacion={errorEliminacion}
         onCloseAlert={cerrarAlertaExito}
+        textoConfirmacion={textoConfirmacion}
+        botonDeshabilitado={botonDeshabilitado}
+        onCambioTextoConfirmacion={onCambioTextoConfirmacion}
       />
 
       <DetalleClienteModal
@@ -180,6 +184,7 @@ const ListaClientes = () => {
         colores={colores}
         onClose={cerrarModalDetalle}
         onToggleEdicion={toggleModoEdicion}
+        onToggleEliminar={handleToggleEliminar}
         onChange={handleClienteChange}
         onImageChange={handleImagenChange}
         imagenSubiendo={imagenSubiendo}

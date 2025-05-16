@@ -14,6 +14,7 @@ import { PERMISOS } from '@Constantes/permisos';
 import InfoGrupoEmpleados from '@Moleculas/GrupoEmpleadosInfo';
 import { useGrupoEmpleadosId } from '@Hooks/Empleados/useLeerGrupoEmpleados';
 import ModalFlotante from '@Organismos/ModalFlotante';
+import ModalCrearGrupoEmpleado from '@Organismos/ModalCrearGrupoEmpleado';
 
 const ListaGrupoEmpleados = () => {
   const { grupos, cargando, error, refetch } = useConsultarGrupos();
@@ -38,7 +39,6 @@ const ListaGrupoEmpleados = () => {
   const manejarCancelarEliminar = () => {
     setAbrirPopUpEliminar(false);
   };
-
   const manejarConfirmarEliminar = async () => {
     try {
       await eliminar(gruposSeleccionados);
@@ -83,17 +83,24 @@ const ListaGrupoEmpleados = () => {
     },
   ];
 
-  const filas = grupos.map((grupo) => ({
-    id: grupo.idGrupo,
-    nombre: grupo.geNombre,
-    descripcion: grupo.descripcion,
-    totalEmpleados: grupo.totalEmpleados,
-  }));
+  const filas = Array.isArray(grupos)
+    ? grupos.map((grupo) => ({
+        id: grupo.idGrupo,
+        nombre: grupo.geNombre,
+        descripcion: grupo.descripcion,
+        idSetProducto: grupo.idSetProducto,
+        setProducto: grupo.spNombre,
+        totalEmpleados: grupo.totalEmpleados,
+      }))
+    : [];
+
+  const handleAbrirModalCrear = () => setModalCrearAbierto(true);
+  const handleCerrarModalCrear = () => setModalCrearAbierto(false);
 
   const botones = [
     {
       label: 'Añadir',
-      onClick: () => console.log('Añadir'),
+      onClick: handleAbrirModalCrear,
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
@@ -120,6 +127,17 @@ const ListaGrupoEmpleados = () => {
       backgroundColor: colores.altertex[1],
     },
   ];
+
+  const manejarGrupoCreadoExitosamente = () => {
+    refetch(); // Recarga la lista de grupos
+    setAlerta({
+      tipo: 'success',
+      mensaje: 'Grupo de empleados creado correctamente.',
+      icono: true,
+      cerrable: true,
+      centradoInferior: true,
+    });
+  };
 
   return (
     <>
@@ -148,6 +166,12 @@ const ListaGrupoEmpleados = () => {
           />
         </Box>
       </ContenedorLista>
+
+      <ModalCrearGrupoEmpleado
+        abierto={modalCrearAbierto}
+        onCerrar={handleCerrarModalCrear}
+        onCreado={manejarGrupoCreadoExitosamente}
+      />
       {alerta && (
         <Alerta
           tipo={alerta.tipo}

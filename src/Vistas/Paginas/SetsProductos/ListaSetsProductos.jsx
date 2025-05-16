@@ -85,7 +85,7 @@ const ListaSetsProductos = () => {
             variant='filled'
             color={isActivo ? 'primary' : undefined}
             size='medium'
-            shape='cuadrada'
+            shape='circular'
             backgroundColor={isActivo ? undefined : '#f0f0f0'}
             textColor={isActivo ? undefined : '#000000'}
           />

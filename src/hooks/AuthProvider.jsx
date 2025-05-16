@@ -19,12 +19,12 @@ export const AuthProvider = ({ children }) => {
   const resetearTema = () => {
     // Obtener el tema actual del localStorage
     const temaActual = localStorage.getItem('tema');
-    
+
     // Si el tema actual es oscuro, cambiarlo a claro
     if (temaActual && JSON.parse(temaActual) === 'dark') {
       toggleColorMode();
     }
-    
+
     // Borrar el tema del localStorage
     localStorage.removeItem('tema');
   };
@@ -63,13 +63,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      usuario, 
-      setUsuario, 
-      cargando, 
-      cerrarSesion, 
-      verificarSesion,
-    }}>
+    <AuthContext.Provider
+      value={{
+        usuario,
+        setUsuario,
+        cargando,
+        cerrarSesion,
+        verificarSesion,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

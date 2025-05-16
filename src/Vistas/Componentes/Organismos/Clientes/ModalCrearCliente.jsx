@@ -6,7 +6,6 @@ import { Box, useTheme } from '@mui/material';
 import CampoTexto from '@Atomos/CampoTexto';
 import Texto from '@Atomos/Texto';
 import ContenedorImportarImagen from '@Organismos/ContenedorImportarImagen';
-import { tokens } from '@SRC/theme';
 
 // Constantes en español
 const MENSAJES = {
@@ -26,7 +25,6 @@ const ModalCrearCliente = ({ abierto = false, onCerrar, onCreado }) => {
   const [imagen, setImagen] = useState(null);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const theme = useTheme();
-  const colores = tokens(theme.palette.mode);
 
   // Track if the form has been reset to prevent multiple resets
   const hasReset = useRef(false);

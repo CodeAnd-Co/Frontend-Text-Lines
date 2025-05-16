@@ -29,6 +29,11 @@ const ModalEmpleados = ({ open, onClose, onAccion, empleadoEdicion }) => {
       if (!esEdicion) {
         limpiarFormulario();
       }
+
+      // Esperar un momento para que el usuario vea el mensaje de éxito
+      setTimeout(() => {
+        onClose();
+      }, 1500);
     }
   };
 

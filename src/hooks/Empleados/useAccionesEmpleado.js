@@ -42,6 +42,36 @@ export const useAccionesEmpleado = (empleadoInicial = null) => {
 
   const CAMPO_OBLIGATORIO = 'Este campo es obligatorio';
 
+  // Función para verificar si se han realizado cambios
+  const hayCambios = () => {
+    if (!esEdicion) return true; // Si es creación, siempre hay cambios
+
+    const camposAComparar = [
+      'nombreCompleto',
+      'correoElectronico',
+      'numeroEmergencia',
+      'areaTrabajo',
+      'posicion',
+      'cantidadPuntos',
+    ];
+
+    // Comparar campos simples
+    const cambioCamposSimples = camposAComparar.some(
+      (campo) => datosEmpleado[campo]?.toString() !== empleadoInicial[campo]?.toString()
+    );
+
+    // Comparar fecha de antigüedad
+    const fechaAntigua = empleadoInicial.antiguedadDate
+      ? dayjs(empleadoInicial.antiguedadDate).format('YYYY-MM-DD')
+      : null;
+    const fechaNueva = datosEmpleado.antiguedad
+      ? datosEmpleado.antiguedad.format('YYYY-MM-DD')
+      : null;
+    const cambioFecha = fechaAntigua !== fechaNueva;
+
+    return cambioCamposSimples || cambioFecha;
+  };
+
   // Métodos para manejar cambios
   const manejarCambio = (evento) => {
     const { name, value } = evento.target;
@@ -67,8 +97,8 @@ export const useAccionesEmpleado = (empleadoInicial = null) => {
       return typeof err === 'string' ? err : CAMPO_OBLIGATORIO;
     }
     if (
-      !esEdicion
-      && [
+      !esEdicion &&
+      [
         'idEmpleado',
         'idUsuario',
         'numeroEmergencia',
@@ -84,6 +114,14 @@ export const useAccionesEmpleado = (empleadoInicial = null) => {
   };
 
   const handleGuardar = async () => {
+    if (esEdicion && !hayCambios()) {
+      setAlerta({
+        tipo: 'warning',
+        mensaje: 'No se han realizado cambios',
+      });
+      return { exito: false, mensaje: 'No se han realizado cambios' };
+    }
+
     const datosProcesados = {
       ...datosEmpleado,
       id: esEdicion ? empleadoInicial.id : datosEmpleado.idEmpleado,

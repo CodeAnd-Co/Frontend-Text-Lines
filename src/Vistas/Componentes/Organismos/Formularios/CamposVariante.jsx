@@ -1,12 +1,13 @@
 //RF[26] Crea Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF26]
 import { memo, useRef, useCallback } from 'react';
-import { Grid } from '@mui/material';
+import { Grid, useTheme } from '@mui/material'; // Agrega useTheme aquí
 import Texto from '@Atomos/Texto';
 import Boton from '@Atomos/Boton';
 import CampoTexto from '@Atomos/CampoTexto';
 import TarjetaAccion from '@Moleculas/TarjetaAccion';
 import TarjetaElementoAccion from '@Moleculas/TarjetaElementoAccion';
 import CamposOpcion from '@Organismos/Formularios/CamposOpcion';
+import { tokens } from '@SRC/theme';
 
 const CampoTextoForm = memo(
   ({
@@ -48,21 +49,26 @@ const TituloForm = memo(({ titulo, tituloVariant, size = 12 }) => (
   </Grid>
 ));
 
-const BotonForm = memo(({ selected, fullWidth, backgroundColor, outlineColor, label, onClick }) => (
-  <Grid size={6} display='flex' alignItems='center' justifyContent='end'>
-    <Boton
-      variant='contained'
-      selected={selected}
-      fullWidth={fullWidth}
-      color='primary'
-      size='medium'
-      backgroundColor={backgroundColor}
-      outlineColor={outlineColor}
-      label={label}
-      onClick={onClick}
-    />
-  </Grid>
-));
+const BotonForm = memo(({ selected, fullWidth, outlineColor, label, onClick }) => {
+  const theme = useTheme();
+  const colores = tokens(theme.palette.mode);
+
+  return (
+    <Grid size={6} display='flex' alignItems='center' justifyContent='end'>
+      <Boton
+        variant='contained'
+        selected={selected}
+        fullWidth={fullWidth}
+        color='primary'
+        size='medium'
+        backgroundColor={colores.rojo[1]}
+        outlineColor={outlineColor}
+        label={label}
+        onClick={onClick}
+      />
+    </Grid>
+  );
+});
 
 const CampoCrear = memo(({ etiqueta, onClic }) => (
   <Grid size={12}>

@@ -1,12 +1,13 @@
 //RF[26] Crea Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF26]
 import { memo } from 'react';
-import { Grid } from '@mui/material';
+import { Grid, useTheme } from '@mui/material';
 import Texto from '@Atomos/Texto';
 import Boton from '@Atomos/Boton';
 import CampoTexto from '@Atomos/CampoTexto';
 import CampoSelect from '@Atomos/CampoSelect';
 import TarjetaAccion from '@Moleculas/TarjetaAccion';
 import TarjetaElementoAccion from '@Moleculas/TarjetaElementoAccion';
+import { tokens } from '@SRC/theme';
 
 const CampoTextoFormulario = memo(
   ({
@@ -40,8 +41,10 @@ const CampoTextoFormulario = memo(
   )
 );
 
-const BotonFormulario = memo(
-  ({ seleccionado, anchoCompleto, colorFondo, colorBorde, etiqueta, onClick }) => (
+const BotonFormulario = memo(({ seleccionado, anchoCompleto, colorBorde, etiqueta, onClick }) => {
+  const theme = useTheme();
+  const colores = tokens(theme.palette.mode);
+  return (
     <Grid size={6} display='flex' alignItems='center' justifyContent='end'>
       <Boton
         variant='contained'
@@ -49,14 +52,14 @@ const BotonFormulario = memo(
         fullWidth={anchoCompleto}
         color='primary'
         size='medium'
-        backgroundColor={colorFondo}
+        backgroundColor={colores.altertex[1]}
         outlineColor={colorBorde}
         label={etiqueta}
         onClick={onClick}
       />
     </Grid>
-  )
-);
+  );
+});
 
 const CampoSelectFormulario = memo(
   ({ etiqueta, nombre, opciones, valor, onChange, placeholder, textoAyuda, error, tamano = 6 }) => (

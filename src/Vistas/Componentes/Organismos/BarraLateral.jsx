@@ -43,10 +43,13 @@ const BarraLateral = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
-  const [colapsado, setColapsado] = useState(false);
+  const [colapsado, setColapsado] = useState(false); // TODO
   const [seleccionado, setSeleccionado] = useState('Inicio');
   const [productosAbierto, setProductosAbierto] = useState(false);
   const [empleadosAbierto, setEmpleadosAbierto] = useState(false);
+  const redirigirAInicio = () => {
+      navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE, { replace: true });
+    };
 
   return (
     <Box
@@ -77,16 +80,16 @@ const BarraLateral = () => {
       <ProSidebar collapsed={colapsado}>
         <Menu iconShape='square'>
           <MenuItem
-            onClick={() => setColapsado(!colapsado)}
+            // onClick={() => setColapsado(!colapsado)}
             icon={colapsado ? <MenuOutlinedIcon sx={{ color: colors.primario[4] }} /> : undefined}
             style={{ margin: '10px 0 20px 0' }}
           >
             {!colapsado && (
-              <Box display='flex' justifyContent='space-between' alignItems='center' ml='15px'>
+              <Box display='flex' justifyContent='space-between' alignItems='center' ml='15px' onClick={redirigirAInicio}>
                 <img src='/logoAltertexDark.svg' style={{ width: '150px' }} />
-                <IconButton onClick={() => setColapsado(!colapsado)}>
+                {/* <IconButton onClick={() => setColapsado(!colapsado)}>
                   <MenuOutlinedIcon sx={{ color: colors.primario[4] }} />
-                </IconButton>
+                </IconButton> */}
               </Box>
             )}
           </MenuItem>

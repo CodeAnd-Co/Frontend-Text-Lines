@@ -12,19 +12,11 @@ export const ClientesLista = ({
   modoEliminacion,
   onClienteClick,
   onIconoClick,
-  onMouseDown,
-  onMouseUp,
-  onTouchStart,
-  onTouchEnd,
 }) => {
   return clientes.map((cliente) => (
     <Box
       key={cliente.idCliente}
       sx={estiloTarjeta}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-      onTouchStart={onTouchStart}
-      onTouchEnd={onTouchEnd}
     >
       <ClienteTarjeta
         cliente={cliente}

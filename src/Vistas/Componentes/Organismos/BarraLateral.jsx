@@ -102,8 +102,8 @@ const BarraLateral = () => {
               setSeleccionado={setSeleccionado}
             />
             <SubMenu
-              title='Empleados'
-              icon={<GroupsOutlinedIcon />}
+              title={<span style={{ color: 'white' }}>Empleados</span>}
+              icon={<GroupsOutlinedIcon sx={{ color: 'white' }} />}
               open={colapsado ? false : empleadosAbierto}
               onOpenChange={() => setEmpleadosAbierto(!empleadosAbierto)}
             >
@@ -129,8 +129,8 @@ const BarraLateral = () => {
               />
             </SubMenu>
             <SubMenu
-              title='Productos'
-              icon={<LocalOfferOutlinedIcon />}
+              title={<span style={{ color: 'white' }}>Productos</span>}
+              icon={<LocalOfferOutlinedIcon sx={{ color: 'white' }} />}
               open={colapsado ? false : productosAbierto}
               onOpenChange={() => setProductosAbierto(!productosAbierto)}
             >

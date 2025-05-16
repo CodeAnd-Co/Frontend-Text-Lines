@@ -48,8 +48,7 @@ const ListaClientes = () => {
   // Manejador para cuando se crea una nueva categoría
   const handleClienteCreadoExitosamente = () => {
     handleCerrarCrearCliente();
-    // Recarga la lista de categorías
-    recargar();
+    // recargar();
   };
 
   const {

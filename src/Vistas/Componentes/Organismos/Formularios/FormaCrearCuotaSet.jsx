@@ -41,15 +41,6 @@ const FormaCrearCuotaSet = ({
     obtenerDatosProductos(clienteSeleccionado);
   }, [clienteSeleccionado]);
 
-  const handleClickFila = (evento) => {
-    const productoSeleccionado = evento.row;
-
-    const yaExiste = productos.some((producto) => producto.id === productoSeleccionado.id);
-    if (!yaExiste) {
-      setProductos((prev) => [...prev, productoSeleccionado]);
-    }
-  };
-
   const handleFilaSeleccion = (itemSeleccion) => {
     const ids = Array.isArray(itemSeleccion) ? itemSeleccion : Array.from(itemSeleccion?.ids || []);
 
@@ -82,7 +73,7 @@ const FormaCrearCuotaSet = ({
         filas={rows}
         paginacion={4}
         checkBox={true}
-        onRowClick={handleClickFila}
+        // onRowClick={handleClickFila}
         onRowSeleccion={(ids) => handleFilaSeleccion(ids)}
       />
 

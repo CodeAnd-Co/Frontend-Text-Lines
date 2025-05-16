@@ -13,7 +13,9 @@ import { useAuth } from '@Hooks/AuthProvider';
 import Alerta from '@Moleculas/Alerta';
 import PopUp from '@Moleculas/PopUp';
 import { useEliminarRol } from '@Hooks/Roles/useEliminarRol';
+import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
 
+const estiloImagenLogo = { marginRight: '1rem' };
 // ID del superusuario que no debe ser eliminado
 const SUPERUSER_ID = 1;
 
@@ -46,6 +48,10 @@ const ListaRoles = () => {
       duracion: 3000,
     });
     recargar();
+  };
+
+  const manejarCerrarSesion = async () => {
+    await cerrarSesion();
   };
 
   const verificarSeleccion = (seleccion) => {
@@ -199,23 +205,55 @@ const ListaRoles = () => {
       },
       disabled: !usuario.permisos?.includes(PERMISOS.ELIMINAR_ROL),
     },
-    {
-      label: 'Atrás',
-      onClick: redirigirAUsuarios,
-      size: 'large',
-      backgroundColor: 'transparent',
-      color: colores.primario[2],
-      border: `1px solid ${colores.primario[2]}`,
-      height: '40px',
-    },
   ];
+  const botonesBarraAdministradora = [
+      {
+        label: 'Atras',
+        variant: 'outlined',
+        color: 'secondary',
+        size: 'large',
+        onClick: redirigirAUsuarios,
+      },
+      {
+        label: 'Configuración',
+        variant: 'outlined',
+        color: 'secondary',
+        size: 'large',
+        construccion: true,
+      },
+      {
+        label: 'Cerrar sesión',
+        variant: 'contained',
+        color: 'error',
+        size: 'large',
+        onClick: manejarCerrarSesion,
+      },
+    ];
+  const { cerrarSesion } = useAuth();
+  const redirigirATienda = () => {
+      navigate(RUTAS.SISTEMA_TIENDA.BASE, { replace: true });
+    };
 
   return (
     <>
+      <NavegadorAdministrador
+        src='/logoAltertexLight.svg'
+        alt='Logo empresa'
+        alturaImagen='auto'
+        anchoImagen={{ xs: '150px', sm: '250px', md: '400px' }}
+        ajuste='contain'
+        clickeableImagen={false}
+        estiloImagen={estiloImagenLogo}
+        alClicIcono={redirigirATienda}
+        informacionBotones={botonesBarraAdministradora}
+      />
       <ContenedorLista
-        titulo='Lista de Roles'
-        descripcion='Gestiona y organiza los roles registrados en el sistema.'
-        informacionBotones={botones}
+         titulo={<span style={{ textAlign: 'center', display: 'block' }}>Lista Roles</span>}
+          descripcion={
+            <span style={{ textAlign: 'center', display: 'block' }}>
+              Gestiona y organiza los roles registrados en el sistema.
+            </span>}
+          informacionBotones={botones}
       >
         <Box sx={{ mt: '20px' }}>
           {error && (

@@ -74,6 +74,7 @@ const EditarCuotas = () => {
         enviarCuota={enviarCuota}
         cargando={cargando}
         setCuotas={setCuotas}
+        cuotas={cuotas}
         productos={productos}
       />
     </>

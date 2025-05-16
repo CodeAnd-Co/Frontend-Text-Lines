@@ -5,6 +5,7 @@ import GrupoBotones from '@Moleculas/GrupoBotones';
 import PopUp from '@Moleculas/PopUp';
 import { useNavigate } from 'react-router-dom';
 import { tokens } from '@SRC/theme';
+import { useState } from 'react';
 
 const CuerpoPrincipal = ({
   periodoRenovacion,
@@ -15,12 +16,14 @@ const CuerpoPrincipal = ({
   cargando,
   enviarCuota,
   setCuotas,
+  cuotas,
   abrirConfirmacion,
   setAbrirConfirmacion,
 }) => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const navegar = useNavigate();
+  const [errorCuotas, setErrorCuotas] = useState('');
 
   const manejarCancelar = () => {
     setAbrirConfirmacion(true);
@@ -41,6 +44,20 @@ const CuerpoPrincipal = ({
       [id.toString()]: valor,
     }));
   };
+
+  // Nueva función para validar antes de enviar
+  const manejarCrear = () => {
+    const cuotasInvalidas = Object.values(cuotas).some((valor) => !/^[1-9]\d*$/.test(valor));
+    if (cuotasInvalidas) {
+      setErrorCuotas('Todas las cuotas deben ser números enteros mayores a 0');
+      return;
+    }
+    setErrorCuotas('');
+    enviarCuota();
+  };
+
+  const cuotasInvalidas = Object.values(cuotas).some((valor) => !/^[1-9]\d*$/.test(valor));
+
   const botonesEnviarCancelar = [
     {
       label: 'Cancelar',
@@ -52,14 +69,12 @@ const CuerpoPrincipal = ({
     {
       label: cargando ? 'Creando...' : 'Crear',
       variant: 'contained',
-      onClick: enviarCuota,
-      disabled: cargando,
+      onClick: manejarCrear,
+      disabled: cargando || cuotasInvalidas, // <-- aquí
       color: 'error',
       backgroundColor: colores.altertex[1],
     },
   ];
-
-  [];
 
   return (
     <>
@@ -78,7 +93,11 @@ const CuerpoPrincipal = ({
           margin: 1,
         }}
       >
-        <ProductosConCuotas productos={productos} manejarCambioCuota={manejarCambioCuota} />
+        <ProductosConCuotas
+          productos={productos}
+          cuotas={cuotas}
+          manejarCambioCuota={manejarCambioCuota}
+        />
       </Box>
 
       <Box sx={{ display: 'flex', width: '95%', justifyContent: 'flex-end', margin: 5 }}>

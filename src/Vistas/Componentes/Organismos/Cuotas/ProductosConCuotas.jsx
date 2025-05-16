@@ -2,7 +2,7 @@ import TarjetaBasica from '@Moleculas/TarjetaBasica';
 import { NumeroInput } from '@Atomos/NumeroInput';
 import { Box } from '@mui/material';
 
-const ProductosConCuotas = ({ productos, manejarCambioCuota }) => {
+const ProductosConCuotas = ({ productos, cuotas, manejarCambioCuota }) => {
   return (
     <div>
       {productos.map((producto) => (
@@ -21,7 +21,7 @@ const ProductosConCuotas = ({ productos, manejarCambioCuota }) => {
             >
               <h4>Cuota:</h4>
               <NumeroInput
-                value={producto.cuota} // Aquí puedes pasar el valor de la cuota si lo manejas
+                value={cuotas[producto.id] || ''}
                 onChange={(evento) => manejarCambioCuota(producto.id, evento.target.value)}
                 min={1}
                 width={120}

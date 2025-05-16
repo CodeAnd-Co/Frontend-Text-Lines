@@ -11,7 +11,6 @@ export const useCrearProducto = () => {
   const [erroresVariantes, setErroresVariantes] = useState({});
 
   const guardarProducto = async ({ producto, variantes, imagenProducto, imagenesVariantes }) => {
-    console.log(producto);
     const erroresValidacionProducto = validarProducto(producto);
     setErroresProducto(erroresValidacionProducto);
     if (Object.keys(erroresValidacionProducto).length > 0) {
@@ -32,6 +31,14 @@ export const useCrearProducto = () => {
       return {
         exito: false,
         mensaje: 'La imagen principal del producto no debe superar los 5MB de tamaño.',
+      };
+    }
+    const tiposPermitidos = ['image/jpeg', 'image/png', 'image/jpg'];
+
+    if (!tiposPermitidos.includes(imagenProducto.type)) {
+      return {
+        exito: false,
+        mensaje: 'Solo se permiten imágenes en formato JPG, JPEG o PNG.',
       };
     }
 
@@ -78,10 +85,21 @@ export const useCrearProducto = () => {
 
     for (const [idVariante, listaImagenes] of Object.entries(imagenesVariantes)) {
       for (const imagen of listaImagenes) {
-        if (imagen.file.size > MAX_IMAGE_SIZE) {
+        const archivo = imagen.file;
+
+        // Validar tipo MIME
+        if (!tiposPermitidos.includes(archivo.type)) {
           return {
             exito: false,
-            mensaje: `La imagen "${imagen.file.name}" en la variante ${idVariante} supera el límite de 5MB.`,
+            mensaje: `La imagen "${archivo.name}" en la variante ${idVariante} no es un formato válido. Solo se permiten JPG, JPEG o PNG.`,
+          };
+        }
+
+        // Validar tamaño
+        if (archivo.size > MAX_IMAGE_SIZE) {
+          return {
+            exito: false,
+            mensaje: `La imagen "${archivo.name}" en la variante ${idVariante} supera el límite de 5MB.`,
           };
         }
       }

@@ -17,6 +17,7 @@ const MENSAJES = {
   NOMBRE_FISCAL: 'Nombre fiscal',
   ERROR_VALIDACION: 'Ingresa el nombre fiscal y comercial.',
   RESTRICCION_IMAGEN: 'Solo se permiten imágenes en formato JPG/JPEG/PNG, máximo 5MB.',
+  LIMITE_CARACTERES: 'Máximo 100 caracteres',
 };
 
 const ModalCrearCliente = ({ abierto = false, onCerrar, onCreado }) => {
@@ -130,24 +131,28 @@ const ModalCrearCliente = ({ abierto = false, onCerrar, onCreado }) => {
           label={MENSAJES.NOMBRE_COMERCIAL}
           name='nombreComercial'
           value={nombreComercial}
-          onChange={(evento) => setNombreComercial(evento.target.value)}
+          onChange={(evento) => setNombreComercial(evento.target.value.slice(0, 100))}
           fullWidth={true}
           type='text'
           required={true}
           disabled={cargando || imagenSubiendo}
           sx={{ mb: 2 }}
+          inputProps={{ maxLength: 100 }}
+          helperText={`${nombreComercial.length}/100 - ${MENSAJES.LIMITE_CARACTERES}`}
         />
 
         <CampoTexto
           label={MENSAJES.NOMBRE_FISCAL}
           name='nombreFiscal'
           value={nombreFiscal}
-          onChange={(evento) => setNombreFiscal(evento.target.value)}
+          onChange={(evento) => setNombreFiscal(evento.target.value.slice(0, 100))}
           fullWidth={true}
           type='text'
           required={true}
           disabled={cargando || imagenSubiendo}
           sx={{ mb: 3 }}
+          inputProps={{ maxLength: 100 }}
+          helperText={`${nombreFiscal.length}/100 - ${MENSAJES.LIMITE_CARACTERES}`}
         />
 
         <Box mb={2}>

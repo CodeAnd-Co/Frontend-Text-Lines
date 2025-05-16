@@ -5,6 +5,7 @@ import { validarProducto } from '@Utilidades/Validaciones/validarProducto';
 import { validarVariantes } from '@Utilidades/Validaciones/validarVariantes';
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+const VALID_IMAGE_TYPES = ['image/jpeg', 'image/jpg'];
 
 export const useCrearProducto = () => {
   const [erroresProducto, setErroresProducto] = useState({});
@@ -24,7 +25,15 @@ export const useCrearProducto = () => {
     if (!imagenProducto) {
       return {
         exito: false,
-        mensaje: 'Debes seleccionar una imagen principal para el producto.',
+        mensaje: 'Selecciona una imagen principal para el producto.',
+      };
+    }
+
+    // Validar tipo de imagen principal
+    if (!VALID_IMAGE_TYPES.includes(imagenProducto.type)) {
+      return {
+        exito: false,
+        mensaje: 'La imagen principal debe ser formato JPG o JPEG.',
       };
     }
 
@@ -78,6 +87,13 @@ export const useCrearProducto = () => {
 
     for (const [idVariante, listaImagenes] of Object.entries(imagenesVariantes)) {
       for (const imagen of listaImagenes) {
+        // Validar tipo de imagen de variante
+        if (!VALID_IMAGE_TYPES.includes(imagen.file.type)) {
+          return {
+            exito: false,
+            mensaje: `La imagen "${imagen.file.name}" en la variante ${idVariante} debe ser JPG o JPEG.`,
+          };
+        }
         if (imagen.file.size > MAX_IMAGE_SIZE) {
           return {
             exito: false,

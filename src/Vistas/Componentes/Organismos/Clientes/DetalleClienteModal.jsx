@@ -23,8 +23,8 @@ export const DetalleClienteModal = ({
   const { usuario } = useAuth();
 
   // Verificar si hay campos vacíos para deshabilitar el botón
-  const camposInvalidos =
-    modoEdicion && cliente ? !cliente.nombreLegal?.trim() || !cliente.nombreVisible?.trim() : false;
+  const camposInvalidos
+    = modoEdicion && cliente ? !cliente.nombreLegal?.trim() || !cliente.nombreVisible?.trim() : false;
 
   return (
     open && (
@@ -49,10 +49,10 @@ export const DetalleClienteModal = ({
             onClick: onToggleEdicion,
             // Deshabilitar botón si campos vacíos, hay error o no se tienen permisos
             disabled:
-              !cliente ||
-              !usuario?.permisos?.includes(PERMISOS.ACTUALIZAR_CLIENTE) ||
-              camposInvalidos ||
-              imagenSubiendo,
+              !cliente
+              || !usuario?.permisos?.includes(PERMISOS.ACTUALIZAR_CLIENTE)
+              || camposInvalidos
+              || imagenSubiendo,
           },
           {
             label: 'SALIR',

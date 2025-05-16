@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { BASE_EMPLEADOS } from '@Utilidades/Constantes/rutasAPI';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 

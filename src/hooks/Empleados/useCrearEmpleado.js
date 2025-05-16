@@ -15,18 +15,18 @@ export const useCrearEmpleado = () => {
     if (Object.keys(erroresValidacion).length > 0) return { exito: false };
 
     const datosParaEnviar = {
-      nombreCompleto: `${datosUsuario.nombreCompleto} ${datosUsuario.apellido}`,
-      correoElectronico: datosUsuario.correoElectronico,
-      contrasenia: datosUsuario.contrasenia,
-      numeroTelefono: datosUsuario.numeroTelefono,
-      direccion: datosUsuario.direccion,
-      fechaNacimiento: datosUsuario.fechaNacimiento
-        ? datosUsuario.fechaNacimiento.format('YYYY-MM-DD')
+      nombreCompleto: `${datosEmpleado.nombreCompleto} ${datosEmpleado.apellido}`,
+      correoElectronico: datosEmpleado.correoElectronico,
+      contrasenia: datosEmpleado.contrasenia,
+      numeroTelefono: datosEmpleado.numeroTelefono,
+      direccion: datosEmpleado.direccion,
+      fechaNacimiento: datosEmpleado.fechaNacimiento
+        ? datosEmpleado.fechaNacimiento.format('YYYY-MM-DD')
         : null,
-      genero: datosUsuario.genero,
+      genero: datosEmpleado.genero,
       estatus: true,
-      idRol: datosUsuario.rol,
-      idCliente: datosUsuario.cliente,
+      idRol: datosEmpleado.rol,
+      idCliente: datosEmpleado.cliente,
 
       numeroEmergencia: datosEmpleado.numeroEmergencia,
       areaTrabajo: datosEmpleado.areaTrabajo,
@@ -39,9 +39,9 @@ export const useCrearEmpleado = () => {
       await crearEmpleado(datosParaEnviar);
       return { exito: true, mensaje: 'Empleado creado correctamente' };
     } catch (error) {
-      const mensaje =
-        error.response?.data?.mensaje ||
-        'Hubo un error al crear el empleado. Verifica que no exista.';
+      const mensaje
+        = error.response?.data?.mensaje
+        || 'Hubo un error al crear el empleado. Verifica que no exista.';
       return { exito: false, mensaje };
     }
   };

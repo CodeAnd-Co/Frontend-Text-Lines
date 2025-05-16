@@ -303,11 +303,11 @@ const ModalEmpleados = ({ open, onClose, onAccion, empleadoEdicion }) => {
                   slotProps={{
                     textField: {
                       error:
-                        !!errores.antiguedad ||
-                        (datosEmpleado.antiguedad && !datosEmpleado.antiguedad.isValid()),
+                        !!errores.antiguedad
+                        || (datosEmpleado.antiguedad && !datosEmpleado.antiguedad.isValid()),
                       helperText:
-                        errores.antiguedad ||
-                        (datosEmpleado.antiguedad && !datosEmpleado.antiguedad.isValid()
+                        errores.antiguedad
+                        || (datosEmpleado.antiguedad && !datosEmpleado.antiguedad.isValid()
                           ? 'Fecha inválida'
                           : CAMPO_OBLIGATORIO),
                     },

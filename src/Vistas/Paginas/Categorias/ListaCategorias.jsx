@@ -78,14 +78,6 @@ const ListaCategorias = () => {
       onClick: handleAbrirModalCrear, // Ahora abre el modal para crear
     },
     {
-      variant: 'outlined',
-      label: 'Editar',
-      onClick: () => console.log('Importar'),
-      color: 'primary',
-      size: 'large',
-      outlineColor: colores.primario[10],
-    },
-    {
       label: 'Eliminar',
       onClick: () => {
         if (seleccionados.size === 0 || seleccionados.ids.size === 0) {

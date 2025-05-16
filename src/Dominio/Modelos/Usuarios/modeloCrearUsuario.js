@@ -38,7 +38,7 @@ export const validarDatosCrearUsuario = (datos, usuariosExistentes = []) => {
     errores.direccion = true;
   }
   if (!datos.genero) errores.genero = true;
-  if (!datos.cliente) errores.cliente = true;
+  if (!datos.cliente || datos.cliente.length === 0) errores.cliente = true;
   if (!datos.rol) errores.rol = true;
 
   if (!datos.fechaNacimiento) {

@@ -204,7 +204,8 @@ const BarraLateral = () => {
             />
           </Box>
         </Menu>
-        <Box position='relative' height='200px'>
+        <Box sx={{ flexGrow: 1 }} />
+        <Box position='relative' height='200px' marginBottom={2}>
           <Box
             display='flex'
             justifyContent='center'

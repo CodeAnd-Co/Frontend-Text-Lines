@@ -16,7 +16,6 @@ const FormaEmpleado = ({
     display: 'flex',
     justifyContent: 'center',
   };
-  console.log('datosEmpleado form', datosEmpleado);
   return (
     <Grid container columns={12}>
       <Grid size={6} sx={estiloCuadricula}>

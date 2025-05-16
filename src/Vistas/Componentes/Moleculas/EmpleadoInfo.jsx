@@ -15,7 +15,6 @@ const InfoEmpleado = ({
   antiguedad,
   estadoEmpleado,
   idEmpleado,
-  antiguedadFecha,
 }) => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);

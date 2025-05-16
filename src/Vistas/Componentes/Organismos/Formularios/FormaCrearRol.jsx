@@ -50,6 +50,7 @@ const FormaCrearRol = ({
         columns={columns}
         rows={rows}
         pageSize={5}
+        disableRowSelectionOnClick={true}
         checkboxSelection
         onRowSelectionModelChange={(selectionModel) => {
           const ids = Array.isArray(selectionModel)

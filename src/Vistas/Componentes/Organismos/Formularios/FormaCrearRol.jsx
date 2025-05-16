@@ -32,9 +32,9 @@ const FormaCrearRol = ({
     <>
       {/* CAMPO: NOMBRE */}
       <CampoTexto
-        label="Nombre del Rol"
+        label='Nombre del Rol'
         fullWidth
-        type="text"
+        type='text'
         value={nombreRol}
         onChange={(evento) => {
           setNombreRol(evento.target.value);
@@ -76,9 +76,9 @@ const FormaCrearRol = ({
 
       {/* CAMPO: DESCRIPCIÓN */}
       <CampoTexto
-        label="Descripción"
+        label='Descripción'
         fullWidth
-        type="text"
+        type='text'
         value={descripcionRol}
         onChange={(evento) => setDescripcionRol(evento.target.value)}
       />

@@ -4,7 +4,7 @@ import Texto from '@Atomos/Texto';
 import PropTypes from 'prop-types';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
-import { Alert } from '@mui/material'; // Añadir Box
+import Alerta from '@Moleculas/Alerta';
 
 export const DetalleClienteModal = ({
   open,
@@ -23,8 +23,8 @@ export const DetalleClienteModal = ({
   const { usuario } = useAuth();
 
   // Verificar si hay campos vacíos para deshabilitar el botón
-  const camposInvalidos
-    = modoEdicion && cliente ? !cliente.nombreLegal?.trim() || !cliente.nombreVisible?.trim() : false;
+  const camposInvalidos =
+    modoEdicion && cliente ? !cliente.nombreLegal?.trim() || !cliente.nombreVisible?.trim() : false;
 
   return (
     open && (
@@ -49,10 +49,10 @@ export const DetalleClienteModal = ({
             onClick: onToggleEdicion,
             // Deshabilitar botón si campos vacíos, hay error o no se tienen permisos
             disabled:
-              !cliente
-              || !usuario?.permisos?.includes(PERMISOS.ACTUALIZAR_CLIENTE)
-              || camposInvalidos
-              || imagenSubiendo,
+              !cliente ||
+              !usuario?.permisos?.includes(PERMISOS.ACTUALIZAR_CLIENTE) ||
+              camposInvalidos ||
+              imagenSubiendo,
           },
           {
             label: 'SALIR',
@@ -63,9 +63,16 @@ export const DetalleClienteModal = ({
         ]}
         errorPanel={
           imagenError && (
-            <Alert severity='error' sx={{ mt: 3, mb: 2 }}>
-              {imagenError}
-            </Alert>
+            // <Alert severity='error' sx={{ mt: 3, mb: 2 }}>
+            //   {imagenError}
+            // </Alert>
+            <Alerta
+              tipo='error'
+              mensaje={imagenError}
+              cerrable
+              duracion={2500}
+              sx={{ mb: 2, mt: 2 }}
+            />
           )
         }
       >

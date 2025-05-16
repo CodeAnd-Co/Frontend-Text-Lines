@@ -72,7 +72,11 @@ const ListaClientes = () => {
 
   const handleCerrarCliente = () => setAbrirCliente(false);
 
-  const handleClienteCreadoExitosamente = () => handleCerrarCliente();
+  const handleClienteCreadoExitosamente = () => {
+    handleCerrarCliente();
+
+    setTimeout(() => cerrarSesion(), 5000);
+  };
 
   const manejarCerrarSesion = async () => {
     await cerrarSesion();

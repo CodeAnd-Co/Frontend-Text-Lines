@@ -15,7 +15,7 @@ import { RUTAS } from '@Utilidades/Constantes/rutas';
 import { useClientes } from '@Hooks/Clientes/useClientes';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@SRC/Utilidades/Constantes/permisos';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ModalCrearCliente from '@Organismos/Clientes/ModalCrearCliente';
 
 import Swal from 'sweetalert2';
@@ -158,7 +158,7 @@ const ListaClientes = () => {
         pb={6}
       >
         <Texto variant='h1' align='center' sx={estiloTitulo}>
-          Bienvenid@
+          Hola, {usuario?.nombre}
         </Texto>
         <Texto variant='h4' align='center' color='text.secondary' sx={estiloSubtitulo}>
           Selecciona un cliente para gestionar su sistema o crea uno nuevo

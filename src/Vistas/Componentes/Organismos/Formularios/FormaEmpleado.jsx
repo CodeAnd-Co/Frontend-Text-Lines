@@ -82,6 +82,11 @@ const FormaEmpleado = ({
           label='Área de Trabajo'
           name='areaTrabajo'
           value={datosEmpleado.areaTrabajo}
+          onKeyPress={(event) => {
+            if (!/^[a-zA-Z\s]*$/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
           onChange={manejarCambio}
           required
           size='medium'
@@ -98,13 +103,20 @@ const FormaEmpleado = ({
           label='Posición'
           name='posicion'
           value={datosEmpleado.posicion}
+          type='text'
+          inputMode='text'
+          onKeyPress={(event) => {
+            if (!/^[a-zA-Z\s]*$/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
           onChange={manejarCambio}
           required
           size='medium'
           error={!!erroresValidacion.posicion}
           helperText={obtenerHelperText('posicion')}
           inputProps={{
-            maxLength: 50,
+            maxLength: 40,
           }}
         />
       </Grid>

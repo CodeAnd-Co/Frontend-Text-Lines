@@ -38,36 +38,35 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
 
   const rolAnterior = useRef(null);
 
-useEffect(() => {
-  // Solo limpiar clientes si el rol cambió desde Super Admin a otro
-  if (rolAnterior.current === 1 && datosUsuario.rol !== 1) {
-    manejarCambio({
-      target: {
-        name: 'cliente',
-        value: [],
-      },
-    });
-  }
+  useEffect(() => {
+    // Solo limpiar clientes si el rol cambió desde Super Admin a otro
+    if (rolAnterior.current === 1 && datosUsuario.rol !== 1) {
+      manejarCambio({
+        target: {
+          name: 'cliente',
+          value: [],
+        },
+      });
+    }
 
-  // Si es Super Admin, seleccionar todos los clientes
-  if (datosUsuario.rol === 1 && clientes.length > 0) {
-    manejarCambio({
-      target: {
-        name: 'cliente',
-        value: clientes.map((cliente) => cliente.idCliente),
-      },
-    });
-  }
+    // Si es Super Admin, seleccionar todos los clientes
+    if (datosUsuario.rol === 1 && clientes.length > 0) {
+      manejarCambio({
+        target: {
+          name: 'cliente',
+          value: clientes.map((cliente) => cliente.idCliente),
+        },
+      });
+    }
 
-  // Guardar el rol actual para la próxima ejecución
-  rolAnterior.current = datosUsuario.rol;
-}, [datosUsuario.rol, clientes]);
+    // Guardar el rol actual para la próxima ejecución
+    rolAnterior.current = datosUsuario.rol;
+  }, [datosUsuario.rol, clientes]);
 
   const manejarConfirmacion = async () => {
     const resultado = await handleGuardarUsuario(datosUsuario);
 
     if (resultado?.mensaje) {
-      console.log(datosUsuario)
       if (resultado.exito) {
         //if (onUsuarioCreado) await onUsuarioCreado();
         const resumenUsuario = `
@@ -129,224 +128,224 @@ useEffect(() => {
 
   return (
     <>
-    <ModalFlotante
-      open={open}
-      onClose={manejarCierre}
-      onConfirm={manejarConfirmacion}
-      titulo='Crear nuevo usuario'
-    >
-      <Box
-        component='form'
-        method='POST'
-        sx={{
-          flexGrow: 1,
-          '& .MuiTextField-root': { margin: 1, width: '30ch' },
-          '& .MuiFormControl-root': { margin: 1, minWidth: '30ch' },
-        }}
-        noValidate
-        autoComplete='off'
+      <ModalFlotante
+        open={open}
+        onClose={manejarCierre}
+        onConfirm={manejarConfirmacion}
+        titulo='Crear nuevo usuario'
       >
-        <Grid container columns={12}>
-          <Grid size={6} sx={estiloCuadricula}>
-            <CampoTexto
-              label='Nombre'
-              name='nombreCompleto'
-              value={datosUsuario.nombreCompleto}
-              onChange={manejarCambio}
-              required
-              size='medium'
-              error={!!errores.nombreCompleto}
-              helperText={errores.nombreCompleto && CAMPO_OBLIGATORIO}
-              inputProps={{
-                maxLength: 50,
-              }}
-            />
-          </Grid>
-
-          <Grid size={6} sx={estiloCuadricula}>
-            <CampoTexto
-              label='Apellido'
-              name='apellido'
-              value={datosUsuario.apellido}
-              onChange={manejarCambio}
-              required
-              size='medium'
-              error={!!errores.apellido}
-              helperText={errores.apellido && CAMPO_OBLIGATORIO}
-              inputProps={{
-                maxLength: 50,
-              }}
-            />
-          </Grid>
-
-          <Grid size={6} sx={estiloCuadricula}>
-            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
-              <DateField
+        <Box
+          component='form'
+          method='POST'
+          sx={{
+            flexGrow: 1,
+            '& .MuiTextField-root': { margin: 1, width: '30ch' },
+            '& .MuiFormControl-root': { margin: 1, minWidth: '30ch' },
+          }}
+          noValidate
+          autoComplete='off'
+        >
+          <Grid container columns={12}>
+            <Grid size={6} sx={estiloCuadricula}>
+              <CampoTexto
+                label='Nombre'
+                name='nombreCompleto'
+                value={datosUsuario.nombreCompleto}
+                onChange={manejarCambio}
                 required
-                label='Fecha de nacimiento'
-                value={datosUsuario.fechaNacimiento}
-                onChange={manejarFechaNacimiento}
-                format="DD/MM/YYYY"
-                sx={{ width: '30ch' }}
-                slotProps={{
-                  textField: {
-                    error: !!errores.fechaNacimiento,
-                    helperText:
-                      errores.fechaNacimiento === true
-                        ? CAMPO_OBLIGATORIO
-                        : errores.fechaNacimiento || '',
-                  },
+                size='medium'
+                error={!!errores.nombreCompleto}
+                helperText={errores.nombreCompleto && CAMPO_OBLIGATORIO}
+                inputProps={{
+                  maxLength: 50,
                 }}
               />
-            </LocalizationProvider>
-          </Grid>
+            </Grid>
 
-          <Grid size={6} sx={estiloCuadricula}>
-            <CampoSelect
-              required
-              label='Género'
-              name='genero'
-              value={datosUsuario.genero}
-              onChange={manejarCambio}
-              size='medium'
-              error={!!errores.genero}
-              helperText={errores.genero && CAMPO_OBLIGATORIO}
-              options={[
-                { value: 'Hombre', label: 'Hombre' },
-                { value: 'Mujer', label: 'Mujer' },
-                { value: 'Otro', label: 'Otro' },
-              ]}
-            />
-          </Grid>
+            <Grid size={6} sx={estiloCuadricula}>
+              <CampoTexto
+                label='Apellido'
+                name='apellido'
+                value={datosUsuario.apellido}
+                onChange={manejarCambio}
+                required
+                size='medium'
+                error={!!errores.apellido}
+                helperText={errores.apellido && CAMPO_OBLIGATORIO}
+                inputProps={{
+                  maxLength: 50,
+                }}
+              />
+            </Grid>
 
-          <Grid size={6} sx={estiloCuadricula}>
-            <CampoTexto
-              label='Correo Electrónico'
-              name='correoElectronico'
-              value={datosUsuario.correoElectronico}
-              onChange={manejarCambio}
-              required
-              size='medium'
-              error={!!errores.correoElectronico}
-              helperText={
-                errores.correoElectronico === true
-                  ? CAMPO_OBLIGATORIO
-                  : errores.correoElectronico || ''
-              }
-            />
-          </Grid>
+            <Grid size={6} sx={estiloCuadricula}>
+              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='es'>
+                <DateField
+                  required
+                  label='Fecha de nacimiento'
+                  value={datosUsuario.fechaNacimiento}
+                  onChange={manejarFechaNacimiento}
+                  format='DD/MM/YYYY'
+                  sx={{ width: '30ch' }}
+                  slotProps={{
+                    textField: {
+                      error: !!errores.fechaNacimiento,
+                      helperText:
+                        errores.fechaNacimiento === true
+                          ? CAMPO_OBLIGATORIO
+                          : errores.fechaNacimiento || '',
+                    },
+                  }}
+                />
+              </LocalizationProvider>
+            </Grid>
 
-          <Grid size={6} sx={estiloCuadricula}>
-            <CampoTexto
-              label='Número de Teléfono'
-              name='numeroTelefono'
-              value={datosUsuario.numeroTelefono}
-              onChange={manejarCambio}
-              required
-              size='medium'
-              error={!!errores.numeroTelefono}
-              helperText={
-                errores.numeroTelefono === true ? CAMPO_OBLIGATORIO : errores.numeroTelefono || ''
-              }
-              inputProps={{
-                maxLength: 10,
-              }}
-            />
-          </Grid>
+            <Grid size={6} sx={estiloCuadricula}>
+              <CampoSelect
+                required
+                label='Género'
+                name='genero'
+                value={datosUsuario.genero}
+                onChange={manejarCambio}
+                size='medium'
+                error={!!errores.genero}
+                helperText={errores.genero && CAMPO_OBLIGATORIO}
+                options={[
+                  { value: 'Hombre', label: 'Hombre' },
+                  { value: 'Mujer', label: 'Mujer' },
+                  { value: 'Otro', label: 'Otro' },
+                ]}
+              />
+            </Grid>
 
-          <Grid size={6} sx={estiloCuadricula}>
-            <CampoTexto
-              label='Dirección'
-              name='direccion'
-              value={datosUsuario.direccion}
-              onChange={manejarCambio}
-              required
-              size='medium'
-              error={!!errores.direccion}
-              helperText={errores.direccion && CAMPO_OBLIGATORIO}
-              inputProps={{
-                maxLength: 100,
-              }}
-            />
-          </Grid>
+            <Grid size={6} sx={estiloCuadricula}>
+              <CampoTexto
+                label='Correo Electrónico'
+                name='correoElectronico'
+                value={datosUsuario.correoElectronico}
+                onChange={manejarCambio}
+                required
+                size='medium'
+                error={!!errores.correoElectronico}
+                helperText={
+                  errores.correoElectronico === true
+                    ? CAMPO_OBLIGATORIO
+                    : errores.correoElectronico || ''
+                }
+              />
+            </Grid>
 
-          <Grid size={6} sx={estiloCuadricula}>
-            <CampoSelect
-              label='Rol'
-              name='rol'
-              value={datosUsuario.rol}
-              onChange={manejarCambio}
-              required
-              size='medium'
-              error={!!errores.rol}
-              helperText={errores.rol && CAMPO_OBLIGATORIO}
-              options={roles
-                .filter((rol) => rol.idRol !== 3)
-                .map((rol) => ({
-                value: rol.idRol,
-                label: rol.nombre,
-              }))}
-              disabled={cargando}
-            />
-          </Grid>
+            <Grid size={6} sx={estiloCuadricula}>
+              <CampoTexto
+                label='Número de Teléfono'
+                name='numeroTelefono'
+                value={datosUsuario.numeroTelefono}
+                onChange={manejarCambio}
+                required
+                size='medium'
+                error={!!errores.numeroTelefono}
+                helperText={
+                  errores.numeroTelefono === true ? CAMPO_OBLIGATORIO : errores.numeroTelefono || ''
+                }
+                inputProps={{
+                  maxLength: 10,
+                }}
+              />
+            </Grid>
 
-          <Grid size={6} sx={estiloCuadricula}>
-            <CampoSelectMultiple
-              label='Cliente'
-              name='cliente'
-              value={datosUsuario.cliente}
-              onChange={manejarCambio}
-              required
-              size='medium'
-              error={!!errores.cliente}
-              helperText={errores.cliente && CAMPO_OBLIGATORIO}
-              options={clientes.map((cliente) => ({
-                value: cliente.idCliente,
-                label: cliente.nombreComercial,
-              }))}
-              disabled={esSuperAdmin}
-            />
-          </Grid>
+            <Grid size={6} sx={estiloCuadricula}>
+              <CampoTexto
+                label='Dirección'
+                name='direccion'
+                value={datosUsuario.direccion}
+                onChange={manejarCambio}
+                required
+                size='medium'
+                error={!!errores.direccion}
+                helperText={errores.direccion && CAMPO_OBLIGATORIO}
+                inputProps={{
+                  maxLength: 100,
+                }}
+              />
+            </Grid>
 
-          <Grid size={6} sx={estiloCuadricula}>
-            <CampoTexto
-              label='Contraseña'
-              name='contrasenia'
-              type='password'
-              value={datosUsuario.contrasenia}
-              onChange={manejarCambio}
-              required
-              size='medium'
-              error={!!errores.contrasenia}
-              autoComplete='new-password'
-              helperText={
-                errores.contrasenia === true ? CAMPO_OBLIGATORIO : errores.contrasenia || ''
-              }
-            />
-          </Grid>
+            <Grid size={6} sx={estiloCuadricula}>
+              <CampoSelect
+                label='Rol'
+                name='rol'
+                value={datosUsuario.rol}
+                onChange={manejarCambio}
+                required
+                size='medium'
+                error={!!errores.rol}
+                helperText={errores.rol && CAMPO_OBLIGATORIO}
+                options={roles
+                  .filter((rol) => rol.idRol !== 3)
+                  .map((rol) => ({
+                    value: rol.idRol,
+                    label: rol.nombre,
+                  }))}
+                disabled={cargando}
+              />
+            </Grid>
 
-          <Grid size={6} sx={estiloCuadricula}>
-            <CampoTexto
-              label='Confirmar contraseña'
-              name='confirmarContrasenia'
-              type='password'
-              value={datosUsuario.confirmarContrasenia}
-              onChange={manejarCambio}
-              required
-              size='medium'
-              error={!!errores.confirmarContrasenia}
-              autoComplete='new-password'
-              helperText={
-                errores.confirmarContrasenia === true
-                  ? CAMPO_OBLIGATORIO
-                  : errores.confirmarContrasenia || ''
-              }
-            />
+            <Grid size={6} sx={estiloCuadricula}>
+              <CampoSelectMultiple
+                label='Cliente'
+                name='cliente'
+                value={datosUsuario.cliente}
+                onChange={manejarCambio}
+                required
+                size='medium'
+                error={!!errores.cliente}
+                helperText={errores.cliente && CAMPO_OBLIGATORIO}
+                options={clientes.map((cliente) => ({
+                  value: cliente.idCliente,
+                  label: cliente.nombreComercial,
+                }))}
+                disabled={esSuperAdmin}
+              />
+            </Grid>
+
+            <Grid size={6} sx={estiloCuadricula}>
+              <CampoTexto
+                label='Contraseña'
+                name='contrasenia'
+                type='password'
+                value={datosUsuario.contrasenia}
+                onChange={manejarCambio}
+                required
+                size='medium'
+                error={!!errores.contrasenia}
+                autoComplete='new-password'
+                helperText={
+                  errores.contrasenia === true ? CAMPO_OBLIGATORIO : errores.contrasenia || ''
+                }
+              />
+            </Grid>
+
+            <Grid size={6} sx={estiloCuadricula}>
+              <CampoTexto
+                label='Confirmar contraseña'
+                name='confirmarContrasenia'
+                type='password'
+                value={datosUsuario.confirmarContrasenia}
+                onChange={manejarCambio}
+                required
+                size='medium'
+                error={!!errores.confirmarContrasenia}
+                autoComplete='new-password'
+                helperText={
+                  errores.confirmarContrasenia === true
+                    ? CAMPO_OBLIGATORIO
+                    : errores.confirmarContrasenia || ''
+                }
+              />
+            </Grid>
           </Grid>
-        </Grid>
-      </Box>
-    </ModalFlotante>
-    {alerta && (
+        </Box>
+      </ModalFlotante>
+      {alerta && (
         <Alerta
           sx={{ marginBottom: 2 }}
           tipo={alerta.tipo}

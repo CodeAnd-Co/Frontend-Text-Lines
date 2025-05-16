@@ -35,13 +35,11 @@ const ContenedorImportarImagen = ({ onFileAccepted, onError, cargando = false })
 
         if (rejection.errors.some((evento) => evento.code === 'file-invalid-type')) {
           onError?.(MENSAJES.ERROR_FORMAT);
-          console.error(MENSAJES.ERROR_FORMAT);
           return;
         }
 
         if (rejection.errors.some((evento) => evento.code === 'file-too-large')) {
           onError?.(MENSAJES.ERROR_SIZE);
-          console.error(MENSAJES.ERROR_SIZE);
           return;
         }
       }

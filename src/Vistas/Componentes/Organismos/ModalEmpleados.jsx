@@ -26,13 +26,14 @@ const ModalEmpleados = ({ open, onClose, onAccion, empleadoEdicion }) => {
     if (resultado?.exito) {
       if (onAccion) await onAccion();
 
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
-
       if (!esEdicion) {
         limpiarFormulario();
       }
+
+      // Esperar un momento para que el usuario vea el mensaje de éxito
+      setTimeout(() => {
+        onClose();
+      }, 1500);
     }
   };
 
@@ -46,7 +47,7 @@ const ModalEmpleados = ({ open, onClose, onAccion, empleadoEdicion }) => {
       open={open}
       onClose={manejarCierre}
       onConfirm={manejarConfirmacion}
-      titulo={esEdicion ? 'Actualizar Empleado' : 'Agregar Empleado'}
+      titulo={esEdicion ? datosEmpleado.nombreCompleto : 'Agregar Empleado'}
     >
       <Box
         component='form'

@@ -87,6 +87,7 @@ const ListaGrupoEmpleados = () => {
     posicion: empleado.posicion,
     cantidadPuntos: empleado.cantidadPuntos,
     antiguedad: empleado.antiguedad,
+    antiguedadDate: empleado.antiguedadDate,
   }));
 
   const botones = [
@@ -96,7 +97,7 @@ const ListaGrupoEmpleados = () => {
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
-      deshabilitado: true,
+      construccion: true,
     },
     {
       variant: 'outlined',
@@ -108,13 +109,13 @@ const ListaGrupoEmpleados = () => {
       disabled: !usuario?.permisos?.includes(PERMISOS.IMPORTAR_EMPLEADOS),
     },
     {
-      variant: 'outlined',
+      //variant: 'outlined',
       label: 'Exportar',
       onClick: () => console.log('Exportar'),
       color: 'primary',
       size: 'large',
-      outlineColor: colores.primario[10],
-      deshabilitado: true,
+      //outlineColor: colores.primario[10],
+      construccion: true,
     },
     {
       label: 'Eliminar',
@@ -182,6 +183,7 @@ const ListaGrupoEmpleados = () => {
                 setModalActualizarAbierto(true);
                 setModalDetalleAbierto(false);
               },
+              disabled: !usuario?.permisos?.includes(PERMISOS.ACTUALIZAR_EMPLEADO),
             },
             {
               label: 'SALIR',
@@ -201,6 +203,7 @@ const ListaGrupoEmpleados = () => {
             cantidadPuntos={empleadoSeleccionado.cantidadPuntos}
             antiguedad={empleadoSeleccionado.antiguedad}
             idEmpleado={empleadoSeleccionado.id}
+            antiguedadFecha={empleadoSeleccionado.antiguedadDate}
             estadoEmpleado={{
               label: 'Activo',
               color: 'error',

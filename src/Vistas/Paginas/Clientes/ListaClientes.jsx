@@ -15,6 +15,11 @@ import { RUTAS } from '@Utilidades/Constantes/rutas';
 import { useClientes } from '@Hooks/Clientes/useClientes';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@SRC/Utilidades/Constantes/permisos';
+import { useState } from 'react';
+import ModalCrearCliente from '@Organismos/Clientes/ModalCrearCliente';
+
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 // Estilos
 const estiloImagenLogo = { marginRight: '1rem' };
@@ -31,9 +36,11 @@ const estiloSubtitulo = {
 
 const ListaClientes = () => {
   const tema = useTheme();
+  const MySwal = withReactContent(Swal);
   const colores = tokens(tema.palette.mode);
   const navegar = useNavigate();
   const { usuario, cerrarSesion } = useAuth();
+  const [abrirCrearCliente, setAbrirCliente] = useState(false);
 
   const {
     clientes,
@@ -64,6 +71,32 @@ const ListaClientes = () => {
     botonDeshabilitado,
     onCambioTextoConfirmacion,
   } = useClientes();
+
+  const handleAbrirCrearCliente = () => setAbrirCliente(true);
+
+  const handleCerrarCliente = () => setAbrirCliente(false);
+
+  const handleClienteCreadoExitosamente = () => {
+    handleCerrarCliente();
+    MySwal.fire({
+      title: <p>Por seguridad, se cerrará tu sesión</p>,
+      didOpen: () => {
+        MySwal.showLoading();
+      },
+      timer: 3000, // Muestra esta alerta por 3 segundos
+      timerProgressBar: true,
+    })
+      .then(() => {
+        return MySwal.fire({
+          title: <p>¡Adiós!</p>,
+          timer: 2000, // Muestra esta alerta por 2 segundos
+          timerProgressBar: true,
+        });
+      })
+      .then(() => {
+        cerrarSesion();
+      });
+  };
 
   const manejarCerrarSesion = async () => {
     await cerrarSesion();
@@ -156,12 +189,18 @@ const ListaClientes = () => {
               <TarjetaAccion
                 icono='Add'
                 texto='Agregar cliente'
-                onClick={() => console.log('Agregar cliente')}
+                onClick={handleAbrirCrearCliente}
               />
             )}
           </Box>
         )}
       </Box>
+
+      <ModalCrearCliente
+        abierto={abrirCrearCliente}
+        onCerrar={handleCerrarCliente}
+        onCreado={handleClienteCreadoExitosamente}
+      />
 
       <EliminarClienteModal
         open={modalEliminacionAbierto}

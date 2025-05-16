@@ -16,7 +16,6 @@ const FormaEmpleado = ({
     display: 'flex',
     justifyContent: 'center',
   };
-
   return (
     <Grid container columns={12}>
       <Grid size={6} sx={estiloCuadricula}>
@@ -83,6 +82,11 @@ const FormaEmpleado = ({
           label='Área de Trabajo'
           name='areaTrabajo'
           value={datosEmpleado.areaTrabajo}
+          onKeyPress={(event) => {
+            if (!/^[a-zA-Z\s]*$/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
           onChange={manejarCambio}
           required
           size='medium'
@@ -99,13 +103,20 @@ const FormaEmpleado = ({
           label='Posición'
           name='posicion'
           value={datosEmpleado.posicion}
+          type='text'
+          inputMode='text'
+          onKeyPress={(event) => {
+            if (!/^[a-zA-Z\s]*$/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
           onChange={manejarCambio}
           required
           size='medium'
           error={!!erroresValidacion.posicion}
           helperText={obtenerHelperText('posicion')}
           inputProps={{
-            maxLength: 50,
+            maxLength: 40,
           }}
         />
       </Grid>
@@ -134,11 +145,7 @@ const FormaEmpleado = ({
           <DateField
             required
             label='Antigüedad'
-            value={
-              datosEmpleado.antiguedad && datosEmpleado.antiguedad.isValid()
-                ? datosEmpleado.antiguedad
-                : null
-            }
+            value={datosEmpleado.antiguedad}
             onChange={manejarAntiguedad}
             format='DD/MM/YYYY'
             sx={{ width: '30ch' }}

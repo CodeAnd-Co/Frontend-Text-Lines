@@ -84,6 +84,7 @@ export const PERMISOS = {
   IMPORTAR_PRODUCTOS: 'Importar Productos',
   IMPORTAR_EMPLEADOS: 'Importar Empleados',
   EXPORTAR_PRODUCTOS: 'Exportar Productos',
+  EXPORTAR_EMPLEADOS: 'Exportar Empleados',
 
   // Pedido
   CONSULTAR_PEDIDOS: 'Consultar Lista de Pedidos',

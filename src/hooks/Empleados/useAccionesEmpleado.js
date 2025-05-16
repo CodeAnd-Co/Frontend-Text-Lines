@@ -14,11 +14,9 @@ export const useAccionesEmpleado = (empleadoInicial = null) => {
   const [datosEmpleado, setDatosEmpleado] = useState(() => {
     if (esEdicion) {
       let fechaAntiguedad = null;
-      if (empleadoInicial.antiguedad) {
-        const fecha = dayjs(empleadoInicial.antiguedad);
-        fechaAntiguedad = fecha.isValid() ? fecha : null;
+      if (empleadoInicial.antiguedadDate) {
+        fechaAntiguedad = dayjs(empleadoInicial.antiguedadDate);
       }
-
       return {
         ...empleadoInicial,
         idEmpleado: empleadoInicial.id,
@@ -44,6 +42,36 @@ export const useAccionesEmpleado = (empleadoInicial = null) => {
 
   const CAMPO_OBLIGATORIO = 'Este campo es obligatorio';
 
+  // Función para verificar si se han realizado cambios
+  const hayCambios = () => {
+    if (!esEdicion) return true; // Si es creación, siempre hay cambios
+
+    const camposAComparar = [
+      'nombreCompleto',
+      'correoElectronico',
+      'numeroEmergencia',
+      'areaTrabajo',
+      'posicion',
+      'cantidadPuntos',
+    ];
+
+    // Comparar campos simples
+    const cambioCamposSimples = camposAComparar.some(
+      (campo) => datosEmpleado[campo]?.toString() !== empleadoInicial[campo]?.toString()
+    );
+
+    // Comparar fecha de antigüedad
+    const fechaAntigua = empleadoInicial.antiguedadDate
+      ? dayjs(empleadoInicial.antiguedadDate).format('YYYY-MM-DD')
+      : null;
+    const fechaNueva = datosEmpleado.antiguedad
+      ? datosEmpleado.antiguedad.format('YYYY-MM-DD')
+      : null;
+    const cambioFecha = fechaAntigua !== fechaNueva;
+
+    return cambioCamposSimples || cambioFecha;
+  };
+
   // Métodos para manejar cambios
   const manejarCambio = (evento) => {
     const { name, value } = evento.target;
@@ -57,12 +85,10 @@ export const useAccionesEmpleado = (empleadoInicial = null) => {
   };
 
   const manejarAntiguedad = (nuevaFecha) => {
-    if (nuevaFecha === null || (nuevaFecha && nuevaFecha.isValid())) {
-      setDatosEmpleado((prev) => ({
-        ...prev,
-        antiguedad: nuevaFecha,
-      }));
-    }
+    setDatosEmpleado((prev) => ({
+      ...prev,
+      antiguedad: nuevaFecha,
+    }));
   };
 
   const obtenerHelperText = (campo) => {
@@ -71,8 +97,8 @@ export const useAccionesEmpleado = (empleadoInicial = null) => {
       return typeof err === 'string' ? err : CAMPO_OBLIGATORIO;
     }
     if (
-      !esEdicion &&
-      [
+      !esEdicion
+      && [
         'idEmpleado',
         'idUsuario',
         'numeroEmergencia',
@@ -88,18 +114,35 @@ export const useAccionesEmpleado = (empleadoInicial = null) => {
   };
 
   const handleGuardar = async () => {
+    if (esEdicion && !hayCambios()) {
+      setAlerta({
+        tipo: 'warning',
+        mensaje: 'No se han realizado cambios',
+      });
+      return { exito: false, mensaje: 'No se han realizado cambios' };
+    }
+
     const datosProcesados = {
       ...datosEmpleado,
       id: esEdicion ? empleadoInicial.id : datosEmpleado.idEmpleado,
       nombreCompleto: datosEmpleado.nombreCompleto || datosEmpleado.nombre,
       correoElectronico: datosEmpleado.correoElectronico,
-      antiguedad:
-        datosEmpleado.antiguedad && datosEmpleado.antiguedad.isValid()
-          ? datosEmpleado.antiguedad.format('YYYY-MM-DD')
-          : '',
+      antiguedad: datosEmpleado.antiguedad?.format('YYYY-MM-DD'),
     };
 
-    const nuevosErrores = validarDatosActualizarEmpleado(datosProcesados);
+    const erroresCampos = {};
+    if (!datosProcesados.areaTrabajo || datosProcesados.areaTrabajo.trim() === '') {
+      erroresCampos.areaTrabajo = 'El campo no puede estar vacío ni contener sólo espacios';
+    }
+    if (!datosProcesados.posicion || datosProcesados.posicion.trim() === '') {
+      erroresCampos.posicion = 'El campo no puede estar vacío ni contener sólo espacios';
+    }
+
+    const nuevosErrores = {
+      ...erroresCampos,
+      ...validarDatosActualizarEmpleado(datosProcesados),
+    };
+
     if (Object.keys(nuevosErrores).length > 0) {
       setErroresValidacion(nuevosErrores);
       setAlerta({

@@ -51,8 +51,8 @@ export const DetalleClienteModal = ({
             disabled:
               !cliente
               || !usuario?.permisos?.includes(PERMISOS.ACTUALIZAR_CLIENTE)
-              || !!imagenError
-              || camposInvalidos,
+              || camposInvalidos
+              || imagenSubiendo,
           },
           {
             label: 'SALIR',

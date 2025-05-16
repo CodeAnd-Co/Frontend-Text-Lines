@@ -102,10 +102,11 @@ export const useClientes = () => {
 
   const confirmarEliminacion = () => {
     if (!clienteEliminar) return;
-    
+
     // Obtener el nombre del cliente para confirmar
-    const nombreConfirmacion = clienteEliminar.nombreComercial || clienteEliminar.nombreVisible || '';
-    
+    const nombreConfirmacion
+      = clienteEliminar.nombreComercial || clienteEliminar.nombreVisible || '';
+
     // Verificar si el texto ingresado coincide con el nombre del cliente
     if (textoConfirmacion.toLowerCase() === nombreConfirmacion.toLowerCase()) {
       setIdEliminar(clienteEliminar.idCliente);
@@ -130,7 +131,8 @@ export const useClientes = () => {
     setTextoConfirmacion(value);
     if (clienteEliminar) {
       // Obtener el nombre del cliente para confirmar
-      const nombreConfirmacion = clienteEliminar.nombreComercial || clienteEliminar.nombreVisible || '';
+      const nombreConfirmacion
+        = clienteEliminar.nombreComercial || clienteEliminar.nombreVisible || '';
       // Comparar sin distinguir mayúsculas/minúsculas
       setBotonDeshabilitado(value.toLowerCase() !== nombreConfirmacion.toLowerCase());
     }
@@ -158,9 +160,10 @@ export const useClientes = () => {
       // Si no existe, usar nombreVisible como alternativa
       const clienteParaEliminar = {
         ...clienteEditado,
-        nombreComercial: clienteEditado.nombreComercial || clienteEditado.nombreVisible || 'Cliente sin nombre',
+        nombreComercial:
+          clienteEditado.nombreComercial || clienteEditado.nombreVisible || 'Cliente sin nombre',
       };
-      
+
       setClienteEliminar(clienteParaEliminar);
       setModalEliminacionAbierto(true);
       setModalDetalleAbierto(false); // Cerrar modal de detalle al abrir modal de eliminación
@@ -258,8 +261,8 @@ export const useClientes = () => {
         }
 
         setModoEdicion(false);
-      } catch {
-        setImagenError('Error al guardar los cambios. Intente nuevamente.');
+      } catch (error) {
+        setImagenError(error.message || 'Ocurrió un error al actualizar el cliente.');
       } finally {
         setImagenSubiendo(false);
       }

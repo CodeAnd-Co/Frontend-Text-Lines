@@ -16,7 +16,7 @@ const MENSAJES = {
   NOMBRE_COMERCIAL: 'Nombre comercial',
   NOMBRE_FISCAL: 'Nombre fiscal',
   ERROR_VALIDACION: 'Ingresa el nombre fiscal y comercial.',
-  RESTRICCION_IMAGEN: 'Solo se permiten imágenes en formato JPG/JPEG/PNG, máximo 5MB.',
+  RESTRICCION_IMAGEN: 'Solo se permiten imágenes en formato JPG, máximo 5MB.',
   LIMITE_CARACTERES: 'Máximo 100 caracteres',
 };
 

@@ -14,11 +14,9 @@ export const useAccionesEmpleado = (empleadoInicial = null) => {
   const [datosEmpleado, setDatosEmpleado] = useState(() => {
     if (esEdicion) {
       let fechaAntiguedad = null;
-      if (empleadoInicial.antiguedad) {
-        const fecha = dayjs(empleadoInicial.antiguedad);
-        fechaAntiguedad = fecha.isValid() ? fecha : null;
+      if (empleadoInicial.antiguedadDate) {
+        fechaAntiguedad = dayjs(empleadoInicial.antiguedadDate);
       }
-
       return {
         ...empleadoInicial,
         idEmpleado: empleadoInicial.id,
@@ -57,12 +55,10 @@ export const useAccionesEmpleado = (empleadoInicial = null) => {
   };
 
   const manejarAntiguedad = (nuevaFecha) => {
-    if (nuevaFecha === null || (nuevaFecha && nuevaFecha.isValid())) {
-      setDatosEmpleado((prev) => ({
-        ...prev,
-        antiguedad: nuevaFecha,
-      }));
-    }
+    setDatosEmpleado((prev) => ({
+      ...prev,
+      antiguedad: nuevaFecha,
+    }));
   };
 
   const obtenerHelperText = (campo) => {
@@ -93,10 +89,7 @@ export const useAccionesEmpleado = (empleadoInicial = null) => {
       id: esEdicion ? empleadoInicial.id : datosEmpleado.idEmpleado,
       nombreCompleto: datosEmpleado.nombreCompleto || datosEmpleado.nombre,
       correoElectronico: datosEmpleado.correoElectronico,
-      antiguedad:
-        datosEmpleado.antiguedad && datosEmpleado.antiguedad.isValid()
-          ? datosEmpleado.antiguedad.format('YYYY-MM-DD')
-          : '',
+      antiguedad: datosEmpleado.antiguedad?.format('YYYY-MM-DD'),
     };
 
     const erroresCampos = {};

@@ -22,6 +22,7 @@ export class Empleado {
     this.posicion = posicion;
     this.cantidadPuntos = parseFloat(cantidadPuntos);
     this.antiguedad = Empleado.formatearFecha(antiguedad);
+    this.antiguedadDate = antiguedad;
   }
 
   static formatearFecha(fecha) {

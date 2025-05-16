@@ -16,7 +16,7 @@ const FormaEmpleado = ({
     display: 'flex',
     justifyContent: 'center',
   };
-
+  console.log('datosEmpleado form', datosEmpleado);
   return (
     <Grid container columns={12}>
       <Grid size={6} sx={estiloCuadricula}>
@@ -134,11 +134,7 @@ const FormaEmpleado = ({
           <DateField
             required
             label='Antigüedad'
-            value={
-              datosEmpleado.antiguedad && datosEmpleado.antiguedad.isValid()
-                ? datosEmpleado.antiguedad
-                : null
-            }
+            value={datosEmpleado.antiguedad}
             onChange={manejarAntiguedad}
             format='DD/MM/YYYY'
             sx={{ width: '30ch' }}

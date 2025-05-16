@@ -15,6 +15,7 @@ const InfoEmpleado = ({
   antiguedad,
   estadoEmpleado,
   idEmpleado,
+  antiguedadFecha,
 }) => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
@@ -114,6 +115,7 @@ InfoEmpleado.propTypes = {
   posicion: PropTypes.string,
   cantidadPuntos: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   antiguedad: PropTypes.string,
+  antiguedadFecha: PropTypes.string,
   estadoEmpleado: PropTypes.shape({
     label: PropTypes.string.isRequired,
     color: PropTypes.string,

@@ -42,7 +42,7 @@ const ModalEmpleados = ({ open, onClose, onAccion, empleadoEdicion }) => {
       open={open}
       onClose={manejarCierre}
       onConfirm={manejarConfirmacion}
-      titulo={esEdicion ? 'Actualizar Empleado' : 'Agregar Empleado'}
+      titulo={esEdicion ? datosEmpleado.nombreCompleto : 'Agregar Empleado'}
     >
       <Box
         component='form'

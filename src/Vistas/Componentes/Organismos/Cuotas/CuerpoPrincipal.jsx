@@ -23,7 +23,6 @@ const CuerpoPrincipal = ({
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const navegar = useNavigate();
-  const [errorCuotas, setErrorCuotas] = useState('');
 
   const manejarCancelar = () => {
     setAbrirConfirmacion(true);

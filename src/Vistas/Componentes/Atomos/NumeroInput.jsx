@@ -16,13 +16,13 @@ export const NumeroInput = ({
   const colores = tokens(theme.palette.mode);
   const [helper, setHelper] = useState('');
 
-  const handleChange = (e) => {
-    const nuevoValor = e.target.value;
+  const handleChange = (evento) => {
+    const nuevoValor = evento.target.value;
 
     // Permite vacío para borrar
     if (nuevoValor === '') {
       setHelper('');
-      onChange(e);
+      onChange(evento);
       return;
     }
 
@@ -31,7 +31,7 @@ export const NumeroInput = ({
 
     if (esEnteroPositivo) {
       setHelper('');
-      onChange(e);
+      onChange(evento);
     } else {
       setHelper('Número inválido');
     }
@@ -63,7 +63,7 @@ export const NumeroInput = ({
             borderColor: colores.primario[3],
           },
           '&.Mui-error fieldset': {
-            borderColor: '#f44336', // Rojo de error MUI
+            borderColor: '#f44336',
           },
         },
         '& .MuiInputLabel-root': {
@@ -74,7 +74,7 @@ export const NumeroInput = ({
         },
       }}
       inputProps={{
-        min: 1,
+        min, // <-- ahora sí se usa min
         ...rest.inputProps,
       }}
       helperText={helper}

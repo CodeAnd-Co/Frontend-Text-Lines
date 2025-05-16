@@ -188,8 +188,8 @@ const ListaRoles = () => {
           if (seleccionFiltrada.length > 0) {
             setAbrirPopupEliminar(true);
           } else if (
-            (seleccionFiltrada.length === 0 && seleccionados.includes(String(SUPERUSER_ID))) ||
-            (seleccionFiltrada.length === 0 && seleccionados.includes(SUPERUSER_ID))
+            (seleccionFiltrada.length === 0 && seleccionados.includes(String(SUPERUSER_ID)))
+            || (seleccionFiltrada.length === 0 && seleccionados.includes(SUPERUSER_ID))
           ) {
             setAlerta({
               tipo: 'warning',

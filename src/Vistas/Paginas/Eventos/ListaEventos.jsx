@@ -127,6 +127,7 @@ const ListaEventos = () => {
             columns={columnas}
             rows={filas}
             loading={cargando}
+            disableRowSelectionOnClick={true}
             checkboxSelection
             onRowSelectionModelChange={(selectionModel) => {
               const ids = Array.isArray(selectionModel)

@@ -21,8 +21,8 @@ const ListaSetsProductos = () => {
   const { setsDeProductos, cargando, error, recargar } = useConsultarSetsProductos();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
-  const MENSAJE_POPUP_ELIMINAR
-    = '¿Estás seguro de que deseas eliminar los sets de productos seleccionados?';
+  const MENSAJE_POPUP_ELIMINAR =
+    '¿Estás seguro de que deseas eliminar los sets de productos seleccionados?';
 
   const [seleccionados, setSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
@@ -161,6 +161,7 @@ const ListaSetsProductos = () => {
             columns={columns}
             rows={rows}
             loading={cargando}
+            disableRowSelectionOnClick={true}
             checkboxSelection
             onRowClick={(params) => {
               setSetSeleccionado(params.row.datosCompletos);

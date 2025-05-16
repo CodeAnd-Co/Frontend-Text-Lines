@@ -112,6 +112,7 @@ const ListaCategorias = () => {
             columns={columns}
             rows={rows}
             loading={cargando}
+            disableRowSelectionOnClick={true}
             checkboxSelection
             onRowSelectionModelChange={(newSelection) => {
               setSeleccionados(newSelection);

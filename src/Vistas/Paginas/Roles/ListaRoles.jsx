@@ -188,8 +188,8 @@ const ListaRoles = () => {
           if (seleccionFiltrada.length > 0) {
             setAbrirPopupEliminar(true);
           } else if (
-            (seleccionFiltrada.length === 0 && seleccionados.includes(String(SUPERUSER_ID)))
-            || (seleccionFiltrada.length === 0 && seleccionados.includes(SUPERUSER_ID))
+            (seleccionFiltrada.length === 0 && seleccionados.includes(String(SUPERUSER_ID))) ||
+            (seleccionFiltrada.length === 0 && seleccionados.includes(SUPERUSER_ID))
           ) {
             setAlerta({
               tipo: 'warning',
@@ -270,6 +270,7 @@ const ListaRoles = () => {
             columns={columnas}
             rows={filas}
             loading={cargando}
+            disableRowSelectionOnClick={true}
             checkboxSelection
             onRowSelectionModelChange={(seleccion) => {
               const ids = Array.isArray(seleccion) ? seleccion : Array.from(seleccion?.ids || []);

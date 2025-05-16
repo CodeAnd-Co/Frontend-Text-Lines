@@ -57,6 +57,7 @@ export const RUTAS_API = {
     ELIMINAR_GRUPO: `${BASE_EMPLEADOS}/eliminar-grupo`,
     IMPORTAR_EMPLEADOS: `${BASE_EMPLEADOS}/importar-empleados`,
     LEER_GRUPO: `${BASE_EMPLEADOS}/leer-grupo`,
+    CREAR_GRUPO: `${BASE_EMPLEADOS}/crear-grupo`,
   },
   CUOTAS: {
     BASE: BASE_CUOTAS,

@@ -15,6 +15,8 @@ import { RUTAS } from '@Utilidades/Constantes/rutas';
 import { useClientes } from '@Hooks/Clientes/useClientes';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@SRC/Utilidades/Constantes/permisos';
+import { useState } from 'react';
+import ModalCrearCliente from '@Organismos/Clientes/ModalCrearCliente';
 
 // Estilos
 const estiloImagenLogo = { marginRight: '1rem' };
@@ -34,6 +36,7 @@ const ListaClientes = () => {
   const colores = tokens(tema.palette.mode);
   const navegar = useNavigate();
   const { usuario, cerrarSesion } = useAuth();
+  const [abrirCrearCliente, setAbrirCliente] = useState(false);
 
   const {
     clientes,
@@ -64,6 +67,12 @@ const ListaClientes = () => {
     botonDeshabilitado,
     onCambioTextoConfirmacion,
   } = useClientes();
+
+  const handleAbrirCrearCliente = () => setAbrirCliente(true);
+
+  const handleCerrarCliente = () => setAbrirCliente(false);
+
+  const handleClienteCreadoExitosamente = () => handleCerrarCliente();
 
   const manejarCerrarSesion = async () => {
     await cerrarSesion();
@@ -156,12 +165,18 @@ const ListaClientes = () => {
               <TarjetaAccion
                 icono='Add'
                 texto='Agregar cliente'
-                onClick={() => console.log('Agregar cliente')}
+                onClick={handleAbrirCrearCliente}
               />
             )}
           </Box>
         )}
       </Box>
+
+      <ModalCrearCliente
+        abierto={abrirCrearCliente}
+        onCerrar={handleCerrarCliente}
+        onCreado={handleClienteCreadoExitosamente}
+      />
 
       <EliminarClienteModal
         open={modalEliminacionAbierto}

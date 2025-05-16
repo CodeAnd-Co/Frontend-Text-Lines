@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { crearGrupoEmpleados } from '@Repositorios/Empleados/RepositorioCrearGrupoEmpleado';
 import { validarDatosCrearGrupoEmpleado } from '@Modelos/Empleados/modeloCrearGrupoEmpleado';
 import { useConsultarGrupos } from '@Hooks/Empleados/useConsultarGrupos';
@@ -59,12 +59,12 @@ export const useCrearGrupoEmpleados = () => {
     }
   };
 
-    /**
+  /**
    * Limpia los errores de validación actuales.
    */
-  const limpiarErrores = () => {
+  const limpiarErrores = useCallback(() => {
     setErrores({});
-  };
+  }, []);
 
   return {
     errores,

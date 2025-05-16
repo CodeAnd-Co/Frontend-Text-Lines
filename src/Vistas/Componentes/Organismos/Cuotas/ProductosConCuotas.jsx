@@ -23,9 +23,9 @@ const ProductosConCuotas = ({ productos, manejarCambioCuota }) => {
               <NumeroInput
                 value={producto.cuota} // Aquí puedes pasar el valor de la cuota si lo manejas
                 onChange={(evento) => manejarCambioCuota(producto.id, evento.target.value)}
-                min={0}
+                min={1}
                 width={120}
-                style={{ marginLeft: '10px' }} // Añade un margen para separación
+                style={{ marginLeft: '10px' }}
               />
             </div>
           </Box>

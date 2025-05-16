@@ -62,8 +62,7 @@ const ListaClientes = () => {
   // Manejador para cuando se crea una nueva categoría
   const handleClienteCreadoExitosamente = () => {
     handleCerrarCrearCliente();
-    // Recarga la lista de categorías
-    recargar();
+    // recargar();
   };
 >>>>>>> cce069c (Fix: Correción boton, forma de mandar datos de imagen, mostrar si se subio una imagen)
 

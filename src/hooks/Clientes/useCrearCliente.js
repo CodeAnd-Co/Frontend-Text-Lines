@@ -93,7 +93,6 @@ const useCrearCliente = () => {
       const resultado = await RepositorioCrearCliente.crearCliente(formData);
 
       // Procesar respuesta exitosa
-      console.log(resultado.data);
       if (resultado.data && resultado.data.mensaje) {
         setExito(true);
         setMensaje(resultado.data.mensaje);

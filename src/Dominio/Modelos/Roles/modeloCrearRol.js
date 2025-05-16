@@ -12,7 +12,6 @@ export const validarDatosCrearRol = (datos) => {
   const errores = {};
 
   const nombre = datos.nombreRol?.trim();
-  const descripcion = datos.descripcionRol?.trim();
   const permisos = datos.permisosSeleccionados;
 
   if (!nombre) {

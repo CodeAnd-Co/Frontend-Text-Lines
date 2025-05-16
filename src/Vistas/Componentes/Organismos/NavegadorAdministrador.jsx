@@ -4,6 +4,8 @@ import Icono from '@Atomos/Icono';
 import Texto from '@Atomos/Texto';
 import GrupoBotones from '@Moleculas/GrupoBotones';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
+import { RUTAS } from '@Utilidades/Constantes/rutas';
 
 const NavegadorAdministrador = ({
   src,
@@ -18,13 +20,15 @@ const NavegadorAdministrador = ({
   alturaImagen = 'auto',
   anchoImagen = '100%',
   ajuste = 'cover',
-  clickeableImagen = false,
   estiloImagen = {},
-  alClicImagen,
   alClicIcono,
   informacionBotones = [],
 }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
+  const redirigirAInicio = () => {
+      navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE, { replace: true });
+    };
 
   return (
     <Box
@@ -45,8 +49,8 @@ const NavegadorAdministrador = ({
           height={alturaImagen}
           width={anchoImagen}
           fit={ajuste}
-          clickable={clickeableImagen}
-          onClick={alClicImagen}
+          clickable={true}
+          onClick={redirigirAInicio}
           style={{ height: '40px', ...estiloImagen }}
         />
         {titulo && (

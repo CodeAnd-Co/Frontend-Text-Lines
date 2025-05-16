@@ -6,6 +6,7 @@ const ProductosModal = ({ columnas, filas, paginacion, checkBox, onRowClick, onR
       columns={columnas}
       rows={filas}
       pageSize={paginacion}
+      disableRowSelectionOnClick={true}
       checkboxSelection={checkBox}
       onRowClick={onRowClick}
       onRowSelectionModelChange={onRowSeleccion}

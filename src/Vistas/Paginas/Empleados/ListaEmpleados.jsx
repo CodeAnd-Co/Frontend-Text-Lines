@@ -152,6 +152,7 @@ const ListaGrupoEmpleados = () => {
             columns={columnas}
             rows={filas}
             loading={cargando}
+            disableRowSelectionOnClick={true}
             checkboxSelection
             onRowClick={(params) => {
               setEmpleadoSeleccionado(params.row);

@@ -146,6 +146,7 @@ const ListaPedidos = () => {
             <Tabla
               columns={columnas}
               rows={filas}
+              disableRowSelectionOnClick={true}
               checkboxSelection
               onRowSelectionModelChange={(seleccion) => {
                 const ids = Array.isArray(seleccion) ? seleccion : Array.from(seleccion?.ids || []);

@@ -3,20 +3,26 @@ import FormaCrearRol from '@Organismos/Formularios/FormaCrearRol';
 import ModalFlotante from '@Organismos/ModalFlotante';
 import { useCrearRol } from '@Hooks/Roles/useCrearRol';
 import Alerta from '@Moleculas/Alerta';
+import { validarDatosCrearRol } from '@Modelos/Roles/modeloCrearRol'; 
 
 const ModalCrearRol = ({ abierto, onCerrar, onRolCreado }) => {
   const [nombreRol, setNombreRol] = useState('');
   const [descripcionRol, setDescripcionRol] = useState('');
   const [permisosSeleccionados, setPermisosSeleccionados] = useState([]);
-  const [mostrarAlerta, setMostrarAlerta] = useState(false);
+  const [erroresCampos, setErroresCampos] = useState({}); 
 
   const { crearRol, exito, error, mensaje, cargando, resetEstado } = useCrearRol();
 
   const handleConfirmar = async () => {
-    if (!nombreRol.trim() || permisosSeleccionados.length === 0) {
-      setMostrarAlerta(true);
-      return;
-    }
+    const errores = validarDatosCrearRol({
+      nombreRol,
+      descripcionRol,
+      permisosSeleccionados,
+    });
+
+    setErroresCampos({ ...errores });
+
+    if (Object.keys(errores).length > 0) return;
 
     await crearRol(nombreRol.trim(), descripcionRol.trim(), permisosSeleccionados, () => {
       if (onRolCreado) onRolCreado();
@@ -29,7 +35,7 @@ const ModalCrearRol = ({ abierto, onCerrar, onRolCreado }) => {
     setNombreRol('');
     setDescripcionRol('');
     setPermisosSeleccionados([]);
-    setMostrarAlerta(false);
+    setErroresCampos({});
     resetEstado();
   };
 
@@ -49,8 +55,8 @@ const ModalCrearRol = ({ abierto, onCerrar, onRolCreado }) => {
         setDescripcionRol={setDescripcionRol}
         permisosSeleccionados={permisosSeleccionados}
         setPermisosSeleccionados={setPermisosSeleccionados}
-        mostrarAlerta={mostrarAlerta}
-        setMostrarAlerta={setMostrarAlerta}
+        erroresCampos={erroresCampos}
+        setErroresCampos={setErroresCampos}
       />
 
       {(exito || error) && (

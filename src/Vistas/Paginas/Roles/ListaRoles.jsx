@@ -137,7 +137,6 @@ const ListaRoles = () => {
       headerName: 'Descripción',
       flex: 1.5,
       headerAlign: 'center',
-      align: 'center',
     },
   ];
 

@@ -43,7 +43,7 @@ const BarraLateral = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
-  const [colapsado, setColapsado] = useState(false); // TODO
+  const [colapsado, ] = useState(false); // TODO setColapsado
   const [seleccionado, setSeleccionado] = useState('Inicio');
   const [productosAbierto, setProductosAbierto] = useState(false);
   const [empleadosAbierto, setEmpleadosAbierto] = useState(false);

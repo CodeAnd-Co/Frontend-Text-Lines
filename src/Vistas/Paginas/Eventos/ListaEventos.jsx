@@ -86,7 +86,7 @@ const ListaEventos = () => {
       size: 'large',
       backgroundColor: colores.altertex[1],
       onClick: () => console.log('Añadir'),
-      deshabilitado: true,
+      construccion: true,
     },
     {
       label: 'Eliminar',

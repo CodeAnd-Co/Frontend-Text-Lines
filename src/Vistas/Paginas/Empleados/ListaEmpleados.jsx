@@ -97,7 +97,7 @@ const ListaGrupoEmpleados = () => {
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
-      deshabilitado: true,
+      construccion: true,
     },
     {
       variant: 'outlined',
@@ -109,13 +109,13 @@ const ListaGrupoEmpleados = () => {
       disabled: !usuario?.permisos?.includes(PERMISOS.IMPORTAR_EMPLEADOS),
     },
     {
-      variant: 'outlined',
+      //variant: 'outlined',
       label: 'Exportar',
       onClick: () => console.log('Exportar'),
       color: 'primary',
       size: 'large',
-      outlineColor: colores.primario[10],
-      deshabilitado: true,
+      //outlineColor: colores.primario[10],
+      construccion: true,
     },
     {
       label: 'Eliminar',

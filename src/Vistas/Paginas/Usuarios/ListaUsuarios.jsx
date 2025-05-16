@@ -237,8 +237,7 @@ const ListaUsuarios = () => {
       variant: 'outlined',
       color: 'secondary',
       size: 'large',
-      onClick: () =>
-        navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION),
+      construccion: true,
     },
     {
       label: 'Cerrar sesión',

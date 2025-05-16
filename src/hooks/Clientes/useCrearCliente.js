@@ -82,9 +82,7 @@ const useCrearCliente = () => {
         // Si es un objeto con propiedad file (como en el componente InfoCliente)
         if (imagen.file instanceof File) {
           formData.append('imagen', imagen.file);
-        }
-        // Si es directamente un File
-        else if (imagen instanceof File) {
+        } else if (imagen instanceof File) {
           formData.append('imagen', imagen);
         }
       }

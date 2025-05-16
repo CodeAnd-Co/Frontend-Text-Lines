@@ -97,8 +97,8 @@ export const useAccionesEmpleado = (empleadoInicial = null) => {
       return typeof err === 'string' ? err : CAMPO_OBLIGATORIO;
     }
     if (
-      !esEdicion &&
-      [
+      !esEdicion
+      && [
         'idEmpleado',
         'idUsuario',
         'numeroEmergencia',

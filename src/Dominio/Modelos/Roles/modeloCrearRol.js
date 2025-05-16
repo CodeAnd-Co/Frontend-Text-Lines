@@ -19,11 +19,6 @@ export const validarDatosCrearRol = (datos) => {
     errores.nombreRol = 'El nombre del rol es obligatorio.';
   }
 
-  // Descripción opcional, puedes activarlo si quieres forzarlo:
-  // if (!descripcion) {
-  //   errores.descripcionRol = 'La descripción es obligatoria.';
-  // }
-
   if (!Array.isArray(permisos) || permisos.length === 0) {
     errores.permisosSeleccionados = 'Debes seleccionar al menos un permiso.';
   }

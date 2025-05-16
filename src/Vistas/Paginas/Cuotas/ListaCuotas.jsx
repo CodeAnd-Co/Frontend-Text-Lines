@@ -155,6 +155,7 @@ const ListaCuotas = () => {
             columns={columnas}
             rows={filas}
             loading={cargando}
+            disableRowSelectionOnClick={true}
             checkboxSelection
             onRowSelectionModelChange={(nuevosIds) => {
               const ids = Array.isArray(nuevosIds) ? nuevosIds : Array.from(nuevosIds?.ids || []);

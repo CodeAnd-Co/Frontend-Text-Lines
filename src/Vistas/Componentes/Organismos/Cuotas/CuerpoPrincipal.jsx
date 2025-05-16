@@ -5,7 +5,7 @@ import GrupoBotones from '@Moleculas/GrupoBotones';
 import PopUp from '@Moleculas/PopUp';
 import { useNavigate } from 'react-router-dom';
 import { tokens } from '@SRC/theme';
-import { useState } from 'react';
+import { useState } from 'react'; // <-- ahora sí se usa
 
 const CuerpoPrincipal = ({
   periodoRenovacion,
@@ -23,6 +23,7 @@ const CuerpoPrincipal = ({
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const navegar = useNavigate();
+  const [errorCuotas, setErrorCuotas] = useState(''); // <-- agrega esto
 
   const manejarCancelar = () => {
     setAbrirConfirmacion(true);
@@ -69,7 +70,7 @@ const CuerpoPrincipal = ({
       label: cargando ? 'Creando...' : 'Crear',
       variant: 'contained',
       onClick: manejarCrear,
-      disabled: cargando || cuotasInvalidas, // <-- aquí
+      disabled: cargando || cuotasInvalidas,
       color: 'error',
       backgroundColor: colores.altertex[1],
     },
@@ -98,6 +99,10 @@ const CuerpoPrincipal = ({
           manejarCambioCuota={manejarCambioCuota}
         />
       </Box>
+
+      {errorCuotas && (
+        <Box sx={{ color: 'red', marginLeft: 5, marginBottom: 2 }}>{errorCuotas}</Box>
+      )}
 
       <Box sx={{ display: 'flex', width: '95%', justifyContent: 'flex-end', margin: 5 }}>
         <GrupoBotones buttons={botonesEnviarCancelar} />

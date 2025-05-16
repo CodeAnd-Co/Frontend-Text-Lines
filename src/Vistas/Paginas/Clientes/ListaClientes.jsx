@@ -15,7 +15,7 @@ import { RUTAS } from '@Utilidades/Constantes/rutas';
 import { useClientes } from '@Hooks/Clientes/useClientes';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@SRC/Utilidades/Constantes/permisos';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ModalCrearCliente from '@Organismos/Clientes/ModalCrearCliente';
 
 import Swal from 'sweetalert2';

@@ -49,7 +49,7 @@ const TituloForm = memo(({ titulo, tituloVariant, size = 12 }) => (
   </Grid>
 ));
 
-const BotonForm = memo(({ selected, fullWidth, backgroundColor, outlineColor, label, onClick }) => {
+const BotonForm = memo(({ selected, fullWidth, outlineColor, label, onClick }) => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
 

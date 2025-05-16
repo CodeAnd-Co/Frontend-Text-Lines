@@ -41,27 +41,25 @@ const CampoTextoFormulario = memo(
   )
 );
 
-const BotonFormulario = memo(
-  ({ seleccionado, anchoCompleto, colorFondo, colorBorde, etiqueta, onClick }) => {
-    const theme = useTheme();
-    const colores = tokens(theme.palette.mode);
-    return (
-      <Grid size={6} display='flex' alignItems='center' justifyContent='end'>
-        <Boton
-          variant='contained'
-          selected={seleccionado}
-          fullWidth={anchoCompleto}
-          color='primary'
-          size='medium'
-          backgroundColor={colores.altertex[1]}
-          outlineColor={colorBorde}
-          label={etiqueta}
-          onClick={onClick}
-        />
-      </Grid>
-    );
-  }
-);
+const BotonFormulario = memo(({ seleccionado, anchoCompleto, colorBorde, etiqueta, onClick }) => {
+  const theme = useTheme();
+  const colores = tokens(theme.palette.mode);
+  return (
+    <Grid size={6} display='flex' alignItems='center' justifyContent='end'>
+      <Boton
+        variant='contained'
+        selected={seleccionado}
+        fullWidth={anchoCompleto}
+        color='primary'
+        size='medium'
+        backgroundColor={colores.altertex[1]}
+        outlineColor={colorBorde}
+        label={etiqueta}
+        onClick={onClick}
+      />
+    </Grid>
+  );
+});
 
 const CampoSelectFormulario = memo(
   ({ etiqueta, nombre, opciones, valor, onChange, placeholder, textoAyuda, error, tamano = 6 }) => (

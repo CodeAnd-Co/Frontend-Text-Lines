@@ -122,7 +122,7 @@ const CampoImagenProducto = memo(
             />
             <input
               type='file'
-              accept='image/*'
+              accept='.jpg,.jpeg,.png'
               ref={refInputArchivo}
               onChange={alAgregarImagenProducto}
               style={{ display: 'none' }}

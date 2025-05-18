@@ -14,6 +14,11 @@ const columns = [
 /**
  * @see [RF[46] Consulta lista de categorías](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF46)
  */
+
+const LIMITE_NOMBRE = 50;
+const LIMITE_DESCRIPCION = 150;
+const MENSAJE_LIMITE = 'Máximo caracteres';
+
 const FormaCrearCategorias = ({
   nombreCategoria,
   setNombreCategoria,
@@ -66,6 +71,8 @@ const FormaCrearCategorias = ({
         type={'text'}
         value={nombreCategoria}
         onChange={(evento) => setNombreCategoria(evento.target.value)}
+        inputProps={{ maxLength: LIMITE_NOMBRE }}
+        helperText={`${nombreCategoria.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`}
       />
 
       <ProductosModal
@@ -85,6 +92,8 @@ const FormaCrearCategorias = ({
         type={'text'}
         value={descripcionCategoria}
         onChange={(evento) => setDescripcionCategoria(evento.target.value)}
+        inputProps={{ maxLength: LIMITE_DESCRIPCION }}
+        helperText={`${descripcionCategoria.length}/${LIMITE_DESCRIPCION} - ${MENSAJE_LIMITE}`}
       />
 
       {mostrarAlerta && (

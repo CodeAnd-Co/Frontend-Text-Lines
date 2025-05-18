@@ -393,12 +393,11 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
           mensaje: 'No se recibió respuesta del servidor al guardar el producto.',
         });
       }
-    } catch (error) {
+    } catch {
       setAlerta({
         tipo: 'error',
         mensaje: 'Ocurrió un error inesperado al guardar el producto.',
       });
-      console.error('Error al guardar producto:', error);
     } finally {
       setCargando(false);
     }

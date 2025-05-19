@@ -6,7 +6,6 @@ import GrupoBotones from '@Moleculas/GrupoBotones';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { RUTAS } from '@Utilidades/Constantes/rutas';
-import { useAuth } from '@Hooks/AuthProvider';
 
 const NavegadorAdministrador = ({
   src,

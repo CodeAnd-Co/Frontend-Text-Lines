@@ -19,7 +19,6 @@ export const NumeroInput = ({
   const handleChange = (evento) => {
     const nuevoValor = evento.target.value;
 
-    // Permite vacío para borrar
     if (nuevoValor === '') {
       setHelper('');
       onChange(evento);

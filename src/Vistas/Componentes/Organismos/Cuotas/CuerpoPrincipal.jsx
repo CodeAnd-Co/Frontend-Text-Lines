@@ -5,7 +5,7 @@ import GrupoBotones from '@Moleculas/GrupoBotones';
 import PopUp from '@Moleculas/PopUp';
 import { useNavigate } from 'react-router-dom';
 import { tokens } from '@SRC/theme';
-import { useState } from 'react'; // <-- ahora sí se usa
+import { useState } from 'react';
 
 const CuerpoPrincipal = ({
   periodoRenovacion,
@@ -23,7 +23,7 @@ const CuerpoPrincipal = ({
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const navegar = useNavigate();
-  const [errorCuotas, setErrorCuotas] = useState(''); // <-- agrega esto
+  const [errorCuotas, setErrorCuotas] = useState('');
 
   const manejarCancelar = () => {
     setAbrirConfirmacion(true);

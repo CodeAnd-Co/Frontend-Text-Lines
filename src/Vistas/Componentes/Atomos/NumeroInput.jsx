@@ -12,15 +12,15 @@ export const NumeroInput = ({
   min = 1,
   ...rest
 }) => {
-  const theme = useTheme();
-  const colores = tokens(theme.palette.mode);
-  const [helper, setHelper] = useState('');
+  const tema = useTheme();
+  const colores = tokens(tema.palette.mode);
+  const [ayuda, setAyuda] = useState('');
 
-  const handleChange = (evento) => {
+  const manejarCambio = (evento) => {
     const nuevoValor = evento.target.value;
 
     if (nuevoValor === '') {
-      setHelper('');
+      setAyuda('');
       onChange(evento);
       return;
     }
@@ -29,10 +29,10 @@ export const NumeroInput = ({
     const esEnteroPositivo = /^[1-9]\d*$/.test(nuevoValor);
 
     if (esEnteroPositivo) {
-      setHelper('');
+      setAyuda('');
       onChange(evento);
     } else {
-      setHelper('Número inválido');
+      setAyuda('Número inválido');
     }
   };
 
@@ -41,7 +41,7 @@ export const NumeroInput = ({
       label={label}
       type='number'
       value={value}
-      onChange={handleChange}
+      onChange={manejarCambio}
       InputLabelProps={{ shrink: true }}
       variant='outlined'
       sx={{
@@ -73,11 +73,11 @@ export const NumeroInput = ({
         },
       }}
       inputProps={{
-        min, // <-- ahora sí se usa min
+        min,
         ...rest.inputProps,
       }}
-      helperText={helper}
-      error={!!helper}
+      helperText={ayuda}
+      error={!!ayuda}
       {...rest}
     />
   );

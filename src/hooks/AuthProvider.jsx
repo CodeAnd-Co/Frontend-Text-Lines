@@ -9,12 +9,24 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [usuario, setUsuario] = useState(null);
+  const [nombreUsuario, setNombreUsuario] = useState(() => {
+    // Obtener el nombre de usuario del localStorage
+    const nombreUsuarioGuardado = localStorage.getItem('nombreUsuario');
+    return nombreUsuarioGuardado ? JSON.parse(nombreUsuarioGuardado) : null;
+  });
   const [cargando, setCargando] = useState(true);
   const { toggleColorMode } = useMode();
 
   useEffect(() => {
     verificarSesion();
   }, []);
+
+  useEffect(() => {
+    // Guardar el nombre de usuario en el localStorage
+    if (nombreUsuario) {
+      localStorage.setItem('nombreUsuario', JSON.stringify(nombreUsuario));
+    }
+  }, [nombreUsuario]);
 
   const resetearTema = () => {
     // Obtener el tema actual del localStorage
@@ -29,6 +41,11 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('tema');
   };
 
+  const resetearLocalStorage = () => {
+    // Limpiar el localStorage
+    localStorage.clear();
+  };
+
   const cerrarSesion = async () => {
     try {
       await axios.post(
@@ -41,6 +58,8 @@ export const AuthProvider = ({ children }) => {
       );
       // Resetear el tema a modo claro
       resetearTema();
+      // Limpiar el localStorage y las cookies
+      resetearLocalStorage();
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     } finally {
@@ -63,15 +82,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        usuario,
-        setUsuario,
-        cargando,
-        cerrarSesion,
-        verificarSesion,
-      }}
-    >
+    <AuthContext.Provider value={{ 
+      usuario, 
+      setUsuario, 
+      nombreUsuario,
+      setNombreUsuario,
+      cargando, 
+      cerrarSesion, 
+      verificarSesion,
+    }}>
       {children}
     </AuthContext.Provider>
   );

@@ -26,7 +26,6 @@ const NavegadorAdministrador = ({
   informacionBotones = [],
 }) => {
   const theme = useTheme();
-  const { usuario } = useAuth();
 
   return (
     <Box
@@ -38,15 +37,8 @@ const NavegadorAdministrador = ({
       boxShadow={2}
       bgcolor={theme.palette.background.paper}
     >
-      {/* Inicio: Texto "hola" */}
-      <Box display="flex" alignItems="center">
-        <Texto variant='body1' color='text.primary'>
-          {usuario?.nombre}
-        </Texto>
-      </Box>
-
       {/* Centro: Imagen y título */}
-      <Box display="flex" alignItems="center" gap={2} sx={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
+      <Box display='flex' alignItems='center' gap={2}>
         <Imagen
           src={src}
           alt={alt}

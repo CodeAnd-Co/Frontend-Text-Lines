@@ -39,7 +39,7 @@ const ListaClientes = () => {
   const MySwal = withReactContent(Swal);
   const colores = tokens(tema.palette.mode);
   const navegar = useNavigate();
-  const { usuario, cerrarSesion } = useAuth();
+  const { usuario, nombreUsuario, cerrarSesion } = useAuth();
   const [abrirCrearCliente, setAbrirCliente] = useState(false);
 
   const {
@@ -158,7 +158,7 @@ const ListaClientes = () => {
         pb={6}
       >
         <Texto variant='h1' align='center' sx={estiloTitulo}>
-          Hola, {usuario?.nombre}
+          Hola, {nombreUsuario} 👋
         </Texto>
         <Texto variant='h4' align='center' color='text.secondary' sx={estiloSubtitulo}>
           Selecciona un cliente para gestionar su sistema o crea uno nuevo

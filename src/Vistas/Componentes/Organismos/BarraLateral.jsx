@@ -16,8 +16,10 @@ import Icono from '@Atomos/Icono';
 import TemaIcono from '@Moleculas/TemaIcono';
 import IconoMenu from '@Atomos/iconoMenu';
 import TextoMenu from '@Atomos/textoMenu';
+import { useAuth } from '@Hooks/AuthProvider';
 
 import { RUTAS } from '@Constantes/rutas';
+import { Div } from 'storybook/internal/components';
 
 const ElementoMenu = ({ titulo, ruta, icono, seleccionado, setSeleccionado }) => {
   const theme = useTheme();
@@ -41,6 +43,7 @@ const ElementoMenu = ({ titulo, ruta, icono, seleccionado, setSeleccionado }) =>
 
 const BarraLateral = () => {
   const theme = useTheme();
+  const { nombreUsuario } = useAuth();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
   const [colapsado, setColapsado] = useState(false);

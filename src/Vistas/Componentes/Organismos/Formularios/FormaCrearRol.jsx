@@ -15,8 +15,8 @@ const FormaCrearRol = ({
   descripcionRol,
   setDescripcionRol,
   setPermisosSeleccionados,
-  mostrarAlerta,
-  setMostrarAlerta,
+  erroresCampos = {},
+  setErroresCampos, 
 }) => {
   const [rows, setRows] = useState([]);
 
@@ -36,15 +36,21 @@ const FormaCrearRol = ({
         fullWidth
         type='text'
         value={nombreRol}
-        onChange={(evento) => setNombreRol(evento.target.value)}
+        onChange={(evento) => {
+          setNombreRol(evento.target.value);
+          setErroresCampos((prev) => ({ ...prev, nombreRol: undefined })); 
+        }}
+        error={Boolean(erroresCampos.nombreRol)}
+        helperText={erroresCampos.nombreRol}
       />
 
-      {/* TABLA PERMISOS */}
+      {/* TABLA DE PERMISOS */}
       <CustomDataGrid
         sx={{ width: '100%', height: '350px', marginTop: 2 }}
         columns={columns}
         rows={rows}
         pageSize={5}
+        disableRowSelectionOnClick={true}
         checkboxSelection
         onRowSelectionModelChange={(selectionModel) => {
           const ids = Array.isArray(selectionModel)
@@ -54,8 +60,20 @@ const FormaCrearRol = ({
           const seleccionados = rows.filter((permiso) => ids.includes(permiso.id));
 
           setPermisosSeleccionados(seleccionados);
+          setErroresCampos((prev) => ({ ...prev, permisosSeleccionados: undefined })); 
         }}
       />
+
+      {/* ALERTA DE PERMISOS (debajo de la tabla, arriba de descripción) */}
+      {erroresCampos.permisosSeleccionados && (
+        <Alerta
+          tipo="warning"
+          mensaje={erroresCampos.permisosSeleccionados}
+          cerrable
+          duracion={8000}
+          sx={{ my: 2, mb: 2}}
+        />
+      )}
 
       {/* CAMPO: DESCRIPCIÓN */}
       <CampoTexto
@@ -65,18 +83,6 @@ const FormaCrearRol = ({
         value={descripcionRol}
         onChange={(evento) => setDescripcionRol(evento.target.value)}
       />
-
-      {/* ALERTA */}
-      {mostrarAlerta && (
-        <Alerta
-          tipo='warning'
-          mensaje='Completa todos los campos y selecciona al menos un permiso.'
-          cerrable
-          duracion={10000}
-          onClose={() => setMostrarAlerta(false)}
-          sx={{ mb: 2, mt: 2 }}
-        />
-      )}
     </>
   );
 };

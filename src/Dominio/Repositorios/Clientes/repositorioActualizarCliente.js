@@ -16,8 +16,8 @@ export class RepositorioActualizarCliente {
         },
         withCredentials: true,
       });
-    } catch {
-      throw new Error('Error en el repositorio');
+    } catch (error) {
+      throw new Error(error.response.data.mensaje || 'Ocurrió un error al actualizar el cliente.');
     }
   }
 }

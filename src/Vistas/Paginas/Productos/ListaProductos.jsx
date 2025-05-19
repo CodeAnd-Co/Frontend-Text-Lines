@@ -210,6 +210,7 @@ const ListaProductos = () => {
             columns={columnas}
             rows={filas}
             loading={cargando}
+            disableRowSelectionOnClick={true}
             checkboxSelection
             rowHeight={80}
             onRowSelectionModelChange={(nuevosIds) => {

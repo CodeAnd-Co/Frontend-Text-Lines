@@ -161,6 +161,7 @@ const ListaSetsProductos = () => {
             columns={columns}
             rows={rows}
             loading={cargando}
+            disableRowSelectionOnClick={true}
             checkboxSelection
             onRowClick={(params) => {
               setSetSeleccionado(params.row.datosCompletos);

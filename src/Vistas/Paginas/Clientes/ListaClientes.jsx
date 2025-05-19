@@ -120,8 +120,7 @@ const ListaClientes = () => {
       variant: 'outlined',
       color: 'secondary',
       size: 'large',
-      onClick: () =>
-        navegar(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION),
+      construccion: true,
     },
     {
       label: 'Cerrar sesión',

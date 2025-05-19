@@ -6,21 +6,24 @@ import Alerta from '@Moleculas/Alerta';
 import ModalFlotante from '@Organismos/ModalFlotante';
 import { useCrearProveedor } from '@Hooks/Proveedores/useCrearProveedor';
 
-const CampoTextoForm = memo(({ label, name, value, onChange, placeholder, error, helperText }) => (
-  <Grid item size={6}>
-    <CampoTexto
-      label={label}
-      name={name}
-      value={value}
-      onChange={onChange}
-      size='medium'
-      required={true}
-      placeholder={placeholder}
-      helperText={helperText}
-      error={error}
-    />
-  </Grid>
-));
+const CampoTextoForm = memo(
+  ({ label, name, value, onChange, placeholder, error, helperText, inputProps }) => (
+    <Grid item size={6}>
+      <CampoTexto
+        label={label}
+        name={name}
+        value={value}
+        onChange={onChange}
+        size='medium'
+        required={true}
+        placeholder={placeholder}
+        helperText={helperText}
+        error={error}
+        inputProps={inputProps}
+      />
+    </Grid>
+  )
+);
 
 const FormularioProveedor = memo(({ formularioAbierto, alCerrarFormularioProveedor }) => {
   const [alerta, setAlerta] = useState(null);
@@ -100,7 +103,7 @@ const FormularioProveedor = memo(({ formularioAbierto, alCerrarFormularioProveed
       >
         <Grid container spacing={2}>
           <CampoTextoForm
-            label='Nombre del proveeodr'
+            label='Nombre del proveedor'
             name='nombre'
             value={proveedor.nombre}
             onChange={handleChange}
@@ -125,6 +128,9 @@ const FormularioProveedor = memo(({ formularioAbierto, alCerrarFormularioProveed
             placeholder='Ingresa el teléfono de contacto'
             error={errores?.telefonoContacto}
             helperText={errores?.telefonoContacto}
+            inputProps={{
+              maxLength: 10,
+            }}
           />
           <CampoTextoForm
             label='Correo de Contacto'

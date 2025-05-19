@@ -15,8 +15,8 @@ const MENSAJES = {
   CREANDO: 'Creando...',
   NOMBRE_COMERCIAL: 'Nombre comercial',
   NOMBRE_FISCAL: 'Nombre fiscal',
-  ERROR_VALIDACION: 'Ingresa el nombre fiscal y comercial.',
-  RESTRICCION_IMAGEN: 'Solo se permiten imágenes en formato JPG/JPEG/PNG, máximo 5MB.',
+  ERROR_VALIDACION: 'Ingresa el nombre fiscal, nombre comercial y la imagen.',
+  RESTRICCION_IMAGEN: 'Solo se permiten imágenes en formato JPG, máximo 5MB.',
   LIMITE_CARACTERES: 'Máximo 100 caracteres',
 };
 
@@ -88,7 +88,6 @@ const ModalCrearCliente = ({ abierto = false, onCerrar, onCreado }) => {
   const handleConfirmar = async () => {
     // Validar que los campos no estén vacíos
     if (!nombreComercial.trim() || !nombreFiscal.trim()) {
-      console.log('Faltan campos obligatorios');
       setMostrarAlerta(true);
       return;
     }

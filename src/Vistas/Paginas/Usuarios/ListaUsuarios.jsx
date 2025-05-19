@@ -41,7 +41,7 @@ const ListaUsuarios = () => {
   const navigate = useNavigate();
   const [alerta, setAlerta] = useState(null);
   const { usuarios, cargando, error, recargar } = useConsultarListaUsuarios();
-  const { roles, cargando: cargandoRoles, error: errorRoles } = useConsultarRoles();
+  const { roles} = useConsultarRoles();
   const { usuario: usuarioAutenticado } = useAuth();
   const [modalCrearUsuarioAbierto, setModalCrearUsuarioAbierto] = useState(false);
   const [idUsuarioSeleccionado, setIdUsuarioSeleccionado] = useState(null);
@@ -352,9 +352,6 @@ const ListaUsuarios = () => {
               <p>Cargando usuario...</p>
             ) : usuario ? (
               <>
-              {console.log('👤 Valor de usuario.rol:', usuario.rol)}
-              {console.log('🎯 OpcionesRol disponibles:', opcionesRol.map((o) => o.value))}
-
               <InfoUsuario
                 modoEdicion={false}
                 cliente={

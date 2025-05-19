@@ -20,8 +20,8 @@ const CuerpoPrincipal = ({
   abrirConfirmacion,
   setAbrirConfirmacion,
 }) => {
-  const theme = useTheme();
-  const colores = tokens(theme.palette.mode);
+  const tema = useTheme();
+  const colores = tokens(tema.palette.mode);
   const navegar = useNavigate();
   const [errorCuotas, setErrorCuotas] = useState('');
 

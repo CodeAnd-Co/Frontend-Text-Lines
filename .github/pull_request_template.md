@@ -42,3 +42,5 @@ Describe resumidamente cómo lo probaste y funciona. Ejemplo:
 - [ ] Este PR realiza un cambio mínimo que no afecta la lógica del sistema
 - [ ] Se validó visualmente el componente afectado
 - [ ] No se realizaron pruebas unitarias porque no aplica
+
+---

@@ -1,6 +1,3 @@
-//RF02 Super Administrador Consulta Lista de Usuarios - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF2
-//RF05 Super Administrador Consulta Lista de Usuarios - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF5
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FormularioCrearUsuario from '@Organismos/Formularios/FormularioCrearUsuario';
@@ -11,6 +8,7 @@ import Tabla from '@Organismos/Tabla';
 import Chip from '@Atomos/Chip';
 import { useConsultarListaUsuarios } from '@Hooks/Usuarios/useConsultarListaUsuarios';
 import { useEliminarUsuarios } from '@Hooks/Usuarios/useEliminarUsuarios';
+import { useConsultarRoles  } from '@Hooks/Roles/useConsultarRoles';
 import { RUTAS } from '@Constantes/rutas';
 import { tokens } from '@SRC/theme';
 import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
@@ -43,6 +41,7 @@ const ListaUsuarios = () => {
   const navigate = useNavigate();
   const [alerta, setAlerta] = useState(null);
   const { usuarios, cargando, error, recargar } = useConsultarListaUsuarios();
+  const { roles} = useConsultarRoles();
   const { usuario: usuarioAutenticado } = useAuth();
   const [modalCrearUsuarioAbierto, setModalCrearUsuarioAbierto] = useState(false);
   const [idUsuarioSeleccionado, setIdUsuarioSeleccionado] = useState(null);
@@ -52,6 +51,16 @@ const ListaUsuarios = () => {
     cargando: cargandoDetalle,
     error: errorDetalle,
   } = useUsuarioId(modalDetalleAbierto ? idUsuarioSeleccionado : null);
+
+  const opcionesRol = roles.map((rol) => ({
+    value: rol.idRol, 
+    label: rol.nombre,
+  }));
+
+  const obtenerIdRolPorNombre = (nombreRol) => {
+    const rolEncontrado = roles.find((rol) => rol.nombre === nombreRol);
+    return rolEncontrado ? rolEncontrado.idRol : '';
+  };
 
   const redirigirAInicio = () => {
     navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE, { replace: true });
@@ -329,7 +338,7 @@ const ListaUsuarios = () => {
                 color: 'primary',
                 backgroundColor: colores.altertex[1],
                 onClick: () => console.log('Editar usuario'),
-                disabled: true, //disabled: !!errorDetalle,
+                disabled: true, 
               },
               {
                 label: 'SALIR',
@@ -343,6 +352,7 @@ const ListaUsuarios = () => {
             {cargandoDetalle ? (
               <p>Cargando usuario...</p>
             ) : usuario ? (
+              <>
               <InfoUsuario
                 modoEdicion={false}
                 cliente={
@@ -353,7 +363,7 @@ const ListaUsuarios = () => {
                         .join(', ')
                     : 'Sin cliente asignado'
                 }
-                rol={usuario.rol}
+                rol={obtenerIdRolPorNombre(usuario.rol)}
                 datosContacto={{
                   email: usuario.correoElectronico,
                   telefono: usuario.numeroTelefono,
@@ -369,12 +379,9 @@ const ListaUsuarios = () => {
                   shape: 'circular',
                   backgroundColor: 'rgba(24, 50, 165, 1)',
                 }}
-                opcionesRol={[
-                  { value: 'Super Administrador', label: 'Administrador' },
-                  { value: 'Supervisor', label: 'Supervisor' },
-                  { value: 'Empleado', label: 'Usuario' },
-                ]}
+                opcionesRol={opcionesRol}
               />
+              </>
             ) : (
               <p>No se encontró información del usuario.</p>
             )}

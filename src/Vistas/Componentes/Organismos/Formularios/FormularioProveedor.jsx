@@ -87,7 +87,7 @@ const FormularioProveedor = memo(({ formularioAbierto, alCerrarFormularioProveed
       titulo='Datos del Proveedor'
       onConfirm={manejarGuardarProveedor}
       confirmLabel='Guardar'
-      cancelLabel='Atras'
+      cancelLabel='Atrás'
     >
       <Box
         component='form'

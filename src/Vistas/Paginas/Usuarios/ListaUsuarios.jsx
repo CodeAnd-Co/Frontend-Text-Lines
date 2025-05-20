@@ -226,7 +226,7 @@ const ListaUsuarios = () => {
 
   const botonesBarraAdministradora = [
     {
-      label: 'Atras',
+      label: 'Atrás',
       variant: 'outlined',
       color: 'secondary',
       size: 'large',

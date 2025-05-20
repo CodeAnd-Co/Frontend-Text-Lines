@@ -31,7 +31,7 @@ const ListaRoles = () => {
 
   const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
   const [alerta, setAlerta] = useState(null);
-  const { eliminar, mensaje } = useEliminarRol();
+  const { eliminar } = useEliminarRol();
   const [seleccionados, setSeleccionados] = useState([]);
   const [abrirPopupEliminar, setAbrirPopupEliminar] = useState(false);
   const manejarCancelarElimnar = () => {

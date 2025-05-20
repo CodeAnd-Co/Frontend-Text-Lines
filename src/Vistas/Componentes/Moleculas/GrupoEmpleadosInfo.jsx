@@ -38,11 +38,10 @@ const InfoGrupoEmpleados = ({ descripcion, setsProductos, empleados, setsDisponi
     ? setsProductos.map((set) =>
         typeof set === 'string'
           ? { nombre: set }
-          : set
-      )
+          : set)
     : [];
 
-  const ChipClick = (set) => {
+  const chipClick = (set) => {
     const nombreSet = set.nombre || set;
 
     if (setSeleccionado?.nombre === nombreSet && modalDetalleAbierto) {
@@ -52,7 +51,7 @@ const InfoGrupoEmpleados = ({ descripcion, setsProductos, empleados, setsDisponi
     }
 
     const setCompleto = setsDisponiblesFinal.find(
-      s => s.nombre === nombreSet
+      sets => sets.nombre === nombreSet
     );
     setSetSeleccionado(setCompleto || set);
     setModalDetalleAbierto(true);
@@ -103,7 +102,7 @@ const InfoGrupoEmpleados = ({ descripcion, setsProductos, empleados, setsDisponi
                           backgroundColor: colores.primario[3],
                         },
                       }}
-                      onClick={() => ChipClick(set)}
+                      onClick={() => chipClick(set)}
                     />
                   );
                 })

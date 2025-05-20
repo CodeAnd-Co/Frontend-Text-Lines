@@ -31,7 +31,7 @@ const ListaRoles = () => {
 
   const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
   const [alerta, setAlerta] = useState(null);
-  const { eliminar } = useEliminarRol();
+  const { eliminar, mensaje } = useEliminarRol();
   const [seleccionados, setSeleccionados] = useState([]);
   const [abrirPopupEliminar, setAbrirPopupEliminar] = useState(false);
   const manejarCancelarElimnar = () => {
@@ -117,7 +117,7 @@ const ListaRoles = () => {
       console.error('Error al eliminar roles:', error);
       setAlerta({
         tipo: 'error',
-        mensaje: 'Ocurrió un error al eliminar los roles. Puedes intentarlo de nuevo.',
+         mensaje: error.message || 'Ocurrió un error al eliminar los roles. Puedes intentarlo de nuevo.',
         icono: true,
         cerrable: true,
         centradoInferior: true,

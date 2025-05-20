@@ -155,7 +155,7 @@ const ListaUsuarios = () => {
       },
     },
     { field: 'correo', headerName: 'Correo electrónico', flex: 1 },
-    { field: 'telefono', headerName: 'Telefono', flex: 1 },
+    { field: 'telefono', headerName: 'Teléfono', flex: 1 },
   ];
 
   const rows = Object.values(
@@ -226,7 +226,7 @@ const ListaUsuarios = () => {
 
   const botonesBarraAdministradora = [
     {
-      label: 'Atras',
+      label: 'Atrás',
       variant: 'outlined',
       color: 'secondary',
       size: 'large',

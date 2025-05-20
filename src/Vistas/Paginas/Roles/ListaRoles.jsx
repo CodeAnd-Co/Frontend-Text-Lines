@@ -210,32 +210,32 @@ const ListaRoles = () => {
     },
   ];
   const botonesBarraAdministradora = [
-      {
-        label: 'Atras',
-        variant: 'outlined',
-        color: 'secondary',
-        size: 'large',
-        onClick: redirigirAUsuarios,
-      },
-      {
-        label: 'Configuración',
-        variant: 'outlined',
-        color: 'secondary',
-        size: 'large',
-        construccion: true,
-      },
-      {
-        label: 'Cerrar sesión',
-        variant: 'contained',
-        color: 'error',
-        size: 'large',
-        onClick: manejarCerrarSesion,
-      },
-    ];
+    {
+      label: 'Atrás',
+      variant: 'outlined',
+      color: 'secondary',
+      size: 'large',
+      onClick: redirigirAUsuarios,
+    },
+    {
+      label: 'Configuración',
+      variant: 'outlined',
+      color: 'secondary',
+      size: 'large',
+      construccion: true,
+    },
+    {
+      label: 'Cerrar sesión',
+      variant: 'contained',
+      color: 'error',
+      size: 'large',
+      onClick: manejarCerrarSesion,
+    },
+  ];
   const { cerrarSesion } = useAuth();
   const redirigirATienda = () => {
-      navigate(RUTAS.SISTEMA_TIENDA.BASE, { replace: true });
-    };
+    navigate(RUTAS.SISTEMA_TIENDA.BASE, { replace: true });
+  };
 
   return (
     <>
@@ -251,12 +251,13 @@ const ListaRoles = () => {
         informacionBotones={botonesBarraAdministradora}
       />
       <ContenedorLista
-         titulo={<span style={{ textAlign: 'center', display: 'block' }}>Lista Roles</span>}
-          descripcion={
-            <span style={{ textAlign: 'center', display: 'block' }}>
-              Gestiona y organiza los roles registrados en el sistema.
-            </span>}
-          informacionBotones={botones}
+        titulo={<span style={{ textAlign: 'center', display: 'block' }}>Lista Roles</span>}
+        descripcion={
+          <span style={{ textAlign: 'center', display: 'block' }}>
+            Gestiona y organiza los roles registrados en el sistema.
+          </span>
+        }
+        informacionBotones={botones}
       >
         <Box sx={{ mt: '20px' }}>
           {error && (

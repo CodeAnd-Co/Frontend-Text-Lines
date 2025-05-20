@@ -277,6 +277,7 @@ const ListaUsuarios = () => {
             cerrable
             duracion={4000}
             onClose={() => setAlerta(null)}
+            centradoInferior
           />
         )}
         {modalCrearUsuarioAbierto && (

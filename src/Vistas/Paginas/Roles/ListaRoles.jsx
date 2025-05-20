@@ -68,7 +68,7 @@ const ListaRoles = () => {
         icono: true,
         cerrable: true,
         centradoInferior: true,
-        duracion: 3500,
+        //duracion: 3500,
       });
     }
 
@@ -91,7 +91,7 @@ const ListaRoles = () => {
         setAlerta({
           tipo: 'success',
           mensaje:
-            'Roles eliminados correctamente, excepto el rol de superusuario que está protegido.',
+            'Roles eliminados correctamente, excepto el rol protegido que está protegido.',
           icono: true,
           cerrable: true,
           centradoInferior: true,
@@ -201,7 +201,7 @@ const ListaRoles = () => {
               icono: true,
               cerrable: true,
               centradoInferior: true,
-              duracion: 3000,
+              duracion: 2500,
             });
           }
         }
@@ -306,7 +306,7 @@ const ListaRoles = () => {
           mensaje={alerta.mensaje}
           icono={alerta.icono}
           cerrable={alerta.cerrable}
-          duracion={alerta.duracion || 2500}
+          duracion={alerta.duracion}
           centradoInferior={alerta.centradoInferior}
           onClose={() => setAlerta(null)}
         />

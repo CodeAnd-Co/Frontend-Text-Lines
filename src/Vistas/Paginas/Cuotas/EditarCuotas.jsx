@@ -14,14 +14,12 @@ const EditarCuotas = () => {
   const navegar = useNavigate();
   const { usuario } = useAuth();
 
-  // Use useEffect to handle client selection check
   useEffect(() => {
     if (!usuario?.clienteSeleccionado) {
       navegar(RUTAS.SISTEMA_ADMINISTRATIVO.BASE);
     }
   }, [usuario, navegar]);
 
-  // Check if location state exists before destructuring
   const { nombreCuotaSet, descripcion, productos } = ubicacion.state || {};
 
   const [periodoRenovacion, setPeriodoRenovacion] = useState(6);
@@ -44,9 +42,8 @@ const EditarCuotas = () => {
     redirectPath: '/admin/tablero/cuotas',
   });
 
-  // Return early to avoid rendering the rest of the component when redirecting
   if (!usuario?.clienteSeleccionado || !productos) {
-    return null; // Or a loading indicator if preferred
+    return null;
   }
 
   return (
@@ -74,6 +71,7 @@ const EditarCuotas = () => {
         enviarCuota={enviarCuota}
         cargando={cargando}
         setCuotas={setCuotas}
+        cuotas={cuotas}
         productos={productos}
       />
     </>

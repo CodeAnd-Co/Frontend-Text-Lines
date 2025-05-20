@@ -28,6 +28,7 @@ export function useEliminarRol() {
     } catch (err) {
       setMensaje('');
       setError(err.message);
+      throw err;
     } finally {
       setCargando(false);
     }

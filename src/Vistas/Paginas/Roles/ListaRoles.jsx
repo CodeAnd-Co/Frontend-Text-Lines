@@ -18,6 +18,8 @@ import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
 const estiloImagenLogo = { marginRight: '1rem' };
 // ID del superusuario que no debe ser eliminado
 const SUPERUSER_ID = 1;
+const SUPERVISOR_ID = 2;
+const EMPLEADO_ID = 3;
 
 const ListaRoles = () => {
   const { roles, cargando, error, recargar } = useConsultarRoles();
@@ -55,17 +57,18 @@ const ListaRoles = () => {
   };
 
   const verificarSeleccion = (seleccion) => {
-    const seleccionSinSuperuser = seleccion.filter((id) => Number(id) !== SUPERUSER_ID);
+      const IDS_PROTEGIDOS = [SUPERUSER_ID, SUPERVISOR_ID, EMPLEADO_ID];
+    const seleccionSinSuperuser = seleccion.filter((id) => !IDS_PROTEGIDOS.includes(Number(id)));
 
     if (seleccion.length !== seleccionSinSuperuser.length) {
       setAlerta({
         tipo: 'warning',
         mensaje:
-          'El rol de superusuario no puede ser eliminado. Se procederá con los demás roles seleccionados.',
+          'No se pueden eliminar los roles protegidos (Super Usuario, Supervisor, Empleado). Se procederá con los demás roles seleccionados.',
         icono: true,
         cerrable: true,
         centradoInferior: true,
-        duracion: 3500,
+        //duracion: 3500,
       });
     }
 
@@ -88,7 +91,7 @@ const ListaRoles = () => {
         setAlerta({
           tipo: 'success',
           mensaje:
-            'Roles eliminados correctamente, excepto el rol de superusuario que está protegido.',
+            'Roles eliminados correctamente, excepto el rol protegido que está protegido.',
           icono: true,
           cerrable: true,
           centradoInferior: true,
@@ -114,7 +117,7 @@ const ListaRoles = () => {
       console.error('Error al eliminar roles:', error);
       setAlerta({
         tipo: 'error',
-        mensaje: 'Ocurrió un error al eliminar los roles. Puedes intentarlo de nuevo.',
+         mensaje: error.message || 'Ocurrió un error al eliminar los roles. Puedes intentarlo de nuevo.',
         icono: true,
         cerrable: true,
         centradoInferior: true,
@@ -183,21 +186,22 @@ const ListaRoles = () => {
           });
         } else {
           const seleccionFiltrada = verificarSeleccion(seleccionados);
+          const IDS_PROTEGIDOS = [SUPERUSER_ID, SUPERVISOR_ID, EMPLEADO_ID];
 
           if (seleccionFiltrada.length > 0) {
             setAbrirPopupEliminar(true);
           } else if (
-            (seleccionFiltrada.length === 0 && seleccionados.includes(String(SUPERUSER_ID)))
-            || (seleccionFiltrada.length === 0 && seleccionados.includes(SUPERUSER_ID))
+            seleccionFiltrada.length === 0 
+              && seleccionados.some(id => IDS_PROTEGIDOS.includes(Number(id)))
           ) {
             setAlerta({
               tipo: 'warning',
               mensaje:
-                'No se puede eliminar el rol de super administrador. Por favor, selecciona otros roles.',
+                'No se pueden eliminar los roles protegidos (super admin, supervisor, empleado).',
               icono: true,
               cerrable: true,
               centradoInferior: true,
-              duracion: 3000,
+              duracion: 2500,
             });
           }
         }
@@ -206,32 +210,32 @@ const ListaRoles = () => {
     },
   ];
   const botonesBarraAdministradora = [
-      {
-        label: 'Atras',
-        variant: 'outlined',
-        color: 'secondary',
-        size: 'large',
-        onClick: redirigirAUsuarios,
-      },
-      {
-        label: 'Configuración',
-        variant: 'outlined',
-        color: 'secondary',
-        size: 'large',
-        construccion: true,
-      },
-      {
-        label: 'Cerrar sesión',
-        variant: 'contained',
-        color: 'error',
-        size: 'large',
-        onClick: manejarCerrarSesion,
-      },
-    ];
+    {
+      label: 'Atrás',
+      variant: 'outlined',
+      color: 'secondary',
+      size: 'large',
+      onClick: redirigirAUsuarios,
+    },
+    {
+      label: 'Configuración',
+      variant: 'outlined',
+      color: 'secondary',
+      size: 'large',
+      construccion: true,
+    },
+    {
+      label: 'Cerrar sesión',
+      variant: 'contained',
+      color: 'error',
+      size: 'large',
+      onClick: manejarCerrarSesion,
+    },
+  ];
   const { cerrarSesion } = useAuth();
   const redirigirATienda = () => {
-      navigate(RUTAS.SISTEMA_TIENDA.BASE, { replace: true });
-    };
+    navigate(RUTAS.SISTEMA_TIENDA.BASE, { replace: true });
+  };
 
   return (
     <>
@@ -247,12 +251,13 @@ const ListaRoles = () => {
         informacionBotones={botonesBarraAdministradora}
       />
       <ContenedorLista
-         titulo={<span style={{ textAlign: 'center', display: 'block' }}>Lista Roles</span>}
-          descripcion={
-            <span style={{ textAlign: 'center', display: 'block' }}>
-              Gestiona y organiza los roles registrados en el sistema.
-            </span>}
-          informacionBotones={botones}
+        titulo={<span style={{ textAlign: 'center', display: 'block' }}>Lista Roles</span>}
+        descripcion={
+          <span style={{ textAlign: 'center', display: 'block' }}>
+            Gestiona y organiza los roles registrados en el sistema.
+          </span>
+        }
+        informacionBotones={botones}
       >
         <Box sx={{ mt: '20px' }}>
           {error && (
@@ -302,7 +307,7 @@ const ListaRoles = () => {
           mensaje={alerta.mensaje}
           icono={alerta.icono}
           cerrable={alerta.cerrable}
-          duracion={alerta.duracion || 2500}
+          duracion={alerta.duracion}
           centradoInferior={alerta.centradoInferior}
           onClose={() => setAlerta(null)}
         />

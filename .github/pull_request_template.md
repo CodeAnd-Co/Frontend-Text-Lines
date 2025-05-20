@@ -37,7 +37,7 @@ Si creaste algo más, ponlo aquí:
 - [ ] Se utilizó lint para errores
 - [ ] Pasaron las pruebas unitarias (si aplica)
 - [ ] Se probó la funcionalidad y no mostró errores
-- [ ] Visualemente cumple con estándares definidos en el Figma
+- [ ] Visualmente cumple con estándares definidos en el Figma
 
 ---
 

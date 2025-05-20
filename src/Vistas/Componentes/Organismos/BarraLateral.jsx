@@ -148,9 +148,9 @@ const BarraLateral = () => {
               <ElementoMenu
                 titulo='Lista de Empleados'
                 ruta={
-                  RUTAS.SISTEMA_ADMINISTRATIVO.BASE +
-                  RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO +
-                  RUTAS.SISTEMA_ADMINISTRATIVO.EMPLEADOS.CONSULTAR_EMPLEADOS
+                  RUTAS.SISTEMA_ADMINISTRATIVO.BASE
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.EMPLEADOS.CONSULTAR_EMPLEADOS
                 }
                 seleccionado={seleccionado}
                 setSeleccionado={setSeleccionado}
@@ -158,9 +158,9 @@ const BarraLateral = () => {
               <ElementoMenu
                 titulo='Grupos de Empleados'
                 ruta={
-                  RUTAS.SISTEMA_ADMINISTRATIVO.BASE +
-                  RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO +
-                  RUTAS.SISTEMA_ADMINISTRATIVO.EMPLEADOS.CONSULTAR_GRUPOS
+                  RUTAS.SISTEMA_ADMINISTRATIVO.BASE
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.EMPLEADOS.CONSULTAR_GRUPOS
                 }
                 seleccionado={seleccionado}
                 setSeleccionado={setSeleccionado}
@@ -175,9 +175,9 @@ const BarraLateral = () => {
               <ElementoMenu
                 titulo='Lista de Productos'
                 ruta={
-                  RUTAS.SISTEMA_ADMINISTRATIVO.BASE +
-                  RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO +
-                  RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_PRODUCTOS
+                  RUTAS.SISTEMA_ADMINISTRATIVO.BASE
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_PRODUCTOS
                 }
                 seleccionado={seleccionado}
                 setSeleccionado={setSeleccionado}
@@ -185,9 +185,9 @@ const BarraLateral = () => {
               <ElementoMenu
                 titulo='Sets de Productos'
                 ruta={
-                  RUTAS.SISTEMA_ADMINISTRATIVO.BASE +
-                  RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO +
-                  RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_SETS_PRODUCTOS
+                  RUTAS.SISTEMA_ADMINISTRATIVO.BASE
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_SETS_PRODUCTOS
                 }
                 seleccionado={seleccionado}
                 setSeleccionado={setSeleccionado}
@@ -195,9 +195,9 @@ const BarraLateral = () => {
               <ElementoMenu
                 titulo='Categorías'
                 ruta={
-                  RUTAS.SISTEMA_ADMINISTRATIVO.BASE +
-                  RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO +
-                  RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_CATEGORIAS
+                  RUTAS.SISTEMA_ADMINISTRATIVO.BASE
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO
+                  + RUTAS.SISTEMA_ADMINISTRATIVO.PRODUCTOS.CONSULTAR_CATEGORIAS
                 }
                 seleccionado={seleccionado}
                 setSeleccionado={setSeleccionado}
@@ -213,9 +213,9 @@ const BarraLateral = () => {
             <ElementoMenu
               titulo='Cuotas'
               ruta={
-                RUTAS.SISTEMA_ADMINISTRATIVO.BASE +
-                RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO +
-                RUTAS.SISTEMA_ADMINISTRATIVO.CUOTAS.BASE
+                RUTAS.SISTEMA_ADMINISTRATIVO.BASE
+                + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO
+                + RUTAS.SISTEMA_ADMINISTRATIVO.CUOTAS.BASE
               }
               icono={<CurrencyExchangeOutlinedIcon />}
               seleccionado={seleccionado}
@@ -224,9 +224,9 @@ const BarraLateral = () => {
             <ElementoMenu
               titulo='Eventos'
               ruta={
-                RUTAS.SISTEMA_ADMINISTRATIVO.BASE +
-                RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO +
-                RUTAS.SISTEMA_ADMINISTRATIVO.EVENTOS.CONSULTAR_EVENTOS
+                RUTAS.SISTEMA_ADMINISTRATIVO.BASE
+                + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO
+                + RUTAS.SISTEMA_ADMINISTRATIVO.EVENTOS.CONSULTAR_EVENTOS
               }
               icono={<EditCalendarOutlinedIcon />}
               seleccionado={seleccionado}
@@ -235,9 +235,9 @@ const BarraLateral = () => {
             <ElementoMenu
               titulo='Configuración'
               ruta={
-                RUTAS.SISTEMA_ADMINISTRATIVO.BASE +
-                RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO +
-                RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION
+                RUTAS.SISTEMA_ADMINISTRATIVO.BASE
+                + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO
+                + RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION
               }
               icono={<SettingsOutlinedIcon />}
               seleccionado={seleccionado}

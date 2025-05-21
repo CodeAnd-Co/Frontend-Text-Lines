@@ -7,8 +7,7 @@ import Texto from '@Atomos/Texto';
 /**
  * Componente para mostrar información de un set de productos
  */
-const InfoSetProductos = ({ nombre, descripcion, productos, grupos }) => {
-  // Normaliza a arreglo si vienen como string
+const InfoSetProductos = ({ nombre, descripcion, productos, grupos, mostrarGrupos = true}) => {
   const productosList
     = typeof productos === 'string'
       ? productos.split(',').map((prod) => prod.trim())
@@ -44,19 +43,21 @@ const InfoSetProductos = ({ nombre, descripcion, productos, grupos }) => {
         ))}
       </Box>
 
-      <Box sx={{ mb: 6 }}>
-        <Texto variant='h6' gutterBottom sx={{ mb: 2 }}>
-          <strong>Grupos de empleados asignados</strong>
-        </Texto>
-        {gruposList.map((grupo, idx) => (
-          <Box key={idx}>
-            <Texto variant='body2' sx={{ py: 1 }}>
-              {grupo}
-            </Texto>
-            <Divider />
-          </Box>
-        ))}
-      </Box>
+      {mostrarGrupos && (
+        <Box sx={{ mb: 6 }}>
+          <Texto variant='h6' gutterBottom sx={{ mb: 2 }}>
+            <strong>Grupos de empleados asignados</strong>
+          </Texto>
+          {gruposList.map((grupo, idx) => (
+            <Box key={idx}>
+              <Texto variant='body2' sx={{py: 1 }}>
+                {grupo}
+              </Texto>
+              <Divider />
+            </Box>
+          ))}
+        </Box>
+      )}
     </Box>
   );
 };
@@ -66,6 +67,7 @@ InfoSetProductos.propTypes = {
   descripcion: PropTypes.string,
   productos: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.string]),
   grupos: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.string]),
+  mostrarGrupos: PropTypes.bool,
 };
 
 InfoSetProductos.defaultProps = {
@@ -76,3 +78,4 @@ InfoSetProductos.defaultProps = {
 };
 
 export default InfoSetProductos;
+

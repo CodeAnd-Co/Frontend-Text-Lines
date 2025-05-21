@@ -146,7 +146,7 @@ const Tabla = ({
       }}
       paginationModel={paginationModel}
       onPaginationModelChange={setPaginationModel}
-      pageSizeOptions={[5]}
+      pageSizeOptions={[5, 10]}
       pagination
       localeText={spanishLocaleText}
       rowHeight={70}

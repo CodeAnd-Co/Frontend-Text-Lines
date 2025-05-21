@@ -34,15 +34,14 @@ const NavegadorAdministrador = ({
     <Box
       component='nav'
       display='flex'
-      flexDirection={{ xs: 'column', sm: 'row' }}
       alignItems='center'
       justifyContent='space-between'
       padding='0.5rem 1rem'
       boxShadow={2}
       bgcolor={theme.palette.background.paper}
-      gap={{ xs: 1, sm: 0 }}
     >
-      <Box display='flex' alignItems='center' gap={2} width={{ xs: '100%', sm: 'auto' }}>
+      {/* Centro: Imagen y título */}
+      <Box display='flex' alignItems='center' gap={2}>
         <Imagen
           src={src}
           alt={alt}
@@ -60,15 +59,8 @@ const NavegadorAdministrador = ({
         )}
       </Box>
 
-      <Box flexGrow={1} minWidth={{ xs: '100%', sm: 'auto' }} />
-
-      <Box
-        display='flex'
-        flexDirection={{ xs: 'column', sm: 'row' }}
-        alignItems='center'
-        gap={2}
-        mt={{ xs: 1, sm: 0 }}
-      >
+      {/* Derecha: Icono y botones */}
+      <Box display='flex' alignItems='center' gap={2}>
         <Icono
           nombre={nombreIcono}
           variant={varianteIcono}

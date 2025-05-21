@@ -85,15 +85,7 @@ const ListaClientes = () => {
       },
       timer: 3000, // Muestra esta alerta por 3 segundos
       timerProgressBar: true,
-    })
-      .then(() => {
-        return MySwal.fire({
-          title: <p>¡Adiós!</p>,
-          timer: 2000, // Muestra esta alerta por 2 segundos
-          timerProgressBar: true,
-        });
-      })
-      .then(() => {
+    }).then(() => {
         cerrarSesion();
       });
   };

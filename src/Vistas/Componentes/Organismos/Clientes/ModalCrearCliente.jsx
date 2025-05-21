@@ -116,6 +116,7 @@ const ModalCrearCliente = ({ abierto = false, onCerrar, onCreado }) => {
   };
 
   return (
+    <>
     <ModalFlotante
       open={abierto}
       onClose={handleCerrar}
@@ -168,42 +169,41 @@ const ModalCrearCliente = ({ abierto = false, onCerrar, onCreado }) => {
         >
           {MENSAJES.RESTRICCION_IMAGEN}
         </Texto>
-
-        {imagenError && (
-          <Alerta
-            tipo='error'
-            mensaje={imagenError}
-            cerrable
-            duracion={6000}
-            onClose={() => setImagenError(null)}
-            sx={{ mb: 2, mt: 0 }}
-          />
-        )}
-
-        {(exito || error) && (
-          <Alerta
-            tipo={exito ? 'success' : 'error'}
-            mensaje={mensaje}
-            duracion={exito ? 4000 : 6000}
-            sx={{ margin: 3 }}
-            cerrable
-            onClose={error ? () => setError(false) : undefined}
-            centrada
-          />
-        )}
-
-        {mostrarAlerta && (
-          <Alerta
-            tipo='warning'
-            mensaje={MENSAJES.ERROR_VALIDACION}
-            cerrable
-            duracion={10000}
-            onClose={() => setMostrarAlerta(false)}
-            sx={{ mb: 2, mt: 2 }}
-          />
-        )}
       </>
     </ModalFlotante>
+  {imagenError && (
+    <Alerta
+      tipo='error'
+      mensaje={imagenError}
+      cerrable
+      duracion={6000}
+      onClose={() => setImagenError(null)}
+      centradoInferior
+    />
+  )}
+
+  {(exito || error) && (
+    <Alerta
+      tipo={exito ? 'success' : 'error'}
+      mensaje={mensaje}
+      duracion={exito ? 4000 : 6000}
+      cerrable
+      onClose={error ? () => setError(false) : undefined}
+      centradoInferior
+    />
+  )}
+
+  {mostrarAlerta && (
+    <Alerta
+      tipo='warning'
+      mensaje={MENSAJES.ERROR_VALIDACION}
+      cerrable
+      duracion={10000}
+      onClose={() => setMostrarAlerta(false)}
+      centradoInferior
+    />
+  )}
+    </>
   );
 };
 

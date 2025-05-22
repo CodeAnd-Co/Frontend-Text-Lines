@@ -266,6 +266,7 @@ const {
       label: 'Atrás',
       variant: 'outlined',
       color: 'secondary',
+      outlineColor: colores.altertex[1],
       size: 'large',
       onClick: redirigirAInicio,
     },

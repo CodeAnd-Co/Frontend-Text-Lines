@@ -218,7 +218,7 @@ const ListaSetsProductos = () => {
               label: 'SALIR',
               variant: 'outlined',
               color: 'primary',
-              outlineColor: colores.primario[10],
+              outlineColor: colores.primario[1],
               onClick: () => setModalDetalleAbierto(false),
             },
           ]}

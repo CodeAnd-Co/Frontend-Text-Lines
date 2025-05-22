@@ -85,15 +85,7 @@ const ListaClientes = () => {
       },
       timer: 3000, // Muestra esta alerta por 3 segundos
       timerProgressBar: true,
-    })
-      .then(() => {
-        return MySwal.fire({
-          title: <p>¡Adiós!</p>,
-          timer: 2000, // Muestra esta alerta por 2 segundos
-          timerProgressBar: true,
-        });
-      })
-      .then(() => {
+    }).then(() => {
         cerrarSesion();
       });
   };
@@ -111,6 +103,7 @@ const ListaClientes = () => {
       label: 'Usuarios',
       variant: 'outlined',
       color: 'secondary',
+      outlineColor: colores.altertex[1],
       size: 'large',
       onClick: () =>
         navegar(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE),

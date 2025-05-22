@@ -8,7 +8,7 @@ import Tabla from '@Organismos/Tabla';
 import Chip from '@Atomos/Chip';
 import { useConsultarListaUsuarios } from '@Hooks/Usuarios/useConsultarListaUsuarios';
 import { useEliminarUsuarios } from '@Hooks/Usuarios/useEliminarUsuarios';
-import { useConsultarRoles  } from '@Hooks/Roles/useConsultarRoles';
+import { useConsultarRoles } from '@Hooks/Roles/useConsultarRoles';
 import { RUTAS } from '@Constantes/rutas';
 import { tokens } from '@SRC/theme';
 import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
@@ -18,6 +18,9 @@ import PopUp from '@Moleculas/PopUp';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
 import { useTheme } from '@mui/material';
+import { useActivar2FA } from '@Hooks/Usuarios/useActivar2FA';
+import Activar2FAModal from '@Organismos/Activar2FAModal';
+import Verificar2FAModal from '@Moleculas/Verificar2FAModal';
 
 const estiloImagenLogo = { marginRight: '1rem' };
 
@@ -52,6 +55,18 @@ const ListaUsuarios = () => {
     error: errorDetalle,
   } = useUsuarioId(modalDetalleAbierto ? idUsuarioSeleccionado : null);
 
+    const [modal2FAAbierto, setModal2FAAbierto] = useState(false);
+    const { qrCode, cargando: cargandoQR, error: errorQR, setQrCode } = useActivar2FA();
+
+    /** const manejarActivar2FA = async () => {
+      await activar2FA({
+        idUsuario: usuarioAutenticado?.idUsuario,
+        nombre: usuarioAutenticado?.nombre,
+        correo: usuarioAutenticado?.correo,
+      });
+      setModal2FAAbierto(true);
+    };
+    */
   const opcionesRol = roles.map((rol) => ({
     value: rol.idRol, 
     label: rol.nombre,
@@ -70,15 +85,19 @@ const ListaUsuarios = () => {
     await cerrarSesion();
   };
   const { cerrarSesion } = useAuth();
-
-  const {
-    usuariosAEliminar,
-    abrirPopUp,
-    manejarSeleccion,
-    manejarAbrirPopUp,
-    manejarCerrarPopUp,
-    eliminarUsuarios,
-  } = useEliminarUsuarios(setAlerta, recargar);
+const {
+  usuariosAEliminar,
+  abrirPopUp,
+  abrirModal2FA,
+  error2FA,
+  cargando2FA,
+  manejarSeleccion,
+  manejarAbrirPopUp,
+  manejarCerrarPopUp,
+  eliminarUsuarios,
+  manejarVerificar2FA,
+  manejarCerrarModal2FA,
+} = useEliminarUsuarios(setAlerta, recargar);
 
   useEffect(() => {}, [usuariosAEliminar]);
 
@@ -220,14 +239,23 @@ const ListaUsuarios = () => {
     },
     {
       label: 'Eliminar',
-      onClick: manejarAbrirPopUp,
+      onClick: () => manejarAbrirPopUp(usuarioAutenticado),
       variant: 'contained',
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
       disabled: !usuarioAutenticado?.permisos?.includes(PERMISOS.ELIMINAR_USUARIO),
     },
-  ];
+    /** {
+      label: 'Activar 2FA',
+      onClick: manejarActivar2FA,
+      variant: 'contained',
+      color: 'success',
+      size: 'large',
+      backgroundColor: colores.verde[1],
+      disabled: !usuarioAutenticado?.permisos?.includes(PERMISOS.ACTIVAR_2FA_SUPERADMIN),
+    },
+  */];
 
   const redirigirATienda = () => {
     navigate(RUTAS.SISTEMA_TIENDA.BASE, { replace: true });
@@ -238,6 +266,7 @@ const ListaUsuarios = () => {
       label: 'Atrás',
       variant: 'outlined',
       color: 'secondary',
+      outlineColor: colores.altertex[1],
       size: 'large',
       onClick: redirigirAInicio,
     },
@@ -305,6 +334,13 @@ const ListaUsuarios = () => {
           labelCancelar='Cancelar'
           labelConfirmar='Eliminar'
         />
+        <Verificar2FAModal
+          abierto={abrirModal2FA}
+          onCerrar={manejarCerrarModal2FA}
+          onConfirmar={manejarVerificar2FA}
+          cargando={cargando2FA}
+          error={error2FA}
+        />
 
         <div style={{ marginTop: 20, height: 650, width: '100%' }}>
           {error && <p style={{ color: 'red' }}>Error: {error}</p>}
@@ -323,6 +359,17 @@ const ListaUsuarios = () => {
             }}
           />
         </div>
+
+        <Activar2FAModal
+          abierto={modal2FAAbierto}
+          onCerrar={() => {
+            setModal2FAAbierto(false);
+            setQrCode(null);
+          }}
+          qrCode={qrCode}
+          cargando={cargandoQR}
+          error={errorQR}
+        />
 
         {modalDetalleAbierto && (
           <ModalFlotante

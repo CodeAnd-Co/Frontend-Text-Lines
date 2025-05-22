@@ -256,7 +256,7 @@ const BarraLateral = () => {
             bottom={1}
             width='100%'
           >
-            <TemaIcono />
+            {/* <TemaIcono /> */}
             <Icono
               nombre='HomeOutlined'
               color='#fff'

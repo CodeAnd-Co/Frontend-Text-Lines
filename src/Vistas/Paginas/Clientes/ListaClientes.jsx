@@ -103,6 +103,7 @@ const ListaClientes = () => {
       label: 'Usuarios',
       variant: 'outlined',
       color: 'secondary',
+      outlineColor: colores.altertex[1],
       size: 'large',
       onClick: () =>
         navegar(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE),

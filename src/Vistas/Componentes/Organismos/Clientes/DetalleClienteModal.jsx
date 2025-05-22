@@ -57,7 +57,7 @@ export const DetalleClienteModal = ({
           {
             label: 'SALIR',
             variant: 'outlined',
-            outlineColor: colores.primario[10],
+            outlineColor: colores.altertex[1],
             onClick: onClose,
           },
         ]}

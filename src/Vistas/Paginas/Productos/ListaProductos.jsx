@@ -14,6 +14,8 @@ import { useEliminarProductos } from '@Hooks/Productos/useEliminarProductos';
 import { tokens } from '@SRC/theme';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
+import ModalImportarProdctos from '@Organismos/ModalImportarProductos';
+
 const ListaProductos = () => {
   const { productos, cargando, error, recargar } = useConsultarProductos();
   const { eliminar } = useEliminarProductos();
@@ -29,6 +31,8 @@ const ListaProductos = () => {
   const [mostrarModalProducto, setMostrarModalProducto] = useState(false);
   const [alerta, setAlerta] = useState(null);
   const [openModalEliminar, setAbrirPopUp] = useState(false);
+  const [modalImportarAbierto, setModalImportarAbierto] = useState(false);
+  
 
   const mostrarFormularioProducto = useCallback(() => {
     setMostrarModalProducto(true);
@@ -82,6 +86,8 @@ const ListaProductos = () => {
       setAbrirPopUp(false);
     }
   };
+
+  const handleAbrirImportar = () => setModalImportarAbierto(true);
 
   const columnas = [
     {
@@ -145,13 +151,13 @@ const ListaProductos = () => {
       backgroundColor: colores.altertex[1],
     },
     {
-      //variant: 'outlined',
+      variant: 'outlined',
       label: 'Importar',
-      onClick: () => console.log('Importar'),
+      onClick: handleAbrirImportar,
       color: 'primary',
       size: 'large',
-      outlineColor: colores.primario[10],
-      construccion: true,
+      outlineColor: colores.altertex[1],
+
     },
     {
       //variant: 'outlined',
@@ -239,6 +245,15 @@ const ListaProductos = () => {
         confirmar={manejarConfirmarEliminar}
         dialogo={MENSAJE_POPUP_ELIMINAR}
       />
+        <ModalImportarProdctos
+        abierto={modalImportarAbierto}
+        onCerrar={() => setModalImportarAbierto(false)}
+        // onConfirm={importar}
+        // cargando={cargandoImportacion}
+        // errores={errores}
+        // exito={exito}
+        recargar={recargar}
+      ></ModalImportarProdctos>
     </>
   );
 };

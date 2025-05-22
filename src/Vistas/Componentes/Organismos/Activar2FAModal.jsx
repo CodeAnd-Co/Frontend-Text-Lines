@@ -8,7 +8,7 @@ const estiloModal = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  p: 4,
+  padding: 4,
   borderRadius: 2,
 };
 

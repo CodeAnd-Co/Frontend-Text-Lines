@@ -56,9 +56,9 @@ const ListaUsuarios = () => {
   } = useUsuarioId(modalDetalleAbierto ? idUsuarioSeleccionado : null);
 
     const [modal2FAAbierto, setModal2FAAbierto] = useState(false);
-    const { activar2FA, qrCode, cargando: cargandoQR, error: errorQR, setQrCode } = useActivar2FA();
+    const { qrCode, cargando: cargandoQR, error: errorQR, setQrCode } = useActivar2FA();
 
-    const manejarActivar2FA = async () => {
+    /** const manejarActivar2FA = async () => {
       await activar2FA({
         idUsuario: usuarioAutenticado?.idUsuario,
         nombre: usuarioAutenticado?.nombre,
@@ -66,6 +66,7 @@ const ListaUsuarios = () => {
       });
       setModal2FAAbierto(true);
     };
+    */
   const opcionesRol = roles.map((rol) => ({
     value: rol.idRol, 
     label: rol.nombre,

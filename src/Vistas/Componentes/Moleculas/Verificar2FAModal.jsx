@@ -8,7 +8,7 @@ const estiloModal = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  p: 4,
+  padding: 4,
   borderRadius: 2,
 };
 
@@ -28,7 +28,7 @@ const Verificar2FAModal = ({ abierto, onCerrar, onConfirmar, cargando, error }) 
         <TextField
         label="Código 2FA"
         value={codigo}
-        onChange={(e) => setCodigo(e.target.value.replace(/\D/g, '').slice(0, 6))} 
+        onChange={(even) => setCodigo(even.target.value.replace(/\D/g, '').slice(0, 6))} 
         fullWidth
         slotProps={{
             maxLength: 6,

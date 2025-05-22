@@ -32,10 +32,10 @@ export const validarProveedor = (proveedor) => {
 
   if (!normalizados.telefonoContacto) {
     errores.telefonoContacto = 'El teléfono de contacto es obligatorio';
-  } else if (normalizados.telefonoContacto.length > 20) {
+  } else if (normalizados.telefonoContacto.length > 10) {
     errores.telefonoContacto = 'El teléfono de contacto debe tener máximo 10 caracteres';
-  } else if (!normalizados.telefonoContacto !== 'number') {
-    errores.telefonoContacto = 'El teléfono debe ser numerico';
+  } else if (!/^\d+$/.test(normalizados.telefonoContacto)) {
+    errores.telefonoContacto = 'El teléfono de contacto debe contener solo números';
   }
 
   if (!normalizados.correoContacto) {
@@ -61,8 +61,8 @@ export const validarProveedor = (proveedor) => {
     errores.codigoPostal = 'El código postal es obligatorio';
   } else if (normalizados.codigoPostal.length > 20) {
     errores.codigoPostal = 'El código postal debe tener máximo 20 caracteres';
-  } else if (typeof normalizados.codigoPostal !== 'number') {
-    errores.codigoPostal = 'El código postal debe ser numerico';
+  } else if (!/^\d+$/.test(normalizados.codigoPostal)) {
+    errores.codigoPostal = 'El código postal debe contener solo números';
   }
 
   if (!normalizados.pais) {

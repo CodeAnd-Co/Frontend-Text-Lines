@@ -110,6 +110,7 @@ const FormularioProveedor = memo(({ formularioAbierto, alCerrarFormularioProveed
             placeholder='Ingresa el nombre del proveedor'
             error={errores?.nombre}
             helperText={errores?.nombre}
+            inputProps={{maxLength: 50}}
           />
           <CampoTextoForm
             label='Nombre de la Compañía'
@@ -119,6 +120,7 @@ const FormularioProveedor = memo(({ formularioAbierto, alCerrarFormularioProveed
             placeholder='Ingresa el nombre de la compañía'
             error={errores?.nombreCompania}
             helperText={errores?.nombreCompania}
+            inputProps={{maxLength: 50}}
           />
           <CampoTextoForm
             label='Teléfono de Contacto'
@@ -140,6 +142,7 @@ const FormularioProveedor = memo(({ formularioAbierto, alCerrarFormularioProveed
             placeholder='Ingresa el correo de contacto'
             error={errores?.correoContacto}
             helperText={errores?.correoContacto}
+            inputProps={{maxLength: 50}}
           />
           <CampoTextoForm
             label='Dirección'
@@ -149,6 +152,7 @@ const FormularioProveedor = memo(({ formularioAbierto, alCerrarFormularioProveed
             placeholder='Ingresa la dirección del proveedor'
             error={errores?.direccion}
             helperText={errores?.direccion}
+            inputProps={{maxLength: 100}}
           />
           <CampoTextoForm
             label='Código Postal'
@@ -158,6 +162,7 @@ const FormularioProveedor = memo(({ formularioAbierto, alCerrarFormularioProveed
             placeholder='Ingresa el código postal'
             error={errores?.codigoPostal}
             helperText={errores?.codigoPostal}
+            inputProps={{maxLength: 10}}
           />
           <CampoTextoForm
             label='País'
@@ -167,6 +172,7 @@ const FormularioProveedor = memo(({ formularioAbierto, alCerrarFormularioProveed
             placeholder='Ingresa el país'
             error={errores?.pais}
             helperText={errores?.pais}
+            inputProps={{maxLength: 50}}
           />
         </Grid>
       </Box>

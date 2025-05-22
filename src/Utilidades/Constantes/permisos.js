@@ -9,6 +9,8 @@ export const PERMISOS = {
   LEER_USUARIO: 'Leer Usuario',
   ACTUALIZAR_USUARIO: 'Actualizar Usuario',
   ELIMINAR_USUARIO: 'Eliminar Usuario',
+  ACTIVAR_2FA_SUPERADMIN: 'Activar 2FA para Superadmin',
+  VERIFICAR_2FA_SUPERADMIN: 'Verificar 2FA para Superadmin',
 
   // Rol
   CREAR_ROL: 'Crear Rol',

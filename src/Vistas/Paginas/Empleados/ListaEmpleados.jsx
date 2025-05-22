@@ -104,8 +104,8 @@ const ListaGrupoEmpleados = () => {
       label: 'Importar',
       onClick: handleAbrirImportar,
       color: 'primary',
+      outlineColor: colores.altertex[1],
       size: 'large',
-      outlineColor: colores.primario[10],
       disabled: !usuario?.permisos?.includes(PERMISOS.IMPORTAR_EMPLEADOS),
     },
     {
@@ -190,7 +190,7 @@ const ListaGrupoEmpleados = () => {
               label: 'SALIR',
               variant: 'outlined',
               color: 'primary',
-              outlineColor: colores.primario[10],
+              outlineColor: colores.primario[1],
               onClick: () => setModalDetalleAbierto(false),
             },
           ]}

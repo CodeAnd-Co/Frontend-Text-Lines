@@ -11,6 +11,8 @@ const BASE_ROLES = `${BASE_URL}/api/roles`;
 const BASE_PEDIDOS = `${BASE_URL}/api/pedidos`;
 const BASE_EVENTOS = `${BASE_URL}/api/eventos`;
 const BASE_PAGOS = `${BASE_URL}/api/pagos`;
+const BASE_AUTENTICACION = `${BASE_URL}/api/autenticacion`;
+
 
 export const RUTAS_API = {
   USUARIOS: {
@@ -19,6 +21,13 @@ export const RUTAS_API = {
     CONSULTAR_USUARIO: `${BASE_USUARIOS}/consultar-usuario`,
     ELIMINAR_USUARIOS: `${BASE_USUARIOS}/eliminar-usuarios`,
   },
+
+  AUTENTICACION: {
+    BASE: BASE_AUTENTICACION,
+    ACTIVAR_2FA: `${BASE_AUTENTICACION}/activar-2fa`,
+    VERIFICAR_2FA: `${BASE_AUTENTICACION}/verificar-2fa`,
+  },
+  
   CATEGORIAS: {
     BASE: BASE_CATEGORIAS,
     CONSULTAR_LISTA: `${BASE_CATEGORIAS}/consultar-lista-categorias`,

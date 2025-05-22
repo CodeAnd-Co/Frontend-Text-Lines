@@ -20,7 +20,7 @@ export class RepositorioCrearCategoria {
       return respuesta;
     } catch (error) {
       const mensaje = error.respuesta?.data?.mensaje;
-      throw new Error(mensaje);
+      throw new Error(error.response.data.error);
     }
   }
 }

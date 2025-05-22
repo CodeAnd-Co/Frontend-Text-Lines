@@ -64,7 +64,7 @@ const ListaRoles = () => {
       setAlerta({
         tipo: 'warning',
         mensaje:
-          'No se pueden eliminar los roles protegidos (Super Usuario, Supervisor, Empleado). Se procederá con los demás roles seleccionados.',
+          'No se pueden eliminar los roles protegidos (Super Admin, Empleado). Se procederá con los demás roles seleccionados.',
         icono: true,
         cerrable: true,
         centradoInferior: true,
@@ -197,7 +197,7 @@ const ListaRoles = () => {
             setAlerta({
               tipo: 'warning',
               mensaje:
-                'No se pueden eliminar los roles protegidos (super admin, supervisor, empleado).',
+                'No se pueden eliminar los roles protegidos (Super Admin, Empleado).',
               icono: true,
               cerrable: true,
               centradoInferior: true,

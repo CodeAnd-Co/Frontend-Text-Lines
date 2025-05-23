@@ -119,7 +119,19 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
   ]}
     >
 
-      <ContenedorImportar onFileAccepted={handleFileAccepted} cargando={cargando} />
+      <ContenedorImportar
+          onFileAccepted={handleFileAccepted}
+          cargando={cargando}
+          onError={(mensaje) =>
+            setAlerta({
+              tipo: 'error',
+              mensaje,
+              duracion: 3000,
+              cerrable: true,
+              centradoInferior: true,
+            })
+          }
+        />
 
       {archivo && (
         <List disablePadding>

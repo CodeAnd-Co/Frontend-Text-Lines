@@ -70,9 +70,19 @@ const FormaCrearCategorias = ({
         fullWidth
         type={'text'}
         value={nombreCategoria}
-        onChange={(evento) => setNombreCategoria(evento.target.value)}
+        onChange={(evento) => {
+          // Only update if value is not empty/whitespace
+          if (evento.target.value.trim() !== '') {
+            setNombreCategoria(evento.target.value.slice(0, LIMITE_NOMBRE));
+          } else if (nombreCategoria !== '') {
+            // Reset to empty when user tries to delete everything
+            setNombreCategoria('');
+          }
+        }}
         inputProps={{ maxLength: LIMITE_NOMBRE }}
         helperText={`${nombreCategoria.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`}
+        required
+        sx={{ mb: 2 }}
       />
 
       <ProductosModal
@@ -91,9 +101,21 @@ const FormaCrearCategorias = ({
         fullWidth
         type={'text'}
         value={descripcionCategoria}
-        onChange={(evento) => setDescripcionCategoria(evento.target.value)}
+        onChange={(evento) => {
+          // Only update if value is not empty/whitespace
+          if (evento.target.value.trim() !== '') {
+            setDescripcionCategoria(evento.target.value.slice(0, LIMITE_DESCRIPCION));
+          } else if (descripcionCategoria !== '') {
+            // Reset to empty when user tries to delete everything
+            setDescripcionCategoria('');
+          }
+        }}
         inputProps={{ maxLength: LIMITE_DESCRIPCION }}
         helperText={`${descripcionCategoria.length}/${LIMITE_DESCRIPCION} - ${MENSAJE_LIMITE}`}
+        required
+        sx={{ mt: 2 }}
+        multiline
+        rows={3}
       />
 
       {mostrarAlerta && (

@@ -41,11 +41,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('tema');
   };
 
-  const resetearLocalStorage = () => {
-    // Limpiar el localStorage
-    localStorage.clear();
-  };
-
   const cerrarSesion = async () => {
     try {
       await axios.post(

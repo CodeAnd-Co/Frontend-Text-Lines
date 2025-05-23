@@ -132,13 +132,6 @@ const BarraLateral = () => {
                 </Box>
               </Box>
               )}
-            <ElementoMenu
-              titulo='Tablero'
-              ruta={RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO}
-              icono={<HomeOutlinedIcon />}
-              seleccionado={seleccionado}
-              setSeleccionado={setSeleccionado}
-            />
             <SubMenu
               title={<span style={{ color: 'white' }}>Empleados</span>}
               icon={<GroupsOutlinedIcon sx={{ color: 'white' }} />}

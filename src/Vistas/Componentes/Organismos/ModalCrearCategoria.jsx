@@ -12,8 +12,8 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
 
   const tieneReseteo = useRef(false);
 
-  const { crearCategoria, cargando, exito, error, mensaje, setError, resetEstado }
-    = useCrearCategoria();
+  const { crearCategoria, cargando, exito, error, mensaje, setError, resetEstado } =
+    useCrearCategoria();
 
   useEffect(() => {
     if (!abierto && !tieneReseteo.current) {
@@ -71,7 +71,7 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
       open={abierto}
       onClose={handleCerrar}
       onConfirm={handleConfirmar}
-      titulo='Agregar Categorias'
+      titulo='Agregar Categorías'
       cancelLabel='Cancelar'
       confirmLabel={cargando ? 'Creando...' : 'Crear'}
       disabledConfirm={cargando}

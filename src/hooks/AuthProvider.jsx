@@ -41,11 +41,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('tema');
   };
 
-  const resetearLocalStorage = () => {
-    // Limpiar el localStorage
-    localStorage.clear();
-  };
-
   const cerrarSesion = async () => {
     try {
       await axios.post(
@@ -58,8 +53,6 @@ export const AuthProvider = ({ children }) => {
       );
       // Resetear el tema a modo claro
       resetearTema();
-      // Limpiar el localStorage y las cookies
-      resetearLocalStorage();
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     } finally {

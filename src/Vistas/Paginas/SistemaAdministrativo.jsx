@@ -48,25 +48,6 @@ const SistemaAdministrativo = () => {
           alClicIcono={() => {}}
           informacionBotones={informacionBotones}
         />
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          height="80vh"
-        >
-          <img
-            src='/sitio-de-construccion.png'
-            alt='Fondo'
-            style={{
-              width: '120px',
-              maxWidth: '120px',
-              display: 'block',
-              marginBottom: '1.5rem',
-            }}
-          />
-          <span style={{ fontSize: '1.5rem', fontWeight: 500 }}>En construcción...</span>
-        </Box>
         <Outlet />
       </Box>
     </Box>

@@ -99,7 +99,7 @@ const CamposOpcion = memo(
     return (
       <Grid container spacing={2}>
         <TituloForm
-          titulo={`Opcion ${opcion.valorOpcion || index + 1}`}
+          titulo={`Opción ${opcion.valorOpcion || index + 1}`}
           tituloVariant='h6'
           size={6}
         />

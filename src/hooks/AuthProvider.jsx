@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useMode } from '@SRC/theme';
+import Swal from 'sweetalert2'
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -42,6 +43,18 @@ export const AuthProvider = ({ children }) => {
   };
 
   const cerrarSesion = async () => {
+    const resultado = await Swal.fire({
+      title: '¿Estás seguro que quieres cerrar sesion?',
+
+      showCancelButton: true,
+      confirmButtonColor: 'rgba(24, 50, 165, 1)',
+      cancelButtonColor: '#c62828',
+      confirmButtonText: 'Sí, cerrar sesión',
+      cancelButtonText: 'No',
+    });
+
+    if (!resultado.isConfirmed) return;
+
     try {
       await axios.post(
         `${API_URL}/api/autenticacion/cerrar-sesion`,
@@ -51,7 +64,6 @@ export const AuthProvider = ({ children }) => {
           headers: { 'x-api-key': API_KEY },
         }
       );
-      // Resetear el tema a modo claro
       resetearTema();
     } catch (error) {
       console.error('Error al cerrar sesión:', error);

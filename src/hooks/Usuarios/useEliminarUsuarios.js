@@ -19,8 +19,8 @@ export function useEliminarUsuarios(onAlerta, onRecarga) {
     rol: new Set(),
   });
 
-  const { verificar2FA, cargando: cargando2FA, error: error2FA } = useVerificar2FA();
-  const [codigo2FA, setCodigo2FA] = useState(null);
+  const { verificar2FA, cargando: cargando2FA, error: error2FA,   setError: setError2FA } = useVerificar2FA();
+  const [codigo2FA, setCodigo2FA] = useState('');
   const [usuarioSolicitante, setUsuarioSolicitante] = useState(null);
 
   const manejarSeleccion = (seleccionados) => {
@@ -48,7 +48,11 @@ export function useEliminarUsuarios(onAlerta, onRecarga) {
   };
 
   const manejarCerrarModal2FA = () => {
-    setAbrirModal2FA(false);
+      setAbrirModal2FA(false);
+      setCodigo2FA(null);      
+      setError2FA(null); 
+      if (typeof error2FA === 'string') error2FA = null;
+    
   };
 
   const manejarVerificar2FA = async (codigo) => {
@@ -118,5 +122,7 @@ export function useEliminarUsuarios(onAlerta, onRecarga) {
     eliminarUsuarios,
     manejarVerificar2FA,
     manejarCerrarModal2FA,
+    codigo2FA,         
+    setCodigo2FA 
   };
 }

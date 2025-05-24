@@ -19,5 +19,5 @@ export const useVerificar2FA = () => {
     }
   };
 
-  return { verificar2FA, cargando, error };
+  return { verificar2FA, cargando, error, setError };
 };

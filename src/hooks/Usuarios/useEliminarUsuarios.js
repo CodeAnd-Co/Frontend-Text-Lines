@@ -50,9 +50,7 @@ export function useEliminarUsuarios(onAlerta, onRecarga) {
   const manejarCerrarModal2FA = () => {
       setAbrirModal2FA(false);
       setCodigo2FA(null);      
-      setError2FA(null); 
-      if (typeof error2FA === 'string') error2FA = null;
-    
+      setError2FA(null);     
   };
 
   const manejarVerificar2FA = async (codigo) => {

@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { Modal, Box, Typography, TextField, CircularProgress, useTheme } from '@mui/material';
 import { tokens } from '@SRC/theme';
 import Boton from '@Atomos/Boton';
@@ -40,7 +39,7 @@ const Verificar2FAModal = ({
         <TextField
           label="Código 2FA"
           value={codigo || ''}
-          onChange={(e) => setCodigo(e.target.value.replace(/\D/g, '').slice(0, 6))}
+          onChange={(even) => setCodigo(even.target.value.replace(/\D/g, '').slice(0, 6))}
           fullWidth
           slotProps={{
             maxLength: 6,

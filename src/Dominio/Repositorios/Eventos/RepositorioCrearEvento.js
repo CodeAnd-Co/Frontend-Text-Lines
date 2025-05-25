@@ -15,14 +15,16 @@ export class RepositorioCrearEvento {
   static async crearEvento(evento) {
 
     const body = {
-      idCliente: evento.idCliente,
-      nombre: evento.nombre,
-      descripcion: evento.descripcion,
-      puntos: evento.puntos,
-      multiplicador: evento.multiplicador,
-      periodoRenovacion: evento.periodoRenovacion,
-      renovacion: evento.renovacion,
+      idCliente: evento.idCliente || "",
+      nombre: evento.nombre || "",
+      descripcion: evento.descripcion || "",
+      puntos: evento.puntos || 0,
+      multiplicador: evento.multiplicador || 1,
+      periodoRenovacion: evento.periodoRenovacion || "",
+      renovacion: evento.renovacion || false,
     }
+
+    console.log('Cuerpo de la solicitud:', body);
 
     try {
       const respuesta = await axios.post(RUTAS_API.EVENTOS.CREAR_EVENTO, body, {

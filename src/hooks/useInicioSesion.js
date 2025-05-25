@@ -77,7 +77,9 @@ export default function useInicioSesion() {
       setUsuario(respuesta.data.user);
 
       // Actualiza el nombre de usuario en el contexto
-      setNombreUsuario(nombreUsuario || "");
+      if (nombreUsuario) {
+        setNombreUsuario(nombreUsuario);
+      }
 
       setMensaje('Inicio de sesión exitoso');
     } catch (error) {

@@ -2,9 +2,8 @@
 
 import Alerta from '@Moleculas/Alerta';
 import CampoTexto from '@Atomos/CampoTexto';
-import { useState, useEffect } from 'react';
 import { useAuth } from '@Hooks/AuthProvider';
-import { Box, Switch } from '@mui/material';
+import { Box } from '@mui/material';
 import CampoSelect from '../../Atomos/CampoSelect';
 
 // Constantes para mensajes y límites
@@ -36,11 +35,7 @@ const FormularioCrearEvento = ({
     const regex = /^[0-9]+(\.[0-9]+)?$/;
     return regex.test(valor);
   };
-
-  const esTextoValido = (input) => {
-    return typeof input === 'string' && input.trim() !== '';
-  };
-
+  
   return (
     <>
       <CampoTexto

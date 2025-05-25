@@ -5,7 +5,6 @@ import FormularioCrearEvento from '@Organismos/Formularios/FormularioCrearEvento
 import ModalFlotante from '@Organismos/ModalFlotante';
 import { Evento } from '@SRC/Dominio/Modelos/Eventos/Eventos';
 import { useAuth } from '@SRC/hooks/AuthProvider';
-import { useCrearEvento } from '@SRC/hooks/Eventos/useCrearEvento';
 
 /**
  * Modal para crear un nuevo set de cuotas.
@@ -24,26 +23,79 @@ const ModalCrearEvento = ({ abierto = false, onCerrar, onCreado }) => {
   const [multiplicadorEvento, setMultiplicadorEvento] = useState('');
   const [periodoEvento, setPeriodoEvento] = useState('');
   const [renovacionEvento, setRenovacionEvento] = useState('');
-  const [mostrarAlerta, setMostrarAlerta] = useState(null);
+  const [mostrarAlerta, setMostrarAlerta] = useState(false);
+
+  const [nombreError, setNombreError] = useState(false);
+  const [descripcionError, setDescripcionError] = useState(false);
+  const [puntosError, setPuntosError] = useState(false);
+  const [multiplicadorError, setMultiplicadorError] = useState(false);
+  const [periodoError, setPeriodoError] = useState(false);
+  const [renovacionError, setRenovacionError] = useState(false);
+
+  const resetearCampos = () => {
+    setNombreEvento('');
+    setDescripcionEvento('');
+    setPuntosEvento('');
+    setMultiplicadorEvento('');
+    setPeriodoEvento('');
+    setRenovacionEvento('');
+    setMostrarAlerta(false);
+  };
+
+  const limpiarErrores = () => {
+    setNombreError(false);
+    setDescripcionError(false);
+    setPuntosError(false);
+    setMultiplicadorError(false);
+    setPeriodoError(false);
+    setRenovacionError(false);
+  };
+
+  const validarCampos = () => {
+    let errores = false;
+
+    if (!nombreEvento.trim()) {
+      setNombreError(true);
+      setMostrarAlerta(true);
+      errores = true;
+    }
+
+    if (puntosEvento === '' || puntosEvento < 0) {
+      setPuntosError(true);
+      setMostrarAlerta(true);
+      errores = true;
+    }
+
+    if (multiplicadorEvento === '' || multiplicadorEvento < 0) {
+      setMultiplicadorError(true);
+      setMostrarAlerta(true);
+      errores = true;
+    }
+
+    if (renovacionEvento === '') {
+      setRenovacionError(true);
+      setMostrarAlerta(true);
+      errores = true;
+    }
+
+    return errores;
+  }
 
   // Limpiar los campos cuando se cierra el modal
   useEffect(() => {
     if (!abierto) {
-      setNombreEvento('');
-      setDescripcionEvento('');
-      setPuntosEvento('');
-      setMultiplicadorEvento('');
-      setPeriodoEvento('');
-      setRenovacionEvento('');
-      setMostrarAlerta(false);
+      resetearCampos();
+      limpiarErrores();
     }
   }, [abierto]);
 
   const handleConfirmar = () => {
-    // Validar que el nombre y los puntos sean válidos
-    // y que los puntos y multiplicador sean mayores a 0
-    if (!nombreEvento.trim() || !puntosEvento.trim() || !multiplicadorEvento.trim() || !renovacionEvento) {
-      setMostrarAlerta(true);
+    // Limpiar errores
+    limpiarErrores();
+    setMostrarAlerta(false);
+
+    // Validar campos
+    if (validarCampos()) {
       return;
     }
 
@@ -84,16 +136,22 @@ const ModalCrearEvento = ({ abierto = false, onCerrar, onCreado }) => {
       <FormularioCrearEvento
         nombreEvento={nombreEvento}
         setNombreEvento={setNombreEvento}
+        nombreError={nombreError}
         descripcionEvento={descripcionEvento}
         setDescripcionEvento={setDescripcionEvento}
+        descripcionError={descripcionError}
         puntosEvento={puntosEvento}
         setPuntosEvento={setPuntosEvento}
+        puntosError={puntosError}
         multiplicadorEvento={multiplicadorEvento}
         setMultiplicadorEvento={setMultiplicadorEvento}
+        multiplicadorError={multiplicadorError}
         periodoEvento={periodoEvento}
         setPeriodoEvento={setPeriodoEvento}
+        periodoError={periodoError}
         renovacionEvento={renovacionEvento}
         setRenovacionEvento={setRenovacionEvento}
+        renovacionError={renovacionError}
         mostrarAlerta={mostrarAlerta}
         setMostrarAlerta={setMostrarAlerta}
       />

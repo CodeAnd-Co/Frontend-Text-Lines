@@ -14,16 +14,22 @@ const MENSAJE_LIMITE = 'Máximo caracteres';
 const FormularioCrearEvento = ({
   nombreEvento,
   setNombreEvento,
+  nombreError = false,
   descripcionEvento,
   setDescripcionEvento,
+  descripcionError = false,
   puntosEvento,
   setPuntosEvento,
+  puntosError = false,
   multiplicadorEvento,
   setMultiplicadorEvento,
+  multiplicadorError = false,
   periodoEvento,
   setPeriodoEvento,
+  periodoError = false,
   renovacionEvento,
   setRenovacionEvento,
+  renovacionError = false,
   mostrarAlerta,
   setMostrarAlerta,
 }) => {
@@ -73,19 +79,21 @@ const FormularioCrearEvento = ({
         inputProps={{ maxLength: LIMITE_NOMBRE }}
         helperText={`${nombreEvento.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`}
         sx={{ mb: 2 }}
+        error={nombreError}
       />
       <CampoTexto
         label={'Descripción'}
         fullWidth
+        multiline
         type={'text'}
         value={descripcionEvento}
         onChange={manejarCambioDescripcion}
         inputProps={{ maxLength: LIMITE_DESCRIPCION }}
         helperText={`${descripcionEvento.length}/${LIMITE_DESCRIPCION} - ${MENSAJE_LIMITE}`}
         sx={{ mb: 2 }}
-        multiline
         rows={3}
-      />
+        error={descripcionError}
+        />
       <Box display={'grid'} gridTemplateColumns={'repeat(2, 1fr)'} gap={2}>
         <CampoTexto
           label={'Puntos'}
@@ -96,6 +104,7 @@ const FormularioCrearEvento = ({
           onChange={manejarCambioPuntos}
           inputProps={{ min: 0 }}
           sx={{ mb: 2 }}
+          error={puntosError}
         />
         <CampoTexto
           label={'Multiplicador'}
@@ -106,6 +115,7 @@ const FormularioCrearEvento = ({
           onChange={manejarCambioMultiplicador}
           inputProps={{ min: 0 }}
           sx={{ mb: 2 }}
+          error={multiplicadorError}
         />
       </Box>
       <Box display={'grid'} gridTemplateColumns={'repeat(2, 1fr)'} gap={2}>
@@ -118,6 +128,7 @@ const FormularioCrearEvento = ({
           inputProps={{ maxLength: LIMITE_PERIODO }}
           helperText={`${periodoEvento.length}/${LIMITE_PERIODO} - ${MENSAJE_LIMITE}`}
           sx={{ mb: 2 }}
+          error={periodoError}
         />
         <CampoSelect
           label={'Renovación Automática'}
@@ -131,6 +142,7 @@ const FormularioCrearEvento = ({
           ]}
           placeholder={'Selecciona una opción'}
           sx={{ mb: 2 }}
+          error={renovacionError}
         />
       </Box>
 

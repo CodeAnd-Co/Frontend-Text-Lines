@@ -2,7 +2,6 @@
 
 import Alerta from '@Moleculas/Alerta';
 import CampoTexto from '@Atomos/CampoTexto';
-import { useAuth } from '@Hooks/AuthProvider';
 import { Box } from '@mui/material';
 import CampoSelect from '../../Atomos/CampoSelect';
 
@@ -28,22 +27,49 @@ const FormularioCrearEvento = ({
   mostrarAlerta,
   setMostrarAlerta,
 }) => {
-  const { usuario } = useAuth();
-  const clienteSeleccionado = usuario.clienteSeleccionado;
-
+  // Validar si el valor es un número válido
   const esNumeroValido = (valor) => {
     const regex = /^[0-9]+(\.[0-9]+)?$/;
-    return regex.test(valor);
+    return regex.test(valor) || valor === '';
+  };
+
+  // Manejar el cambio de nombre
+  const manejarCambioNombre = (evento) => setNombreEvento(evento.target.value);
+
+  // Manejar el cambio de descripción
+  const manejarCambioDescripcion = (evento) => setDescripcionEvento(evento.target.value);
+
+  // Manejar el cambio de puntos
+  const manejarCambioPuntos = (evento) => {
+    const valor = evento.target.value;
+    if (esNumeroValido(valor) || valor === null) {
+      setPuntosEvento(valor);
+    }
+  };
+
+  // Manejar el cambio de multiplicador
+  const manejarCambioMultiplicador = (evento) => {
+    const valor = evento.target.value;
+    if (esNumeroValido(valor) || valor === null) {
+      setMultiplicadorEvento(valor);
+    }
   };
   
+  // Manejar el cambio de periodo
+  const manejarCambioPeriodo = (evento) => setPeriodoEvento(evento.target.value);
+
+  // Manejar el cambio de renovación
+  const manejarCambioRenovacion = (evento) => setRenovacionEvento(evento.target.value);
+
   return (
     <>
       <CampoTexto
         label={'Nombre del Evento'}
         fullWidth
+        required
         type={'text'}
         value={nombreEvento}
-        onChange={(evento) => setNombreEvento(evento.target.value.slice(0, LIMITE_NOMBRE))}
+        onChange={manejarCambioNombre}
         inputProps={{ maxLength: LIMITE_NOMBRE }}
         helperText={`${nombreEvento.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`}
         sx={{ mb: 2 }}
@@ -53,9 +79,7 @@ const FormularioCrearEvento = ({
         fullWidth
         type={'text'}
         value={descripcionEvento}
-        onChange={(evento) =>
-          setDescripcionEvento(evento.target.value.slice(0, LIMITE_DESCRIPCION))
-        }
+        onChange={manejarCambioDescripcion}
         inputProps={{ maxLength: LIMITE_DESCRIPCION }}
         helperText={`${descripcionEvento.length}/${LIMITE_DESCRIPCION} - ${MENSAJE_LIMITE}`}
         sx={{ mb: 2 }}
@@ -66,22 +90,20 @@ const FormularioCrearEvento = ({
         <CampoTexto
           label={'Puntos'}
           fullWidth
+          required
           type={'number'}
           value={puntosEvento}
-          onChange={(evento) =>
-            esNumeroValido(evento.target.value) && setPuntosEvento(evento.target.value)
-          }
+          onChange={manejarCambioPuntos}
           inputProps={{ min: 0 }}
           sx={{ mb: 2 }}
         />
         <CampoTexto
           label={'Multiplicador'}
           fullWidth
+          required
           type={'number'}
           value={multiplicadorEvento}
-          onChange={(evento) =>
-            esNumeroValido(evento.target.value) && setMultiplicadorEvento(evento.target.value)
-          }
+          onChange={manejarCambioMultiplicador}
           inputProps={{ min: 0 }}
           sx={{ mb: 2 }}
         />
@@ -92,7 +114,7 @@ const FormularioCrearEvento = ({
           fullWidth
           type={'text'}
           value={periodoEvento}
-          onChange={(evento) => setPeriodoEvento(evento.target.value)}
+          onChange={manejarCambioPeriodo}
           inputProps={{ maxLength: LIMITE_PERIODO }}
           helperText={`${periodoEvento.length}/${LIMITE_PERIODO} - ${MENSAJE_LIMITE}`}
           sx={{ mb: 2 }}
@@ -100,8 +122,9 @@ const FormularioCrearEvento = ({
         <CampoSelect
           label={'Renovación Automática'}
           fullWidth
+          required
           value={renovacionEvento}
-          onChange={(evento) => setRenovacionEvento(evento.target.value)}
+          onChange={manejarCambioRenovacion}
           options={[
             { value: true, label: 'Sí' },
             { value: false, label: 'No' },

@@ -1,10 +1,8 @@
 // RF36 - Crear Evento - [https://codeandco-wiki.netlify.app/docs/next/proyectos/textiles/documentacion/requisitos/RF36]
 
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import FormularioCrearEvento from '@Organismos/Formularios/FormularioCrearEvento';
 import ModalFlotante from '@Organismos/ModalFlotante';
-import { RUTAS } from '@Constantes/rutas';
 
 /**
  * Modal para crear un nuevo set de cuotas.
@@ -14,46 +12,34 @@ import { RUTAS } from '@Constantes/rutas';
  * @param {function} onCreado - Función callback que se ejecuta cuando se crea exitosamente el evento
  */
 const ModalCrearEvento = ({ abierto = false, onCerrar, onCreado }) => {
-  const navegar = useNavigate();
   const [nombreEvento, setNombreEvento] = useState('');
   const [descripcionEvento, setDescripcionEvento] = useState('');
-  const [puntosEvento, setPuntosEvento] = useState(0);
-  const [multiplicadorEvento, setMultiplicadorEvento] = useState(0);
+  const [puntosEvento, setPuntosEvento] = useState('');
+  const [multiplicadorEvento, setMultiplicadorEvento] = useState('');
   const [periodoEvento, setPeriodoEvento] = useState('');
-  const [renovacionEvento, setRenovacionEvento] = useState(false);
-  const [mostrarAlerta, setMostrarAlerta] = useState(false);
+  const [renovacionEvento, setRenovacionEvento] = useState('');
+  const [mostrarAlerta, setMostrarAlerta] = useState(null);
 
   // Limpiar los campos cuando se cierra el modal
   useEffect(() => {
     if (!abierto) {
       setNombreEvento('');
       setDescripcionEvento('');
-      setPuntosEvento(0);
-      setMultiplicadorEvento(0);
+      setPuntosEvento('');
+      setMultiplicadorEvento('');
       setPeriodoEvento('');
-      setRenovacionEvento(false);
+      setRenovacionEvento('');
       setMostrarAlerta(false);
     }
   }, [abierto]);
 
   const handleConfirmar = () => {
-    // Validar que el nombre y descripción no estén vacíos después de eliminar espacios
-    // y que haya al menos un producto seleccionado
-    if (!nombreEvento.trim() || puntosEvento <= 0 || multiplicadorEvento <= 0) {
+    // Validar que el nombre y los puntos sean válidos
+    // y que los puntos y multiplicador sean mayores a 0
+    if (!nombreEvento.trim() || !puntosEvento.trim() || !multiplicadorEvento.trim() || !renovacionEvento) {
       setMostrarAlerta(true);
       return;
     }
-
-    // Navegar a la siguiente página con datos limpios (sin espacios innecesarios)
-    navegar(
-      `${RUTAS.SISTEMA_ADMINISTRATIVO.BASE_TABLERO}${RUTAS.SISTEMA_ADMINISTRATIVO.CUOTAS.EDITAR_CUOTAS}`,
-      {
-        state: {
-          nombreEvento: nombreEvento.trim(),
-          descripcion: descripcionEvento.trim(),
-        },
-      }
-    );
 
     // Notificar que se ha creado exitosamente
     if (onCreado) {

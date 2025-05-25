@@ -17,19 +17,23 @@ import { tokens } from '@SRC/theme';
 import { PERMISOS } from '@Utilidades/Constantes/permisos';
 import { useAuth } from '@Hooks/AuthProvider';
 import { useEliminarEvento } from '@Hooks/Eventos/useEliminarEvento';
+import { useCrearEvento } from '@SRC/hooks/Eventos/useCrearEvento';
 
 const ListaEventos = () => {
   const { eventos, cargando, error, recargar } = useConsultarEventos();
+  const { crear } = useCrearEvento();
+  const { eliminar } = useEliminarEvento();
+  const { usuario } = useAuth();
+
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
+
   const MENSAJE_POPUP_ELIMINAR = '¿Estás seguro de que deseas eliminar los eventos seleccionados?';
 
   const [seleccionados, setSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
-  const { eliminar } = useEliminarEvento();
   const [abrirCrear, setAbrirCrear] = useState(false);
   const [abrirEliminar, setAbrirEliminar] = useState(false);
-  const { usuario } = useAuth();
 
   const [eventoSeleccionado, setEventoSeleccionado] = useState(null);
   const [modalAbierto, setModalAbierto] = useState(false);
@@ -42,16 +46,28 @@ const ListaEventos = () => {
     setAbrirCrear(false);
   };
 
-  const manejarConfirmarCrear = async () => {
-    console.log('Crear Evento');
-    setAbrirCrear(false);
-    setAlerta({
-      tipo: 'success',
-      mensaje: 'Evento creado correctamente.',
-      icono: true,
-      cerrable: true,
-      centradoInferior: true,
-    });
+  const manejarConfirmarCrear = async (evento) => {
+    try {
+      await crear(evento);
+      if (typeof recargar === 'function') await recargar();
+      setAlerta({
+        tipo: 'success',
+        mensaje: 'Evento creado correctamente.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+      setAbrirCrear(false);
+    } catch {
+      setAlerta({
+        tipo: 'error',
+        mensaje: 'Ocurrió un error al crear el evento.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+      
+    }
   };
 
   const manejarCancelarEliminar = () => {

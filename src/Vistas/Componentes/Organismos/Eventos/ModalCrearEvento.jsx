@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react';
 import FormularioCrearEvento from '@Organismos/Formularios/FormularioCrearEvento';
 import ModalFlotante from '@Organismos/ModalFlotante';
+import { Evento } from '@SRC/Dominio/Modelos/Eventos/Eventos';
+import { useAuth } from '@SRC/hooks/AuthProvider';
+import { useCrearEvento } from '@SRC/hooks/Eventos/useCrearEvento';
 
 /**
  * Modal para crear un nuevo set de cuotas.
@@ -12,6 +15,9 @@ import ModalFlotante from '@Organismos/ModalFlotante';
  * @param {function} onCreado - Función callback que se ejecuta cuando se crea exitosamente el evento
  */
 const ModalCrearEvento = ({ abierto = false, onCerrar, onCreado }) => {
+  const { usuario } = useAuth();
+  const clienteSeleccionado = usuario.clienteSeleccionado;
+
   const [nombreEvento, setNombreEvento] = useState('');
   const [descripcionEvento, setDescripcionEvento] = useState('');
   const [puntosEvento, setPuntosEvento] = useState('');
@@ -41,9 +47,20 @@ const ModalCrearEvento = ({ abierto = false, onCerrar, onCreado }) => {
       return;
     }
 
+    // Crear el evento con los datos limpios (sin espacios innecesarios)
+    const nuevoEvento = new Evento({
+      idCliente: clienteSeleccionado,
+      nombre: nombreEvento.trim(),
+      descripcion: descripcionEvento.trim(),
+      puntos: parseFloat(puntosEvento),
+      multiplicador: parseFloat(multiplicadorEvento),
+      periodoRenovacion: periodoEvento.trim(),
+      renovacion: renovacionEvento,
+    });
+
     // Notificar que se ha creado exitosamente
     if (onCreado) {
-      onCreado();
+      onCreado(nuevoEvento);
     }
   };
 

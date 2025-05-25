@@ -10,6 +10,11 @@ const columns = [
   { field: 'areaTrabajo', headerName: 'Área de trabajo', width: 200 },
 ];
 
+// Constantes para los límites de caracteres
+const LIMITE_NOMBRE = 50;
+const LIMITE_DESCRIPCION = 150;
+const MENSAJE_LIMITE = 'Máximo caracteres';
+
 /**
  * Componente de formulario para crear un nuevo grupo de empleados.
  *
@@ -26,15 +31,15 @@ const columns = [
  * @returns {JSX.Element} El formulario con inputs, modal de empleados y alertas.
  */
 const FormaCrearGrupoEmpleados = ({
-  nombreGrupo,
-  setNombreGrupo,
-  descripcion,
-  setDescripcion,
-  setListaEmpleados,
-  errores,
-  intentoEnviar,
-}) => {
-  const { empleados, cargando, error } = useConsultarEmpleados(); 
+                                    nombreGrupo,
+                                    setNombreGrupo,
+                                    descripcion,
+                                    setDescripcion,
+                                    setListaEmpleados,
+                                    errores,
+                                    intentoEnviar,
+                                  }) => {
+  const { empleados, cargando, error } = useConsultarEmpleados();
 
   const [mostrarAlertaEmpleados, setMostrarAlertaEmpleados] = useState(false); // Controla visibilidad de la alerta de validación de empleados.
 
@@ -52,9 +57,9 @@ const FormaCrearGrupoEmpleados = ({
   // Prepara los empleados con una propiedad "id" obligatoria para la tabla.
   const empleadosConId = Array.isArray(empleados)
     ? empleados.map(emp => ({
-        ...emp,
-        id: emp.idEmpleado ?? emp.id,
-      }))
+      ...emp,
+      id: emp.idEmpleado ?? emp.id,
+    }))
     : [];
 
   /**
@@ -79,9 +84,9 @@ const FormaCrearGrupoEmpleados = ({
         value={nombreGrupo}
         onChange={(evento) => setNombreGrupo(evento.target.value)}
         error={!!errores.nombreGrupo}
-        helperText={errores.nombreGrupo}
+        helperText={errores.nombreGrupo || `${nombreGrupo.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`}
         inputProps={{
-          maxLength: 50,
+          maxLength: LIMITE_NOMBRE,
         }}
       />
 
@@ -115,9 +120,9 @@ const FormaCrearGrupoEmpleados = ({
         value={descripcion}
         onChange={(evento) => setDescripcion(evento.target.value)}
         error={!!errores.descripcion}
-        helperText={errores.descripcion}
+        helperText={errores.descripcion || `${descripcion.length}/${LIMITE_DESCRIPCION} - ${MENSAJE_LIMITE}`}
         inputProps={{
-          maxLength: 150,
+          maxLength: LIMITE_DESCRIPCION,
         }}
       />
     </>

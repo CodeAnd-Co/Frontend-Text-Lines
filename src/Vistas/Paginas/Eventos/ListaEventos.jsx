@@ -1,5 +1,6 @@
+// RF36 - Crear Evento - [https://codeandco-wiki.netlify.app/docs/next/proyectos/textiles/documentacion/requisitos/RF36]
 // RF37 - Consulta Lista de Eventos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF37
-//RF38 - Leer Evento - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF38
+// RF38 - Leer Evento - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF38
 
 import React, { useState } from 'react';
 import Tabla from '@Organismos/Tabla';
@@ -8,6 +9,7 @@ import Alerta from '@Moleculas/Alerta';
 import PopUp from '@Moleculas/PopUp';
 import { Box, useTheme } from '@mui/material';
 import ModalFlotante from '@Organismos/ModalFlotante';
+import ModalCrearEvento from '@Organismos/Eventos/ModalCrearEvento';
 import { useEventoId } from '@Hooks/Eventos/useLeerEvento';
 import { useConsultarEventos } from '@Hooks/Eventos/useConsultarEventos';
 import InfoEvento from '@Moleculas/EventoInfo';
@@ -25,15 +27,35 @@ const ListaEventos = () => {
   const [seleccionados, setSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
   const { eliminar } = useEliminarEvento();
-  const [abrirEliminar, setAbrirPopUpEliminar] = useState(false);
+  const [abrirCrear, setAbrirCrear] = useState(false);
+  const [abrirEliminar, setAbrirEliminar] = useState(false);
   const { usuario } = useAuth();
 
   const [eventoSeleccionado, setEventoSeleccionado] = useState(null);
   const [modalAbierto, setModalAbierto] = useState(false);
   const { evento } = useEventoId(eventoSeleccionado ? eventoSeleccionado.id : null);
 
+  const manejarAbrirCrear = () => {
+    setAbrirCrear(true);
+  };
+  const manejarCancelarCrear = () => {
+    setAbrirCrear(false);
+  };
+
+  const manejarConfirmarCrear = async () => {
+    console.log('Crear Evento');
+    setAbrirCrear(false);
+    setAlerta({
+      tipo: 'success',
+      mensaje: 'Evento creado correctamente.',
+      icono: true,
+      cerrable: true,
+      centradoInferior: true,
+    });
+  };
+
   const manejarCancelarEliminar = () => {
-    setAbrirPopUpEliminar(false);
+    setAbrirEliminar(false);
   };
 
   const manejarConfirmarEliminar = async () => {
@@ -57,7 +79,7 @@ const ListaEventos = () => {
         centradoInferior: true,
       });
     } finally {
-      setAbrirPopUpEliminar(false);
+      setAbrirEliminar(false);
     }
   };
 
@@ -85,8 +107,7 @@ const ListaEventos = () => {
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
-      onClick: () => console.log('Añadir'),
-      construccion: true,
+      onClick: manejarAbrirCrear,
     },
     {
       label: 'Eliminar',
@@ -100,7 +121,7 @@ const ListaEventos = () => {
             centradoInferior: true,
           });
         } else {
-          setAbrirPopUpEliminar(true);
+          setAbrirEliminar(true);
         }
       },
       disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_EVENTO),
@@ -196,6 +217,11 @@ const ListaEventos = () => {
         cerrar={manejarCancelarEliminar}
         confirmar={manejarConfirmarEliminar}
         dialogo={MENSAJE_POPUP_ELIMINAR}
+      />
+      <ModalCrearEvento
+        abierto={abrirCrear}
+        onCerrar={manejarCancelarCrear}
+        onCreado={manejarConfirmarCrear}
       />
     </>
   );

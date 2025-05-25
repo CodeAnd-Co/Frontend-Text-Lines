@@ -1,9 +1,24 @@
 export class Evento {
-  constructor({ idEvento, nombre, descripcion, puntos, periodoRenovacion, renovacion }) {
-    this.idEvento = idEvento;
+
+  /**
+   * Clase que representa un evento.
+   * 
+   * @constructor
+   * @param {Object} params - Parámetros del evento.
+   * @param {int} params.idCliente - ID del cliente asociado al evento.
+   * @param {string} params.nombre - Nombre del evento.
+   * @param {string} params.descripcion - Descripción del evento.
+   * @param {float} params.puntos - Puntos asociados al evento.
+   * @param {float} params.multiplicador - Multiplicador de puntos del evento.
+   * @param {string} params.periodoRenovacion - Periodo de renovación del evento.
+   * @param {bool} params.renovacion - Indica si el evento es renovable.
+   */
+  constructor({ idCliente, nombre, descripcion, puntos, multiplicador, periodoRenovacion, renovacion }) {
+    this.idCliente = idCliente;
     this.nombre = nombre;
     this.descripcion = descripcion;
     this.puntos = puntos;
+    this.multiplicador = multiplicador;
     this.periodo = periodoRenovacion;
     this.renovacion = renovacion;
   }

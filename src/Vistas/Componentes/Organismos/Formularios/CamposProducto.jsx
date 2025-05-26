@@ -21,6 +21,8 @@ const CampoTextoFormulario = memo(
     tipo = 'text',
     multilinea = false,
     filas = 1,
+    min,
+    ...rest
   }) => (
     <Grid size={6}>
       <CampoTexto
@@ -36,6 +38,8 @@ const CampoTextoFormulario = memo(
         multiline={multilinea}
         rows={filas}
         error={error}
+        min={min}
+        {...rest}
       />
     </Grid>
   )
@@ -238,6 +242,7 @@ const CamposProducto = memo(
           onChange={alActualizarProducto}
           placeholder='Ingresa el precio en puntos'
           tipo='number'
+          min={1}
         />
 
         <CampoTextoFormulario
@@ -249,6 +254,7 @@ const CamposProducto = memo(
           onChange={alActualizarProducto}
           placeholder='Ingresa el precio para el cliente'
           tipo='number'
+          min={1}
         />
 
         <CampoTextoFormulario
@@ -260,6 +266,7 @@ const CamposProducto = memo(
           onChange={alActualizarProducto}
           placeholder='Ingresa el precio de venta'
           tipo='number'
+          min={1}
         />
 
         <CampoTextoFormulario
@@ -271,6 +278,7 @@ const CamposProducto = memo(
           onChange={alActualizarProducto}
           placeholder='Ingresa el costo del producto'
           tipo='number'
+          min={1}
         />
 
         <CampoTextoFormulario
@@ -282,6 +290,7 @@ const CamposProducto = memo(
           onChange={alActualizarProducto}
           placeholder='Ej: 16'
           tipo='number'
+          min={1}
         />
 
         <CampoTextoFormulario
@@ -293,6 +302,7 @@ const CamposProducto = memo(
           onChange={alActualizarProducto}
           placeholder='Ej: 10'
           tipo='number'
+          min={1}
         />
 
         <CampoSelectFormulario

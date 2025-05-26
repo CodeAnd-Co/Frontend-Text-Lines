@@ -20,7 +20,7 @@ export class RepositorioCrearEvento {
       descripcion: evento.descripcion || "",
       puntos: evento.puntos || 0,
       multiplicador: evento.multiplicador || 1,
-      periodoRenovacion: evento.periodoRenovacion || "",
+      periodoRenovacion: evento.periodo || "",
       renovacion: evento.renovacion || false,
     }
 

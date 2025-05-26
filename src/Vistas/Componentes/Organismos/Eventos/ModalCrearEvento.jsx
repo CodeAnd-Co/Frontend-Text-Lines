@@ -21,24 +21,18 @@ const ModalCrearEvento = ({ abierto = false, onCerrar, onCreado }) => {
   const [descripcionEvento, setDescripcionEvento] = useState('');
   const [puntosEvento, setPuntosEvento] = useState('');
   const [multiplicadorEvento, setMultiplicadorEvento] = useState('');
-  const [periodoEvento, setPeriodoEvento] = useState('');
-  const [renovacionEvento, setRenovacionEvento] = useState('');
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
 
   const [nombreError, setNombreError] = useState(false);
   const [descripcionError, setDescripcionError] = useState(false);
   const [puntosError, setPuntosError] = useState(false);
   const [multiplicadorError, setMultiplicadorError] = useState(false);
-  const [periodoError, setPeriodoError] = useState(false);
-  const [renovacionError, setRenovacionError] = useState(false);
 
   const resetearCampos = () => {
     setNombreEvento('');
     setDescripcionEvento('');
     setPuntosEvento('');
     setMultiplicadorEvento('');
-    setPeriodoEvento('');
-    setRenovacionEvento('');
     setMostrarAlerta(false);
   };
 
@@ -47,8 +41,6 @@ const ModalCrearEvento = ({ abierto = false, onCerrar, onCreado }) => {
     setDescripcionError(false);
     setPuntosError(false);
     setMultiplicadorError(false);
-    setPeriodoError(false);
-    setRenovacionError(false);
   };
 
   const validarCampos = () => {
@@ -68,12 +60,6 @@ const ModalCrearEvento = ({ abierto = false, onCerrar, onCreado }) => {
 
     if (multiplicadorEvento === '' || multiplicadorEvento < 0) {
       setMultiplicadorError(true);
-      setMostrarAlerta(true);
-      errores = true;
-    }
-
-    if (renovacionEvento === '') {
-      setRenovacionError(true);
       setMostrarAlerta(true);
       errores = true;
     }
@@ -106,8 +92,8 @@ const ModalCrearEvento = ({ abierto = false, onCerrar, onCreado }) => {
       descripcion: descripcionEvento.trim(),
       puntos: parseFloat(puntosEvento),
       multiplicador: parseFloat(multiplicadorEvento),
-      periodoRenovacion: periodoEvento.trim(),
-      renovacion: renovacionEvento,
+      periodoRenovacion: "Mensual",
+      renovacion: false
     });
 
     // Notificar que se ha creado exitosamente
@@ -146,12 +132,6 @@ const ModalCrearEvento = ({ abierto = false, onCerrar, onCreado }) => {
         multiplicadorEvento={multiplicadorEvento}
         setMultiplicadorEvento={setMultiplicadorEvento}
         multiplicadorError={multiplicadorError}
-        periodoEvento={periodoEvento}
-        setPeriodoEvento={setPeriodoEvento}
-        periodoError={periodoError}
-        renovacionEvento={renovacionEvento}
-        setRenovacionEvento={setRenovacionEvento}
-        renovacionError={renovacionError}
         mostrarAlerta={mostrarAlerta}
         setMostrarAlerta={setMostrarAlerta}
       />

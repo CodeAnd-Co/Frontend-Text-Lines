@@ -8,7 +8,6 @@ import CampoSelect from '../../Atomos/CampoSelect';
 // Constantes para mensajes y límites
 const LIMITE_NOMBRE = 100;
 const LIMITE_DESCRIPCION = 300;
-const LIMITE_PERIODO = 50;
 const MENSAJE_LIMITE = 'Máximo caracteres';
 
 const FormularioCrearEvento = ({
@@ -24,12 +23,6 @@ const FormularioCrearEvento = ({
   multiplicadorEvento,
   setMultiplicadorEvento,
   multiplicadorError = false,
-  periodoEvento,
-  setPeriodoEvento,
-  periodoError = false,
-  renovacionEvento,
-  setRenovacionEvento,
-  renovacionError = false,
   mostrarAlerta,
   setMostrarAlerta,
 }) => {
@@ -60,12 +53,6 @@ const FormularioCrearEvento = ({
       setMultiplicadorEvento(valor);
     }
   };
-  
-  // Manejar el cambio de periodo
-  const manejarCambioPeriodo = (evento) => setPeriodoEvento(evento.target.value);
-
-  // Manejar el cambio de renovación
-  const manejarCambioRenovacion = (evento) => setRenovacionEvento(evento.target.value);
 
   return (
     <>
@@ -118,34 +105,6 @@ const FormularioCrearEvento = ({
           error={multiplicadorError}
         />
       </Box>
-      <Box display={'grid'} gridTemplateColumns={'repeat(2, 1fr)'} gap={2}>
-        <CampoTexto
-          label={'Periodo de Renovación'}
-          fullWidth
-          type={'text'}
-          value={periodoEvento}
-          onChange={manejarCambioPeriodo}
-          inputProps={{ maxLength: LIMITE_PERIODO }}
-          helperText={`${periodoEvento.length}/${LIMITE_PERIODO} - ${MENSAJE_LIMITE}`}
-          sx={{ mb: 2 }}
-          error={periodoError}
-        />
-        <CampoSelect
-          label={'Renovación Automática'}
-          fullWidth
-          required
-          value={renovacionEvento}
-          onChange={manejarCambioRenovacion}
-          options={[
-            { value: true, label: 'Sí' },
-            { value: false, label: 'No' },
-          ]}
-          placeholder={'Selecciona una opción'}
-          sx={{ mb: 2 }}
-          error={renovacionError}
-        />
-      </Box>
-
       {mostrarAlerta && (
         <Alerta
           tipo='warning'

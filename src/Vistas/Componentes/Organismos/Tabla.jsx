@@ -112,6 +112,11 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => {
     '& .MuiDataGrid-columnHeader, & .MuiDataGrid-cell': {
       outline: 'none',
     },
+
+    // Ocultar el separador de redimensionamiento de columnas
+    '& .MuiDataGrid-columnSeparator': {
+      display: 'none',
+    },
   };
 });
 
@@ -139,6 +144,7 @@ const Tabla = ({
       onRowClick={onRowClick}
       checkboxSelection={checkboxSelection}
       disableRowSelectionOnClick={disableRowSelectionOnClick}
+      disableColumnResize={true} // Esta prop deshabilita el redimensionamiento
       onRowSelectionModelChange={(seleccion) => {
         onRowSelectionModelChange(seleccion);
       }}

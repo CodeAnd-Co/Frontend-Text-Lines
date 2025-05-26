@@ -97,6 +97,8 @@ const {
   eliminarUsuarios,
   manejarVerificar2FA,
   manejarCerrarModal2FA,
+  codigo2FA,          
+  setCodigo2FA 
 } = useEliminarUsuarios(setAlerta, recargar);
 
   useEffect(() => {}, [usuariosAEliminar]);
@@ -340,6 +342,8 @@ const {
           onConfirmar={manejarVerificar2FA}
           cargando={cargando2FA}
           error={error2FA}
+          codigo={codigo2FA}
+          setCodigo={setCodigo2FA}
         />
 
         <div style={{ marginTop: 20, height: 650, width: '100%' }}>

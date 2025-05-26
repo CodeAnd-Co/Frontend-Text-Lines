@@ -5,7 +5,7 @@ import Texto from '@Atomos/Texto.jsx';
 import Chip from '@Atomos/Chip';
 import Tabla from '@Organismos/Tabla';
 
-const InfoProducto = ({detalleProducto}) => {
+const InfoProducto = ({detalleProducto, imagenProducto}) => {
 
   const tema = useTheme()
   const colores = tokens(tema.palette.mode)
@@ -20,7 +20,7 @@ const InfoProducto = ({detalleProducto}) => {
   };
 
   return <>
-    <Grid container spacing={6} wrap='nowrap'>
+    <Grid container spacing={9} wrap='nowrap'>
       {/*Información General*/}
       <Grid >
         <Box sx={{maxWidth: '100%'}}>
@@ -95,6 +95,16 @@ const InfoProducto = ({detalleProducto}) => {
         </Box>
 
       </Grid>
+
+      <Grid>
+        <Box sx={{maxWidth: '100%'}} >
+          <Texto variant={'subtitle1'} sx={{fontWeight: 'bold', mb: 3}} >
+            IMAGEN DEL PRODUCTO
+          </Texto>
+          <img src={imagenProducto} width={200} height={200}/>
+        </Box>
+      </Grid>
+
     </Grid>
 
     <Texto variant='subtitle1' sx={{fontWeight: 'bold', mb: 3}}>

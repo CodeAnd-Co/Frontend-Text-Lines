@@ -29,6 +29,7 @@ const ListaProductos = () => {
   const [alerta, setAlerta] = useState(null);
   const [openModalEliminar, setAbrirPopUp] = useState(false);
   const [abrirModalDetalle, setAbrirModalDetalle] = useState(false);
+  const [imagenProducto, setImagenProducto] = useState('')
 
   const {
     detalleProducto,
@@ -234,6 +235,7 @@ const ListaProductos = () => {
             }}
             onRowClick={(parametros) => {
               setProductoDetalleSeleccionado(parametros.row.id);
+              setImagenProducto(parametros.row.urlImagen)
               setAbrirModalDetalle(true);
             }}
           />
@@ -265,6 +267,7 @@ const ListaProductos = () => {
           onClose={() => setAbrirModalDetalle(false)}
           titulo={detalleProducto?.nombreComun || 'Cargando...'}
           tituloVariant='h4'
+          customWidth={750}
           botones={[
             {
               label: 'Editar',
@@ -288,7 +291,7 @@ const ListaProductos = () => {
           ) : errorDetalle ? (
             <p>Error al cargar la información del producto: {errorDetalle}</p>
           ) : (
-            <InfoProducto detalleProducto={detalleProducto} />
+            <InfoProducto detalleProducto={detalleProducto} imagenProducto={imagenProducto}/>
           )}
         </ModalFlotante>
       )}

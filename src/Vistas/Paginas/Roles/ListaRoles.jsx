@@ -14,6 +14,7 @@ import Alerta from '@Moleculas/Alerta';
 import PopUp from '@Moleculas/PopUp';
 import { useEliminarRol } from '@Hooks/Roles/useEliminarRol';
 import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
+import ModalDetalleRol from '@Organismos/ModalDetalleRol';
 
 const estiloImagenLogo = { marginRight: '1rem' };
 // ID del superusuario que no debe ser eliminado
@@ -29,6 +30,8 @@ const ListaRoles = () => {
 
   const MENSAJE_POPUP_ELIMINAR = '¿Estás seguro de que deseas eliminar los roles seleccionados?';
 
+  const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
+  const [rolSeleccionado, setRolSeleccionado] = useState(null);
   const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
   const [alerta, setAlerta] = useState(null);
   const { eliminar } = useEliminarRol();
@@ -57,7 +60,7 @@ const ListaRoles = () => {
   };
 
   const verificarSeleccion = (seleccion) => {
-      const IDS_PROTEGIDOS = [SUPERUSER_ID, SUPERVISOR_ID, EMPLEADO_ID];
+    const IDS_PROTEGIDOS = [SUPERUSER_ID, SUPERVISOR_ID, EMPLEADO_ID];
     const seleccionSinSuperuser = seleccion.filter((id) => !IDS_PROTEGIDOS.includes(Number(id)));
 
     if (seleccion.length !== seleccionSinSuperuser.length) {
@@ -117,7 +120,7 @@ const ListaRoles = () => {
       console.error('Error al eliminar roles:', error);
       setAlerta({
         tipo: 'error',
-         mensaje: error.message || 'Ocurrió un error al eliminar los roles. Puedes intentarlo de nuevo.',
+        mensaje: error.message || 'Ocurrió un error al eliminar los roles. Puedes intentarlo de nuevo.',
         icono: true,
         cerrable: true,
         centradoInferior: true,
@@ -191,8 +194,8 @@ const ListaRoles = () => {
           if (seleccionFiltrada.length > 0) {
             setAbrirPopupEliminar(true);
           } else if (
-            seleccionFiltrada.length === 0 
-              && seleccionados.some(id => IDS_PROTEGIDOS.includes(Number(id)))
+            seleccionFiltrada.length === 0
+            && seleccionados.some(id => IDS_PROTEGIDOS.includes(Number(id)))
           ) {
             setAlerta({
               tipo: 'warning',
@@ -277,6 +280,10 @@ const ListaRoles = () => {
             loading={cargando}
             disableRowSelectionOnClick={true}
             checkboxSelection
+            onRowClick={(params) => {
+              setRolSeleccionado(params.id);
+              setModalDetalleAbierto(true);
+            }}
             onRowSelectionModelChange={(seleccion) => {
               const ids = Array.isArray(seleccion) ? seleccion : Array.from(seleccion?.ids || []);
               setSeleccionados(ids);
@@ -295,6 +302,12 @@ const ListaRoles = () => {
           />
         </Box>
       </ContenedorLista>
+
+      <ModalDetalleRol
+        abierto={modalDetalleAbierto}
+        onCerrar={() => setModalDetalleAbierto(false)}
+        idRol={rolSeleccionado}
+      />
 
       <ModalCrearRol
         abierto={modalCrearAbierto}

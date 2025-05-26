@@ -64,7 +64,7 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
     const usados = new Set(idsVariantes);
     let nuevoId = 1;
     while (usados.has(nuevoId)) {
-      nuevoId++;
+      nuevoId += 1;
     }
 
     setVariantes((prev) => ({
@@ -76,7 +76,7 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       },
     }));
 
-    setIdsVariantes((prev) => [...prev, nuevoId].sort((a, b) => a - b));
+    setIdsVariantes((prev) => [...prev, nuevoId].sort((id1, id2) => id1 - id2));
 
     setImagenes((prev) => ({
       ...prev,
@@ -112,7 +112,7 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       // Reasignar los IDs para que sean consecutivos desde 1
       const idsRestantes = Object.keys(nuevasVariantes)
         .map(Number)
-        .sort((a, b) => a - b);
+        .sort((id1, id2) => id1 - id2);
 
       const variantesReordenadas = {};
       idsRestantes.forEach((oldId, idx) => {
@@ -130,7 +130,7 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       // Reasignar los IDs para que sean consecutivos desde 1
       const idsRestantes = Object.keys(nuevasImagenesVariantes)
         .map(Number)
-        .sort((a, b) => a - b);
+        .sort((id1, id2) => id1 - id2);
 
       const imagenesReordenadas = {};
       idsRestantes.forEach((oldId, idx) => {
@@ -147,8 +147,8 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       // Eliminar el ID y reasignar los IDs para que sean consecutivos desde 1
       const nuevosIds = prev
         .filter((id) => id !== idVariante)
-        .sort((a, b) => a - b)
-        .map((_, idx) => idx + 1);
+        .sort((id1, id2) => id1 - id2)
+        .map((unused, idx) => idx + 1);
       return nuevosIds;
     });
 
@@ -404,7 +404,6 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
         });
 
         setIdsVariantes([1]);
-        setSiguienteIdVariante(2);
         setSiguienteIdImagen(1);
 
         setImagenes({

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { tokens, themeSettings } from '@SRC/theme';
 import { styled } from '@mui/material/styles';
 
@@ -10,8 +10,6 @@ const spanishLocaleText = {
   columnMenuSortDesc: 'Ordenar descendente',
   columnMenuUnsort: 'Restablecer orden',
   columnMenuFilter: 'Filtrar',
-  columnMenuHideColumn: 'Ocultar columna',
-  columnMenuManageColumns: 'Mostrar columnas',
   noResultsOverlayLabel: 'No se encontraron resultados.',
   filterOperatorContains: 'Contiene',
   filterOperatorEquals: 'Es igual a',
@@ -140,16 +138,39 @@ const Tabla = ({
       pageSize={paginationModel.pageSize}
       onRowClick={onRowClick}
       checkboxSelection={checkboxSelection}
-      disableRowSelectionOnClick={disableRowSelectionOnClick}
+      disableSelectionOnClick={disableRowSelectionOnClick}
       onRowSelectionModelChange={(seleccion) => {
         onRowSelectionModelChange(seleccion);
       }}
       paginationModel={paginationModel}
       onPaginationModelChange={setPaginationModel}
-      pageSizeOptions={[5, 10]}
+      pageSizeOptions={[5]}
       pagination
       localeText={spanishLocaleText}
       rowHeight={70}
+      disableColumnSelector
+      slots={{
+        toolbar: GridToolbar,
+      }}
+      componentsProps={{
+        toolbar: {
+          showQuickFilter: true,
+          quickFilterProps: { debounceMs: 500 },
+          csvOptions: { disableToolbarButton: true },
+          printOptions: { disableToolbarButton: true },
+        },
+      }}
+      initialState={{
+        columns: {
+          columnVisibilityModel: {},
+        },
+        filter: {
+          filterModel: {
+            items: [],
+          },
+        },
+      }}
+      hideColumnsButton
     />
   );
 };
@@ -172,7 +193,7 @@ Tabla.propTypes = {
   onRowClick: PropTypes.func,
   checkboxSelection: PropTypes.bool,
   onRowSelectionModelChange: PropTypes.func,
-  disableRowSelectionOnClick: PropTypes.bool,
+  disableRowSelectionOnClick: PropTypes.func,
 };
 
 Tabla.defaultProps = {
@@ -180,7 +201,6 @@ Tabla.defaultProps = {
   pageSize: 5,
   onRowClick: () => {},
   onRowSelectionModelChange: () => {},
-  disableRowSelectionOnClick: true,
 };
 
 export default Tabla;

@@ -213,6 +213,7 @@ const ListaSetsProductos = () => {
               variant: 'contained',
               color: 'error',
               backgroundColor: colores.altertex[1],
+              construccion: true,
             },
             {
               label: 'SALIR',

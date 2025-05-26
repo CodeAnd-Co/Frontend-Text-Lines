@@ -205,7 +205,8 @@ const ListaGrupoEmpleados = () => {
               color: 'primary',
               backgroundColor: colores.altertex[1],
               onClick: () => console.log('Editar usuario'),
-              disabled: true, //disabled: !!errorDetalle,
+              //disabled: true, //disabled: !!errorDetalle,
+              construccion: true,
             },
             {
               label: 'Salir',

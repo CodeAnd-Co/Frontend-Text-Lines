@@ -70,6 +70,7 @@ const ListaClientes = () => {
     textoConfirmacion,
     botonDeshabilitado,
     onCambioTextoConfirmacion,
+    errorNombre,
   } = useClientes();
 
   const handleAbrirCrearCliente = () => setAbrirCliente(true);
@@ -86,8 +87,8 @@ const ListaClientes = () => {
       timer: 3000, // Muestra esta alerta por 3 segundos
       timerProgressBar: true,
     }).then(() => {
-        cerrarSesion();
-      });
+      cerrarSesion();
+    });
   };
 
   const manejarCerrarSesion = async () => {
@@ -205,6 +206,7 @@ const ListaClientes = () => {
         textoConfirmacion={textoConfirmacion}
         botonDeshabilitado={botonDeshabilitado}
         onCambioTextoConfirmacion={onCambioTextoConfirmacion}
+        errorNombre={errorNombre}
       />
 
       <DetalleClienteModal

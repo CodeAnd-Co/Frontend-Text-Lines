@@ -2,6 +2,12 @@ import { Box } from '@mui/material';
 import Icono from '@Atomos/Icono';
 import Texto from '@Atomos/Texto';
 
+// Constantes en español
+const TEXTOS = {
+  AGREGAR_CLIENTE: 'Agregar cliente',
+};
+
+// Estilos
 const estiloTarjeta = {
   minWidth: { xs: '100%', sm: '250px', md: '300px' },
   maxWidth: '100%',
@@ -23,12 +29,17 @@ const estiloTarjetaAgregar = {
     backgroundColor: 'rgba(15, 139, 241, 0.38)',
     transform: 'scale(1.03)',
   },
+  height: '100%', // Para que tenga la misma altura que las otras tarjetas
+  minHeight: '150px', // Altura mínima para que se vea bien
 };
 
-export const AgregarClienteTarjeta = () => {
+export const AgregarClienteTarjeta = ({ handleAbrirCrearCliente }) => {
   const handleAgregarCliente = () => {
-    console.log('Agregar cliente');
-    // Aquí iría la lógica para agregar un cliente
+    if (handleAbrirCrearCliente) {
+      handleAbrirCrearCliente(); // Llama a la función pasada como prop
+    } else {
+      console.error('handleAbrirCrearCliente no está definido');
+    }
   };
 
   return (
@@ -37,11 +48,14 @@ export const AgregarClienteTarjeta = () => {
       sx={{ ...estiloTarjeta, ...estiloTarjetaAgregar }}
       role='button'
       tabIndex={0}
+      aria-label={TEXTOS.AGREGAR_CLIENTE}
     >
       <Icono nombre='Add' size='large' />
       <Texto variant='button' sx={{ mt: 1 }}>
-        Agregar cliente
+        {TEXTOS.AGREGAR_CLIENTE}
       </Texto>
     </Box>
   );
 };
+
+export default AgregarClienteTarjeta;

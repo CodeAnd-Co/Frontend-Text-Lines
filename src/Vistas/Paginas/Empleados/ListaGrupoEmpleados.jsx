@@ -14,6 +14,7 @@ import { PERMISOS } from '@Constantes/permisos';
 import InfoGrupoEmpleados from '@Moleculas/GrupoEmpleadosInfo';
 import { useGrupoEmpleadosId } from '@Hooks/Empleados/useLeerGrupoEmpleados';
 import ModalFlotante from '@Organismos/ModalFlotante';
+import ModalCrearGrupoEmpleado from '@Organismos/ModalCrearGrupoEmpleado';
 import InfoGrupoEmpleadosEditable from '@Moleculas/GrupoEmpleadosInfoEditable';
 
 const ListaGrupoEmpleados = () => {
@@ -24,6 +25,7 @@ const ListaGrupoEmpleados = () => {
   const MENSAJE_POPUP_ELIMINAR =
     '¿Estás seguro de que deseas eliminar los grupos seleccionados? Esta acción no se puede deshacer.';
 
+  const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
   const [gruposSeleccionados, setGruposSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
   const { eliminar } = useEliminarGrupoEmpleados();
@@ -40,7 +42,6 @@ const ListaGrupoEmpleados = () => {
   const manejarCancelarEliminar = () => {
     setAbrirPopUpEliminar(false);
   };
-
   const manejarConfirmarEliminar = async () => {
     try {
       await eliminar(gruposSeleccionados);
@@ -85,17 +86,24 @@ const ListaGrupoEmpleados = () => {
     },
   ];
 
-  const filas = grupos.map((grupo) => ({
-    id: grupo.idGrupo,
-    nombre: grupo.geNombre,
-    descripcion: grupo.descripcion,
-    totalEmpleados: grupo.totalEmpleados,
-  }));
+  const filas = Array.isArray(grupos)
+    ? grupos.map((grupo) => ({
+        id: grupo.idGrupo,
+        nombre: grupo.geNombre,
+        descripcion: grupo.descripcion,
+        idSetProducto: grupo.idSetProducto,
+        setProducto: grupo.spNombre,
+        totalEmpleados: grupo.totalEmpleados,
+      }))
+    : [];
+
+  const handleAbrirModalCrear = () => setModalCrearAbierto(true);
+  const handleCerrarModalCrear = () => setModalCrearAbierto(false);
 
   const botones = [
     {
       label: 'Añadir',
-      onClick: () => console.log('Añadir'),
+      onClick: handleAbrirModalCrear,
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
@@ -122,6 +130,17 @@ const ListaGrupoEmpleados = () => {
     },
   ];
 
+  const manejarGrupoCreadoExitosamente = () => {
+    refetch(); // Recarga la lista de grupos
+    setAlerta({
+      tipo: 'success',
+      mensaje: 'Grupo de empleados creado correctamente.',
+      icono: true,
+      cerrable: true,
+      centradoInferior: true,
+    });
+  };
+
   return (
     <>
       <ContenedorLista
@@ -136,6 +155,7 @@ const ListaGrupoEmpleados = () => {
             rows={filas}
             loading={cargando}
             checkboxSelection
+            disableRowSelectionOnClick={true}
             onRowSelectionModelChange={(selectionModel) => {
               const ids = Array.isArray(selectionModel)
                 ? selectionModel
@@ -149,6 +169,12 @@ const ListaGrupoEmpleados = () => {
           />
         </Box>
       </ContenedorLista>
+
+      <ModalCrearGrupoEmpleado
+        abierto={modalCrearAbierto}
+        onCerrar={handleCerrarModalCrear}
+        onCreado={manejarGrupoCreadoExitosamente}
+      />
       {alerta && (
         <Alerta
           tipo={alerta.tipo}
@@ -188,7 +214,7 @@ const ListaGrupoEmpleados = () => {
               label: 'Salir',
               variant: 'outlined',
               color: 'primary',
-              outlineColor: colores.primario[10],
+              outlineColor: colores.primario[1],
               onClick: () => setModalDetalleAbierto(false),
             },
           ]}

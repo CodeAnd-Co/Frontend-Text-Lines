@@ -86,14 +86,7 @@ const ListaEventos = () => {
       size: 'large',
       backgroundColor: colores.altertex[1],
       onClick: () => console.log('Añadir'),
-    },
-    {
-      variant: 'outlined',
-      label: 'Editar',
-      //onClick: () => console.log('Editar'),
-      color: 'primary',
-      size: 'large',
-      outlineColor: colores.primario[10],
+      construccion: true,
     },
     {
       label: 'Eliminar',
@@ -134,6 +127,7 @@ const ListaEventos = () => {
             columns={columnas}
             rows={filas}
             loading={cargando}
+            disableRowSelectionOnClick={true}
             checkboxSelection
             onRowSelectionModelChange={(selectionModel) => {
               const ids = Array.isArray(selectionModel)
@@ -165,12 +159,13 @@ const ListaEventos = () => {
               color: 'error',
               backgroundColor: colores.altertex[1],
               onClick: () => console.log('Editar Evento'),
+              disabled: true, //disabled: !!errorDetalle,
             },
             {
               label: 'SALIR',
               variant: 'outlined',
               color: 'primary',
-              outlineColor: colores.primario[10],
+              outlineColor: colores.primario[1],
               onClick: () => setModalAbierto(false),
             },
           ]}

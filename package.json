@@ -26,12 +26,17 @@
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.7",
     "js-cookie": "^3.0.5",
+    "papaparse": "^5.5.2",
+    "nodemon": "^3.1.10",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-dropzone": "^14.3.8",
     "react-pro-sidebar": "^0.7.1",
     "react-router-dom": "^7.2.0",
     "serve": "^14.2.4",
     "styled-components": "^6.1.15",
+    "sweetalert2": "^11.21.0",
+    "sweetalert2-react-content": "^5.1.0",
     "tailwindcss": "^4.0.9"
   },
   "devDependencies": {

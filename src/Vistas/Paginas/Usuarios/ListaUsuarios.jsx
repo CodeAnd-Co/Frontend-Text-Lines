@@ -1,6 +1,3 @@
-//RF02 Super Administrador Consulta Lista de Usuarios - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF2
-//RF05 Super Administrador Consulta Lista de Usuarios - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF5
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FormularioCrearUsuario from '@Organismos/Formularios/FormularioCrearUsuario';
@@ -11,14 +8,19 @@ import Tabla from '@Organismos/Tabla';
 import Chip from '@Atomos/Chip';
 import { useConsultarListaUsuarios } from '@Hooks/Usuarios/useConsultarListaUsuarios';
 import { useEliminarUsuarios } from '@Hooks/Usuarios/useEliminarUsuarios';
+import { useConsultarRoles } from '@Hooks/Roles/useConsultarRoles';
 import { RUTAS } from '@Constantes/rutas';
-import { useMode, tokens } from '@SRC/theme';
+import { tokens } from '@SRC/theme';
 import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
 import { useUsuarioId } from '@Hooks/Usuarios/useLeerUsuario';
 import InfoUsuario from '@Moleculas/InfoUsuario';
 import PopUp from '@Moleculas/PopUp';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
+import { useTheme } from '@mui/material';
+import { useActivar2FA } from '@Hooks/Usuarios/useActivar2FA';
+import Activar2FAModal from '@Organismos/Activar2FAModal';
+import Verificar2FAModal from '@Moleculas/Verificar2FAModal';
 
 const estiloImagenLogo = { marginRight: '1rem' };
 
@@ -37,11 +39,12 @@ const estiloImagenLogo = { marginRight: '1rem' };
  */
 
 const ListaUsuarios = () => {
-  const [theme] = useMode();
+  const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const navigate = useNavigate();
   const [alerta, setAlerta] = useState(null);
   const { usuarios, cargando, error, recargar } = useConsultarListaUsuarios();
+  const { roles} = useConsultarRoles();
   const { usuario: usuarioAutenticado } = useAuth();
   const [modalCrearUsuarioAbierto, setModalCrearUsuarioAbierto] = useState(false);
   const [idUsuarioSeleccionado, setIdUsuarioSeleccionado] = useState(null);
@@ -52,6 +55,28 @@ const ListaUsuarios = () => {
     error: errorDetalle,
   } = useUsuarioId(modalDetalleAbierto ? idUsuarioSeleccionado : null);
 
+    const [modal2FAAbierto, setModal2FAAbierto] = useState(false);
+    const { qrCode, cargando: cargandoQR, error: errorQR, setQrCode } = useActivar2FA();
+
+    /** const manejarActivar2FA = async () => {
+      await activar2FA({
+        idUsuario: usuarioAutenticado?.idUsuario,
+        nombre: usuarioAutenticado?.nombre,
+        correo: usuarioAutenticado?.correo,
+      });
+      setModal2FAAbierto(true);
+    };
+    */
+  const opcionesRol = roles.map((rol) => ({
+    value: rol.idRol, 
+    label: rol.nombre,
+  }));
+
+  const obtenerIdRolPorNombre = (nombreRol) => {
+    const rolEncontrado = roles.find((rol) => rol.nombre === nombreRol);
+    return rolEncontrado ? rolEncontrado.idRol : '';
+  };
+
   const redirigirAInicio = () => {
     navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE, { replace: true });
   };
@@ -60,15 +85,21 @@ const ListaUsuarios = () => {
     await cerrarSesion();
   };
   const { cerrarSesion } = useAuth();
-
-  const {
-    usuariosAEliminar,
-    abrirPopUp,
-    manejarSeleccion,
-    manejarAbrirPopUp,
-    manejarCerrarPopUp,
-    eliminarUsuarios,
-  } = useEliminarUsuarios(setAlerta, recargar);
+const {
+  usuariosAEliminar,
+  abrirPopUp,
+  abrirModal2FA,
+  error2FA,
+  cargando2FA,
+  manejarSeleccion,
+  manejarAbrirPopUp,
+  manejarCerrarPopUp,
+  eliminarUsuarios,
+  manejarVerificar2FA,
+  manejarCerrarModal2FA,
+  codigo2FA,          
+  setCodigo2FA 
+} = useEliminarUsuarios(setAlerta, recargar);
 
   useEffect(() => {}, [usuariosAEliminar]);
 
@@ -154,7 +185,7 @@ const ListaUsuarios = () => {
       },
     },
     { field: 'correo', headerName: 'Correo electrónico', flex: 1 },
-    { field: 'telefono', headerName: 'Telefono', flex: 1 },
+    { field: 'telefono', headerName: 'Teléfono', flex: 1 },
   ];
 
   const rows = Object.values(
@@ -210,14 +241,23 @@ const ListaUsuarios = () => {
     },
     {
       label: 'Eliminar',
-      onClick: manejarAbrirPopUp,
+      onClick: () => manejarAbrirPopUp(usuarioAutenticado),
       variant: 'contained',
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
       disabled: !usuarioAutenticado?.permisos?.includes(PERMISOS.ELIMINAR_USUARIO),
     },
-  ];
+    /** {
+      label: 'Activar 2FA',
+      onClick: manejarActivar2FA,
+      variant: 'contained',
+      color: 'success',
+      size: 'large',
+      backgroundColor: colores.verde[1],
+      disabled: !usuarioAutenticado?.permisos?.includes(PERMISOS.ACTIVAR_2FA_SUPERADMIN),
+    },
+  */];
 
   const redirigirATienda = () => {
     navigate(RUTAS.SISTEMA_TIENDA.BASE, { replace: true });
@@ -225,9 +265,10 @@ const ListaUsuarios = () => {
 
   const botonesBarraAdministradora = [
     {
-      label: 'Atras',
+      label: 'Atrás',
       variant: 'outlined',
       color: 'secondary',
+      outlineColor: colores.altertex[1],
       size: 'large',
       onClick: redirigirAInicio,
     },
@@ -236,8 +277,7 @@ const ListaUsuarios = () => {
       variant: 'outlined',
       color: 'secondary',
       size: 'large',
-      onClick: () =>
-        navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION),
+      construccion: true,
     },
     {
       label: 'Cerrar sesión',
@@ -277,6 +317,7 @@ const ListaUsuarios = () => {
             cerrable
             duracion={4000}
             onClose={() => setAlerta(null)}
+            centradoInferior
           />
         )}
         {modalCrearUsuarioAbierto && (
@@ -294,6 +335,15 @@ const ListaUsuarios = () => {
           dialogo={`¿Estás seguro de que deseas eliminar ${usuariosAEliminar.ids.size} usuario(s) seleccionado(s)?`}
           labelCancelar='Cancelar'
           labelConfirmar='Eliminar'
+        />
+        <Verificar2FAModal
+          abierto={abrirModal2FA}
+          onCerrar={manejarCerrarModal2FA}
+          onConfirmar={manejarVerificar2FA}
+          cargando={cargando2FA}
+          error={error2FA}
+          codigo={codigo2FA}
+          setCodigo={setCodigo2FA}
         />
 
         <div style={{ marginTop: 20, height: 650, width: '100%' }}>
@@ -314,6 +364,17 @@ const ListaUsuarios = () => {
           />
         </div>
 
+        <Activar2FAModal
+          abierto={modal2FAAbierto}
+          onCerrar={() => {
+            setModal2FAAbierto(false);
+            setQrCode(null);
+          }}
+          qrCode={qrCode}
+          cargando={cargandoQR}
+          error={errorQR}
+        />
+
         {modalDetalleAbierto && (
           <ModalFlotante
             open={modalDetalleAbierto}
@@ -328,7 +389,7 @@ const ListaUsuarios = () => {
                 color: 'primary',
                 backgroundColor: colores.altertex[1],
                 onClick: () => console.log('Editar usuario'),
-                disabled: !!errorDetalle,
+                disabled: true, 
               },
               {
                 label: 'SALIR',
@@ -342,6 +403,7 @@ const ListaUsuarios = () => {
             {cargandoDetalle ? (
               <p>Cargando usuario...</p>
             ) : usuario ? (
+              <>
               <InfoUsuario
                 modoEdicion={false}
                 cliente={
@@ -352,7 +414,7 @@ const ListaUsuarios = () => {
                         .join(', ')
                     : 'Sin cliente asignado'
                 }
-                rol={usuario.rol}
+                rol={obtenerIdRolPorNombre(usuario.rol)}
                 datosContacto={{
                   email: usuario.correoElectronico,
                   telefono: usuario.numeroTelefono,
@@ -368,12 +430,9 @@ const ListaUsuarios = () => {
                   shape: 'circular',
                   backgroundColor: 'rgba(24, 50, 165, 1)',
                 }}
-                opcionesRol={[
-                  { value: 'Super Administrador', label: 'Administrador' },
-                  { value: 'Supervisor', label: 'Supervisor' },
-                  { value: 'Empleado', label: 'Usuario' },
-                ]}
+                opcionesRol={opcionesRol}
               />
+              </>
             ) : (
               <p>No se encontró información del usuario.</p>
             )}

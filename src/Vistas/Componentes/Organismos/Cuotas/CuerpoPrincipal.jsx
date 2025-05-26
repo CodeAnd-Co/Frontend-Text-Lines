@@ -1,9 +1,11 @@
 import TarjetaRenovacion from '@Organismos/Cuotas/TarjetaRenovacion';
 import ProductosConCuotas from '@Organismos/Cuotas/ProductosConCuotas';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import GrupoBotones from '@Moleculas/GrupoBotones';
 import PopUp from '@Moleculas/PopUp';
 import { useNavigate } from 'react-router-dom';
+import { tokens } from '@SRC/theme';
+import { useState } from 'react';
 
 const CuerpoPrincipal = ({
   periodoRenovacion,
@@ -14,10 +16,14 @@ const CuerpoPrincipal = ({
   cargando,
   enviarCuota,
   setCuotas,
+  cuotas,
   abrirConfirmacion,
   setAbrirConfirmacion,
 }) => {
+  const tema = useTheme();
+  const colores = tokens(tema.palette.mode);
   const navegar = useNavigate();
+  const [errorCuotas, setErrorCuotas] = useState('');
 
   const manejarCancelar = () => {
     setAbrirConfirmacion(true);
@@ -38,21 +44,35 @@ const CuerpoPrincipal = ({
       [id.toString()]: valor,
     }));
   };
+
+  // Nueva función para validar antes de enviar
+  const manejarCrear = () => {
+    const cuotasInvalidas = Object.values(cuotas).some((valor) => !/^[1-9]\d*$/.test(valor));
+    if (cuotasInvalidas) {
+      setErrorCuotas('Todas las cuotas deben ser números enteros mayores a 0');
+      return;
+    }
+    setErrorCuotas('');
+    enviarCuota();
+  };
+
+  const cuotasInvalidas = Object.values(cuotas).some((valor) => !/^[1-9]\d*$/.test(valor));
+
   const botonesEnviarCancelar = [
     {
       label: 'Cancelar',
+      variant: 'contained',
+      color: 'error',
       onClick: manejarCancelar,
-      variant: 'outlined',
-      color: 'secondary',
-      sx: { width: '120px', height: '52px' },
+      backgroundColor: colores.altertex[1],
     },
     {
-      label: cargando ? 'Enviando...' : 'Enviar',
-      onClick: enviarCuota,
-      disabled: cargando,
+      label: cargando ? 'Creando...' : 'Crear',
       variant: 'contained',
-      color: 'primary',
-      sx: { width: '120px', height: '52px' },
+      onClick: manejarCrear,
+      disabled: cargando || cuotasInvalidas,
+      color: 'error',
+      backgroundColor: colores.altertex[1],
     },
   ];
 
@@ -73,8 +93,16 @@ const CuerpoPrincipal = ({
           margin: 1,
         }}
       >
-        <ProductosConCuotas productos={productos} manejarCambioCuota={manejarCambioCuota} />
+        <ProductosConCuotas
+          productos={productos}
+          cuotas={cuotas}
+          manejarCambioCuota={manejarCambioCuota}
+        />
       </Box>
+
+      {errorCuotas && (
+        <Box sx={{ color: 'red', marginLeft: 5, marginBottom: 2 }}>{errorCuotas}</Box>
+      )}
 
       <Box sx={{ display: 'flex', width: '95%', justifyContent: 'flex-end', margin: 5 }}>
         <GrupoBotones buttons={botonesEnviarCancelar} />

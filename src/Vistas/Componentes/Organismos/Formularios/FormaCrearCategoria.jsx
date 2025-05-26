@@ -14,6 +14,11 @@ const columns = [
 /**
  * @see [RF[46] Consulta lista de categorías](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF46)
  */
+
+const LIMITE_NOMBRE = 50;
+const LIMITE_DESCRIPCION = 150;
+const MENSAJE_LIMITE = 'Máximo caracteres';
+
 const FormaCrearCategorias = ({
   nombreCategoria,
   setNombreCategoria,
@@ -46,6 +51,18 @@ const FormaCrearCategorias = ({
     }
   };
 
+  const handleFilaSeleccion = (itemSeleccion) => {
+    const ids = Array.isArray(itemSeleccion) ? itemSeleccion : Array.from(itemSeleccion?.ids || []);
+
+    const nuevasFilas = ids
+      .map((id) => rows.find((row) => row.id === id))
+      .filter((fila) => fila && !productos.some((producto) => producto.id === fila.id));
+
+    if (nuevasFilas.length > 0) {
+      setProductos((prev) => [...prev, ...nuevasFilas]);
+    }
+  };
+
   return (
     <>
       <CampoTexto
@@ -53,7 +70,17 @@ const FormaCrearCategorias = ({
         fullWidth
         type={'text'}
         value={nombreCategoria}
-        onChange={(evento) => setNombreCategoria(evento.target.value)}
+        onChange={(evento) => {
+          if (evento.target.value.trim() !== '') {
+            setNombreCategoria(evento.target.value.slice(0, LIMITE_NOMBRE));
+          } else if (nombreCategoria !== '') {
+            setNombreCategoria('');
+          }
+        }}
+        inputProps={{ maxLength: LIMITE_NOMBRE }}
+        helperText={`${nombreCategoria.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`}
+        required
+        sx={{ mb: 2 }}
       />
 
       <ProductosModal
@@ -64,6 +91,7 @@ const FormaCrearCategorias = ({
         paginacion={4}
         checkBox={true}
         onRowClick={handleClickFila}
+        onRowSeleccion={(ids) => handleFilaSeleccion(ids)}
       />
 
       <CampoTexto
@@ -71,7 +99,19 @@ const FormaCrearCategorias = ({
         fullWidth
         type={'text'}
         value={descripcionCategoria}
-        onChange={(evento) => setDescripcionCategoria(evento.target.value)}
+        onChange={(evento) => {
+          if (evento.target.value.trim() !== '') {
+            setDescripcionCategoria(evento.target.value.slice(0, LIMITE_DESCRIPCION));
+          } else if (descripcionCategoria !== '') {
+            setDescripcionCategoria('');
+          }
+        }}
+        inputProps={{ maxLength: LIMITE_DESCRIPCION }}
+        helperText={`${descripcionCategoria.length}/${LIMITE_DESCRIPCION} - ${MENSAJE_LIMITE}`}
+        required
+        sx={{ mt: 2 }}
+        multiline
+        rows={3}
       />
 
       {mostrarAlerta && (

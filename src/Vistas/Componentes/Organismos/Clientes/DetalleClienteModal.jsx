@@ -4,7 +4,7 @@ import Texto from '@Atomos/Texto';
 import PropTypes from 'prop-types';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
-import { Alert, Box } from '@mui/material'; // Añadir Box
+import Alerta from '@Moleculas/Alerta';
 
 export const DetalleClienteModal = ({
   open,
@@ -14,6 +14,7 @@ export const DetalleClienteModal = ({
   colores,
   onClose,
   onToggleEdicion,
+  onToggleEliminar,
   onChange,
   onImageChange,
   imagenSubiendo,
@@ -35,6 +36,12 @@ export const DetalleClienteModal = ({
         tituloVariant='h4'
         botones={[
           {
+            label: 'ELIMINAR',
+            variant: 'outlined',
+            outlineColor: colores.rojo[2],
+            onClick: onToggleEliminar,
+          },
+          {
             label: modoEdicion ? 'GUARDAR' : 'EDITAR',
             variant: 'contained',
             color: 'error',
@@ -44,21 +51,28 @@ export const DetalleClienteModal = ({
             disabled:
               !cliente
               || !usuario?.permisos?.includes(PERMISOS.ACTUALIZAR_CLIENTE)
-              || !!imagenError
-              || camposInvalidos,
+              || camposInvalidos
+              || imagenSubiendo,
           },
           {
             label: 'SALIR',
             variant: 'outlined',
-            outlineColor: colores.primario[10],
+            outlineColor: colores.altertex[1],
             onClick: onClose,
           },
         ]}
         errorPanel={
           imagenError && (
-            <Alert severity='error' sx={{ mt: 3, mb: 2 }}>
-              {imagenError}
-            </Alert>
+            // <Alert severity='error' sx={{ mt: 3, mb: 2 }}>
+            //   {imagenError}
+            // </Alert>
+            <Alerta
+              tipo='error'
+              mensaje={imagenError}
+              cerrable
+              duracion={2500}
+              sx={{ mb: 2, mt: 2 }}
+            />
           )
         }
       >
@@ -94,6 +108,7 @@ DetalleClienteModal.propTypes = {
   colores: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
   onToggleEdicion: PropTypes.func.isRequired,
+  onToggleEliminar: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onImageChange: PropTypes.func,
   imagenSubiendo: PropTypes.bool,

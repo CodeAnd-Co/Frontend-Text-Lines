@@ -9,21 +9,25 @@ const columns = [
   { field: 'nombre', headerName: 'Permiso', width: 250 },
 ];
 
+// Constantes para los límites de caracteres
+const LIMITE_NOMBRE = 50;
+const LIMITE_DESCRIPCION = 150;
+const MENSAJE_LIMITE = 'Máximo caracteres';
+
 const FormaCrearRol = ({
-  nombreRol,
-  setNombreRol,
-  descripcionRol,
-  setDescripcionRol,
-  setPermisosSeleccionados,
-  mostrarAlerta,
-  setMostrarAlerta,
-}) => {
+                         nombreRol,
+                         setNombreRol,
+                         descripcionRol,
+                         setDescripcionRol,
+                         setPermisosSeleccionados,
+                         erroresCampos = {},
+                         setErroresCampos,
+                       }) => {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
     const cargarPermisos = async () => {
       const permisos = await obtenerPermisos();
-      console.log('🟡 Permisos cargados:', permisos);
       setRows(permisos);
     };
     cargarPermisos();
@@ -37,29 +41,47 @@ const FormaCrearRol = ({
         fullWidth
         type='text'
         value={nombreRol}
-        onChange={(evento) => setNombreRol(evento.target.value)}
+        onChange={(evento) => {
+          setNombreRol(evento.target.value);
+          setErroresCampos((prev) => ({ ...prev, nombreRol: undefined }));
+        }}
+        error={Boolean(erroresCampos.nombreRol)}
+        helperText={erroresCampos.nombreRol || `${nombreRol.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`}
+        inputProps={{
+          maxLength: LIMITE_NOMBRE,
+        }}
       />
 
-      {/* TABLA PERMISOS */}
+      {/* TABLA DE PERMISOS */}
       <CustomDataGrid
         sx={{ width: '100%', height: '350px', marginTop: 2 }}
         columns={columns}
         rows={rows}
         pageSize={5}
+        disableRowSelectionOnClick={true}
         checkboxSelection
         onRowSelectionModelChange={(selectionModel) => {
           const ids = Array.isArray(selectionModel)
             ? selectionModel
             : Array.from(selectionModel?.ids || []);
 
-          console.log('🟣 IDs seleccionados:', ids);
-
           const seleccionados = rows.filter((permiso) => ids.includes(permiso.id));
-          console.log('🟣 Permisos seleccionados:', seleccionados);
 
           setPermisosSeleccionados(seleccionados);
+          setErroresCampos((prev) => ({ ...prev, permisosSeleccionados: undefined }));
         }}
       />
+
+      {/* ALERTA DE PERMISOS (debajo de la tabla, arriba de descripción) */}
+      {erroresCampos.permisosSeleccionados && (
+        <Alerta
+          tipo="warning"
+          mensaje={erroresCampos.permisosSeleccionados}
+          cerrable
+          duracion={8000}
+          sx={{ my: 2, mb: 2}}
+        />
+      )}
 
       {/* CAMPO: DESCRIPCIÓN */}
       <CampoTexto
@@ -68,19 +90,11 @@ const FormaCrearRol = ({
         type='text'
         value={descripcionRol}
         onChange={(evento) => setDescripcionRol(evento.target.value)}
+        helperText={`${descripcionRol.length}/${LIMITE_DESCRIPCION} - ${MENSAJE_LIMITE}`}
+        inputProps={{
+          maxLength: LIMITE_DESCRIPCION,
+        }}
       />
-
-      {/* ALERTA */}
-      {mostrarAlerta && (
-        <Alerta
-          tipo='warning'
-          mensaje='Completa todos los campos y selecciona al menos un permiso.'
-          cerrable
-          duracion={10000}
-          onClose={() => setMostrarAlerta(false)}
-          sx={{ mb: 2, mt: 2 }}
-        />
-      )}
     </>
   );
 };

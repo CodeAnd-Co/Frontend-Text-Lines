@@ -85,7 +85,7 @@ const ListaSetsProductos = () => {
             variant='filled'
             color={isActivo ? 'primary' : undefined}
             size='medium'
-            shape='cuadrada'
+            shape='circular'
             backgroundColor={isActivo ? undefined : '#f0f0f0'}
             textColor={isActivo ? undefined : '#000000'}
           />
@@ -120,14 +120,7 @@ const ListaSetsProductos = () => {
       size: 'large',
       backgroundColor: colores.altertex[1],
       onClick: () => console.log('Añadir'),
-    },
-    {
-      variant: 'outlined',
-      label: 'Editar',
-      onClick: () => console.log('Editar'),
-      color: 'primary',
-      size: 'large',
-      outlineColor: colores.primario[10],
+      construccion: true,
     },
     {
       label: 'Eliminar',
@@ -168,6 +161,7 @@ const ListaSetsProductos = () => {
             columns={columns}
             rows={rows}
             loading={cargando}
+            disableRowSelectionOnClick={true}
             checkboxSelection
             onRowClick={(params) => {
               setSetSeleccionado(params.row.datosCompletos);
@@ -219,12 +213,13 @@ const ListaSetsProductos = () => {
               variant: 'contained',
               color: 'error',
               backgroundColor: colores.altertex[1],
+              construccion: true,
             },
             {
               label: 'SALIR',
               variant: 'outlined',
               color: 'primary',
-              outlineColor: colores.primario[10],
+              outlineColor: colores.primario[1],
               onClick: () => setModalDetalleAbierto(false),
             },
           ]}

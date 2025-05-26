@@ -24,23 +24,41 @@ const InfoUsuario = ({
     <Box>
       <Grid container spacing={6} mb={4}>
         <Grid item xs={12} sm={6}>
-          <Box display='flex' alignItems='center' gap={25} mb={2}>
-            <Texto gutterBottom>
-              <strong>Cliente(s):</strong>{' '}
-              <span style={{ color: colores.texto[4], fontWeight: 500 }}>{cliente}</span>
-            </Texto>
+          <Box display='flex' alignItems='center' gap={25} mb={2} sx={{ width: '100%' }}>
+            <div
+              style={{
+                width: '300px', 
+                textAlign: 'left',
+                wordBreak: 'break-word',
+                overflowWrap: 'break-word',
+              }}
+            >
+              <Texto gutterBottom>
+                <strong>Cliente(s):</strong>{' '}
+                <span style={{ color: colores.texto[4], fontWeight: 500 }}>{cliente}</span>
+              </Texto>
+            </div>
 
             {estadoUsuario && (
-              <Chip
-                label={estadoUsuario.label}
-                color={estadoUsuario.color || 'default'}
-                shape={estadoUsuario.shape || 'cuadrada'}
-                backgroundColor={estadoUsuario.backgroundColor || theme.palette.background.default}
-                size='small'
-              />
+              <div
+                style={{
+                  width: '150px', // Ancho fijo absoluto
+                  display: 'flex',
+                  justifyContent: 'left',
+                }}
+              >
+                <Chip
+                  label={estadoUsuario.label}
+                  color={estadoUsuario.color || 'default'}
+                  shape={estadoUsuario.shape || 'cuadrada'}
+                  backgroundColor={
+                    estadoUsuario.backgroundColor || theme.palette.background.default
+                  }
+                  size='small'
+                />
+              </div>
             )}
           </Box>
-
           <Box sx={{ maxWidth: 220 }}>
             <CampoSelect
               label='Rol'
@@ -165,7 +183,7 @@ InfoUsuario.propTypes = {
   onChange: PropTypes.func,
   opcionesRol: PropTypes.arrayOf(
     PropTypes.shape({
-      value: PropTypes.string.isRequired,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       label: PropTypes.string.isRequired,
     })
   ),

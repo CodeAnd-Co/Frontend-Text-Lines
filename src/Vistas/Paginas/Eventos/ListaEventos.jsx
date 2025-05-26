@@ -58,15 +58,14 @@ const ListaEventos = () => {
         centradoInferior: true,
       });
       setAbrirCrear(false);
-    } catch {
+    } catch (error) {
       setAlerta({
         tipo: 'error',
-        mensaje: 'Ocurrió un error al crear el evento.',
+        mensaje: `Error al crear el evento: ${error.message || 'Ocurrió un error desconocido'}`,
         icono: true,
         cerrable: true,
         centradoInferior: true,
       });
-      
     }
   };
 

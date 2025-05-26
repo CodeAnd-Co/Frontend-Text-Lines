@@ -24,7 +24,6 @@ export class RepositorioCrearEvento {
       renovacion: evento.renovacion || false,
     }
 
-    console.log('Cuerpo de la solicitud:', body);
 
     try {
       const respuesta = await axios.post(RUTAS_API.EVENTOS.CREAR_EVENTO, body, {

@@ -133,14 +133,9 @@ const Tabla = ({
     pageSize: pageSize || 5,
   });
 
-  const dummyRows = Array.from({ length: 20 }, (_, i) => ({
-    id: i + 1,
-    col1: `Dato ${i + 1}`,
-  }));
-
   return (
     <StyledDataGrid
-      rows={dummyRows}
+      rows={rows}
       columns={columns}
       loading={loading}
       pageSize={paginationModel.pageSize}
@@ -152,7 +147,6 @@ const Tabla = ({
       }}
       paginationModel={paginationModel}
       onPaginationModelChange={setPaginationModel}
-      pageSizeOptions={[5, 10]}
       pagination
       localeText={spanishLocaleText}
       rowHeight={70}

@@ -32,8 +32,19 @@ const Verificar2FAModal = ({
   };
 
   return (
-    <Modal open={abierto} onClose={onCerrar}>
-      <Box sx={estiloModal}>
+      <Modal
+        open={abierto}
+        onClose={onCerrar}
+        slotProps={{
+          backdrop: {
+            sx: {
+              backdropFilter: 'blur(4px)',
+              backgroundColor: colores.acciones[2], 
+            },
+          },
+        }}
+      >
+        <Box sx={estiloModal}>
         <Typography variant="h6">Verificar en tu app de autenticación</Typography>
 
         <TextField

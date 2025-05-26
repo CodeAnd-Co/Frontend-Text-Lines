@@ -20,6 +20,7 @@ const spanishLocaleText = {
   filterOperatorAfter: 'Después de',
   filterOperatorOnOrAfter: 'En o después de',
   filterOperatorBefore: 'Antes de',
+  labelRowsPerPage: 'Filas por página:',
   filterOperatorOnOrBefore: 'En o antes de',
   filterOperatorIsEmpty: 'Está vacío',
   filterOperatorIsNotEmpty: 'No está vacío',
@@ -150,7 +151,6 @@ const Tabla = ({
       }}
       paginationModel={paginationModel}
       onPaginationModelChange={setPaginationModel}
-      pageSizeOptions={[5, 10]}
       pagination
       localeText={spanishLocaleText}
       rowHeight={70}

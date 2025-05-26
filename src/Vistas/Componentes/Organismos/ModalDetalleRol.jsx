@@ -37,54 +37,77 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
   }));
 
   return (
-    <ModalFlotante
-      open={abierto}
-      onClose={onCerrar}
-      onConfirm={onCerrar}
-      titulo="Detalles del Rol"
-      tituloVariant="h4"
-      customWidth={700}
-      botones={[
-        {
-          label: 'Salir',
-          variant: 'contained',
-          size: 'large',
-          color: 'error',
-          backgroundColor: colores.altertex[1],
-          onClick: onCerrar,
-        },
-      ]}
-    >
+    <>
       {error && (
+        <Box
+            sx={{
+                position: 'fixed',
+                bottom: '24px',  
+                left: '50%',
+                transform: 'translateX(-50%)',
+                zIndex: 1500,
+                width: 'calc(100% - 32px)',
+                maxWidth: 600,
+            }}
+        >
         <Alerta
-          tipo="error"
-          mensaje={error}
-          duracion={3000}
-          cerrable
-          onClose={() => {}}
+            tipo="error"
+            mensaje={error}
+            duracion={4000}
+            cerrable
+            onClose={() => {}}
         />
+        </Box>
       )}
 
-      {detalle && (
-        <>
+      <ModalFlotante
+        open={abierto}
+        onClose={onCerrar}
+        onConfirm={onCerrar}
+        titulo="Detalles del Rol"
+        tituloVariant="h4"
+        customWidth={800}
+        botones={[
+          {
+            label: 'Salir',
+            variant: 'contained',
+            size: 'large',
+            color: 'error',
+            backgroundColor: colores.altertex[1],
+            onClick: onCerrar,
+          },
+        ]}
+      >
+        {cargando && (
           <Typography variant="body1" sx={{ mb: 2 }}>
-            <strong>Rol:</strong> {detalle.nombre}
+            Cargando...
           </Typography>
-          <Typography variant="body1" sx={{ mb: 3 }}>
-            <strong>Número de usuarios asociados a este rol:</strong> {detalle.totalUsuarios}
-          </Typography>
+        )}
 
-          <Box sx={{ mb: 2 }}>
-            <Tabla
-              columns={columnas}
-              rows={filas}
-              loading={cargando}
-              disableRowSelectionOnClick
-            />
-          </Box>
-        </>
-      )}
-    </ModalFlotante>
+        {!cargando && detalle && (
+          <>
+            <Typography variant="body1" sx={{ mb: 2 }}>
+              <strong>Rol:</strong> {detalle.nombre}
+            </Typography>
+            <Typography variant="body1" sx={{ mb: 2 }}>
+              <strong>Descripción:</strong> {detalle.descripcion}
+            </Typography>
+            <Typography variant="body1" sx={{ mb: 3 }}>
+              <strong>Número de usuarios asociados a este rol:</strong> {detalle.totalUsuarios}
+            </Typography>
+
+            <Box sx={{ mb: 4 }}>
+              <Tabla
+                columns={columnas}
+                rows={filas}
+                loading={cargando}
+                disableRowSelectionOnClick
+              />
+            </Box>
+          </>
+        )}
+      </ModalFlotante>
+    </>
   );
 };
 

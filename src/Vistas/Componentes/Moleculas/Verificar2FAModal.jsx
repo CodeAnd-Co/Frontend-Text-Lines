@@ -39,7 +39,7 @@ const Verificar2FAModal = ({
           backdrop: {
             sx: {
               backdropFilter: 'blur(4px)',
-              backgroundColor: colores.acciones[2], // el mismo color translúcido que usas en ModalFlotante
+              backgroundColor: colores.acciones[2], 
             },
           },
         }}

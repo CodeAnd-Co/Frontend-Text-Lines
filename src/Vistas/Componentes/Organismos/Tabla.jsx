@@ -132,6 +132,12 @@ const Tabla = ({
     pageSize: pageSize || 5,
   });
 
+  const handleSelectionModelChange = (newSelection) => {
+    if (typeof onRowSelectionModelChange === 'function') {
+      onRowSelectionModelChange(newSelection);
+    }
+  };
+
   return (
     <StyledDataGrid
       rows={rows}
@@ -141,12 +147,10 @@ const Tabla = ({
       onRowClick={onRowClick}
       checkboxSelection={checkboxSelection}
       disableRowSelectionOnClick={disableRowSelectionOnClick}
-      onRowSelectionModelChange={(seleccion) => {
-        onRowSelectionModelChange(seleccion);
-      }}
+      onRowSelectionModelChange={handleSelectionModelChange}
       paginationModel={paginationModel}
       onPaginationModelChange={setPaginationModel}
-      pageSizeOptions={[5, 10]}
+      pageSizeOptions={[5]}
       pagination
       localeText={spanishLocaleText}
       rowHeight={70}
@@ -179,8 +183,9 @@ Tabla.defaultProps = {
   loading: false,
   pageSize: 5,
   onRowClick: () => {},
-  onRowSelectionModelChange: () => {},
-  disableRowSelectionOnClick: true,
+  onRowSelectionModelChange: undefined,
+  checkboxSelection: false,
+  disableRowSelectionOnClick: false,
 };
 
 export default Tabla;

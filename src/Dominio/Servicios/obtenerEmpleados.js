@@ -17,6 +17,7 @@ const obtenerEmpleados = async (clienteSeleccionado) => {
     );
     const filasFormateadas = respuesta.data.empleados.map((empleado) => ({
       id: empleado.idEmpleado,
+      correo: empleado.correoElectronico,
       nombre: empleado.nombreCompleto,
       area: empleado.areaTrabajo,
     }));

@@ -3,7 +3,7 @@ import CampoTexto from '@Atomos/CampoTexto';
 import { useState, useEffect } from 'react';
 import obtenerSetsProductos from '@Servicios/obtenerSetsProductos';
 import obtenerEmpleados from '@Servicios/obtenerEmpleados';
-import ProductosModal from '@Organismos/ProductosModal';
+import TablaSetsEmpleados from '@Organismos/TablaSetsEmpleados';
 import { useAuth } from '@Hooks/AuthProvider';
 import Tabla from '@Organismos/Tabla';
 import { Box, Button, Chip, Grid } from '@mui/material';
@@ -16,7 +16,7 @@ const InfoGrupoEmpleadosEditable = ({
   empleados: empleadosInicial,
 }) => {
   const [productosDisponibles, setProductosDisponibles] = useState([]);
-  const [empleadosDisponibles, setEmpleadosDisponibles] = useState([]); // Lista de empleados disponibles
+  const [empleadosDisponibles, setEmpleadosDisponibles] = useState([]);
   const { usuario } = useAuth();
   const clienteSeleccionado = usuario.clienteSeleccionado;
 
@@ -32,8 +32,8 @@ const InfoGrupoEmpleadosEditable = ({
       const productos = await obtenerSetsProductos(clienteSeleccionado);
       setProductosDisponibles(productos);
 
-      const empleados = await obtenerEmpleados(clienteSeleccionado); // Obtener empleados disponibles
-      setEmpleadosDisponibles(empleados);
+      const empleadosData = await obtenerEmpleados(clienteSeleccionado);
+      setEmpleadosDisponibles(empleadosData);
     };
 
     obtenerDatos();
@@ -41,7 +41,6 @@ const InfoGrupoEmpleadosEditable = ({
 
   const handleAgregarProducto = (evento) => {
     const productoSeleccionado = evento.row;
-
     const yaExiste = setsProductos.some((producto) => producto.id === productoSeleccionado.id);
     if (!yaExiste) {
       setSetsProductos((prev) => [...prev, productoSeleccionado]);
@@ -50,26 +49,25 @@ const InfoGrupoEmpleadosEditable = ({
 
   const handleAgregarEmpleado = (evento) => {
     const empleadoSeleccionado = evento.row;
-
-    const yaExiste = empleados.some((empleado) => empleado.id === empleadoSeleccionado.id);
+    const yaExiste = empleados.some(
+      (empleado) =>
+        empleado.id === empleadoSeleccionado.id || empleado.idEmpleado === empleadoSeleccionado.id
+    );
     if (!yaExiste) {
       setEmpleados((prev) => [...prev, empleadoSeleccionado]);
     }
   };
 
-  const filasEmpleados = empleados.map((empleado, index) => {
-    const [nombreCompleto, correoElectronico, areaTrabajo] = empleado.split(' | ');
-    return {
-      id: index + 1,
-      nombreCompleto,
-      correoElectronico,
-      areaTrabajo,
-    };
-  });
+  const filas = empleadosDisponibles.map((empleado) => ({
+    id: empleado.id || empleado.idEmpleado,
+    nombreCompleto: empleado.nombreCompleto || empleado.nombre,
+    correo: empleado.correo,
+    areaTrabajo: empleado.areaTrabajo || empleado.area,
+  }));
 
   const handleGuardar = () => {
     if (!nombre || !descripcion || setsProductos.length === 0 || empleados.length === 0) {
-      setMostrarAlerta(true); // Mostrar alerta si faltan datos
+      setMostrarAlerta(true);
       return;
     }
 
@@ -77,7 +75,6 @@ const InfoGrupoEmpleadosEditable = ({
     console.log('Descripción:', descripcion);
     console.log('Sets de Productos:', setsProductos);
     console.log('Empleados:', empleados);
-    // Aquí puedes implementar la lógica para guardar los cambios
   };
 
   return (
@@ -132,7 +129,7 @@ const InfoGrupoEmpleadosEditable = ({
               </Texto>
             )}
           </Box>
-          <ProductosModal
+          <TablaSetsEmpleados
             elevacion={1}
             sx={{ width: '100%', height: '350px' }}
             columnas={[
@@ -155,7 +152,11 @@ const InfoGrupoEmpleadosEditable = ({
               empleados.map((empleado, index) => (
                 <Chip
                   key={index}
-                  label={empleado.nombreCompleto || empleado}
+                  label={
+                    empleado.nombreCompleto && empleado.correo && empleado.areaTrabajo
+                      ? `${empleado.nombreCompleto} | ${empleado.correo} | ${empleado.areaTrabajo}`
+                      : empleado.toString()
+                  }
                   onDelete={() => setEmpleados(empleados.filter((_, i) => i !== index))}
                   sx={{
                     borderRadius: '16px',
@@ -170,21 +171,20 @@ const InfoGrupoEmpleadosEditable = ({
               </Texto>
             )}
           </Box>
-          <ProductosModal
+          <TablaSetsEmpleados
             elevacion={1}
-            sx={{ width: '100%', height: '350px' }}
+            sx={{}}
             columnas={[
-              { field: 'id', headerName: 'Id', width: 100 },
-              { field: 'nombre', headerName: 'Nombre', width: 220 },
-              { field: 'area', headerName: 'Área de Trabajo', width: 200 },
+              { field: 'nombreCompleto', headerName: 'Nombre del Empleado', flex: 0.9 },
+              { field: 'correo', headerName: 'Correo Electrónico', flex: 1 },
+              { field: 'areaTrabajo', headerName: 'Área de Trabajo', flex: 0.85 },
             ]}
-            filas={empleadosDisponibles}
+            filas={filas}
             paginacion={4}
             checkBox={true}
             onRowClick={handleAgregarEmpleado}
           />
         </Grid>
-
         {/* Botón Guardar */}
         <Grid item xs={12}>
           <Button variant='contained' color='primary' onClick={handleGuardar} sx={{ mt: 2 }}>

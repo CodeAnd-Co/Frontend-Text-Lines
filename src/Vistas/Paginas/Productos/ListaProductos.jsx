@@ -1,8 +1,5 @@
-//RF[26] Crea Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF26]
-//RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
-//RF[30] Elimina Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF30]
 import { Box, useTheme, Chip } from '@mui/material';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Tabla from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';
 import Alerta from '@Moleculas/Alerta';
@@ -14,21 +11,37 @@ import { useEliminarProductos } from '@Hooks/Productos/useEliminarProductos';
 import { tokens } from '@SRC/theme';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
+import ModalFlotante from '@Organismos/ModalFlotante.jsx';
+import InfoProducto from '@Moleculas/InfoProducto.jsx';
+import { useLeerProducto } from '@Hooks/Productos/useLeerProducto.js';
+
 const ListaProductos = () => {
   const { productos, cargando, error, recargar } = useConsultarProductos();
   const { eliminar } = useEliminarProductos();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const { usuario } = useAuth();
-  // prettier-ignore
-  const MENSAJE_POPUP_ELIMINAR 
-  = '¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.';
 
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
+  const [productoDetalleSeleccionado, setProductoDetalleSeleccionado] = useState(null);
   const [mostrarModalProveedor, setMostrarModalProveedor] = useState(false);
   const [mostrarModalProducto, setMostrarModalProducto] = useState(false);
   const [alerta, setAlerta] = useState(null);
   const [openModalEliminar, setAbrirPopUp] = useState(false);
+  const [abrirModalDetalle, setAbrirModalDetalle] = useState(false);
+
+  const {
+    detalleProducto,
+    cargando: cargandoDetalle,
+    error: errorDetalle,
+  } = useLeerProducto(productoDetalleSeleccionado);
+
+  // Efecto: cuando se cierre el modal, se limpia el producto seleccionado
+  useEffect(() => {
+    if (!abrirModalDetalle) {
+      setProductoDetalleSeleccionado(null);
+    }
+  }, [abrirModalDetalle]);
 
   const mostrarFormularioProducto = useCallback(() => {
     setMostrarModalProducto(true);
@@ -91,7 +104,7 @@ const ListaProductos = () => {
       renderCell: (params) => (
         <img
           src={params.row.urlImagen}
-          alt='Producto'
+          alt="Producto"
           style={{ width: 50, height: 50, objectFit: 'cover' }}
         />
       ),
@@ -118,10 +131,10 @@ const ListaProductos = () => {
       renderCell: ({ row: { estado } }) => (
         <Chip
           label={estado === 1 ? 'Disponible' : 'No disponible'}
-          variant='filled'
+          variant="filled"
           color={estado === 1 ? 'primary' : undefined}
-          size='medium'
-          shape='cuadrada'
+          size="medium"
+          shape="cuadrada"
           backgroundColor={estado === 1 ? undefined : '#f0f0f0'}
           textColor={estado === 1 ? undefined : '#000000'}
         />
@@ -145,7 +158,6 @@ const ListaProductos = () => {
       backgroundColor: colores.altertex[1],
     },
     {
-      //variant: 'outlined',
       label: 'Importar',
       onClick: () => console.log('Importar'),
       color: 'primary',
@@ -154,7 +166,6 @@ const ListaProductos = () => {
       construccion: true,
     },
     {
-      //variant: 'outlined',
       label: 'Exportar',
       onClick: () => console.log('Exportar'),
       color: 'primary',
@@ -187,8 +198,8 @@ const ListaProductos = () => {
   return (
     <>
       <ContenedorLista
-        titulo='Lista de Productos'
-        descripcion='Gestiona y organiza los productos registrados en el sistema.'
+        titulo="Lista de Productos"
+        descripcion="Gestiona y organiza los productos registrados en el sistema."
         informacionBotones={botones}
       >
         {mostrarModalProducto && (
@@ -204,8 +215,10 @@ const ListaProductos = () => {
             alCerrarFormularioProveedor={cerrarFormularioProveedor}
           />
         )}
-        <Box width='100%'>
-          {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}
+        <Box width="100%">
+          {error && (
+            <Alerta tipo="error" mensaje={error} icono cerrable centradoInferior />
+          )}
           <Tabla
             columns={columnas}
             rows={filas}
@@ -214,8 +227,14 @@ const ListaProductos = () => {
             checkboxSelection
             rowHeight={80}
             onRowSelectionModelChange={(nuevosIds) => {
-              const ids = Array.isArray(nuevosIds) ? nuevosIds : Array.from(nuevosIds?.ids || []);
+              const ids = Array.isArray(nuevosIds)
+                ? nuevosIds
+                : Array.from(nuevosIds?.ids || []);
               setProductosSeleccionados(ids);
+            }}
+            onRowClick={(parametros) => {
+              setProductoDetalleSeleccionado(parametros.row.id);
+              setAbrirModalDetalle(true);
             }}
           />
         </Box>
@@ -237,8 +256,42 @@ const ListaProductos = () => {
         abrir={openModalEliminar}
         cerrar={manejarCancelarEliminar}
         confirmar={manejarConfirmarEliminar}
-        dialogo={MENSAJE_POPUP_ELIMINAR}
+        dialogo="¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer."
       />
+
+      {abrirModalDetalle && (
+        <ModalFlotante
+          open={abrirModalDetalle}
+          onClose={() => setAbrirModalDetalle(false)}
+          titulo={detalleProducto?.nombreComun || 'Cargando...'}
+          tituloVariant='h4'
+          botones={[
+            {
+              label: 'Editar',
+              variant: 'contained',
+              color: 'primary',
+              backgroundColor: colores.altertex[1],
+              onClick: () => console.log('Editar producto'),
+              construccion: true,
+            },
+            {
+              label: 'Salir',
+              variant: 'outlined',
+              color: 'primary',
+              outlineColor: colores.primario[1],
+              onClick: () => setAbrirModalDetalle(false),
+            },
+          ]}
+        >
+          {cargandoDetalle ? (
+            <p>Cargando información del producto...</p>
+          ) : errorDetalle ? (
+            <p>Error al cargar la información del producto: {errorDetalle}</p>
+          ) : (
+            <InfoProducto detalleProducto={detalleProducto} />
+          )}
+        </ModalFlotante>
+      )}
     </>
   );
 };

@@ -22,6 +22,7 @@ const spanishLocaleText = {
   filterOperatorAfter: 'Después de',
   filterOperatorOnOrAfter: 'En o después de',
   filterOperatorBefore: 'Antes de',
+  labelRowsPerPage: 'Filas por página:',
   filterOperatorOnOrBefore: 'En o antes de',
   filterOperatorIsEmpty: 'Está vacío',
   filterOperatorIsNotEmpty: 'No está vacío',
@@ -132,9 +133,14 @@ const Tabla = ({
     pageSize: pageSize || 5,
   });
 
+  const dummyRows = Array.from({ length: 20 }, (_, i) => ({
+    id: i + 1,
+    col1: `Dato ${i + 1}`,
+  }));
+
   return (
     <StyledDataGrid
-      rows={rows}
+      rows={dummyRows}
       columns={columns}
       loading={loading}
       pageSize={paginationModel.pageSize}

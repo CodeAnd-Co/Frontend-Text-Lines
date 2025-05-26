@@ -29,7 +29,6 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
   });
 
   const [idsVariantes, setIdsVariantes] = useState([1]);
-  const [siguienteIdVariante, setSiguienteIdVariante] = useState(2);
   const [siguienteIdImagen, setSiguienteIdImagen] = useState(1);
 
   const [producto, setProducto] = useState({
@@ -61,7 +60,12 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
   const generarSKUAutomatico = useGenerarSKU();
 
   const manejarCrearVariante = useCallback(() => {
-    const nuevoId = siguienteIdVariante;
+    // Buscar el menor número positivo no usado como ID
+    const usados = new Set(idsVariantes);
+    let nuevoId = 1;
+    while (usados.has(nuevoId)) {
+      nuevoId++;
+    }
 
     setVariantes((prev) => ({
       ...prev,
@@ -72,7 +76,7 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       },
     }));
 
-    setIdsVariantes((prev) => [...prev, nuevoId]);
+    setIdsVariantes((prev) => [...prev, nuevoId].sort((a, b) => a - b));
 
     setImagenes((prev) => ({
       ...prev,
@@ -81,9 +85,7 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
         [nuevoId]: [],
       },
     }));
-
-    setSiguienteIdVariante((prev) => prev + 1);
-  }, [siguienteIdVariante]);
+  }, [idsVariantes]);
 
   const manejarActualizarVariante = useCallback((idVariante, campo, valor) => {
     setVariantes((prev) => {
@@ -103,26 +105,57 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
 
   const manejarEliminarVariante = useCallback((idVariante) => {
     setVariantes((prev) => {
+      // Eliminar la variante
       const nuevasVariantes = { ...prev };
       delete nuevasVariantes[idVariante];
-      return nuevasVariantes;
+
+      // Reasignar los IDs para que sean consecutivos desde 1
+      const idsRestantes = Object.keys(nuevasVariantes)
+        .map(Number)
+        .sort((a, b) => a - b);
+
+      const variantesReordenadas = {};
+      idsRestantes.forEach((oldId, idx) => {
+        variantesReordenadas[idx + 1] = { ...nuevasVariantes[oldId] };
+      });
+
+      return variantesReordenadas;
     });
 
     setImagenes((prev) => {
+      // Eliminar imágenes de la variante eliminada
       const nuevasImagenesVariantes = { ...prev.imagenesVariantes };
       delete nuevasImagenesVariantes[idVariante];
+
+      // Reasignar los IDs para que sean consecutivos desde 1
+      const idsRestantes = Object.keys(nuevasImagenesVariantes)
+        .map(Number)
+        .sort((a, b) => a - b);
+
+      const imagenesReordenadas = {};
+      idsRestantes.forEach((oldId, idx) => {
+        imagenesReordenadas[idx + 1] = nuevasImagenesVariantes[oldId];
+      });
+
       return {
         ...prev,
-        imagenesVariantes: nuevasImagenesVariantes,
+        imagenesVariantes: imagenesReordenadas,
       };
+    });
+
+    setIdsVariantes((prev) => {
+      // Eliminar el ID y reasignar los IDs para que sean consecutivos desde 1
+      const nuevosIds = prev
+        .filter((id) => id !== idVariante)
+        .sort((a, b) => a - b)
+        .map((_, idx) => idx + 1);
+      return nuevosIds;
     });
 
     setAlerta({
       tipo: 'success',
       mensaje: 'Variante eliminada',
     });
-
-    setIdsVariantes((prev) => prev.filter((id) => id !== idVariante));
   }, []);
 
   const manejarAgregarOpcion = useCallback(

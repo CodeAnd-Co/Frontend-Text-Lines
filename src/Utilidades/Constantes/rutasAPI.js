@@ -81,6 +81,7 @@ export const RUTAS_API = {
     CONSULTAR_LISTA: `${BASE_ROLES}/consultar-lista`,
     CREAR_ROL: `${BASE_ROLES}/crear-rol`,
     ELIMINAR_ROL: `${BASE_ROLES}/eliminar`,
+    LEER_ROL: `${BASE_ROLES}/leer`,
   },
   PEDIDOS: {
     BASE: BASE_PEDIDOS,

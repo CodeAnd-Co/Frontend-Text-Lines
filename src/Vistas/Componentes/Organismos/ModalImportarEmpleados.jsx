@@ -22,7 +22,7 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
   useEffect(() => {
     if (errores && errores.length > 0) {
       const mensaje = errores
-        .map(elemento => `Fila ${elemento.fila}: ${elemento.error}`)
+        .map(elemento => `${elemento.fila}: ${elemento.error}`)
         .join('\n');
       setMensajeErrores(mensaje);
     } else {
@@ -119,7 +119,19 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
   ]}
     >
 
-      <ContenedorImportar onFileAccepted={handleFileAccepted} cargando={cargando} />
+      <ContenedorImportar
+          onFileAccepted={handleFileAccepted}
+          cargando={cargando}
+          onError={(mensaje) =>
+            setAlerta({
+              tipo: 'error',
+              mensaje,
+              duracion: 3000,
+              cerrable: true,
+              centradoInferior: true,
+            })
+          }
+        />
 
       {archivo && (
         <List disablePadding>

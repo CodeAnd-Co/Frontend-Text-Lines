@@ -15,7 +15,7 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
 
   useEffect(() => {
     if (abierto && idRol) leerRol(idRol);
-  }, [abierto, idRol]);
+  }, [abierto, idRol, leerRol]);
 
   const columnas = [
     {
@@ -70,10 +70,9 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
         botones={[
           {
             label: 'Salir',
-            variant: 'contained',
+            variant: 'outlined',
             size: 'large',
-            color: 'error',
-            backgroundColor: colores.altertex[1],
+            outlineColor: colores.altertex[1], 
             onClick: onCerrar,
           },
         ]}

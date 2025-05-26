@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { RepositorioLeerRol } from '@Repositorios/Roles/RepositorioLeerRol';
 
 /**
@@ -9,7 +9,7 @@ export function useLeerRol() {
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
 
-  const leerRol = async (idRol) => {
+  const leerRol = useCallback(async (idRol) => {
     setCargando(true);
     setError(null);
 
@@ -21,7 +21,7 @@ export function useLeerRol() {
     } finally {
       setCargando(false);
     }
-  };
+  }, []);
 
   return { detalle, cargando, error, leerRol };
 }

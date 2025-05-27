@@ -1,4 +1,3 @@
-// RF48 - Super Administrador, Cliente Lee Categoria de Productos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/rf48/
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Divider } from '@mui/material';
@@ -7,7 +6,7 @@ import Texto from '@Atomos/Texto';
 /**
  * Componente para mostrar información de un set de productos
  */
-const InfoSetProductos = ({ nombre, descripcion, productos, grupos, mostrarGrupos = true}) => {
+const InfoSetProductos = ({ nombre, descripcion, productos, grupos, mostrarGrupos = true }) => {
   const productosList
     = typeof productos === 'string'
       ? productos.split(',').map((prod) => prod.trim())
@@ -33,14 +32,22 @@ const InfoSetProductos = ({ nombre, descripcion, productos, grupos, mostrarGrupo
           <strong>Productos</strong>
         </Texto>
 
-        {productosList.map((producto, idx) => (
-          <Box key={idx}>
-            <Texto variant='body2' sx={{ py: 1 }}>
-              {producto}
-            </Texto>
-            <Divider />
-          </Box>
-        ))}
+        <Box
+          sx={{
+            maxHeight: '300px',
+            overflowY: 'auto',
+            pr: 1,
+          }}
+        >
+          {productosList.map((producto, idx) => (
+            <Box key={idx}>
+              <Texto variant='body2' sx={{ py: 1 }}>
+                {producto}
+              </Texto>
+              <Divider />
+            </Box>
+          ))}
+        </Box>
       </Box>
 
       {mostrarGrupos && (
@@ -50,7 +57,7 @@ const InfoSetProductos = ({ nombre, descripcion, productos, grupos, mostrarGrupo
           </Texto>
           {gruposList.map((grupo, idx) => (
             <Box key={idx}>
-              <Texto variant='body2' sx={{py: 1 }}>
+              <Texto variant='body2' sx={{ py: 1 }}>
                 {grupo}
               </Texto>
               <Divider />
@@ -78,4 +85,3 @@ InfoSetProductos.defaultProps = {
 };
 
 export default InfoSetProductos;
-

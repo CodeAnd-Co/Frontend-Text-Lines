@@ -7,6 +7,9 @@ import { useConsultarCategorias } from '@Hooks/Categorias/useConsultarCategorias
 import { Box, useTheme } from '@mui/material';
 import { tokens } from '@SRC/theme';
 import ModalCrearCategoria from '@Organismos/ModalCrearCategoria';
+import { leerCategoria } from '@Hooks/Categorias/useLeerCategoria';
+import CategoriaInfo from '@Organismos/CategoriaInfo';
+import ModalFlotante from '@Organismos/ModalFlotante';
 
 /**
  * Página para consultar y mostrar la lista de categorías en una tabla.
@@ -25,13 +28,15 @@ const ListaCategorias = () => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
 
-  // Estado para controlar la visualización del modal crear
+
+  const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
+  const [, setCategoriaSeleccionada] = useState(null);
+  const [categoriaDetalle, setCategoriaDetalle] = useState(null);
+
   const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
 
-  // Estado para controlar la visualización del modal eliminar
   const [openModalEliminar, setOpenModalEliminar] = useState(false);
 
-  // Columnas para el DataGrid
   const columns = [
     { field: 'nombreCategoria', headerName: 'Nombre', flex: 1 },
     { field: 'descripcion', headerName: 'Descripción', flex: 2 },
@@ -42,7 +47,6 @@ const ListaCategorias = () => {
       flex: 1,
     },
   ];
-  // Las filas deben tener un campo `id`, usamos `idCategoria`
   const rows = categorias.map((cat) => ({
     id: cat.idCategoria,
     nombreCategoria: cat.nombreCategoria,
@@ -51,22 +55,35 @@ const ListaCategorias = () => {
     idCliente: cat.idCliente,
   }));
 
-  // Manejador para abrir el modal
   const handleAbrirModalCrear = () => {
     setModalCrearAbierto(true);
   };
 
-  // Manejador para cerrar el modal
   const handleCerrarModalCrear = () => {
     setModalCrearAbierto(false);
   };
 
-  // Manejador para cuando se crea una nueva categoría
   const handleCategoriaCreadaExitosamente = () => {
     handleCerrarModalCrear();
-    // Recarga la lista de categorías
     recargar();
   };
+
+
+const mostrarDetalleCategoria = async (idCategoria) => {
+  try {
+    const detalle = await leerCategoria(idCategoria);
+    setCategoriaDetalle(detalle);
+    setModalDetalleAbierto(true);
+  } catch (err) {
+    setAlerta({
+      tipo: 'error',
+      mensaje: err.message,
+      icono: true,
+      cerrable: true,
+      centradoInferior: true,
+    });
+  }
+};
 
   const botones = [
     {
@@ -75,7 +92,7 @@ const ListaCategorias = () => {
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
-      onClick: handleAbrirModalCrear, // Ahora abre el modal para crear
+      onClick: handleAbrirModalCrear, 
     },
     {
       label: 'Eliminar',
@@ -108,25 +125,27 @@ const ListaCategorias = () => {
       >
         <Box style={{ height: 400, width: '100%' }}>
           {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}
-          <Tabla
-            columns={columns}
-            rows={rows}
-            loading={cargando}
-            disableRowSelectionOnClick={true}
-            checkboxSelection
-            onRowSelectionModelChange={(newSelection) => {
-              setSeleccionados(newSelection);
-            }}
-          />
+        <Tabla
+          columns={columns}
+          rows={rows}
+          loading={cargando}
+          disableRowSelectionOnClick={true}
+          checkboxSelection
+          onRowSelectionModelChange={(newSelection) => {
+            setSeleccionados(newSelection);
+          }}
+          onRowClick={(params) => {
+            setCategoriaSeleccionada(params.row);
+            mostrarDetalleCategoria(params.row.id);
+          }}
+        />
         </Box>
       </ContenedorLista>
-      {/* Modal para crear categoria */}
       <ModalCrearCategoria
         abierto={modalCrearAbierto}
         onCerrar={handleCerrarModalCrear}
         onCreado={handleCategoriaCreadaExitosamente}
       />
-      {/* Modal para eliminar categoria */}
       <ModalEliminarCategoria
         open={openModalEliminar}
         onClose={() => setOpenModalEliminar(false)}
@@ -134,6 +153,41 @@ const ListaCategorias = () => {
         setAlerta={setAlerta}
         refrescarPagina={recargar}
       />
+
+      {modalDetalleAbierto && categoriaDetalle && (
+      <ModalFlotante
+        open={modalDetalleAbierto}
+        onClose={() => {
+          setModalDetalleAbierto(false);
+          setCategoriaDetalle(null);
+        }}
+        onConfirm={() => setModalDetalleAbierto(false)}
+        titulo={categoriaDetalle.nombreCategoria || 'Detalles de la categoría'}
+        tituloVariant='h4'
+        botones={[
+          {
+            label: 'EDITAR',
+            variant: 'contained',
+            color: 'error',
+            backgroundColor: colores.altertex[1],
+            construccion: true,
+          },
+          {
+            label: 'SALIR',
+            variant: 'outlined',
+            color: 'primary',
+            outlineColor: colores.primario[1],
+            onClick: () => setModalDetalleAbierto(false),
+          },
+        ]}
+      >
+        <CategoriaInfo
+          nombre={categoriaDetalle.nombreCategoria}
+          descripcion={categoriaDetalle.descripcion}
+          productos={categoriaDetalle.productos}
+        />
+      </ModalFlotante>
+    )}
       {alerta && (
         <Alerta
           tipo={alerta.tipo}

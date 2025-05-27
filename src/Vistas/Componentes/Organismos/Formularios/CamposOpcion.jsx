@@ -18,6 +18,8 @@ const CampoTextoForm = memo(
     multiline = false,
     rows = 1,
     error,
+    min,
+    ...rest
   }) => (
     <Grid size={6}>
       <CampoTexto
@@ -25,6 +27,22 @@ const CampoTextoForm = memo(
         name={name}
         value={value}
         onChange={onChange}
+        onBlur={(evento) => {
+          if (type === 'number') {
+            const valor = Math.max(min || 1, Number(evento.target.value) || 0); // Asegura que el valor sea al menos el mínimo
+            onChange({ target: { name, value: valor } });
+          }
+        }}
+        onKeyDown={(evento) => {
+          if (type === 'number' && ['-', 'e', 'E', '+'].includes(evento.key)) {
+            evento.preventDefault(); // Bloquea caracteres no válidos
+          }
+        }}
+        onInput={(evento) => {
+          if (type === 'number' && evento.target.value && evento.target.value < (min || 1)) {
+            evento.target.value = min || 1; // Ajusta el valor al mínimo permitido
+          }
+        }}
         type={type}
         size='medium'
         required
@@ -33,6 +51,7 @@ const CampoTextoForm = memo(
         rows={rows}
         error={error}
         helperText={textoAyuda}
+        {...rest}
       />
     </Grid>
   )
@@ -118,8 +137,10 @@ const CamposOpcion = memo(
           name={`cantidad-${varianteId}-${index}`}
           value={opcion.cantidad}
           onChange={(evento) => manejarActualizarOpcion('cantidad', evento.target.value)}
-          error={errores?.cantidad}
+          placeholder='Ingresa la cantidad'
           textoAyuda={errores?.cantidad}
+          error={errores?.cantidad}
+          min={1}
         />
         <CampoTextoForm
           label='SKU Automático'
@@ -143,8 +164,10 @@ const CamposOpcion = memo(
           name={`costoAdicional-${varianteId}-${index}`}
           value={opcion.costoAdicional}
           onChange={(evento) => manejarActualizarOpcion('costoAdicional', evento.target.value)}
-          error={errores?.costoAdicional}
+          placeholder='Ingresa el costo adicional'
           textoAyuda={errores?.costoAdicional}
+          error={errores?.costoAdicional}
+          min={1}
         />
         <CampoTextoForm
           label='Descuento (%)'
@@ -152,8 +175,10 @@ const CamposOpcion = memo(
           name={`descuento-${varianteId}-${index}`}
           value={opcion.descuento}
           onChange={(evento) => manejarActualizarOpcion('descuento', evento.target.value)}
-          error={errores?.descuento}
+          placeholder='Ingresa el descuento'
           textoAyuda={errores?.descuento}
+          error={errores?.descuento}
+          min={1}
         />
         <CampoSelectForm
           label='Estado'
@@ -172,5 +197,11 @@ const CamposOpcion = memo(
     );
   }
 );
+
+const prevenirNumerosNegativos = (evento) => {
+  if (['-', 'e', 'E', '+'].includes(evento.key)) {
+    evento.preventDefault();
+  }
+};
 
 export default CamposOpcion;

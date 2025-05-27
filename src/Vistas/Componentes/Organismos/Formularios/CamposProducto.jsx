@@ -243,6 +243,12 @@ const CamposProducto = memo(
           placeholder='Ingresa el precio en puntos'
           tipo='number'
           min={1}
+          onKeyDown={prevenirNumerosNegativos}
+          onInput={(evento) => {
+            if (evento.target.value && evento.target.value < 1) {
+              evento.target.value = 1;
+            }
+          }}
         />
 
         <CampoTextoFormulario
@@ -255,6 +261,12 @@ const CamposProducto = memo(
           placeholder='Ingresa el precio para el cliente'
           tipo='number'
           min={1}
+          onKeyDown={prevenirNumerosNegativos}
+          onInput={(evento) => {
+            if (evento.target.value && evento.target.value < 1) {
+              evento.target.value = 1;
+            }
+          }}
         />
 
         <CampoTextoFormulario
@@ -267,6 +279,12 @@ const CamposProducto = memo(
           placeholder='Ingresa el precio de venta'
           tipo='number'
           min={1}
+          onKeyDown={prevenirNumerosNegativos}
+          onInput={(evento) => {
+            if (evento.target.value && evento.target.value < 1) {
+              evento.target.value = 1;
+            }
+          }}
         />
 
         <CampoTextoFormulario
@@ -279,6 +297,12 @@ const CamposProducto = memo(
           placeholder='Ingresa el costo del producto'
           tipo='number'
           min={1}
+          onKeyDown={prevenirNumerosNegativos}
+          onInput={(evento) => {
+            if (evento.target.value && evento.target.value < 1) {
+              evento.target.value = 1;
+            }
+          }}
         />
 
         <CampoTextoFormulario
@@ -291,6 +315,12 @@ const CamposProducto = memo(
           placeholder='Ej: 16'
           tipo='number'
           min={1}
+          onKeyDown={prevenirNumerosNegativos}
+          onInput={(evento) => {
+            if (evento.target.value && evento.target.value < 1) {
+              evento.target.value = 1;
+            }
+          }}
         />
 
         <CampoTextoFormulario
@@ -303,6 +333,12 @@ const CamposProducto = memo(
           placeholder='Ej: 10'
           tipo='number'
           min={1}
+          onKeyDown={prevenirNumerosNegativos}
+          onInput={(evento) => {
+            if (evento.target.value && evento.target.value < 1) {
+              evento.target.value = 1;
+            }
+          }}
         />
 
         <CampoSelectFormulario
@@ -343,5 +379,11 @@ const CamposProducto = memo(
     );
   }
 );
+
+const prevenirNumerosNegativos = (evento) => {
+  if (['-', 'e', 'E', '+'].includes(evento.key)) {
+    evento.preventDefault();
+  }
+};
 
 export default CamposProducto;

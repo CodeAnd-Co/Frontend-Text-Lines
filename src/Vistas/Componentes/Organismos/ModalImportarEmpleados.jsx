@@ -38,7 +38,7 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
         mensaje: 'Importación completada con éxito.',
         icono: true,
         cerrable: true,
-        duracion: 2500,
+        duracion: 3000,
         centradoInferior: true,
       });
       recargar();
@@ -81,7 +81,7 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
       setAlerta({
         tipo: 'error',
         mensaje: 'Agrega un archivo CSV válido.',
-        duracion: 2500,
+        duracion: 3000,
         cerrable: true,
         centradoInferior: true,
       });

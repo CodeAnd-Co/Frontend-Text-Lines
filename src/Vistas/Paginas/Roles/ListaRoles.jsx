@@ -68,7 +68,7 @@ const ListaRoles = () => {
         icono: true,
         cerrable: true,
         centradoInferior: true,
-        //duracion: 3500,
+        duracion: 3000,
       });
     }
 
@@ -104,6 +104,7 @@ const ListaRoles = () => {
           icono: true,
           cerrable: true,
           centradoInferior: true,
+          duracion: 3000,
         });
       }
 
@@ -183,6 +184,7 @@ const ListaRoles = () => {
             icono: true,
             cerrable: true,
             centradoInferior: true,
+            duracion: 3000,
           });
         } else {
           const seleccionFiltrada = verificarSeleccion(seleccionados);
@@ -201,7 +203,7 @@ const ListaRoles = () => {
               icono: true,
               cerrable: true,
               centradoInferior: true,
-              duracion: 2500,
+              duracion: 3000,
             });
           }
         }

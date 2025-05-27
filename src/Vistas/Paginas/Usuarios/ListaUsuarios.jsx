@@ -315,7 +315,7 @@ const {
             tipo={alerta.tipo}
             mensaje={alerta.mensaje}
             cerrable
-            duracion={4000}
+            duracion={3000}
             onClose={() => setAlerta(null)}
             centradoInferior
           />

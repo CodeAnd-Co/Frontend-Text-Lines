@@ -5,7 +5,6 @@ import obtenerSetsProductos from '@Servicios/obtenerSetsProductos';
 import obtenerEmpleados from '@Servicios/obtenerEmpleados';
 import TablaSetsEmpleados from '@Organismos/TablaSetsEmpleados';
 import { useAuth } from '@Hooks/AuthProvider';
-import Tabla from '@Organismos/Tabla';
 import { Box, Button, Chip, Grid } from '@mui/material';
 import Texto from '@Atomos/Texto';
 
@@ -27,6 +26,10 @@ const InfoGrupoEmpleadosEditable = ({
   const [empleados, setEmpleados] = useState(empleadosInicial || []);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
 
+  // Estados para manejar las selecciones en las tablas
+  const [productosSeleccionados, setProductosSeleccionados] = useState([]);
+  const [empleadosSeleccionados, setEmpleadosSeleccionados] = useState([]);
+
   useEffect(() => {
     const obtenerDatos = async () => {
       const productos = await obtenerSetsProductos(clienteSeleccionado);
@@ -39,30 +42,65 @@ const InfoGrupoEmpleadosEditable = ({
     obtenerDatos();
   }, [clienteSeleccionado]);
 
-  const handleAgregarProducto = (evento) => {
-    const productoSeleccionado = evento.row;
-    const yaExiste = setsProductos.some((producto) => producto.id === productoSeleccionado.id);
-    if (!yaExiste) {
-      setSetsProductos((prev) => [...prev, productoSeleccionado]);
-    }
-  };
+  // Sincronizar selecciones con los chips cuando cambian los datos
+  useEffect(() => {
+    const idsProductosSeleccionados = setsProductos.map((producto) => producto.id);
+    setProductosSeleccionados(idsProductosSeleccionados);
+  }, [setsProductos]);
 
-  const handleAgregarEmpleado = (evento) => {
-    const empleadoSeleccionado = evento.row;
-    const yaExiste = empleados.some(
-      (empleado) =>
-        empleado.id === empleadoSeleccionado.id || empleado.idEmpleado === empleadoSeleccionado.id
+  useEffect(() => {
+    const idsEmpleadosSeleccionados = empleados.map((empleado) => empleado.id);
+    setEmpleadosSeleccionados(idsEmpleadosSeleccionados);
+  }, [empleados]);
+
+  // Manejar cambios en la selección de productos
+  const handleSeleccionProductos = (selectionData) => {
+    console.log('Selecciones productos recibidas:', selectionData);
+
+    // Extraer IDs del Set y convertir a array
+    let seleccionesArray = [];
+    if (selectionData && selectionData.ids && selectionData.ids instanceof Set) {
+      seleccionesArray = Array.from(selectionData.ids);
+    } else if (Array.isArray(selectionData)) {
+      seleccionesArray = selectionData;
+    }
+
+    setProductosSeleccionados(seleccionesArray);
+
+    // Actualizar los chips basándose en las selecciones
+    const productosActualizados = productosDisponibles.filter((producto) =>
+      seleccionesArray.includes(producto.id)
     );
-    if (!yaExiste) {
-      setEmpleados((prev) => [...prev, empleadoSeleccionado]);
-    }
+    setSetsProductos(productosActualizados);
   };
 
+  // Manejar cambios en la selección de empleados
+  const handleSeleccionEmpleados = (selectionData) => {
+    console.log('Selecciones empleados recibidas:', selectionData);
+
+    // Extraer IDs del Set y convertir a array
+    let seleccionesArray = [];
+    if (selectionData && selectionData.ids && selectionData.ids instanceof Set) {
+      seleccionesArray = Array.from(selectionData.ids);
+    } else if (Array.isArray(selectionData)) {
+      seleccionesArray = selectionData;
+    }
+
+    setEmpleadosSeleccionados(seleccionesArray);
+
+    // Actualizar los chips basándose en las selecciones
+    const empleadosActualizados = empleadosDisponibles.filter((empleado) =>
+      seleccionesArray.includes(empleado.id)
+    );
+    setEmpleados(empleadosActualizados);
+  };
+
+  // Preparar filas para la tabla de empleados
   const filas = empleadosDisponibles.map((empleado) => ({
-    id: empleado.id || empleado.idEmpleado,
-    nombreCompleto: empleado.nombreCompleto || empleado.nombre,
+    id: empleado.id,
+    nombreCompleto: empleado.nombre,
     correo: empleado.correo,
-    areaTrabajo: empleado.areaTrabajo || empleado.area,
+    areaTrabajo: empleado.area,
   }));
 
   const handleGuardar = () => {
@@ -115,7 +153,6 @@ const InfoGrupoEmpleadosEditable = ({
                 <Chip
                   key={index}
                   label={set.nombreProducto || set}
-                  onDelete={() => setSetsProductos(setsProductos.filter((_, i) => i !== index))}
                   sx={{
                     borderRadius: '16px',
                     backgroundColor: '#e0f7fa',
@@ -140,7 +177,8 @@ const InfoGrupoEmpleadosEditable = ({
             filas={productosDisponibles}
             paginacion={4}
             checkBox={true}
-            onRowClick={handleAgregarProducto}
+            selectionModel={productosSeleccionados}
+            onRowSelectionModelChange={handleSeleccionProductos}
           />
         </Grid>
 
@@ -153,11 +191,10 @@ const InfoGrupoEmpleadosEditable = ({
                 <Chip
                   key={index}
                   label={
-                    empleado.nombreCompleto && empleado.correo && empleado.areaTrabajo
-                      ? `${empleado.nombreCompleto} | ${empleado.correo} | ${empleado.areaTrabajo}`
+                    empleado.nombre && empleado.correo && empleado.area
+                      ? `${empleado.nombre} | ${empleado.correo} | ${empleado.area}`
                       : empleado.toString()
                   }
-                  onDelete={() => setEmpleados(empleados.filter((_, i) => i !== index))}
                   sx={{
                     borderRadius: '16px',
                     backgroundColor: '#e0f7fa',
@@ -182,9 +219,11 @@ const InfoGrupoEmpleadosEditable = ({
             filas={filas}
             paginacion={4}
             checkBox={true}
-            onRowClick={handleAgregarEmpleado}
+            selectionModel={empleadosSeleccionados}
+            onRowSelectionModelChange={handleSeleccionEmpleados}
           />
         </Grid>
+
         {/* Botón Guardar */}
         <Grid item xs={12}>
           <Button variant='contained' color='primary' onClick={handleGuardar} sx={{ mt: 2 }}>

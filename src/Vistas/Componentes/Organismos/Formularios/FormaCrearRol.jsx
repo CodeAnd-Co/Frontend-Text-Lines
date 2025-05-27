@@ -15,14 +15,14 @@ const LIMITE_DESCRIPCION = 150;
 const MENSAJE_LIMITE = 'Máximo caracteres';
 
 const FormaCrearRol = ({
-                         nombreRol,
-                         setNombreRol,
-                         descripcionRol,
-                         setDescripcionRol,
-                         setPermisosSeleccionados,
-                         erroresCampos = {},
-                         setErroresCampos,
-                       }) => {
+  nombreRol,
+  setNombreRol,
+  descripcionRol,
+  setDescripcionRol,
+  setPermisosSeleccionados,
+  erroresCampos = {},
+  setErroresCampos,
+}) => {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
@@ -46,7 +46,9 @@ const FormaCrearRol = ({
           setErroresCampos((prev) => ({ ...prev, nombreRol: undefined }));
         }}
         error={Boolean(erroresCampos.nombreRol)}
-        helperText={erroresCampos.nombreRol || `${nombreRol.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`}
+        helperText={
+          erroresCampos.nombreRol || `${nombreRol.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`
+        }
         inputProps={{
           maxLength: LIMITE_NOMBRE,
         }}
@@ -75,11 +77,11 @@ const FormaCrearRol = ({
       {/* ALERTA DE PERMISOS (debajo de la tabla, arriba de descripción) */}
       {erroresCampos.permisosSeleccionados && (
         <Alerta
-          tipo="warning"
+          tipo='warning'
           mensaje={erroresCampos.permisosSeleccionados}
           cerrable
-          duracion={8000}
-          sx={{ my: 2, mb: 2}}
+          duracion={3000}
+          sx={{ my: 2, mb: 2 }}
         />
       )}
 

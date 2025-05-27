@@ -70,7 +70,7 @@ export const DetalleClienteModal = ({
               tipo='error'
               mensaje={imagenError}
               cerrable
-              duracion={2500}
+              duracion={3000}
               sx={{ mb: 2, mt: 2 }}
             />
           )

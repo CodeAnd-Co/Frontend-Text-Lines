@@ -3,39 +3,28 @@ import Tabla from '@Organismos/Tabla';
 import Alerta from '@Moleculas/Alerta';
 import ContenedorLista from '@Organismos/ContenedorLista';
 import ModalEliminarCategoria from '@Organismos/ModalEliminarCategoria';
-import { useConsultarCategorias } from '@Hooks/Categorias/useConsultarCategorias';
-import { Box, useTheme } from '@mui/material';
-import { tokens } from '@SRC/theme';
 import ModalCrearCategoria from '@Organismos/ModalCrearCategoria';
-import { leerCategoria } from '@Hooks/Categorias/useLeerCategoria';
 import CategoriaInfo from '@Organismos/CategoriaInfo';
 import ModalFlotante from '@Organismos/ModalFlotante';
-
-/**
- * Página para consultar y mostrar la lista de categorías en una tabla.
- *
- * Muestra los resultados en un CustomDataGrid, incluyendo
- * nombre, descripción y número de productos de cada categoría.
- *
- * @see [RF[47] Consulta lista de categorías](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF47)
- */
+import { useConsultarCategorias } from '@Hooks/Categorias/useConsultarCategorias';
+import { leerCategoria } from '@Hooks/Categorias/useLeerCategoria';
+import { Box, useTheme } from '@mui/material';
+import Texto from '@Atomos/Texto';
+import { tokens } from '@SRC/theme';
 
 const ListaCategorias = () => {
   const { categorias, cargando, error, recargar } = useConsultarCategorias();
   const [seleccionados, setSeleccionados] = useState(new Set());
   const [alerta, setAlerta] = useState(null);
   const [idsCategoria, setIdsCategoria] = useState([]);
+  const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
+  const [openModalEliminar, setOpenModalEliminar] = useState(false);
+  const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
+  const [categoriaDetalle, setCategoriaDetalle] = useState(null);
+  const [errorDetalle, setErrorDetalle] = useState(false);
+
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
-
-
-  const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
-  const [, setCategoriaSeleccionada] = useState(null);
-  const [categoriaDetalle, setCategoriaDetalle] = useState(null);
-
-  const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
-
-  const [openModalEliminar, setOpenModalEliminar] = useState(false);
 
   const columns = [
     { field: 'nombreCategoria', headerName: 'Nombre', flex: 1 },
@@ -47,6 +36,7 @@ const ListaCategorias = () => {
       flex: 1,
     },
   ];
+
   const rows = categorias.map((cat) => ({
     id: cat.idCategoria,
     nombreCategoria: cat.nombreCategoria,
@@ -68,22 +58,23 @@ const ListaCategorias = () => {
     recargar();
   };
 
-
-const mostrarDetalleCategoria = async (idCategoria) => {
-  try {
-    const detalle = await leerCategoria(idCategoria);
-    setCategoriaDetalle(detalle);
+  const mostrarDetalleCategoria = async (idCategoria) => {
     setModalDetalleAbierto(true);
-  } catch (err) {
-    setAlerta({
-      tipo: 'error',
-      mensaje: err.message,
-      icono: true,
-      cerrable: true,
-      centradoInferior: true,
-    });
-  }
-};
+    setCategoriaDetalle(null);
+    setErrorDetalle(false);
+
+    try {
+      const detalle = await leerCategoria(idCategoria);
+      setCategoriaDetalle(detalle);
+    } catch (err) {
+      setErrorDetalle(true);
+      setCategoriaDetalle({
+        nombreCategoria: 'Sin datos',
+        descripcion: '',
+        productos: [],
+      });
+    }
+  };
 
   const botones = [
     {
@@ -92,7 +83,7 @@ const mostrarDetalleCategoria = async (idCategoria) => {
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
-      onClick: handleAbrirModalCrear, 
+      onClick: handleAbrirModalCrear,
     },
     {
       label: 'Eliminar',
@@ -125,27 +116,28 @@ const mostrarDetalleCategoria = async (idCategoria) => {
       >
         <Box style={{ height: 400, width: '100%' }}>
           {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}
-        <Tabla
-          columns={columns}
-          rows={rows}
-          loading={cargando}
-          disableRowSelectionOnClick={true}
-          checkboxSelection
-          onRowSelectionModelChange={(newSelection) => {
-            setSeleccionados(newSelection);
-          }}
-          onRowClick={(params) => {
-            setCategoriaSeleccionada(params.row);
-            mostrarDetalleCategoria(params.row.id);
-          }}
-        />
+          <Tabla
+            columns={columns}
+            rows={rows}
+            loading={cargando}
+            disableRowSelectionOnClick={true}
+            checkboxSelection
+            onRowSelectionModelChange={(newSelection) => {
+              setSeleccionados(newSelection);
+            }}
+            onRowClick={(params) => {
+              mostrarDetalleCategoria(params.row.id);
+            }}
+          />
         </Box>
       </ContenedorLista>
+
       <ModalCrearCategoria
         abierto={modalCrearAbierto}
         onCerrar={handleCerrarModalCrear}
         onCreado={handleCategoriaCreadaExitosamente}
       />
+
       <ModalEliminarCategoria
         open={openModalEliminar}
         onClose={() => setOpenModalEliminar(false)}
@@ -155,39 +147,62 @@ const mostrarDetalleCategoria = async (idCategoria) => {
       />
 
       {modalDetalleAbierto && categoriaDetalle && (
-      <ModalFlotante
-        open={modalDetalleAbierto}
-        onClose={() => {
-          setModalDetalleAbierto(false);
-          setCategoriaDetalle(null);
-        }}
-        onConfirm={() => setModalDetalleAbierto(false)}
-        titulo={categoriaDetalle.nombreCategoria || 'Detalles de la categoría'}
-        tituloVariant='h4'
-        botones={[
-          {
-            label: 'EDITAR',
-            variant: 'contained',
-            color: 'error',
-            backgroundColor: colores.altertex[1],
-            construccion: true,
-          },
-          {
-            label: 'SALIR',
-            variant: 'outlined',
-            color: 'primary',
-            outlineColor: colores.primario[1],
-            onClick: () => setModalDetalleAbierto(false),
-          },
-        ]}
-      >
-        <CategoriaInfo
-          nombre={categoriaDetalle.nombreCategoria}
-          descripcion={categoriaDetalle.descripcion}
-          productos={categoriaDetalle.productos}
-        />
-      </ModalFlotante>
-    )}
+        <ModalFlotante
+          open={modalDetalleAbierto}
+          onClose={() => {
+            setModalDetalleAbierto(false);
+            setCategoriaDetalle(null);
+            setErrorDetalle(false);
+          }}
+          onConfirm={() => setModalDetalleAbierto(false)}
+          titulo={
+            errorDetalle
+              ? 'Error al cargar categoría'
+              : categoriaDetalle.nombreCategoria || 'Detalles de la categoría'
+          }
+          tituloVariant='h4'
+          botones={
+            errorDetalle
+              ? [
+                  {
+                    label: 'SALIR',
+                    variant: 'outlined',
+                    color: 'primary',
+                    outlineColor: colores.primario[1],
+                    onClick: () => setModalDetalleAbierto(false),
+                  },
+                ]
+              : [
+                  {
+                    label: 'EDITAR',
+                    variant: 'contained',
+                    color: 'error',
+                    backgroundColor: colores.altertex[1],
+                    construccion: true,
+                  },
+                  {
+                    label: 'SALIR',
+                    variant: 'outlined',
+                    color: 'primary',
+                    outlineColor: colores.primario[1],
+                    onClick: () => setModalDetalleAbierto(false),
+                  },
+                ]
+          }
+        >
+          {errorDetalle ? (
+            <Texto variant='body2' sx={{ color: 'text.secondary' }}>
+              No se pudieron obtener los datos de esta categoría.
+            </Texto>
+          ) : (
+            <CategoriaInfo
+              descripcion={categoriaDetalle.descripcion}
+              productos={categoriaDetalle.productos}
+            />
+          )}
+        </ModalFlotante>
+      )}
+
       {alerta && (
         <Alerta
           tipo={alerta.tipo}

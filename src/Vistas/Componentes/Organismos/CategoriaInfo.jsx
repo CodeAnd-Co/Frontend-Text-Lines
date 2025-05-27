@@ -8,7 +8,7 @@ import Texto from '@Atomos/Texto';
  * Componente para mostrar la información detallada de una categoría.
  */
 const CategoriaInfo = ({ descripcion, productos = [] }) => {
-  const productosList = Array.isArray(productos)
+  const productosLista = Array.isArray(productos)
     ? productos
     : typeof productos === 'string'
       ? productos.split(',').map((produc) => produc.trim())
@@ -27,7 +27,7 @@ const CategoriaInfo = ({ descripcion, productos = [] }) => {
           <strong>Productos</strong>
         </Texto>
 
-        {productosList.length > 0 ? (
+        {productosLista.length > 0 ? (
           <Box
             sx={{
               maxHeight: '300px',
@@ -35,7 +35,7 @@ const CategoriaInfo = ({ descripcion, productos = [] }) => {
               pr: 1 
             }}
           >
-            {productosList.map((producto, idx) => (
+            {productosLista.map((producto, idx) => (
               <Box key={idx}>
                 <Texto variant='body2' sx={{ py: 1 }}>
                   {producto}

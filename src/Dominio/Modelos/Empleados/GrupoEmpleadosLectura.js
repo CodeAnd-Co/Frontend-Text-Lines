@@ -4,11 +4,21 @@
  */
 
 export class GrupoEmpleadosLectura {
-  constructor({ idGrupo, nombre, descripcion, setsProductos = [], empleados = [] }) {
+  constructor({
+    idGrupo,
+    nombre,
+    descripcion,
+    setsProductos = [],
+    idsSetProductos = [],
+    empleados = [],
+    idsEmpleados = [],
+  }) {
     this.idGrupo = idGrupo;
     this.nombre = nombre;
     this.descripcion = descripcion;
     this.setsProductos = setsProductos;
+    this.idsSetProductos = idsSetProductos;
     this.empleados = empleados;
+    this.idsEmpleados = idsEmpleados;
   }
 }

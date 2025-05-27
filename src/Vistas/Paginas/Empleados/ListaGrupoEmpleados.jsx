@@ -33,7 +33,6 @@ const ListaGrupoEmpleados = () => {
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
   const [idGrupoSeleccionado, setIdGrupoSeleccionado] = useState(null);
   const [abrirModalEditar, setAbrirModalEditar] = useState(false);
-
   const {
     grupoEmpleados,
     cargando: cargandoDetalle,

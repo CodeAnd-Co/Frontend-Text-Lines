@@ -23,9 +23,8 @@ const InfoGrupoEmpleadosEditable = ({
   const [nombre, setNombre] = useState(nombreInicial || '');
   const [descripcion, setDescripcion] = useState(descripcionInicial || '');
   const [setsProductos, setSetsProductos] = useState(setsProductosInicial || []);
-  const [empleados, setEmpleados] = useState(empleadosInicial || []);
+  const [empleados, setEmpleados] = useState(empleadosInicial);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
-
   // Estados para manejar las selecciones en las tablas
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [empleadosSeleccionados, setEmpleadosSeleccionados] = useState([]);
@@ -57,7 +56,6 @@ const InfoGrupoEmpleadosEditable = ({
   const handleSeleccionProductos = (selectionData) => {
     console.log('Selecciones productos recibidas:', selectionData);
 
-    // Extraer IDs del Set y convertir a array
     let seleccionesArray = [];
     if (selectionData && selectionData.ids && selectionData.ids instanceof Set) {
       seleccionesArray = Array.from(selectionData.ids);
@@ -102,7 +100,8 @@ const InfoGrupoEmpleadosEditable = ({
     correo: empleado.correo,
     areaTrabajo: empleado.area,
   }));
-
+  console.log('Produtos seleccionados:', productosSeleccionados);
+  console.log('Empleados seleccionados:', empleadosSeleccionados);
   const handleGuardar = () => {
     if (!nombre || !descripcion || setsProductos.length === 0 || empleados.length === 0) {
       setMostrarAlerta(true);

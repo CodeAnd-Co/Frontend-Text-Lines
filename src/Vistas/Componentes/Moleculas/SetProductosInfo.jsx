@@ -7,7 +7,7 @@ import Texto from '@Atomos/Texto';
  * Componente para mostrar información de un set de productos
  */
 const InfoSetProductos = ({ nombre, descripcion, productos, grupos, mostrarGrupos = true }) => {
-  const productosList
+  const productosLista
     = typeof productos === 'string'
       ? productos.split(',').map((prod) => prod.trim())
       : productos || [];
@@ -39,7 +39,7 @@ const InfoSetProductos = ({ nombre, descripcion, productos, grupos, mostrarGrupo
             pr: 1,
           }}
         >
-          {productosList.map((producto, idx) => (
+          {productosLista.map((producto, idx) => (
             <Box key={idx}>
               <Texto variant='body2' sx={{ py: 1 }}>
                 {producto}

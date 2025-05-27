@@ -22,6 +22,7 @@ const ListaCategorias = () => {
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
   const [categoriaDetalle, setCategoriaDetalle] = useState(null);
   const [errorDetalle, setErrorDetalle] = useState(false);
+  const [cargandoDetalle, setCargandoDetalle] = useState(false);
 
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
@@ -59,7 +60,7 @@ const ListaCategorias = () => {
   };
 
   const mostrarDetalleCategoria = async (idCategoria) => {
-    setModalDetalleAbierto(true);
+    setCargandoDetalle(true);
     setCategoriaDetalle(null);
     setErrorDetalle(false);
 
@@ -69,10 +70,20 @@ const ListaCategorias = () => {
     } catch (err) {
       setErrorDetalle(true);
       setCategoriaDetalle({
-        nombreCategoria: 'Sin datos',
+        nombreCategoria: '',
         descripcion: '',
         productos: [],
       });
+      setAlerta({
+        tipo: 'error',
+        mensaje: 'Error al obtener los datos de la categoría.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+    } finally {
+      setCargandoDetalle(false);
+      setModalDetalleAbierto(true);
     }
   };
 
@@ -146,7 +157,7 @@ const ListaCategorias = () => {
         refrescarPagina={recargar}
       />
 
-      {modalDetalleAbierto && categoriaDetalle && (
+      {modalDetalleAbierto && !cargandoDetalle && (
         <ModalFlotante
           open={modalDetalleAbierto}
           onClose={() => {
@@ -157,8 +168,8 @@ const ListaCategorias = () => {
           onConfirm={() => setModalDetalleAbierto(false)}
           titulo={
             errorDetalle
-              ? 'Error al cargar categoría'
-              : categoriaDetalle.nombreCategoria || 'Detalles de la categoría'
+              ? 'Cargando...'
+              : categoriaDetalle?.nombreCategoria || 'Detalles de la categoría'
           }
           tituloVariant='h4'
           botones={
@@ -190,14 +201,10 @@ const ListaCategorias = () => {
                 ]
           }
         >
-          {errorDetalle ? (
-            <Texto variant='body2' sx={{ color: 'text.secondary' }}>
-              No se pudieron obtener los datos de esta categoría.
-            </Texto>
-          ) : (
+          {errorDetalle ? null : (
             <CategoriaInfo
-              descripcion={categoriaDetalle.descripcion}
-              productos={categoriaDetalle.productos}
+              descripcion={categoriaDetalle?.descripcion}
+              productos={categoriaDetalle?.productos}
             />
           )}
         </ModalFlotante>

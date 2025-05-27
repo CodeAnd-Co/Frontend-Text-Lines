@@ -22,27 +22,40 @@ const CampoTextoFormulario = memo(
     multilinea = false,
     filas = 1,
     min,
+    maxLongitud = 100,
+    maxLongitudDescripcion = 500,
     ...rest
-  }) => (
-    <Grid size={6}>
-      <CampoTexto
-        label={etiqueta}
-        name={nombre}
-        value={valor}
-        onChange={onChange}
-        helperText={textoAyuda}
-        type={tipo}
-        size='medium'
-        required={true}
-        placeholder={placeholder}
-        multiline={multilinea}
-        rows={filas}
-        error={error}
-        min={min}
-        {...rest}
-      />
-    </Grid>
-  )
+  }) => {
+    const limiteCaracteres = nombre === 'descripcion' ? maxLongitudDescripcion : maxLongitud;
+
+    return (
+      <Grid size={6}>
+        <CampoTexto
+          label={etiqueta}
+          name={nombre}
+          value={valor}
+          onChange={(evento) => {
+            const nuevoValor = evento.target.value.slice(0, limiteCaracteres);
+            onChange({ target: { name: nombre, value: nuevoValor } });
+          }}
+          helperText={
+            tipo === 'text' && limiteCaracteres
+              ? `${valor.length}/${limiteCaracteres} - Máximo de caracteres. ${textoAyuda || ''}`
+              : textoAyuda
+          }
+          type={tipo}
+          size='medium'
+          required={true}
+          placeholder={placeholder}
+          multiline={multilinea}
+          rows={filas}
+          error={error}
+          inputProps={{ maxLength: tipo === 'text' ? limiteCaracteres : undefined }}
+          {...rest}
+        />
+      </Grid>
+    );
+  }
 );
 
 const BotonFormulario = memo(({ seleccionado, anchoCompleto, colorBorde, etiqueta, onClick }) => {
@@ -178,6 +191,7 @@ const CamposProducto = memo(
           error={erroresProducto?.nombreComun}
           textoAyuda={erroresProducto?.nombreComun}
           onChange={alActualizarProducto}
+          maxLongitud={100}
           placeholder='Ingresa el nombre común del producto'
         />
 
@@ -188,6 +202,7 @@ const CamposProducto = memo(
           error={erroresProducto?.nombreComercial}
           textoAyuda={erroresProducto?.nombreComercial}
           onChange={alActualizarProducto}
+          maxLongitud={100}
           placeholder='Ingresa el nombre comercial del producto'
         />
 
@@ -200,6 +215,7 @@ const CamposProducto = memo(
           onChange={alActualizarProducto}
           placeholder='Ingresa una breve descripción del producto'
           multilinea
+          maxLongitudDescripcion={500}
           filas={4}
         />
 
@@ -210,6 +226,7 @@ const CamposProducto = memo(
           error={erroresProducto?.marca}
           textoAyuda={erroresProducto?.marca}
           onChange={alActualizarProducto}
+          maxLongitud={100}
           placeholder='Ingresa la marca del producto'
         />
 
@@ -220,6 +237,7 @@ const CamposProducto = memo(
           error={erroresProducto?.modelo}
           textoAyuda={erroresProducto?.modelo}
           onChange={alActualizarProducto}
+          maxLongitud={100}
           placeholder='Ingresa el modelo del producto'
         />
 
@@ -230,6 +248,7 @@ const CamposProducto = memo(
           error={erroresProducto?.tipoProducto}
           textoAyuda={erroresProducto?.tipoProducto}
           onChange={alActualizarProducto}
+          maxLongitud={100}
           placeholder='Ingresa el tipo de producto'
         />
 

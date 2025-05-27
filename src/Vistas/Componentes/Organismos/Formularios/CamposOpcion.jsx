@@ -19,6 +19,7 @@ const CampoTextoForm = memo(
     rows = 1,
     error,
     min,
+    maxLongitud = 100, // Límite de caracteres para campos generales
     ...rest
   }) => (
     <Grid size={6}>
@@ -26,23 +27,15 @@ const CampoTextoForm = memo(
         label={label}
         name={name}
         value={value}
-        onChange={onChange}
-        onBlur={(evento) => {
-          if (type === 'number') {
-            const valor = Math.max(min || 1, Number(evento.target.value) || 0); // Asegura que el valor sea al menos el mínimo
-            onChange({ target: { name, value: valor } });
-          }
+        onChange={(evento) => {
+          const nuevoValor = evento.target.value.slice(0, maxLongitud);
+          onChange({ target: { name, value: nuevoValor } });
         }}
-        onKeyDown={(evento) => {
-          if (type === 'number' && ['-', 'e', 'E', '+'].includes(evento.key)) {
-            evento.preventDefault(); // Bloquea caracteres no válidos
-          }
-        }}
-        onInput={(evento) => {
-          if (type === 'number' && evento.target.value && evento.target.value < (min || 1)) {
-            evento.target.value = min || 1; // Ajusta el valor al mínimo permitido
-          }
-        }}
+        helperText={
+          type === 'text' && maxLongitud
+            ? `${value.length}/${maxLongitud} - Máximo de caracteres. ${textoAyuda || ''}`
+            : textoAyuda
+        }
         type={type}
         size='medium'
         required
@@ -50,7 +43,7 @@ const CampoTextoForm = memo(
         multiline={multiline}
         rows={rows}
         error={error}
-        helperText={textoAyuda}
+        inputProps={{ maxLength: type === 'text' ? maxLongitud : undefined }}
         {...rest}
       />
     </Grid>
@@ -141,6 +134,12 @@ const CamposOpcion = memo(
           textoAyuda={errores?.cantidad}
           error={errores?.cantidad}
           min={1}
+          onKeyDown={prevenirNumerosNegativos}
+          onInput={(evento) => {
+            if (evento.target.value && evento.target.value < 1) {
+              evento.target.value = 1;
+            }
+          }}
         />
         <CampoTextoForm
           label='SKU Automático'
@@ -168,6 +167,12 @@ const CamposOpcion = memo(
           textoAyuda={errores?.costoAdicional}
           error={errores?.costoAdicional}
           min={1}
+          onKeyDown={prevenirNumerosNegativos}
+          onInput={(evento) => {
+            if (evento.target.value && evento.target.value < 1) {
+              evento.target.value = 1;
+            }
+          }}
         />
         <CampoTextoForm
           label='Descuento (%)'
@@ -179,6 +184,12 @@ const CamposOpcion = memo(
           textoAyuda={errores?.descuento}
           error={errores?.descuento}
           min={1}
+          onKeyDown={prevenirNumerosNegativos}
+          onInput={(evento) => {
+            if (evento.target.value && evento.target.value < 1) {
+              evento.target.value = 1;
+            }
+          }}
         />
         <CampoSelectForm
           label='Estado'

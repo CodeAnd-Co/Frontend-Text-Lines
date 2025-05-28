@@ -2,11 +2,11 @@ import { useState, useCallback, useEffect } from 'react';
 import { Box, List, ListItem, ListItemIcon, ListItemText, CircularProgress, useTheme } from '@mui/material';
 import Icono from '@Atomos/Icono';
 import ModalFlotante from '@Organismos/ModalFlotante';
-import ContenedorImportar from '@Organismos/ContenedorImportar';
 import Alerta from '@Moleculas/Alerta';
 import { tokens } from '@SRC/theme';
 import InfoImportar from '@Organismos/InfoImportar';
 import CajaDesplazable from '@Organismos/CajaDesplazable';
+import ContenedorImportarProductos from './ContenedorImportarProductos';
 
 const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errores, exito, recargar }) => {
   const [archivo, setFile] = useState(null);
@@ -99,7 +99,7 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
     <>
     <ModalFlotante
       open={abierto}
-      titulo="Importar Empleados con CSV"
+      titulo="Importar Productos con CSV"
       onClose={handleCerrar}
       botones={[
     {
@@ -119,7 +119,7 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
   ]}
     >
 
-      <ContenedorImportar onFileAccepted={handleFileAccepted} cargando={cargando} />
+      <ContenedorImportarProductos onFileAccepted={handleFileAccepted} cargando={cargando} />
 
       {archivo && (
         <List disablePadding>
@@ -147,21 +147,13 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
       )}
 
       <Box mt={2} display="inline-flex" alignItems="center" gap={1}>
-        <a href="/plantilla_importar_empleados.csv" download="plantilla_importar_empleados.csv">
+        <a href="/plantilla_importar_productos.csv" download="plantilla_importar_productos.csv">
           Descargar CSV de ejemplo 
         </a>
         <InfoImportar 
           open={abririnfo}
           onClose={() => setAbrirInfo(false)}> 
-              Consideraciones para tu CSV:<br/>
-              Campos obligatorios: no dejes celdas vacías en ninguna columna.<br/>
-              Correo electrónico: formato válido (usuario@dominio.com).<br/>
-              {`Contraseñas: mínimo 8 caracteres, al menos una mayúscula y un carácter especial (!@#$%^&*(),.?":{}|<>)`}<br/>
-              Teléfonos: exactamente 10 dígitos, sin espacios ni guiones.<br/>
-              Textos largos: máximo 75 caracteres por campo.<br/>
-              Fecha Nacimiento: formato DD/MM/AAAA (p. ej. 05/08/1998).<br/>
-              Estado: 1 → activo, 0 → inactivo.<br/>
-              Antiguedad: formato DD/MM/AAAA (p. ej. 05/08/1998).<br/>
+              Under Construction
            </InfoImportar>
             </Box><br/>
                 {mensajeErrores && (

@@ -15,6 +15,7 @@ import { tokens } from '@SRC/theme';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
 import ModalImportarProdctos from '@Organismos/ModalImportarProductos';
+import useImportarProductos from '@Hooks/Productos/useImportarProductos';
 
 const ListaProductos = () => {
   const { productos, cargando, error, recargar } = useConsultarProductos();
@@ -32,6 +33,8 @@ const ListaProductos = () => {
   const [alerta, setAlerta] = useState(null);
   const [openModalEliminar, setAbrirPopUp] = useState(false);
   const [modalImportarAbierto, setModalImportarAbierto] = useState(false);
+  const { importar, errores, exito, cargando: cargandoImportacion } = useImportarProductos();
+ 
   
 
   const mostrarFormularioProducto = useCallback(() => {
@@ -248,10 +251,10 @@ const ListaProductos = () => {
         <ModalImportarProdctos
         abierto={modalImportarAbierto}
         onCerrar={() => setModalImportarAbierto(false)}
-        // onConfirm={importar}
-        // cargando={cargandoImportacion}
-        // errores={errores}
-        // exito={exito}
+        onConfirm={importar}
+        cargando={cargandoImportacion}
+        errores={errores}
+        exito={exito}
         recargar={recargar}
       ></ModalImportarProdctos>
     </>

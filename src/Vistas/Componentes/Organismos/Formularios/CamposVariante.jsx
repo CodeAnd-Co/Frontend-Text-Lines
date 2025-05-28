@@ -21,13 +21,22 @@ const CampoTextoForm = memo(
     multiline = false,
     rows = 1,
     error,
+    maxLongitud = 100,
   }) => (
     <Grid size={6}>
       <CampoTexto
         label={label}
         name={name}
         value={value}
-        onChange={onChange}
+        onChange={(evento) => {
+          const nuevoValor = evento.target.value.slice(0, maxLongitud);
+          onChange({ target: { name, value: nuevoValor } });
+        }}
+        helperText={
+          type === 'text' && maxLongitud
+            ? `${value.length}/${maxLongitud} - Máximo de caracteres. ${textoAyuda || ''}`
+            : textoAyuda
+        }
         type={type}
         size='medium'
         required
@@ -35,7 +44,8 @@ const CampoTextoForm = memo(
         multiline={multiline}
         rows={rows}
         error={error}
-        helperText={textoAyuda}
+        inputProps={{ maxLength: type === 'text' ? maxLongitud : undefined }}
+        {...rest}
       />
     </Grid>
   )
@@ -197,6 +207,7 @@ const CamposVariante = memo(
           placeholder='Ej: Color, Talla, Material...'
           error={errores?.nombreVariante}
           textoAyuda={errores?.nombreVariante}
+          maxLongitud={100}
         />
 
         <CampoTextoForm
@@ -207,6 +218,7 @@ const CamposVariante = memo(
           placeholder='Descripción de la variante'
           error={errores?.descripcion}
           textoAyuda={errores?.descripcion}
+          maxLongitudDescripcion={500}
         />
 
         {(variante.opciones || []).map((opcion, index) => (

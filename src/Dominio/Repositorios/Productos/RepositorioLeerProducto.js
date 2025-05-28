@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { RUTAS_API } from '@Constantes/rutasAPI.js';
-import { InfoProducto } from '@Modelos/Productos/InfoProducto.js'; // Asegúrate de importar el modelo
+import { InfoProducto } from '@Modelos/Productos/InfoProducto.js';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 

@@ -1,6 +1,6 @@
 /*
  * Modelo de información de un producto
- * RF[??] Lee información del producto - Documentación pendiente
+ * RF[28] Lee información del producto - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF28
  */
 
 export class InfoProducto {

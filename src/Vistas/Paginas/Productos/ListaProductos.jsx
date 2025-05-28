@@ -1,3 +1,6 @@
+//RF[26] Crea Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF26]
+//RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
+//RF[30] Elimina Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF30]
 import { Box, useTheme, Chip } from '@mui/material';
 import { useState, useCallback, useEffect } from 'react';
 import Tabla from '@Organismos/Tabla';

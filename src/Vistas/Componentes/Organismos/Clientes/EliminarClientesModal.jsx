@@ -42,6 +42,7 @@ export const EliminarClienteModal = ({
           autoFocus
           error={Boolean(errorNombre)} // solo muestra error si existe
           helperText={errorNombre} // texto del error debajo
+          maxLength={100} // límite de caracteres
         />
       </ModalFlotante>
 

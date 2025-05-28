@@ -75,7 +75,7 @@ const ModalEmpleados = ({ open, onClose, onAccion, empleadoEdicion }) => {
           sx={{ marginBottom: 2 }}
           tipo={alerta.tipo}
           mensaje={alerta.mensaje}
-          duracion='4000'
+          duracion='3000'
           onClose={() => setAlerta(null)}
         />
       )}

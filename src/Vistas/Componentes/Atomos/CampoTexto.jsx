@@ -19,6 +19,7 @@ const CampoTexto = ({
   error = false,
   disabled = false,
   margin = 'normal',
+  maxLength,
   ...props
 }) => {
   return (
@@ -37,6 +38,7 @@ const CampoTexto = ({
       error={error}
       disabled={disabled}
       margin={margin}
+      inputProps={{ maxLength }}
       {...props}
     />
   );
@@ -56,6 +58,7 @@ CampoTexto.propTypes = {
   error: PropTypes.bool,
   disabled: PropTypes.bool,
   margin: PropTypes.oneOf(['none', 'dense', 'normal']),
+  maxLength: PropTypes.number,
 };
 
 export default CampoTexto;

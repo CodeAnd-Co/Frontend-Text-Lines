@@ -67,7 +67,7 @@ const TarjetaConImagen = ({
     </Box>
 
     <Box sx={{ padding: 2 }}>
-      <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
         {titulo && (
           <Texto
             variant='h6'
@@ -97,7 +97,7 @@ const TarjetaConImagen = ({
             clickable={iconoClickeable}
             tooltip={tooltipIcono}
             onClick={alClicIcono}
-            sx={{ flexShrink: 0, ml: 1 }}
+            sx={{ flexShrink: 0, ml: 0, mb: 0, }}
           />
         )}
       </Box>

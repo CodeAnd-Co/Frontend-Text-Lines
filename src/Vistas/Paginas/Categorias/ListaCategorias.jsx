@@ -11,6 +11,7 @@ import { leerCategoria } from '@Hooks/Categorias/useLeerCategoria';
 import { Box, useTheme } from '@mui/material';
 import Texto from '@Atomos/Texto';
 import { tokens } from '@SRC/theme';
+import ModalActualizarCategoria from '@Organismos/ModalActualizarCategoria';
 
 const ListaCategorias = () => {
   const { categorias, cargando, error, recargar } = useConsultarCategorias();
@@ -23,6 +24,8 @@ const ListaCategorias = () => {
   const [categoriaDetalle, setCategoriaDetalle] = useState(null);
   const [errorDetalle, setErrorDetalle] = useState(false);
   const [cargandoDetalle, setCargandoDetalle] = useState(false);
+  const [modalActualizarAbierto, setModalActualizarAbierto] = useState(false);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
 
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
@@ -189,7 +192,14 @@ const ListaCategorias = () => {
                     variant: 'contained',
                     color: 'error',
                     backgroundColor: colores.altertex[1],
-                    construccion: true,
+                    onClick: () => {
+                      setCategoriaSeleccionada({
+                        ...categoriaDetalle,
+                        productos: categoriaDetalle.productos.map(p => p.idProducto), // para evitar errores en el formulario
+                      });
+                      setModalDetalleAbierto(false);
+                      setModalActualizarAbierto(true);
+                    },
                   },
                   {
                     label: 'SALIR',
@@ -208,6 +218,15 @@ const ListaCategorias = () => {
             />
           )}
         </ModalFlotante>
+      )}
+
+      {modalActualizarAbierto && categoriaSeleccionada && (
+        <ModalActualizarCategoria
+          open={modalActualizarAbierto}
+          onClose={() => setModalActualizarAbierto(false)}
+          categoria={categoriaSeleccionada}
+          onActualizado={recargar}
+        />
       )}
 
       {alerta && (

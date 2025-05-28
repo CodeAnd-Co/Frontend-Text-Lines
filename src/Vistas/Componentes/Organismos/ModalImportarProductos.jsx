@@ -119,7 +119,19 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
   ]}
     >
 
-      <ContenedorImportarProductos onFileAccepted={handleFileAccepted} cargando={cargando} />
+      <ContenedorImportarProductos 
+      onFileAccepted={handleFileAccepted} 
+      cargando={cargando}
+      onError={(mensaje) =>
+            setAlerta({
+              tipo: 'error',
+              mensaje,
+              duracion: 3000,
+              cerrable: true,
+              centradoInferior: true,
+            })
+          } 
+      />
 
       {archivo && (
         <List disablePadding>
@@ -148,7 +160,7 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
 
       <Box mt={2} display="inline-flex" alignItems="center" gap={1}>
         <a href="/plantilla_importar_productos.csv" download="plantilla_importar_productos.csv">
-          Descargar CSV de ejemplo 
+          Descargar plantilla CSV
         </a>
         <InfoImportar 
           open={abririnfo}

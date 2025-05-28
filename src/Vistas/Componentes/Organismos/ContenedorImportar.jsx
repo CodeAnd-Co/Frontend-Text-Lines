@@ -34,10 +34,10 @@ const ContenedorImportar = ({ onFileAccepted, onError, cargando = false }) => {
 
   if (error?.code === 'file-too-large') {
       const sizeMB = (file?.size || 0) / (1024 * 1024);
-      const mensaje = `⚠️ El archivo "${file.name}" es muy grande (${sizeMB.toFixed(2)} MB).`;
+      const mensaje = `El archivo "${file.name}" es muy grande (${sizeMB.toFixed(2)} MB).`;
       onError?.(mensaje);
     } else if (error?.code === 'file-invalid-type') {
-      onError?.(`⚠️ El archivo debe ser de tipo .csv`);
+      onError?.(`El archivo debe ser de tipo .csv`);
     } else {
       onError?.(`${error?.message || 'Archivo no aceptado.'}`);
     }
@@ -76,7 +76,7 @@ const ContenedorImportar = ({ onFileAccepted, onError, cargando = false }) => {
           ? 'Cargando…'
           : isDragActive
             ? 'Suelta el archivo aquí…'
-            : 'Arrastra tu CSV o haz clic para seleccionarlo'}
+            : 'Arrastra tu CSV o haz clic para seleccionarlo (5 MB máximo)'}
       </Typography>
     </Box>
   );

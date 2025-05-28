@@ -160,7 +160,7 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
 
       <Box mt={2} display="inline-flex" alignItems="center" gap={1}>
         <a href="/plantilla_importar_empleados.csv" download="plantilla_importar_empleados.csv">
-          Descargar CSV de ejemplo 
+          Descargar plantilla CSV
         </a>
         <InfoImportar 
           open={abririnfo}

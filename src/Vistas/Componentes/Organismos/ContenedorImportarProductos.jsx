@@ -108,7 +108,6 @@ const ContenedorImportarProductos = ({ onFileAccepted, onError, cargando = false
         complete: (resultado) => {
           try {
             const productosParseados = transformarCSVaEstructuraProductos(resultado.data);
-            console.log('🧪 Productos Parseados con ID proveedor:', productosParseados);
             onFileAccepted(archivo, productosParseados);
           } catch (error) {
             onError?.('Error al transformar los datos del CSV. Verifica el formato.');
@@ -166,7 +165,7 @@ const ContenedorImportarProductos = ({ onFileAccepted, onError, cargando = false
           ? 'Cargando…'
           : isDragActive
             ? 'Suelta el archivo aquí…'
-            : 'Arrastra tu CSV o haz clic para seleccionarlo'}
+            : 'Arrastra tu CSV o haz clic para seleccionarlo (5 MB máximo)'}
       </Typography>
     </Box>
   );

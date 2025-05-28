@@ -22,6 +22,7 @@ const CampoTextoForm = memo(
     rows = 1,
     error,
     maxLongitud = 100,
+    ...rest
   }) => (
     <Grid size={6}>
       <CampoTexto
@@ -45,7 +46,7 @@ const CampoTextoForm = memo(
         rows={rows}
         error={error}
         inputProps={{ maxLength: type === 'text' ? maxLongitud : undefined }}
-        {...rest}
+        {...rest} // Pasa las propiedades adicionales al componente CampoTexto
       />
     </Grid>
   )

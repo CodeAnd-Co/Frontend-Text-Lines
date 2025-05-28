@@ -40,6 +40,7 @@ export const RUTAS_API = {
     CONSULTAR_LISTA: `${BASE_PRODUCTOS}/consultar-lista`,
     CREAR: `${BASE_PRODUCTOS}/crear`,
     ELIMINAR_PRODUCTO: `${BASE_PRODUCTOS}/eliminar`,
+    LEER_PRODCUTO: `${BASE_PRODUCTOS}/leer-producto`
   },
   PROVEEDORES: {
     BASE: BASE_PROVEEDORES,

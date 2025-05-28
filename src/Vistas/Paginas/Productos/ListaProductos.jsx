@@ -99,7 +99,7 @@ const ListaProductos = () => {
       flex: 0.5,
       renderCell: (params) => (
         <img
-          src={params.row.urlImagen}
+          src={params.row.urlImagen || '/placeholder.png'}
           alt='Producto'
           style={{ width: 50, height: 50, objectFit: 'cover' }}
         />

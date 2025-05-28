@@ -7,22 +7,55 @@ import ModalFlotante from '@Organismos/ModalFlotante';
 import { useCrearProveedor } from '@Hooks/Proveedores/useCrearProveedor';
 
 const CampoTextoForm = memo(
-  ({ label, name, value, onChange, placeholder, error, helperText, inputProps }) => (
-    <Grid item size={6}>
-      <CampoTexto
-        label={label}
-        name={name}
-        value={value}
-        onChange={onChange}
-        size='medium'
-        required={true}
-        placeholder={placeholder}
-        helperText={helperText}
-        error={error}
-        inputProps={inputProps}
-      />
-    </Grid>
-  )
+  ({
+    label,
+    name,
+    value,
+    onChange,
+    placeholder,
+    error,
+    textoAyuda,
+    maxLongitud = 100,
+    maxLongitudCP = 5, // Límite para código postal
+    maxLongitudCelular = 10, // Límite para celular
+    maxLongitudPais = 60, // Límite para país
+    ...rest
+  }) => {
+    // Determina el límite de caracteres según el campo
+    const limiteCaracteres =
+      name === 'codigoPostal'
+        ? maxLongitudCP
+        : name === 'telefonoContacto'
+        ? maxLongitudCelular
+        : name === 'pais'
+        ? maxLongitudPais
+        : maxLongitud;
+
+    return (
+      <Grid item size={6}>
+        <CampoTexto
+          label={label}
+          name={name}
+          value={value}
+          onChange={(evento) => {
+            const nuevoValor = evento.target.value.slice(0, limiteCaracteres);
+            onChange({ target: { name, value: nuevoValor } });
+          }}
+          helperText={
+            limiteCaracteres
+              ? `${value.length}/${limiteCaracteres} - Máximo de caracteres. ${textoAyuda || ''}`
+              : textoAyuda
+          }
+          size='medium'
+          required
+          placeholder={placeholder}
+          error={error}
+          inputProps={{ maxLength: limiteCaracteres }}
+          {...rest}
+        />
+      </Grid>
+    );
+  }
 );
 
 const FormularioProveedor = memo(({ formularioAbierto, alCerrarFormularioProveedor }) => {
@@ -109,8 +142,8 @@ const FormularioProveedor = memo(({ formularioAbierto, alCerrarFormularioProveed
             onChange={handleChange}
             placeholder='Ingresa el nombre del proveedor'
             error={errores?.nombre}
-            helperText={errores?.nombre}
-            inputProps={{maxLength: 50}}
+            textoAyuda={errores?.nombre}
+            maxLongitud={100} // Límite de caracteres
           />
           <CampoTextoForm
             label='Nombre de la Compañía'
@@ -119,8 +152,8 @@ const FormularioProveedor = memo(({ formularioAbierto, alCerrarFormularioProveed
             onChange={handleChange}
             placeholder='Ingresa el nombre de la compañía'
             error={errores?.nombreCompania}
-            helperText={errores?.nombreCompania}
-            inputProps={{maxLength: 50}}
+            textoAyuda={errores?.nombreCompania}
+            maxLongitud={100} // Límite de caracteres
           />
           <CampoTextoForm
             label='Teléfono de Contacto'
@@ -129,10 +162,8 @@ const FormularioProveedor = memo(({ formularioAbierto, alCerrarFormularioProveed
             onChange={handleChange}
             placeholder='Ingresa el teléfono de contacto'
             error={errores?.telefonoContacto}
-            helperText={errores?.telefonoContacto}
-            inputProps={{
-              maxLength: 10,
-            }}
+            textoAyuda={errores?.telefonoContacto}
+            maxLongitudCelular={10} // Límite específico para celular
           />
           <CampoTextoForm
             label='Correo de Contacto'
@@ -141,8 +172,8 @@ const FormularioProveedor = memo(({ formularioAbierto, alCerrarFormularioProveed
             onChange={handleChange}
             placeholder='Ingresa el correo de contacto'
             error={errores?.correoContacto}
-            helperText={errores?.correoContacto}
-            inputProps={{maxLength: 50}}
+            textoAyuda={errores?.correoContacto}
+            maxLongitud={100} // Límite de caracteres
           />
           <CampoTextoForm
             label='Dirección'
@@ -151,8 +182,8 @@ const FormularioProveedor = memo(({ formularioAbierto, alCerrarFormularioProveed
             onChange={handleChange}
             placeholder='Ingresa la dirección del proveedor'
             error={errores?.direccion}
-            helperText={errores?.direccion}
-            inputProps={{maxLength: 100}}
+            textoAyuda={errores?.direccion}
+            maxLongitud={100} // Límite de caracteres
           />
           <CampoTextoForm
             label='Código Postal'
@@ -161,8 +192,8 @@ const FormularioProveedor = memo(({ formularioAbierto, alCerrarFormularioProveed
             onChange={handleChange}
             placeholder='Ingresa el código postal'
             error={errores?.codigoPostal}
-            helperText={errores?.codigoPostal}
-            inputProps={{maxLength: 10}}
+            textoAyuda={errores?.codigoPostal}
+            maxLongitudCP={5} // Límite específico para código postal
           />
           <CampoTextoForm
             label='País'
@@ -171,8 +202,8 @@ const FormularioProveedor = memo(({ formularioAbierto, alCerrarFormularioProveed
             onChange={handleChange}
             placeholder='Ingresa el país'
             error={errores?.pais}
-            helperText={errores?.pais}
-            inputProps={{maxLength: 50}}
+            textoAyuda={errores?.pais}
+            maxLongitudPais={60} // Límite específico para país
           />
         </Grid>
       </Box>

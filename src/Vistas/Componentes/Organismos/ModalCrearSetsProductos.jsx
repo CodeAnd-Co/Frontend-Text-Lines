@@ -69,7 +69,7 @@ const ModalCrearSetsProductos = ({ abierto = false, onCerrar, onCreado }) => {
     });
   };
 
-  return (
+  return (<>
     <ModalFlotante
       open={abierto}
       onClose={handleCerrar}
@@ -91,6 +91,7 @@ const ModalCrearSetsProductos = ({ abierto = false, onCerrar, onCreado }) => {
         mostrarAlerta={mostrarAlerta}
         setMostrarAlerta={setMostrarAlerta}
       />
+    </ModalFlotante>
       {(exito || error) && (
         <Alerta
           tipo={exito ? 'success' : 'error'}
@@ -99,9 +100,10 @@ const ModalCrearSetsProductos = ({ abierto = false, onCerrar, onCreado }) => {
           sx={{ margin: 3 }}
           cerrable
           onClose={error ? () => setError(false) : undefined}
+          centradoInferior
         />
       )}
-    </ModalFlotante>
+    </>
   );
 };
 

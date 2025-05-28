@@ -130,17 +130,6 @@ const FormaCrearSetsProducto = ({
         multiline
         rows={3}
       />
-
-      {mostrarAlerta && (
-        <Alerta
-          tipo='warning'
-          mensaje={'Ingresa el nombre, nombre visible y selecciona al menos un producto.'}
-          cerrable
-          duracion={3000}
-          onClose={() => setMostrarAlerta(false)}
-          sx={{ mb: 2, mt: 2 }}
-        />
-      )}
     </>
   );
 };

@@ -19,28 +19,50 @@ const CampoTextoForm = memo(
     rows = 1,
     error,
     required = true,
+    maxLongitud = 100,
+    ...rest
   }) => (
     <Grid size={6}>
       <CampoTexto
         label={label}
         name={name}
         value={value}
-        onChange={onChange}
+        onChange={(evento) => {
+          const nuevoValor = evento.target.value.slice(0, maxLongitud);
+          onChange({ target: { name, value: nuevoValor } });
+        }}
+        helperText={
+          type === 'text' && maxLongitud
+            ? `${value.length}/${maxLongitud} - Máximo de caracteres. ${helperText || ''}` // Cambiar textoAyuda por helperText
+            : helperText // Cambiar textoAyuda por helperText
+        }
         type={type}
         size='medium'
         required={required}
         placeholder={placeholder}
         multiline={multiline}
         rows={rows}
-        error={Boolean(error)}
-        helperText={helperText}
+        error={error}
+        inputProps={{ maxLength: type === 'text' ? maxLongitud : undefined }}
+        {...rest}
       />
     </Grid>
   )
 );
 
 const CampoSelectForm = memo(
-  ({ label, name, options, value, onChange, placeholder, helperText, error, size = 12, required = true }) => (
+  ({
+    label,
+    name,
+    options,
+    value,
+    onChange,
+    placeholder,
+    helperText,
+    error,
+    size = 12,
+    required = true,
+  }) => (
     <Grid size={size}>
       <CampoSelect
         label={label}
@@ -84,7 +106,7 @@ const BotonForm = memo(({ selected, fullWidth, backgroundColor, outlineColor, la
 ));
 
 const CamposOpcion = memo(
-  ({ opcion, index, varianteId, erroresOpciones,  alActualizarOpcion, alEliminarOpcion }) => {
+  ({ opcion, index, varianteId, erroresOpciones, alActualizarOpcion, alEliminarOpcion }) => {
     const manejarActualizarOpcion = useCallback(
       (campo, valor) => {
         alActualizarOpcion(varianteId, index, campo, valor);
@@ -101,7 +123,7 @@ const CamposOpcion = memo(
     return (
       <Grid container spacing={2}>
         <TituloForm
-          titulo={`Opcion ${opcion.valorOpcion || index + 1}`}
+          titulo={`Opción ${opcion.valorOpcion || index + 1}`}
           tituloVariant='h6'
           size={6}
         />
@@ -120,8 +142,16 @@ const CamposOpcion = memo(
           name={`cantidad-${varianteId}-${index}`}
           value={opcion.cantidad}
           onChange={(evento) => manejarActualizarOpcion('cantidad', evento.target.value)}
-          error={Boolean(errores?.cantidad)}
-          helperText={errores?.cantidad || ''}
+          placeholder='Ingresa la cantidad'
+          textoAyuda={errores?.cantidad}
+          error={errores?.cantidad}
+          min={1}
+          onKeyDown={prevenirNumerosNegativos}
+          onInput={(evento) => {
+            if (evento.target.value && evento.target.value < 1) {
+              evento.target.value = 1;
+            }
+          }}
         />
         <CampoTextoForm
           label='SKU Automático'
@@ -146,9 +176,16 @@ const CamposOpcion = memo(
           name={`costoAdicional-${varianteId}-${index}`}
           value={opcion.costoAdicional}
           onChange={(evento) => manejarActualizarOpcion('costoAdicional', evento.target.value)}
-          error={Boolean(errores?.costoAdicional)} 
-          helperText={errores?.costoAdicional || ''}
-          required={false}
+          placeholder='Ingresa el costo adicional'
+          textoAyuda={errores?.costoAdicional}
+          error={errores?.costoAdicional}
+          min={1}
+          onKeyDown={prevenirNumerosNegativos}
+          onInput={(evento) => {
+            if (evento.target.value && evento.target.value < 1) {
+              evento.target.value = 1;
+            }
+          }}
         />
         <CampoTextoForm
           label='Descuento (%)'
@@ -156,9 +193,16 @@ const CamposOpcion = memo(
           name={`descuento-${varianteId}-${index}`}
           value={opcion.descuento}
           onChange={(evento) => manejarActualizarOpcion('descuento', evento.target.value)}
-          error={Boolean(errores?.descuento)}
-          helperText={errores?.descuento}
-          required={false}
+          placeholder='Ingresa el descuento'
+          textoAyuda={errores?.descuento}
+          error={errores?.descuento}
+          min={1}
+          onKeyDown={prevenirNumerosNegativos}
+          onInput={(evento) => {
+            if (evento.target.value && evento.target.value < 1) {
+              evento.target.value = 1;
+            }
+          }}
         />
         <CampoSelectForm
           label='Estado'
@@ -177,5 +221,11 @@ const CamposOpcion = memo(
     );
   }
 );
+
+const prevenirNumerosNegativos = (evento) => {
+  if (['-', 'e', 'E', '+'].includes(evento.key)) {
+    evento.preventDefault();
+  }
+};
 
 export default CamposOpcion;

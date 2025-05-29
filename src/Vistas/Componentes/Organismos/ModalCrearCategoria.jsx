@@ -90,7 +90,7 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
       open={abierto}
       onClose={handleCerrar}
       onConfirm={handleConfirmar}
-      titulo='Agregar Categorias'
+      titulo='Agregar Categorías'
       cancelLabel='Cancelar'
       confirmLabel={cargando ? 'Creando...' : 'Crear'}
       disabledConfirm={cargando}

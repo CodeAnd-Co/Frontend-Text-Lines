@@ -21,6 +21,7 @@ const CampoTextoFormulario = memo(
     tipo = 'text',
     multilinea = false,
     filas = 1,
+    required = false,
   }) => (
     <Grid size={6}>
       <CampoTexto
@@ -31,7 +32,7 @@ const CampoTextoFormulario = memo(
         helperText={textoAyuda}
         type={tipo}
         size='medium'
-        required={true}
+        required={required}
         placeholder={placeholder}
         multiline={multilinea}
         rows={filas}
@@ -62,7 +63,7 @@ const BotonFormulario = memo(({ seleccionado, anchoCompleto, colorBorde, etiquet
 });
 
 const CampoSelectFormulario = memo(
-  ({ etiqueta, nombre, opciones, valor, onChange, placeholder, textoAyuda, error, tamano = 6 }) => (
+  ({ etiqueta, nombre, opciones, valor, onChange, placeholder, textoAyuda, error, tamano = 6, required = false }) => (
     <Grid size={tamano}>
       <CampoSelect
         label={etiqueta}
@@ -72,7 +73,7 @@ const CampoSelectFormulario = memo(
         onChange={onChange}
         size='medium'
         error={error}
-        required
+        required = {required}
         autoWidth
         placeholder={placeholder}
         helperText={textoAyuda}
@@ -163,6 +164,7 @@ const CamposProducto = memo(
           error={erroresProducto?.idProveedor}
           textoAyuda={erroresProducto?.idProveedor}
           placeholder='Selecciona un proveedor'
+          required
         />
 
         <TituloFormulario titulo='Datos del Producto' varianteTitulo='h6' />
@@ -175,6 +177,7 @@ const CamposProducto = memo(
           textoAyuda={erroresProducto?.nombreComun}
           onChange={alActualizarProducto}
           placeholder='Ingresa el nombre común del producto'
+          required
         />
 
         <CampoTextoFormulario
@@ -185,6 +188,7 @@ const CamposProducto = memo(
           textoAyuda={erroresProducto?.nombreComercial}
           onChange={alActualizarProducto}
           placeholder='Ingresa el nombre comercial del producto'
+          required
         />
 
         <CampoTextoFormulario
@@ -197,6 +201,7 @@ const CamposProducto = memo(
           placeholder='Ingresa una breve descripción del producto'
           multilinea
           filas={4}
+          required
         />
 
         <CampoTextoFormulario
@@ -207,6 +212,7 @@ const CamposProducto = memo(
           textoAyuda={erroresProducto?.marca}
           onChange={alActualizarProducto}
           placeholder='Ingresa la marca del producto'
+          required
         />
 
         <CampoTextoFormulario
@@ -217,6 +223,7 @@ const CamposProducto = memo(
           textoAyuda={erroresProducto?.modelo}
           onChange={alActualizarProducto}
           placeholder='Ingresa el modelo del producto'
+          required
         />
 
         <CampoTextoFormulario
@@ -227,6 +234,7 @@ const CamposProducto = memo(
           textoAyuda={erroresProducto?.tipoProducto}
           onChange={alActualizarProducto}
           placeholder='Ingresa el tipo de producto'
+          required
         />
 
         <CampoTextoFormulario
@@ -238,6 +246,7 @@ const CamposProducto = memo(
           onChange={alActualizarProducto}
           placeholder='Ingresa el precio en puntos'
           tipo='number'
+          required = {false}
         />
 
         <CampoTextoFormulario
@@ -249,6 +258,7 @@ const CamposProducto = memo(
           onChange={alActualizarProducto}
           placeholder='Ingresa el precio para el cliente'
           tipo='number'
+          required
         />
 
         <CampoTextoFormulario
@@ -260,6 +270,7 @@ const CamposProducto = memo(
           onChange={alActualizarProducto}
           placeholder='Ingresa el precio de venta'
           tipo='number'
+          required
         />
 
         <CampoTextoFormulario
@@ -271,6 +282,7 @@ const CamposProducto = memo(
           onChange={alActualizarProducto}
           placeholder='Ingresa el costo del producto'
           tipo='number'
+          required
         />
 
         <CampoTextoFormulario
@@ -282,6 +294,7 @@ const CamposProducto = memo(
           onChange={alActualizarProducto}
           placeholder='Ej: 16'
           tipo='number'
+          required = {false}
         />
 
         <CampoTextoFormulario
@@ -293,6 +306,7 @@ const CamposProducto = memo(
           onChange={alActualizarProducto}
           placeholder='Ej: 10'
           tipo='number'
+          required = {false}
         />
 
         <CampoSelectFormulario
@@ -307,6 +321,7 @@ const CamposProducto = memo(
           error={erroresProducto?.envio}
           textoAyuda={erroresProducto?.envio}
           placeholder='Selecciona opción de envío'
+          required
         />
 
         <CampoSelectFormulario
@@ -321,6 +336,7 @@ const CamposProducto = memo(
           error={erroresProducto?.estado}
           textoAyuda={erroresProducto?.estado}
           placeholder='Selecciona el estado del producto'
+          required
         />
 
         <CampoImagenProducto

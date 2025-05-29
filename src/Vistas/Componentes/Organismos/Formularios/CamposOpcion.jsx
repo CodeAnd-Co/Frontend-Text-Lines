@@ -13,11 +13,12 @@ const CampoTextoForm = memo(
     value,
     onChange,
     placeholder,
-    textoAyuda,
+    helperText,
     type = 'text',
     multiline = false,
     rows = 1,
     error,
+    required = true,
   }) => (
     <Grid size={6}>
       <CampoTexto
@@ -27,19 +28,19 @@ const CampoTextoForm = memo(
         onChange={onChange}
         type={type}
         size='medium'
-        required
+        required={required}
         placeholder={placeholder}
         multiline={multiline}
         rows={rows}
-        error={error}
-        helperText={textoAyuda}
+        error={Boolean(error)}
+        helperText={helperText}
       />
     </Grid>
   )
 );
 
 const CampoSelectForm = memo(
-  ({ label, name, options, value, onChange, placeholder, helperText, size = 12 }) => (
+  ({ label, name, options, value, onChange, placeholder, helperText, error, size = 12, required = true }) => (
     <Grid size={size}>
       <CampoSelect
         label={label}
@@ -48,10 +49,11 @@ const CampoSelectForm = memo(
         options={options}
         onChange={onChange}
         size='medium'
-        required
+        required={required}
         autoWidth
         placeholder={placeholder}
         helperText={helperText}
+        error={Boolean(error)}
       />
     </Grid>
   )
@@ -82,7 +84,7 @@ const BotonForm = memo(({ selected, fullWidth, backgroundColor, outlineColor, la
 ));
 
 const CamposOpcion = memo(
-  ({ opcion, index, varianteId, erroresOpciones, alActualizarOpcion, alEliminarOpcion }) => {
+  ({ opcion, index, varianteId, erroresOpciones,  alActualizarOpcion, alEliminarOpcion }) => {
     const manejarActualizarOpcion = useCallback(
       (campo, valor) => {
         alActualizarOpcion(varianteId, index, campo, valor);
@@ -109,8 +111,8 @@ const CamposOpcion = memo(
           name={`valorOpcion-${varianteId}-${index}`}
           value={opcion.valorOpcion}
           onChange={(evento) => manejarActualizarOpcion('valorOpcion', evento.target.value)}
-          error={errores?.valorOpcion}
-          textoAyuda={errores?.valorOpcion}
+          error={Boolean(errores?.valorOpcion)}
+          helperText={errores?.valorOpcion || ''}
         />
         <CampoTextoForm
           label='Cantidad'
@@ -118,24 +120,24 @@ const CamposOpcion = memo(
           name={`cantidad-${varianteId}-${index}`}
           value={opcion.cantidad}
           onChange={(evento) => manejarActualizarOpcion('cantidad', evento.target.value)}
-          error={errores?.cantidad}
-          textoAyuda={errores?.cantidad}
+          error={Boolean(errores?.cantidad)}
+          helperText={errores?.cantidad || ''}
         />
         <CampoTextoForm
           label='SKU Automático'
           name={`SKUautomatico-${varianteId}-${index}`}
           value={opcion.SKUautomatico}
           onChange={(evento) => manejarActualizarOpcion('SKUautomatico', evento.target.value)}
-          error={errores?.SKUautomatico}
-          textoAyuda={errores?.SKUautomatico}
+          error={Boolean(errores?.SKUautomatico)}
+          helperText={errores?.SKUautomatico || ''}
         />
         <CampoTextoForm
           label='SKU Comercial'
           name={`SKUcomercial-${varianteId}-${index}`}
           value={opcion.SKUcomercial}
           onChange={(evento) => manejarActualizarOpcion('SKUcomercial', evento.target.value)}
-          error={errores?.SKUcomercial}
-          textoAyuda={errores?.SKUcomercial}
+          error={Boolean(errores?.SKUcomercial)}
+          helperText={errores?.SKUcomercial || ''}
         />
         <CampoTextoForm
           label='Costo Adicional'
@@ -143,8 +145,9 @@ const CamposOpcion = memo(
           name={`costoAdicional-${varianteId}-${index}`}
           value={opcion.costoAdicional}
           onChange={(evento) => manejarActualizarOpcion('costoAdicional', evento.target.value)}
-          error={errores?.costoAdicional}
-          textoAyuda={errores?.costoAdicional}
+          error={Boolean(errores?.costoAdicional)} 
+          helperText={errores?.costoAdicional || ''}
+          required={false}
         />
         <CampoTextoForm
           label='Descuento (%)'
@@ -152,8 +155,9 @@ const CamposOpcion = memo(
           name={`descuento-${varianteId}-${index}`}
           value={opcion.descuento}
           onChange={(evento) => manejarActualizarOpcion('descuento', evento.target.value)}
-          error={errores?.descuento}
-          textoAyuda={errores?.descuento}
+          error={Boolean(errores?.descuento)}
+          helperText={errores?.descuento}
+          required={false}
         />
         <CampoSelectForm
           label='Estado'
@@ -164,8 +168,8 @@ const CamposOpcion = memo(
           ]}
           value={opcion.estado}
           onChange={(evento) => manejarActualizarOpcion('estado', evento.target.value)}
-          error={errores?.estado}
-          textoAyuda={errores?.estado}
+          error={Boolean(errores?.estado)}
+          helperText={errores?.estado || ''}
           size={6}
         />
       </Grid>

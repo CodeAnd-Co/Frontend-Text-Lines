@@ -16,11 +16,12 @@ const CampoTextoForm = memo(
     value,
     onChange,
     placeholder,
-    textoAyuda,
+    helperText,
     type = 'text',
     multiline = false,
     rows = 1,
     error,
+    required = true,
   }) => (
     <Grid size={6}>
       <CampoTexto
@@ -30,12 +31,12 @@ const CampoTextoForm = memo(
         onChange={onChange}
         type={type}
         size='medium'
-        required
+        required={required}
         placeholder={placeholder}
         multiline={multiline}
         rows={rows}
-        error={error}
-        helperText={textoAyuda}
+        error={Boolean(error)}
+        helperText={helperText}
       />
     </Grid>
   )
@@ -146,6 +147,7 @@ const CamposVariante = memo(
     variante,
     imagenesVariante,
     erroresVariantes,
+    intentoEnviar,
     alActualizarVariante,
     alEliminarVariante,
     alAgregarOpcion,
@@ -195,8 +197,8 @@ const CamposVariante = memo(
           value={variante.nombreVariante || ''}
           onChange={(evento) => manejarActualizarVariante('nombreVariante', evento.target.value)}
           placeholder='Ej: Color, Talla, Material...'
-          error={errores?.nombreVariante}
-          textoAyuda={errores?.nombreVariante}
+          error={Boolean(errores?.nombreVariante)}
+          helperText={errores?.nombreVariante || ''}
         />
 
         <CampoTextoForm
@@ -205,8 +207,8 @@ const CamposVariante = memo(
           value={variante.descripcion || ''}
           onChange={(evento) => manejarActualizarVariante('descripcion', evento.target.value)}
           placeholder='Descripción de la variante'
-          error={errores?.descripcion}
-          textoAyuda={errores?.descripcion}
+          error={Boolean(errores?.descripcion)}
+          helperText={errores?.descripcion || ''}
         />
 
         {(variante.opciones || []).map((opcion, index) => (
@@ -216,7 +218,7 @@ const CamposVariante = memo(
             opcion={opcion}
             varianteId={varianteId}
             erroresOpciones={errores?.opciones}
-            ss
+            intentoEnviar={intentoEnviar}
             alActualizarOpcion={alActualizarOpcion}
             alEliminarOpcion={alEliminarOpcion}
           />

@@ -184,7 +184,7 @@ const TarjetaConfiguracionPagos = () => {
           tipo={alerta.tipo}
           mensaje={alerta.mensaje}
           cerrable
-          duracion={2500}
+          duracion={3000}
           centradoInferior
           onClose={() => setAlerta(null)}
         />

@@ -176,7 +176,7 @@ const ModalCrearCliente = ({ abierto = false, onCerrar, onCreado }) => {
       tipo='error'
       mensaje={imagenError}
       cerrable
-      duracion={6000}
+      duracion={3000}
       onClose={() => setImagenError(null)}
       centradoInferior
     />
@@ -186,7 +186,7 @@ const ModalCrearCliente = ({ abierto = false, onCerrar, onCreado }) => {
     <Alerta
       tipo={exito ? 'success' : 'error'}
       mensaje={mensaje}
-      duracion={exito ? 4000 : 6000}
+      duracion={3000}
       cerrable
       onClose={error ? () => setError(false) : undefined}
       centradoInferior
@@ -198,7 +198,7 @@ const ModalCrearCliente = ({ abierto = false, onCerrar, onCreado }) => {
       tipo='warning'
       mensaje={MENSAJES.ERROR_VALIDACION}
       cerrable
-      duracion={10000}
+      duracion={3000}
       onClose={() => setMostrarAlerta(false)}
       centradoInferior
     />

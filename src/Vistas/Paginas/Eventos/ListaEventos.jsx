@@ -220,7 +220,7 @@ const ListaEventos = () => {
           mensaje={alerta.mensaje}
           icono={alerta.icono}
           cerrable={alerta.cerrable}
-          duracion={2500}
+          duracion={3000}
           centradoInferior={alerta.centradoInferior}
           onClose={() => setAlerta(null)}
         />

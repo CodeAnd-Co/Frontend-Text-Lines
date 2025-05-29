@@ -63,7 +63,7 @@ const ModalCrearRol = ({ abierto, onCerrar, onRolCreado }) => {
         <Alerta
           tipo={exito ? 'success' : 'error'}
           mensaje={mensaje}
-          duracion={exito ? 4000 : 8000}
+          duracion={3000}
           cerrable
           sx={{ mt: 2, mb: 2 }}
         />

@@ -1,23 +1,20 @@
 import 'react-pro-sidebar/dist/css/styles.css';
 import { useState, React } from 'react';
 import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
-import { Box, IconButton, useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { tokens } from '@SRC/theme';
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
 import InboxOutlinedIcon from '@mui/icons-material/InboxOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined';
 import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
+import StackedLineChartIcon from '@mui/icons-material/StackedLineChart';
 import Icono from '@Atomos/Icono';
-import TemaIcono from '@Moleculas/TemaIcono';
 import IconoMenu from '@Atomos/iconoMenu';
 import TextoMenu from '@Atomos/textoMenu';
-import { useAuth } from '@Hooks/AuthProvider';
 import { RUTAS } from '@Constantes/rutas';
 
 const ElementoMenu = ({ titulo, ruta, icono, seleccionado, setSeleccionado }) => {
@@ -42,7 +39,6 @@ const ElementoMenu = ({ titulo, ruta, icono, seleccionado, setSeleccionado }) =>
 
 const BarraLateral = () => {
   const theme = useTheme();
-  const { nombreUsuario } = useAuth();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
   const [colapsado] = useState(false); // TODO setColapsado
@@ -99,31 +95,33 @@ const BarraLateral = () => {
             )}
           </MenuItem>
           <Box>
-            {nombreUsuario && (
-              <Box sx={{ 
-                padding: '0px 20px',
-                marginBottom: '20px',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-                <Box 
-                  sx={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
+            {/*             {nombreUsuario && (
+              <Box
+                sx={{
+                  padding: '0px 20px',
+                  marginBottom: '20px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
                     justifyContent: 'center',
                     backgroundColor: colors.menu[3],
-                    padding: '16px 20px', 
+                    padding: '16px 20px',
                     color: colors.primario[4],
-                    borderRadius: '16px', 
+                    borderRadius: '16px',
                     boxShadow: 'inset 0px 0px 6px rgba(0, 0, 0, 0.3)',
                   }}
                 >
-                  <Box 
-                    sx={{ 
+                  <Box
+                    sx={{
                       marginRight: '17px',
                       display: 'flex',
-                      alignItems: 'center'
+                      alignItems: 'center',
                     }}
                   >
                     <AccountCircleOutlinedIcon />
@@ -131,11 +129,11 @@ const BarraLateral = () => {
                   <TextoMenu>{nombreUsuario}</TextoMenu>
                 </Box>
               </Box>
-              )}
+            )} */}
             <ElementoMenu
               titulo='Tablero'
               ruta={RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO}
-              icono={<HomeOutlinedIcon />}
+              icono={<StackedLineChartIcon />}
               seleccionado={seleccionado}
               setSeleccionado={setSeleccionado}
             />

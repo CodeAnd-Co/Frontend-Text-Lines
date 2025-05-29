@@ -102,8 +102,6 @@ const ListaEventos = () => {
     { field: 'nombre', headerName: 'Nombre', flex: 1 },
     { field: 'descripcion', headerName: 'Descripción', flex: 2 },
     { field: 'puntos', headerName: 'Puntos', flex: 1 },
-    { field: 'periodo', headerName: 'Periodo', flex: 1 },
-    { field: 'renovacion', headerName: 'Renovación', flex: 1 },
   ];
 
   const filas = (eventos || []).map((evento) => ({

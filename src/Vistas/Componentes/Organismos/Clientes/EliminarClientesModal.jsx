@@ -14,10 +14,11 @@ export const EliminarClienteModal = ({
   textoConfirmacion,
   botonDeshabilitado,
   onCambioTextoConfirmacion,
+  errorNombre,
 }) => {
   // Obtener el nombre para confirmar
   const nombreConfirmacion = cliente?.nombreComercial || cliente?.nombreVisible || 'este cliente';
-  
+
   return (
     <>
       <ModalFlotante
@@ -31,15 +32,17 @@ export const EliminarClienteModal = ({
       >
         <Texto>Esta acción no se puede deshacer.</Texto>
         <CampoTexto
-          id="confirm-deletion"
+          id='confirm-deletion'
           label={`Escribe "${nombreConfirmacion}" para confirmar`}
-          tipo="text"
+          tipo='text'
           valor={textoConfirmacion}
           onChange={onCambioTextoConfirmacion}
           placeholder={nombreConfirmacion}
           fullWidth
           autoFocus
-          error
+          error={Boolean(errorNombre)} // solo muestra error si existe
+          helperText={errorNombre} // texto del error debajo
+          maxLength={100} // límite de caracteres
         />
       </ModalFlotante>
 

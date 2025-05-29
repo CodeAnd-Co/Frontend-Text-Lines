@@ -28,6 +28,8 @@ const FormaCrearCategorias = ({
   setProductos,
   mostrarAlerta,
   setMostrarAlerta,
+  errores, 
+  intentoEnviar,
 }) => {
   const [rows, setRows] = useState([]);
   const { usuario } = useAuth();
@@ -66,14 +68,20 @@ const FormaCrearCategorias = ({
   return (
     <>
       <CampoTexto
-        label={'Nombre'}
+        label='Nombre'
         fullWidth
-        type={'text'}
+        type='text'
         value={nombreCategoria}
-        onChange={(evento) => setNombreCategoria(evento.target.value)}
+        onChange={(evento) => setNombreCategoria(evento.target.value.slice(0, LIMITE_NOMBRE))}
         inputProps={{ maxLength: LIMITE_NOMBRE }}
-        helperText={`${nombreCategoria.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`}
+        helperText={
+          errores?.nombreCategoria || `${nombreCategoria.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`
+        }
+        error={intentoEnviar && !!errores?.nombreCategoria}
+        required
+        sx={{ mb: 2 }}
       />
+
 
       <ProductosModal
         elevacion={1}
@@ -87,21 +95,29 @@ const FormaCrearCategorias = ({
       />
 
       <CampoTexto
-        label={'Descripción'}
+        label='Descripción'
         fullWidth
-        type={'text'}
+        type='text'
         value={descripcionCategoria}
-        onChange={(evento) => setDescripcionCategoria(evento.target.value)}
+        onChange={(evento) => setDescripcionCategoria(evento.target.value.slice(0, LIMITE_DESCRIPCION))}
         inputProps={{ maxLength: LIMITE_DESCRIPCION }}
-        helperText={`${descripcionCategoria.length}/${LIMITE_DESCRIPCION} - ${MENSAJE_LIMITE}`}
+        helperText={
+          errores?.descripcionCategoria || `${descripcionCategoria.length}/${LIMITE_DESCRIPCION} - ${MENSAJE_LIMITE}`
+        }
+        error={intentoEnviar && !!errores?.descripcionCategoria}
+        required
+        sx={{ mt: 2 }}
+        multiline
+        rows={3}
       />
+
 
       {mostrarAlerta && (
         <Alerta
           tipo='warning'
           mensaje={'Ingresa el nombre y selecciona al menos un producto.'}
           cerrable
-          duracion={10000}
+          duracion={3000}
           onClose={() => setMostrarAlerta(false)}
           sx={{ mb: 2, mt: 2 }}
         />

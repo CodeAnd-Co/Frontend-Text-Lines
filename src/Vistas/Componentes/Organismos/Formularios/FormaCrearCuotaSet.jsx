@@ -27,6 +27,8 @@ const FormaCrearCuotaSet = ({
   setProductos,
   mostrarAlerta,
   setMostrarAlerta,
+  errores,
+  intentoEnviar,
 }) => {
   const [rows, setRows] = useState([]);
   const { usuario } = useAuth();
@@ -62,9 +64,13 @@ const FormaCrearCuotaSet = ({
         value={nombreCuotaSet}
         onChange={(evento) => setNombreCuotaSet(evento.target.value.slice(0, LIMITE_NOMBRE))}
         inputProps={{ maxLength: LIMITE_NOMBRE }}
-        helperText={`${nombreCuotaSet.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`}
+        helperText={
+          errores?.nombreCuotaSet || `${nombreCuotaSet.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`
+        }
+        error={intentoEnviar && !!errores?.nombreCuotaSet}
         sx={{ mb: 2 }}
       />
+
 
       <ProductosModal
         elevacion={1}
@@ -73,7 +79,6 @@ const FormaCrearCuotaSet = ({
         filas={rows}
         paginacion={4}
         checkBox={true}
-        // onRowClick={handleClickFila}
         onRowSeleccion={(ids) => handleFilaSeleccion(ids)}
       />
 
@@ -86,18 +91,22 @@ const FormaCrearCuotaSet = ({
           setDescripcionCuotaSet(evento.target.value.slice(0, LIMITE_DESCRIPCION))
         }
         inputProps={{ maxLength: LIMITE_DESCRIPCION }}
-        helperText={`${descripcionCuotaSet.length}/${LIMITE_DESCRIPCION} - ${MENSAJE_LIMITE}`}
+        helperText={
+          errores?.descripcionCuotaSet || `${descripcionCuotaSet.length}/${LIMITE_DESCRIPCION} - ${MENSAJE_LIMITE}`
+        }
+        error={intentoEnviar && !!errores?.descripcionCuotaSet}
         sx={{ mt: 2 }}
         multiline
         rows={3}
       />
+
 
       {mostrarAlerta && (
         <Alerta
           tipo='warning'
           mensaje={'Completa todos los campos y selecciona al menos un producto.'}
           cerrable
-          duracion={10000}
+          duracion={3000}
           onClose={() => setMostrarAlerta(false)}
           sx={{ mb: 2, mt: 2 }}
         />

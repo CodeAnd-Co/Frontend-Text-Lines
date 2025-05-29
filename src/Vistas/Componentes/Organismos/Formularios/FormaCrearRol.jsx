@@ -9,6 +9,11 @@ const columns = [
   { field: 'nombre', headerName: 'Permiso', width: 250 },
 ];
 
+// Constantes para los límites de caracteres
+const LIMITE_NOMBRE = 50;
+const LIMITE_DESCRIPCION = 150;
+const MENSAJE_LIMITE = 'Máximo caracteres';
+
 const FormaCrearRol = ({
   nombreRol,
   setNombreRol,
@@ -16,7 +21,7 @@ const FormaCrearRol = ({
   setDescripcionRol,
   setPermisosSeleccionados,
   erroresCampos = {},
-  setErroresCampos, 
+  setErroresCampos,
 }) => {
   const [rows, setRows] = useState([]);
 
@@ -38,10 +43,15 @@ const FormaCrearRol = ({
         value={nombreRol}
         onChange={(evento) => {
           setNombreRol(evento.target.value);
-          setErroresCampos((prev) => ({ ...prev, nombreRol: undefined })); 
+          setErroresCampos((prev) => ({ ...prev, nombreRol: undefined }));
         }}
         error={Boolean(erroresCampos.nombreRol)}
-        helperText={erroresCampos.nombreRol}
+        helperText={
+          erroresCampos.nombreRol || `${nombreRol.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`
+        }
+        inputProps={{
+          maxLength: LIMITE_NOMBRE,
+        }}
       />
 
       {/* TABLA DE PERMISOS */}
@@ -60,18 +70,18 @@ const FormaCrearRol = ({
           const seleccionados = rows.filter((permiso) => ids.includes(permiso.id));
 
           setPermisosSeleccionados(seleccionados);
-          setErroresCampos((prev) => ({ ...prev, permisosSeleccionados: undefined })); 
+          setErroresCampos((prev) => ({ ...prev, permisosSeleccionados: undefined }));
         }}
       />
 
       {/* ALERTA DE PERMISOS (debajo de la tabla, arriba de descripción) */}
       {erroresCampos.permisosSeleccionados && (
         <Alerta
-          tipo="warning"
+          tipo='warning'
           mensaje={erroresCampos.permisosSeleccionados}
           cerrable
-          duracion={8000}
-          sx={{ my: 2, mb: 2}}
+          duracion={3000}
+          sx={{ my: 2, mb: 2 }}
         />
       )}
 
@@ -82,6 +92,10 @@ const FormaCrearRol = ({
         type='text'
         value={descripcionRol}
         onChange={(evento) => setDescripcionRol(evento.target.value)}
+        helperText={`${descripcionRol.length}/${LIMITE_DESCRIPCION} - ${MENSAJE_LIMITE}`}
+        inputProps={{
+          maxLength: LIMITE_DESCRIPCION,
+        }}
       />
     </>
   );

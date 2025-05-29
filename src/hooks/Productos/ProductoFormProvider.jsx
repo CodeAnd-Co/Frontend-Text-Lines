@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useCallback, useMemo, useRef } fro
 import { useConsultarProveedores } from '@Hooks/Proveedores/useConsultarProveedores';
 import { useCrearProducto } from '@Hooks/Productos/useCrearProducto';
 import { useGenerarSKU } from '@Hooks/Productos/useGenerarSKU';
+import { v4 as uuidv4 } from 'uuid';
 
 const ProductoFormContext = createContext();
 
@@ -29,7 +30,6 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
   });
 
   const [idsVariantes, setIdsVariantes] = useState([1]);
-  const [siguienteIdVariante, setSiguienteIdVariante] = useState(2);
   const [siguienteIdImagen, setSiguienteIdImagen] = useState(1);
 
   const [producto, setProducto] = useState({
@@ -61,7 +61,12 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
   const generarSKUAutomatico = useGenerarSKU();
 
   const manejarCrearVariante = useCallback(() => {
-    const nuevoId = siguienteIdVariante;
+    // Buscar el menor número positivo no usado como ID
+    const usados = new Set(idsVariantes);
+    let nuevoId = 1;
+    while (usados.has(nuevoId)) {
+      nuevoId += 1;
+    }
 
     setVariantes((prev) => ({
       ...prev,
@@ -72,7 +77,7 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       },
     }));
 
-    setIdsVariantes((prev) => [...prev, nuevoId]);
+    setIdsVariantes((prev) => [...prev, nuevoId].sort((id1, id2) => id1 - id2));
 
     setImagenes((prev) => ({
       ...prev,
@@ -81,9 +86,7 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
         [nuevoId]: [],
       },
     }));
-
-    setSiguienteIdVariante((prev) => prev + 1);
-  }, [siguienteIdVariante]);
+  }, [idsVariantes]);
 
   const manejarActualizarVariante = useCallback((idVariante, campo, valor) => {
     setVariantes((prev) => {
@@ -103,26 +106,57 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
 
   const manejarEliminarVariante = useCallback((idVariante) => {
     setVariantes((prev) => {
+      // Eliminar la variante
       const nuevasVariantes = { ...prev };
       delete nuevasVariantes[idVariante];
-      return nuevasVariantes;
+
+      // Reasignar los IDs para que sean consecutivos desde 1
+      const idsRestantes = Object.keys(nuevasVariantes)
+        .map(Number)
+        .sort((id1, id2) => id1 - id2);
+
+      const variantesReordenadas = {};
+      idsRestantes.forEach((oldId, idx) => {
+        variantesReordenadas[idx + 1] = { ...nuevasVariantes[oldId] };
+      });
+
+      return variantesReordenadas;
     });
 
     setImagenes((prev) => {
+      // Eliminar imágenes de la variante eliminada
       const nuevasImagenesVariantes = { ...prev.imagenesVariantes };
       delete nuevasImagenesVariantes[idVariante];
+
+      // Reasignar los IDs para que sean consecutivos desde 1
+      const idsRestantes = Object.keys(nuevasImagenesVariantes)
+        .map(Number)
+        .sort((id1, id2) => id1 - id2);
+
+      const imagenesReordenadas = {};
+      idsRestantes.forEach((oldId, idx) => {
+        imagenesReordenadas[idx + 1] = nuevasImagenesVariantes[oldId];
+      });
+
       return {
         ...prev,
-        imagenesVariantes: nuevasImagenesVariantes,
+        imagenesVariantes: imagenesReordenadas,
       };
+    });
+
+    setIdsVariantes((prev) => {
+      // Eliminar el ID y reasignar los IDs para que sean consecutivos desde 1
+      const nuevosIds = prev
+        .filter((id) => id !== idVariante)
+        .sort((id1, id2) => id1 - id2)
+        .map((unused, idx) => idx + 1);
+      return nuevosIds;
     });
 
     setAlerta({
       tipo: 'success',
       mensaje: 'Variante eliminada',
     });
-
-    setIdsVariantes((prev) => prev.filter((id) => id !== idVariante));
   }, []);
 
   const manejarAgregarOpcion = useCallback(
@@ -245,7 +279,7 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       setImagenes((prev) => {
         const imagenesVariante = prev.imagenesVariantes[idVariante] || [];
         const nuevasImagenes = archivos.map((archivo) => ({
-          id: `${archivo.name}_${idVariante}`,
+          id: `${archivo.name}_${uuidv4()}_${idVariante}`,
           idVariante,
           file: archivo,
         }));
@@ -371,7 +405,6 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
         });
 
         setIdsVariantes([1]);
-        setSiguienteIdVariante(2);
         setSiguienteIdImagen(1);
 
         setImagenes({

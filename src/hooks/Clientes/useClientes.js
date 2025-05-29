@@ -21,6 +21,7 @@ export const useClientes = () => {
   const [modalEliminacionAbierto, setModalEliminacionAbierto] = useState(false);
   const [textoConfirmacion, setTextoConfirmacion] = useState('');
   const [botonDeshabilitado, setBotonDeshabilitado] = useState(true);
+  const [errorNombre, setErrorNombre] = useState('');
 
   // Modal de detalle state
   const [idClienteDetalle, setIdClienteDetalle] = useState(null);
@@ -102,17 +103,18 @@ export const useClientes = () => {
   const confirmarEliminacion = () => {
     if (!clienteEliminar) return;
 
-    // Obtener el nombre del cliente para confirmar
     const nombreConfirmacion
       = clienteEliminar.nombreComercial || clienteEliminar.nombreVisible || '';
 
-    // Verificar si el texto ingresado coincide con el nombre del cliente
-    if (textoConfirmacion.toLowerCase() === nombreConfirmacion.toLowerCase()) {
+    if (textoConfirmacion === nombreConfirmacion) {
       setIdEliminar(clienteEliminar.idCliente);
       setModalEliminacionAbierto(false);
       setClienteEliminar(null);
       setTextoConfirmacion('');
       setBotonDeshabilitado(true);
+      setErrorNombre(''); // Limpia error si todo bien
+    } else {
+      setErrorNombre('El nombre ingresado no coincide con el cliente seleccionado.');
     }
   };
 
@@ -357,6 +359,7 @@ export const useClientes = () => {
     errorDetalle,
     eliminacionExitosa,
     errorEliminacion,
+    errorNombre,
 
     // Estados de imagen
     imagenSubiendo,

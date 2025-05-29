@@ -164,8 +164,8 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
                 label='Nombre'
                 name='nombreCompleto'
                 value={datosUsuario.nombreCompleto}
-                onChange={(e) => {
-                  const soloLetras = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, ''); // solo letras y espacios
+                onChange={(letra) => {
+                  const soloLetras = letra.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, ''); // solo letras y espacios
                   manejarCambio({ target: { name: 'nombreCompleto', value: soloLetras } });
                 }}
                 required
@@ -267,8 +267,8 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
               label='Número de Teléfono'
               name='numeroTelefono'
               value={datosUsuario.numeroTelefono}
-              onChange={(e) => {
-                const soloNumeros = e.target.value.replace(/\D/g, ''); // elimina todo lo que no es dígito
+              onChange={(num) => {
+                const soloNumeros = num.target.value.replace(/\D/g, ''); // elimina todo lo que no es dígito
                 manejarCambio({ target: { name: 'numeroTelefono', value: soloNumeros } });
               }}
               required

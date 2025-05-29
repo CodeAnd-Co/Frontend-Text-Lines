@@ -23,7 +23,7 @@ const CampoTextoFormulario = memo(
     filas = 1,
     min,
     maxLongitud = 100,
-    maxLongitudDescripcion = 500,
+    maxLongitudDescripcion = 300,
     ...rest
   }) => {
     const limiteCaracteres = nombre === 'descripcion' ? maxLongitudDescripcion : maxLongitud;
@@ -215,7 +215,7 @@ const CamposProducto = memo(
           onChange={alActualizarProducto}
           placeholder='Ingresa una breve descripción del producto'
           multilinea
-          maxLongitudDescripcion={500}
+          maxLongitudDescripcion={300}
           filas={4}
         />
 

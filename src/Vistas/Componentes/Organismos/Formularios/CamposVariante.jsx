@@ -22,34 +22,40 @@ const CampoTextoForm = memo(
     rows = 1,
     error,
     maxLongitud = 100,
+    maxLongitudDescripcion = 300, // Límite específico para descripción
     ...rest
-  }) => (
-    <Grid size={6}>
-      <CampoTexto
-        label={label}
-        name={name}
-        value={value}
-        onChange={(evento) => {
-          const nuevoValor = evento.target.value.slice(0, maxLongitud);
-          onChange({ target: { name, value: nuevoValor } });
-        }}
-        helperText={
-          type === 'text' && maxLongitud
-            ? `${value.length}/${maxLongitud} - Máximo de caracteres. ${textoAyuda || ''}`
-            : textoAyuda
-        }
-        type={type}
-        size='medium'
-        required
-        placeholder={placeholder}
-        multiline={multiline}
-        rows={rows}
-        error={error}
-        inputProps={{ maxLength: type === 'text' ? maxLongitud : undefined }}
-        {...rest} // Pasa las propiedades adicionales al componente CampoTexto
-      />
-    </Grid>
-  )
+  }) => {
+    // Determina el límite de caracteres según el campo
+    const limiteCaracteres = name.includes('descripcion') ? maxLongitudDescripcion : maxLongitud;
+
+    return (
+      <Grid size={6}>
+        <CampoTexto
+          label={label}
+          name={name}
+          value={value}
+          onChange={(evento) => {
+            const nuevoValor = evento.target.value.slice(0, limiteCaracteres);
+            onChange({ target: { name, value: nuevoValor } });
+          }}
+          helperText={
+            type === 'text' && limiteCaracteres
+              ? `${value.length}/${limiteCaracteres} - Máximo de caracteres. ${textoAyuda || ''}`
+              : textoAyuda
+          }
+          type={type}
+          size='medium'
+          required
+          placeholder={placeholder}
+          multiline={multiline}
+          rows={rows}
+          error={error}
+          inputProps={{ maxLength: limiteCaracteres }}
+          {...rest}
+        />
+      </Grid>
+    );
+  }
 );
 
 const TituloForm = memo(({ titulo, tituloVariant, size = 12 }) => (
@@ -218,8 +224,14 @@ const CamposVariante = memo(
           onChange={(evento) => manejarActualizarVariante('descripcion', evento.target.value)}
           placeholder='Descripción de la variante'
           error={errores?.descripcion}
-          textoAyuda={errores?.descripcion}
-          maxLongitudDescripcion={500}
+          textoAyuda={
+            variante.descripcion
+              ? `${variante.descripcion.length}/${maxLongitudDescripcion} - Máximo de caracteres. ${
+                  errores?.descripcion || ''
+                }`
+              : errores?.descripcion
+          }
+          maxLongitudDescripcion={300}
         />
 
         {(variante.opciones || []).map((opcion, index) => (

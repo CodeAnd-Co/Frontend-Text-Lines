@@ -28,18 +28,6 @@ const InfoEvento = ({ descripcion, puntos, periodoRenovacion, renovacion }) => {
               {puntos || 'No especificado'}
             </span>
           </Texto>
-          <Texto gutterBottom sx={{ mb: 2 }}>
-            <strong>Periodo de Renovación:</strong>{' '}
-            <span style={{ color: colores.altertex[4], fontWeight: 500 }}>
-              {periodoRenovacion || 'No especificado'}
-            </span>
-          </Texto>
-          <Texto gutterBottom sx={{ mb: 2 }}>
-            <strong>Renovación:</strong>{' '}
-            <span style={{ color: colores.altertex[4], fontWeight: 500 }}>
-              {renovacionEtiqueta || 'No especificado'}
-            </span>
-          </Texto>
         </Grid>
       </Grid>
     </Box>

@@ -9,6 +9,8 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
   const [descripcionCategoria, setDescripcionCategoria] = useState('');
   const [productos, setProductos] = useState([]);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
+  const [errores, setErrores] = useState({});
+  const [intentoEnviar, setIntentoEnviar] = useState(false);
 
   const tieneReseteo = useRef(false);
 
@@ -24,6 +26,8 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
         setDescripcionCategoria('');
         setProductos([]);
         setMostrarAlerta(false);
+        setErrores({});
+        setIntentoEnviar(false);
       }, 0);
     } else if (abierto) {
       tieneReseteo.current = false;
@@ -54,17 +58,32 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
   }, [onCerrar]);
 
   const handleConfirmar = async () => {
-    if (!nombreCategoria.trim() || productos.length === 0) {
-      setMostrarAlerta(true);
-      return;
-    }
+  setIntentoEnviar(true);
+  const nuevosErrores = {};
 
-    await crearCategoria({
-      nombreCategoria: nombreCategoria.trim(),
-      descripcion: descripcionCategoria.trim(),
-      productos,
-    });
-  };
+  if (!nombreCategoria.trim()) {
+    nuevosErrores.nombreCategoria = 'El nombre es obligatorio.';
+  }
+
+  if (!descripcionCategoria.trim()) {
+    nuevosErrores.descripcionCategoria = 'La descripción es obligatoria.';
+  }
+
+  if (productos.length === 0) {
+    setMostrarAlerta(true);
+  }
+
+  setErrores(nuevosErrores);
+
+  if (Object.keys(nuevosErrores).length > 0 || productos.length === 0) return;
+
+  await crearCategoria({
+    nombreCategoria: nombreCategoria.trim(),
+    descripcion: descripcionCategoria.trim(),
+    productos,
+  });
+};
+
 
   return (
     <ModalFlotante
@@ -85,12 +104,14 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
         setProductos={setProductos}
         mostrarAlerta={mostrarAlerta}
         setMostrarAlerta={setMostrarAlerta}
-      />
+        errores={errores}
+        intentoEnviar={intentoEnviar}
+/>
       {(exito || error) && (
         <Alerta
           tipo={exito ? 'success' : 'error'}
           mensaje={mensaje}
-          duracion={exito ? 3000 :3000 }
+          duracion={exito ? 3000 : 3000 }
           sx={{ margin: 3 }}
           cerrable
           onClose={error ? () => setError(false) : undefined}

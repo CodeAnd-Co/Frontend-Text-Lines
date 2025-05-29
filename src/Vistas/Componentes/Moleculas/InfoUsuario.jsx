@@ -24,10 +24,10 @@ const InfoUsuario = ({
     <Box>
       <Grid container spacing={6} mb={4}>
         <Grid item xs={12} sm={6}>
-          <Box display='flex' alignItems='center' gap={25} mb={2} sx={{ width: '100%' }}>
+          <Box display='flex' alignItems='center' mb={2} sx={{ width: '100%' }}>
             <div
               style={{
-                width: '300px', 
+                width: '300px',
                 textAlign: 'left',
                 wordBreak: 'break-word',
                 overflowWrap: 'break-word',

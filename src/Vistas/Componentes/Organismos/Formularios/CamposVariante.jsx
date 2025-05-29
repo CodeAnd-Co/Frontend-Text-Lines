@@ -16,7 +16,7 @@ const CampoTextoForm = memo(
     value,
     onChange,
     placeholder,
-    textoAyuda,
+    helperText,
     type = 'text',
     multiline = false,
     rows = 1,
@@ -163,6 +163,7 @@ const CamposVariante = memo(
     variante,
     imagenesVariante,
     erroresVariantes,
+    intentoEnviar,
     alActualizarVariante,
     alEliminarVariante,
     alAgregarOpcion,
@@ -212,8 +213,8 @@ const CamposVariante = memo(
           value={variante.nombreVariante || ''}
           onChange={(evento) => manejarActualizarVariante('nombreVariante', evento.target.value)}
           placeholder='Ej: Color, Talla, Material...'
-          error={errores?.nombreVariante}
-          textoAyuda={errores?.nombreVariante}
+          error={Boolean(errores?.nombreVariante)}
+          helperText={errores?.nombreVariante || ''}
           maxLongitud={100}
         />
 
@@ -241,7 +242,7 @@ const CamposVariante = memo(
             opcion={opcion}
             varianteId={varianteId}
             erroresOpciones={errores?.opciones}
-            ss
+            intentoEnviar={intentoEnviar}
             alActualizarOpcion={alActualizarOpcion}
             alEliminarOpcion={alEliminarOpcion}
           />

@@ -13,11 +13,12 @@ const CampoTextoForm = memo(
     value,
     onChange,
     placeholder,
-    textoAyuda,
+    helperText,
     type = 'text',
     multiline = false,
     rows = 1,
     error,
+    required = true,
     min,
     maxLongitud = 100, // Límite de caracteres para campos generales
     ...rest
@@ -38,7 +39,7 @@ const CampoTextoForm = memo(
         }
         type={type}
         size='medium'
-        required
+        required={required}
         placeholder={placeholder}
         multiline={multiline}
         rows={rows}
@@ -51,7 +52,18 @@ const CampoTextoForm = memo(
 );
 
 const CampoSelectForm = memo(
-  ({ label, name, options, value, onChange, placeholder, helperText, size = 12 }) => (
+  ({
+    label,
+    name,
+    options,
+    value,
+    onChange,
+    placeholder,
+    helperText,
+    error,
+    size = 12,
+    required = true,
+  }) => (
     <Grid size={size}>
       <CampoSelect
         label={label}
@@ -60,10 +72,11 @@ const CampoSelectForm = memo(
         options={options}
         onChange={onChange}
         size='medium'
-        required
+        required={required}
         autoWidth
         placeholder={placeholder}
         helperText={helperText}
+        error={Boolean(error)}
       />
     </Grid>
   )
@@ -121,8 +134,8 @@ const CamposOpcion = memo(
           name={`valorOpcion-${varianteId}-${index}`}
           value={opcion.valorOpcion}
           onChange={(evento) => manejarActualizarOpcion('valorOpcion', evento.target.value)}
-          error={errores?.valorOpcion}
-          textoAyuda={errores?.valorOpcion}
+          error={Boolean(errores?.valorOpcion)}
+          helperText={errores?.valorOpcion || ''}
         />
         <CampoTextoForm
           label='Cantidad'
@@ -146,16 +159,17 @@ const CamposOpcion = memo(
           name={`SKUautomatico-${varianteId}-${index}`}
           value={opcion.SKUautomatico}
           onChange={(evento) => manejarActualizarOpcion('SKUautomatico', evento.target.value)}
-          error={errores?.SKUautomatico}
-          textoAyuda={errores?.SKUautomatico}
+          error={Boolean(errores?.SKUautomatico)}
+          helperText={errores?.SKUautomatico || ''}
+          required={false}
         />
         <CampoTextoForm
           label='SKU Comercial'
           name={`SKUcomercial-${varianteId}-${index}`}
           value={opcion.SKUcomercial}
           onChange={(evento) => manejarActualizarOpcion('SKUcomercial', evento.target.value)}
-          error={errores?.SKUcomercial}
-          textoAyuda={errores?.SKUcomercial}
+          error={Boolean(errores?.SKUcomercial)}
+          helperText={errores?.SKUcomercial || ''}
         />
         <CampoTextoForm
           label='Costo Adicional'
@@ -200,8 +214,8 @@ const CamposOpcion = memo(
           ]}
           value={opcion.estado}
           onChange={(evento) => manejarActualizarOpcion('estado', evento.target.value)}
-          error={errores?.estado}
-          textoAyuda={errores?.estado}
+          error={Boolean(errores?.estado)}
+          helperText={errores?.estado || ''}
           size={6}
         />
       </Grid>

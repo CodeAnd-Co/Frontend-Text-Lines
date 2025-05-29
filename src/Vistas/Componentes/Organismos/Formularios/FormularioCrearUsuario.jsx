@@ -252,8 +252,8 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
                 size='medium'
                 error={!!errores.correoElectronico}
                 helperText={
-                errores.correoElectronico
-                    ? CAMPO_OBLIGATORIO
+                  errores.correoElectronico
+                    ? (errores.correoElectronico === true ? CAMPO_OBLIGATORIO : errores.correoElectronico)
                     : `${datosUsuario.correoElectronico.length}/${LIMITE_CORREO} - ${MENSAJE_LIMITE}`
                 }
                 inputProps={{
@@ -276,7 +276,7 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
               error={!!errores.numeroTelefono}
               helperText={
                 errores.numeroTelefono
-                  ? CAMPO_OBLIGATORIO
+                  ? (errores.numeroTelefono === true ? CAMPO_OBLIGATORIO : errores.numeroTelefono)
                   : `${datosUsuario.numeroTelefono.length}/${LIMITE_TELEFONO} - ${MENSAJE_LIMITE}`
               }
               inputProps={{
@@ -358,8 +358,8 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
                 error={!!errores.contrasenia}
                 autoComplete='new-password'
                 helperText={
-                errores.contrasenia
-                    ? CAMPO_OBLIGATORIO
+                  errores.contrasenia
+                    ? (errores.contrasenia === true ? CAMPO_OBLIGATORIO : errores.contrasenia)
                     : `${datosUsuario.contrasenia.length}/${LIMITE_CONTRASENIA} - ${MENSAJE_LIMITE}`
                 }
                 inputProps={{
@@ -381,8 +381,8 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
                 error={!!errores.confirmarContrasenia}
                 autoComplete='new-password'
                 helperText={
-                errores.contrasenia
-                    ? CAMPO_OBLIGATORIO
+                  errores.confirmarContrasenia
+                    ? (errores.confirmarContrasenia === true ? CAMPO_OBLIGATORIO : errores.confirmarContrasenia)
                     : `${datosUsuario.contrasenia.length}/${LIMITE_CONTRASENIA} - ${MENSAJE_LIMITE}`
                 }
                 inputProps={{

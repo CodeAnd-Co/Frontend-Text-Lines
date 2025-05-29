@@ -10,6 +10,7 @@ const ModalCrearSetsProductos = ({ abierto = false, onCerrar, onCreado }) => {
   const [descripcionSetsProducto, setDescripcionSetsProducto] = useState('');
   const [productos, setProductos] = useState([]);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
+  const [mensajeAlerta, setMensajeAlerta] = useState('')
 
   const tieneReseteo = useRef(false);
 
@@ -58,9 +59,14 @@ const ModalCrearSetsProductos = ({ abierto = false, onCerrar, onCreado }) => {
   const handleConfirmar = async () => {
     if (!nombreSetsProducto.trim() || !nombreVisible.trim() || productos.length === 0) {
       setMostrarAlerta(true);
+      if (productos.length === 0) {
+        setMensajeAlerta('Debe seleccionar al menos un producto.');
+      } else {
+        setMensajeAlerta('Por favor complete todos los campos obligatorios.');
+      }
       return;
     }
-
+    setMensajeAlerta('');
     await crearSetsProducto({
       nombre: nombreSetsProducto.trim(),
       nombreVisible: nombreVisible.trim(),
@@ -92,6 +98,19 @@ const ModalCrearSetsProductos = ({ abierto = false, onCerrar, onCreado }) => {
         setMostrarAlerta={setMostrarAlerta}
       />
     </ModalFlotante>
+
+      {mostrarAlerta && (
+        <Alerta
+          tipo="warning"
+          mensaje={mensajeAlerta}
+          duracion={3000}
+          sx={{ margin: 3 }}
+          cerrable
+          onClose={() => setMostrarAlerta(false)}
+          centradoInferior
+        />
+      )}
+
       {(exito || error) && (
         <Alerta
           tipo={exito ? 'success' : 'error'}

@@ -130,6 +130,7 @@ const CamposOpcion = memo(
           onChange={(evento) => manejarActualizarOpcion('SKUautomatico', evento.target.value)}
           error={Boolean(errores?.SKUautomatico)}
           helperText={errores?.SKUautomatico || ''}
+          required={false}
         />
         <CampoTextoForm
           label='SKU Comercial'

@@ -22,6 +22,7 @@ const useImportarProductos = () => {
     setExito(false);
     
     try {
+      console.log('Importando productos:', productosParseados);
       const respuesta = await RepositorioImportarProductos.importarProductos(productosParseados);
 
       if (respuesta.errores) {

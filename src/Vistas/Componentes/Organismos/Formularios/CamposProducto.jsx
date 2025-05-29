@@ -15,13 +15,12 @@ const CampoTextoFormulario = memo(
     nombre,
     valor,
     onChange,
-    helperText,
+    helperText, // Cambiar textoAyuda por helperText
     error,
     placeholder,
     tipo = 'text',
     multilinea = false,
     filas = 1,
-    min,
     maxLongitud = 100,
     maxLongitudDescripcion = 300,
     ...rest
@@ -40,8 +39,8 @@ const CampoTextoFormulario = memo(
           }}
           helperText={
             tipo === 'text' && limiteCaracteres
-              ? `${valor.length}/${limiteCaracteres} - Máximo de caracteres. ${textoAyuda || ''}`
-              : textoAyuda
+              ? `${valor.length}/${limiteCaracteres} - Máximo de caracteres. ${helperText || ''}` // Cambiar textoAyuda por helperText
+              : helperText // Cambiar textoAyuda por helperText
           }
           type={tipo}
           size='medium'

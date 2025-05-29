@@ -4,11 +4,9 @@ import Texto from '@Atomos/Texto';
 import { Grid, Box, useTheme } from '@mui/material';
 import { tokens } from '@SRC/theme';
 
-const InfoEvento = ({ descripcion, puntos, periodoRenovacion, renovacion }) => {
+const InfoEvento = ({ descripcion, puntos }) => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
-
-  const renovacionEtiqueta = renovacion === 1 ? 'Si' : 'No';
 
   return (
     <Box>
@@ -38,7 +36,6 @@ InfoEvento.propTypes = {
   nombre: PropTypes.string,
   descripcion: PropTypes.string,
   puntos: PropTypes.number,
-  periodoRenovacion: PropTypes.string,
   renovacion: PropTypes.bool,
 };
 

@@ -19,8 +19,7 @@ const CampoTextoForm = memo(
     rows = 1,
     error,
     required = true,
-    min,
-    maxLongitud = 100, // Límite de caracteres para campos generales
+    maxLongitud = 100,
     ...rest
   }) => (
     <Grid size={6}>
@@ -34,8 +33,8 @@ const CampoTextoForm = memo(
         }}
         helperText={
           type === 'text' && maxLongitud
-            ? `${value.length}/${maxLongitud} - Máximo de caracteres. ${textoAyuda || ''}`
-            : textoAyuda
+            ? `${value.length}/${maxLongitud} - Máximo de caracteres. ${helperText || ''}` // Cambiar textoAyuda por helperText
+            : helperText // Cambiar textoAyuda por helperText
         }
         type={type}
         size='medium'

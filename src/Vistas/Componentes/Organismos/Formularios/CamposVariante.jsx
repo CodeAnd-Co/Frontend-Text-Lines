@@ -22,7 +22,7 @@ const CampoTextoForm = memo(
     rows = 1,
     error,
     maxLongitud = 100,
-    maxLongitudDescripcion = 300, // Límite específico para descripción
+    maxLongitudDescripcion = 300,
     ...rest
   }) => {
     // Determina el límite de caracteres según el campo
@@ -40,8 +40,8 @@ const CampoTextoForm = memo(
           }}
           helperText={
             type === 'text' && limiteCaracteres
-              ? `${value.length}/${limiteCaracteres} - Máximo de caracteres. ${textoAyuda || ''}`
-              : textoAyuda
+              ? `${value.length}/${limiteCaracteres} - Máximo de caracteres. ${helperText || ''}`
+              : helperText
           }
           type={type}
           size='medium'
@@ -187,9 +187,8 @@ const CamposVariante = memo(
       alAgregarOpcion(varianteId);
     }, [varianteId, alAgregarOpcion]);
 
-    // prettier-ignore
-    const errores 
-    = erroresVariantes && erroresVariantes[varianteId] ? erroresVariantes[varianteId] : {};
+    const errores
+      = erroresVariantes && erroresVariantes[varianteId] ? erroresVariantes[varianteId] : {};
 
     return (
       <>
@@ -225,9 +224,9 @@ const CamposVariante = memo(
           onChange={(evento) => manejarActualizarVariante('descripcion', evento.target.value)}
           placeholder='Descripción de la variante'
           error={errores?.descripcion}
-          textoAyuda={
+          helperText={
             variante.descripcion
-              ? `${variante.descripcion.length}/${maxLongitudDescripcion} - Máximo de caracteres. ${
+              ? `${variante.descripcion.length}/${300} - Máximo de caracteres. ${
                   errores?.descripcion || ''
                 }`
               : errores?.descripcion

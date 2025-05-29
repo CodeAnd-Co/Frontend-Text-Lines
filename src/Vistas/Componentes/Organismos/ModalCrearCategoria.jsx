@@ -14,8 +14,8 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
 
   const tieneReseteo = useRef(false);
 
-  const { crearCategoria, cargando, exito, error, mensaje, setError, resetEstado } =
-    useCrearCategoria();
+  const { crearCategoria, cargando, exito, error, mensaje, setError, resetEstado }
+    = useCrearCategoria();
 
   useEffect(() => {
     if (!abierto && !tieneReseteo.current) {

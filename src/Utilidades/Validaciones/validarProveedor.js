@@ -36,15 +36,15 @@ export const validarProveedor = (datosProveedor) => {
   }
 
   // Validación de correo electrónico
-  const regexCorreo =
-    /^[^\s,;:{}[\]/\\=+?"()<>]+@[^\s,;:{}[\]/\\=+?"()<>]+\.[^\s,;:{}[\]/\\=+?"()<>]+$/;
+  const regexCorreo
+    = /^[^\s,;:{}[\]/\\=+?"()<>]+@[^\s,;:{}[\]/\\=+?"()<>]+\.[^\s,;:{}[\]/\\=+?"()<>]+$/;
   if (!datosProveedor.correoContacto || !regexCorreo.test(datosProveedor.correoContacto)) {
-    errores.correoContacto =
-      'El correo electrónico no es válido. Asegúrate de usar un formato correcto.';
+    errores.correoContacto
+      = 'El correo electrónico no es válido. Asegúrate de usar un formato correcto.';
   }
   if (
-    datosProveedor.correoContacto.startsWith('.') ||
-    datosProveedor.correoContacto.endsWith('.')
+    datosProveedor.correoContacto.startsWith('.')
+    || datosProveedor.correoContacto.endsWith('.')
   ) {
     errores.correoContacto = 'El correo no puede comenzar ni terminar con un punto.';
   }

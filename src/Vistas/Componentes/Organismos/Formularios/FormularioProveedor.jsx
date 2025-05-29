@@ -22,8 +22,8 @@ const CampoTextoForm = memo(
     ...rest
   }) => {
     // Determina el límite de caracteres según el campo
-    const limiteCaracteres =
-      name === 'codigoPostal'
+    const limiteCaracteres
+      = name === 'codigoPostal'
         ? maxLongitudCP
         : name === 'telefonoContacto'
         ? maxLongitudCelular

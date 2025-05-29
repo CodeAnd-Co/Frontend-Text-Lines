@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useCallback, useMemo, useRef } fro
 import { useConsultarProveedores } from '@Hooks/Proveedores/useConsultarProveedores';
 import { useCrearProducto } from '@Hooks/Productos/useCrearProducto';
 import { useGenerarSKU } from '@Hooks/Productos/useGenerarSKU';
+import { v4 as uuidv4 } from 'uuid';
 
 const ProductoFormContext = createContext();
 
@@ -278,7 +279,7 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       setImagenes((prev) => {
         const imagenesVariante = prev.imagenesVariantes[idVariante] || [];
         const nuevasImagenes = archivos.map((archivo) => ({
-          id: `${archivo.name}_${idVariante}`,
+          id: `${archivo.name}_${uuidv4()}_${idVariante}`,
           idVariante,
           file: archivo,
         }));

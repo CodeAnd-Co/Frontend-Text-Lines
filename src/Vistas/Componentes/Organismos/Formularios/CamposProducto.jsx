@@ -15,31 +15,46 @@ const CampoTextoFormulario = memo(
     nombre,
     valor,
     onChange,
-    helperText,
+    helperText, // Cambiar textoAyuda por helperText
     error,
     placeholder,
     tipo = 'text',
     multilinea = false,
     filas = 1,
-    required = false,
-  }) => (
-    <Grid size={6}>
-      <CampoTexto
-        label={etiqueta}
-        name={nombre}
-        value={valor}
-        onChange={onChange}
-        helperText={helperText}
-        type={tipo}
-        size='medium'
-        required={required}
-        placeholder={placeholder}
-        multiline={multilinea}
-        rows={filas}
-        error={error}
-      />
-    </Grid>
-  )
+    maxLongitud = 100,
+    maxLongitudDescripcion = 300,
+    ...rest
+  }) => {
+    const limiteCaracteres = nombre === 'descripcion' ? maxLongitudDescripcion : maxLongitud;
+
+    return (
+      <Grid size={6}>
+        <CampoTexto
+          label={etiqueta}
+          name={nombre}
+          value={valor}
+          onChange={(evento) => {
+            const nuevoValor = evento.target.value.slice(0, limiteCaracteres);
+            onChange({ target: { name: nombre, value: nuevoValor } });
+          }}
+          helperText={
+            tipo === 'text' && limiteCaracteres
+              ? `${valor.length}/${limiteCaracteres} - Máximo de caracteres. ${helperText || ''}` // Cambiar textoAyuda por helperText
+              : helperText // Cambiar textoAyuda por helperText
+          }
+          type={tipo}
+          size='medium'
+          required={true}
+          placeholder={placeholder}
+          multiline={multilinea}
+          rows={filas}
+          error={error}
+          inputProps={{ maxLength: tipo === 'text' ? limiteCaracteres : undefined }}
+          {...rest}
+        />
+      </Grid>
+    );
+  }
 );
 
 const BotonFormulario = memo(({ seleccionado, anchoCompleto, colorBorde, etiqueta, onClick }) => {
@@ -63,7 +78,18 @@ const BotonFormulario = memo(({ seleccionado, anchoCompleto, colorBorde, etiquet
 });
 
 const CampoSelectFormulario = memo(
-  ({ etiqueta, nombre, opciones, valor, onChange, placeholder, helperText, error, tamano = 6, required = false }) => (
+  ({
+    etiqueta,
+    nombre,
+    opciones,
+    valor,
+    onChange,
+    placeholder,
+    helperText,
+    error,
+    tamano = 6,
+    required = false,
+  }) => (
     <Grid size={tamano}>
       <CampoSelect
         label={etiqueta}
@@ -73,7 +99,7 @@ const CampoSelectFormulario = memo(
         onChange={onChange}
         size='medium'
         error={error}
-        required = {required}
+        required={required}
         autoWidth
         placeholder={placeholder}
         helperText={helperText}
@@ -176,6 +202,7 @@ const CamposProducto = memo(
           error={erroresProducto?.nombreComun}
           helperText={erroresProducto?.nombreComun}
           onChange={alActualizarProducto}
+          maxLongitud={100}
           placeholder='Ingresa el nombre común del producto'
           required
         />
@@ -187,6 +214,7 @@ const CamposProducto = memo(
           error={erroresProducto?.nombreComercial}
           helperText={erroresProducto?.nombreComercial}
           onChange={alActualizarProducto}
+          maxLongitud={100}
           placeholder='Ingresa el nombre comercial del producto'
           required
         />
@@ -200,6 +228,7 @@ const CamposProducto = memo(
           onChange={alActualizarProducto}
           placeholder='Ingresa una breve descripción del producto'
           multilinea
+          maxLongitudDescripcion={300}
           filas={4}
           required
         />
@@ -211,6 +240,7 @@ const CamposProducto = memo(
           error={erroresProducto?.marca}
           helperText={erroresProducto?.marca}
           onChange={alActualizarProducto}
+          maxLongitud={100}
           placeholder='Ingresa la marca del producto'
           required
         />
@@ -222,6 +252,7 @@ const CamposProducto = memo(
           error={erroresProducto?.modelo}
           helperText={erroresProducto?.modelo}
           onChange={alActualizarProducto}
+          maxLongitud={100}
           placeholder='Ingresa el modelo del producto'
           required
         />
@@ -233,6 +264,7 @@ const CamposProducto = memo(
           error={erroresProducto?.tipoProducto}
           helperText={erroresProducto?.tipoProducto}
           onChange={alActualizarProducto}
+          maxLongitud={100}
           placeholder='Ingresa el tipo de producto'
           required
         />
@@ -246,7 +278,14 @@ const CamposProducto = memo(
           onChange={alActualizarProducto}
           placeholder='Ingresa el precio en puntos'
           tipo='number'
-          required = {false}
+          required={false}
+          min={1}
+          onKeyDown={prevenirNumerosNegativos}
+          onInput={(evento) => {
+            if (evento.target.value && evento.target.value < 1) {
+              evento.target.value = 1;
+            }
+          }}
         />
 
         <CampoTextoFormulario
@@ -259,6 +298,13 @@ const CamposProducto = memo(
           placeholder='Ingresa el precio para el cliente'
           tipo='number'
           required
+          min={1}
+          onKeyDown={prevenirNumerosNegativos}
+          onInput={(evento) => {
+            if (evento.target.value && evento.target.value < 1) {
+              evento.target.value = 1;
+            }
+          }}
         />
 
         <CampoTextoFormulario
@@ -271,6 +317,13 @@ const CamposProducto = memo(
           placeholder='Ingresa el precio de venta'
           tipo='number'
           required
+          min={1}
+          onKeyDown={prevenirNumerosNegativos}
+          onInput={(evento) => {
+            if (evento.target.value && evento.target.value < 1) {
+              evento.target.value = 1;
+            }
+          }}
         />
 
         <CampoTextoFormulario
@@ -283,6 +336,13 @@ const CamposProducto = memo(
           placeholder='Ingresa el costo del producto'
           tipo='number'
           required
+          min={1}
+          onKeyDown={prevenirNumerosNegativos}
+          onInput={(evento) => {
+            if (evento.target.value && evento.target.value < 1) {
+              evento.target.value = 1;
+            }
+          }}
         />
 
         <CampoTextoFormulario
@@ -294,7 +354,14 @@ const CamposProducto = memo(
           onChange={alActualizarProducto}
           placeholder='Ej: 16'
           tipo='number'
-          required = {false}
+          required={false}
+          min={1}
+          onKeyDown={prevenirNumerosNegativos}
+          onInput={(evento) => {
+            if (evento.target.value && evento.target.value < 1) {
+              evento.target.value = 1;
+            }
+          }}
         />
 
         <CampoTextoFormulario
@@ -306,7 +373,14 @@ const CamposProducto = memo(
           onChange={alActualizarProducto}
           placeholder='Ej: 10'
           tipo='number'
-          required = {false}
+          required={false}
+          min={1}
+          onKeyDown={prevenirNumerosNegativos}
+          onInput={(evento) => {
+            if (evento.target.value && evento.target.value < 1) {
+              evento.target.value = 1;
+            }
+          }}
         />
 
         <CampoSelectFormulario
@@ -349,5 +423,11 @@ const CamposProducto = memo(
     );
   }
 );
+
+const prevenirNumerosNegativos = (evento) => {
+  if (['-', 'e', 'E', '+'].includes(evento.key)) {
+    evento.preventDefault();
+  }
+};
 
 export default CamposProducto;

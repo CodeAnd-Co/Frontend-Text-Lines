@@ -12,7 +12,9 @@ const InfoGrupoEmpleadosEditable = ({
   nombre: nombreInicial,
   descripcion: descripcionInicial,
   setsProductos: setsProductosInicial,
+  idsSetProductos: idsSetsProductosInicial, // IDs iniciales de sets de productos
   empleados: empleadosInicial,
+  idsEmpleados: idsEmpleadosInicial, // IDs iniciales de empleados
 }) => {
   const [productosDisponibles, setProductosDisponibles] = useState([]);
   const [empleadosDisponibles, setEmpleadosDisponibles] = useState([]);
@@ -23,11 +25,14 @@ const InfoGrupoEmpleadosEditable = ({
   const [nombre, setNombre] = useState(nombreInicial || '');
   const [descripcion, setDescripcion] = useState(descripcionInicial || '');
   const [setsProductos, setSetsProductos] = useState(setsProductosInicial || []);
-  const [empleados, setEmpleados] = useState(empleadosInicial);
+  const [empleados, setEmpleados] = useState(empleadosInicial || []);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
-  // Estados para manejar las selecciones en las tablas
-  const [productosSeleccionados, setProductosSeleccionados] = useState([]);
-  const [empleadosSeleccionados, setEmpleadosSeleccionados] = useState([]);
+
+  // Estados para manejar las selecciones en las tablas - INICIALIZADOS CON LOS IDs
+  const [productosSeleccionados, setProductosSeleccionados] = useState(
+    idsSetsProductosInicial || []
+  );
+  const [empleadosSeleccionados, setEmpleadosSeleccionados] = useState(idsEmpleadosInicial || []);
 
   useEffect(() => {
     const obtenerDatos = async () => {
@@ -41,16 +46,37 @@ const InfoGrupoEmpleadosEditable = ({
     obtenerDatos();
   }, [clienteSeleccionado]);
 
-  // Sincronizar selecciones con los chips cuando cambian los datos
+  // Efecto para sincronizar cuando cambien los IDs iniciales (por si se recarga el componente)
   useEffect(() => {
-    const idsProductosSeleccionados = setsProductos.map((producto) => producto.id);
-    setProductosSeleccionados(idsProductosSeleccionados);
-  }, [setsProductos]);
+    if (idsSetsProductosInicial && idsSetsProductosInicial.length > 0) {
+      setProductosSeleccionados(idsSetsProductosInicial);
+    }
+  }, [idsSetsProductosInicial]);
 
   useEffect(() => {
-    const idsEmpleadosSeleccionados = empleados.map((empleado) => empleado.id);
-    setEmpleadosSeleccionados(idsEmpleadosSeleccionados);
-  }, [empleados]);
+    if (idsEmpleadosInicial && idsEmpleadosInicial.length > 0) {
+      setEmpleadosSeleccionados(idsEmpleadosInicial);
+    }
+  }, [idsEmpleadosInicial]);
+
+  // Efecto para mantener sincronizados los chips con las selecciones
+  useEffect(() => {
+    if (productosDisponibles.length > 0 && productosSeleccionados.length > 0) {
+      const productosActualizados = productosDisponibles.filter((producto) =>
+        productosSeleccionados.includes(producto.id)
+      );
+      setSetsProductos(productosActualizados);
+    }
+  }, [productosDisponibles, productosSeleccionados]);
+
+  useEffect(() => {
+    if (empleadosDisponibles.length > 0 && empleadosSeleccionados.length > 0) {
+      const empleadosActualizados = empleadosDisponibles.filter((empleado) =>
+        empleadosSeleccionados.includes(empleado.id)
+      );
+      setEmpleados(empleadosActualizados);
+    }
+  }, [empleadosDisponibles, empleadosSeleccionados]);
 
   // Manejar cambios en la selección de productos
   const handleSeleccionProductos = (selectionData) => {
@@ -75,8 +101,6 @@ const InfoGrupoEmpleadosEditable = ({
   // Manejar cambios en la selección de empleados
   const handleSeleccionEmpleados = (selectionData) => {
     console.log('Selecciones empleados recibidas:', selectionData);
-
-    // Extraer IDs del Set y convertir a array
     let seleccionesArray = [];
     if (selectionData && selectionData.ids && selectionData.ids instanceof Set) {
       seleccionesArray = Array.from(selectionData.ids);
@@ -100,8 +124,9 @@ const InfoGrupoEmpleadosEditable = ({
     correo: empleado.correo,
     areaTrabajo: empleado.area,
   }));
-  console.log('Produtos seleccionados:', productosSeleccionados);
+  console.log('Productos seleccionados:', productosSeleccionados);
   console.log('Empleados seleccionados:', empleadosSeleccionados);
+
   const handleGuardar = () => {
     if (!nombre || !descripcion || setsProductos.length === 0 || empleados.length === 0) {
       setMostrarAlerta(true);
@@ -112,6 +137,8 @@ const InfoGrupoEmpleadosEditable = ({
     console.log('Descripción:', descripcion);
     console.log('Sets de Productos:', setsProductos);
     console.log('Empleados:', empleados);
+    console.log('IDs Sets Productos:', productosSeleccionados);
+    console.log('IDs Empleados:', empleadosSeleccionados);
   };
 
   return (

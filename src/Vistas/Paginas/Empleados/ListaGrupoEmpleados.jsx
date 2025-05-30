@@ -269,7 +269,9 @@ const ListaGrupoEmpleados = () => {
               nombre={grupoEmpleados?.nombre || ''}
               descripcion={grupoEmpleados?.descripcion || ''}
               setsProductos={grupoEmpleados?.setsProductos || []}
+              idsSetProductos={grupoEmpleados?.idsSetProductos || []}
               empleados={grupoEmpleados?.empleados || []}
+              idsEmpleados={grupoEmpleados?.idsEmpleados || []}
             />
           )}
         </ModalFlotante>

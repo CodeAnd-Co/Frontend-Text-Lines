@@ -16,29 +16,46 @@ const CampoTextoForm = memo(
     value,
     onChange,
     placeholder,
-    textoAyuda,
+    helperText,
     type = 'text',
     multiline = false,
     rows = 1,
     error,
-  }) => (
-    <Grid size={6}>
-      <CampoTexto
-        label={label}
-        name={name}
-        value={value}
-        onChange={onChange}
-        type={type}
-        size='medium'
-        required
-        placeholder={placeholder}
-        multiline={multiline}
-        rows={rows}
-        error={error}
-        helperText={textoAyuda}
-      />
-    </Grid>
-  )
+    maxLongitud = 100,
+    maxLongitudDescripcion = 300,
+    ...rest
+  }) => {
+    // Determina el límite de caracteres según el campo
+    const limiteCaracteres = name.includes('descripcion') ? maxLongitudDescripcion : maxLongitud;
+
+    return (
+      <Grid size={6}>
+        <CampoTexto
+          label={label}
+          name={name}
+          value={value}
+          onChange={(evento) => {
+            const nuevoValor = evento.target.value.slice(0, limiteCaracteres);
+            onChange({ target: { name, value: nuevoValor } });
+          }}
+          helperText={
+            type === 'text' && limiteCaracteres
+              ? `${value.length}/${limiteCaracteres} - Máximo de caracteres. ${helperText || ''}`
+              : helperText
+          }
+          type={type}
+          size='medium'
+          required
+          placeholder={placeholder}
+          multiline={multiline}
+          rows={rows}
+          error={error}
+          inputProps={{ maxLength: limiteCaracteres }}
+          {...rest}
+        />
+      </Grid>
+    );
+  }
 );
 
 const TituloForm = memo(({ titulo, tituloVariant, size = 12 }) => (
@@ -146,6 +163,7 @@ const CamposVariante = memo(
     variante,
     imagenesVariante,
     erroresVariantes,
+    intentoEnviar,
     alActualizarVariante,
     alEliminarVariante,
     alAgregarOpcion,
@@ -169,9 +187,8 @@ const CamposVariante = memo(
       alAgregarOpcion(varianteId);
     }, [varianteId, alAgregarOpcion]);
 
-    // prettier-ignore
-    const errores 
-    = erroresVariantes && erroresVariantes[varianteId] ? erroresVariantes[varianteId] : {};
+    const errores
+      = erroresVariantes && erroresVariantes[varianteId] ? erroresVariantes[varianteId] : {};
 
     return (
       <>
@@ -195,8 +212,9 @@ const CamposVariante = memo(
           value={variante.nombreVariante || ''}
           onChange={(evento) => manejarActualizarVariante('nombreVariante', evento.target.value)}
           placeholder='Ej: Color, Talla, Material...'
-          error={errores?.nombreVariante}
-          textoAyuda={errores?.nombreVariante}
+          error={Boolean(errores?.nombreVariante)}
+          helperText={errores?.nombreVariante || ''}
+          maxLongitud={100}
         />
 
         <CampoTextoForm
@@ -206,7 +224,14 @@ const CamposVariante = memo(
           onChange={(evento) => manejarActualizarVariante('descripcion', evento.target.value)}
           placeholder='Descripción de la variante'
           error={errores?.descripcion}
-          textoAyuda={errores?.descripcion}
+          helperText={
+            variante.descripcion
+              ? `${variante.descripcion.length}/${300} - Máximo de caracteres. ${
+                  errores?.descripcion || ''
+                }`
+              : errores?.descripcion
+          }
+          maxLongitudDescripcion={300}
         />
 
         {(variante.opciones || []).map((opcion, index) => (
@@ -216,7 +241,7 @@ const CamposVariante = memo(
             opcion={opcion}
             varianteId={varianteId}
             erroresOpciones={errores?.opciones}
-            ss
+            intentoEnviar={intentoEnviar}
             alActualizarOpcion={alActualizarOpcion}
             alEliminarOpcion={alEliminarOpcion}
           />

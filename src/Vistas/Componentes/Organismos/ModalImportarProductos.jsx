@@ -22,7 +22,7 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
   useEffect(() => {
     if (errores && errores.length > 0) {
       const mensaje = errores
-        .map(elemento => `Fila ${elemento.fila}: ${elemento.error}`)
+        .map(elemento => `Producto ${elemento.fila}: ${elemento.error}`)
         .join('\n');
       setMensajeErrores(mensaje);
     } else {
@@ -165,7 +165,42 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
         <InfoImportar 
           open={abririnfo}
           onClose={() => setAbrirInfo(false)}> 
-              Under Construction
+                <>
+                  <strong>¿Cómo funciona la estructura del archivo CSV?</strong>
+                  <br /><br />
+                  Cada fila del archivo representa una opción específica de un producto. Por eso, en cada fila se debe repetir la información general del producto.
+                  El sistema necesita saber qué filas pertenecen al mismo producto. Para eso sirve el campo <strong>idProducto</strong>.
+                  <br /><br />
+                  Dentro de ese producto, se organizan las <strong>variantes</strong> usando el campo <strong>nombreVariante</strong>.
+                  Y dentro de cada variante, se agrupan las <strong>opciones</strong> como "Rojo", "M", "32GB", etc.
+                  <br /><br />
+                  Así se puede importar correctamente todo: producto, variantes y sus opciones.
+                  <br /><br />
+                  <strong>Importante:</strong><br />
+                  Asegúrate de que el <strong>idProducto</strong> sea único para cada producto dentro del archivo. Puede ser cualquier número, pero debe coincidir en todas las filas relacionadas con ese producto.
+                  <h3>Producto</h3>
+                  <strong>idProducto</strong> permite al sistema saber qué filas pertenecen al mismo producto, aunque estén en diferentes líneas del CSV. Es necesario para poder agruparlo.<br />
+                  <strong>nombreProducto, nombreComercial:</strong> Nombres básicos<br />
+                  <strong>descripcionProducto:</strong> Descripción del producto<br />
+                  <strong>marca, modelo, tipoProducto</strong><br />
+                  <strong>costo, precioVenta, precioCliente:</strong> Valores numéricos (usa punto decimal)<br />
+                  <strong>precioPuntos:</strong> Número entero<br />
+                  <strong>impuesto, descuento:</strong> Porcentajes<br />
+                  <strong>estado:</strong> 1 = activo, 0 = inactivo<br />
+                  <strong>envio:</strong> 1 = disponible, 0 = no disponible<br /><br />
+                  <h3>Variante</h3>
+                  <strong>nombreVariante:</strong> Ej. "Color", "Tamaño"<br />
+                  <strong>descripcionVariante:</strong> (opcional)<br /><br />
+                  <h3>Opción</h3>
+                  <strong>valorOpcion:</strong> Ej. "Rojo", "XL"<br />
+                  <strong>SKUautomatico:</strong> Obligatorio<br />
+                  <strong>SKUcomercial:</strong> Código visible al cliente<br />
+                  <strong>cantidad:</strong> Entero<br />
+                  <strong>costoAdicional:</strong> Número positivo<br />
+                  <strong>descuentoOpcion:</strong> Porcentaje<br />
+                  <strong>estadoOpcion:</strong> 1 = activa, 0 = inactiva<br /><br />
+                
+                </>
            </InfoImportar>
             </Box><br/>
                 {mensajeErrores && (

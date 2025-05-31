@@ -165,15 +165,15 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
         <InfoImportar 
           open={abririnfo}
           onClose={() => setAbrirInfo(false)}> 
-              Consideraciones para tu CSV:<br/>
-              Campos obligatorios: no dejes celdas vacías en ninguna columna.<br/>
-              Correo electrónico: formato válido (usuario@dominio.com).<br/>
-              {`Contraseñas: mínimo 8 caracteres, al menos una mayúscula y un carácter especial (!@#$%^&*(),.?":{}|<>)`}<br/>
-              Teléfonos: exactamente 10 dígitos, sin espacios ni guiones.<br/>
-              Textos largos: máximo 75 caracteres por campo.<br/>
-              Fecha Nacimiento: formato DD/MM/AAAA (p. ej. 05/08/1998).<br/>
-              Estado: 1 → activo, 0 → inactivo.<br/>
-              Antiguedad: formato DD/MM/AAAA (p. ej. 05/08/1998).<br/>
+              <strong>Consideraciones para tu CSV:</strong><br /><br />
+              <strong>Campos obligatorios:</strong> no dejes celdas vacías en ninguna columna.<br/>
+              <strong>Correo electrónico:</strong> formato válido (usuario@dominio.com).<br/>
+              <strong>Contraseñas: </strong>{`mínimo 8 caracteres, al menos una mayúscula y un carácter especial (!@#$%^&*(),.?":{}|<>)`}<br/>
+              <strong>Teléfonos:</strong> exactamente 10 dígitos, sin espacios ni guiones.<br/>
+              <strong>Textos largos:</strong> máximo 75 caracteres por campo.<br/>
+              <strong>Fecha Nacimiento:</strong> formato DD/MM/AAAA (p. ej. 05/08/1998).<br/>
+              <strong>Estado:</strong> 1 → activo, 0 → inactivo.<br/>
+              <strong>Antiguedad:</strong> formato DD/MM/AAAA (p. ej. 05/08/1998).<br/>
            </InfoImportar>
             </Box><br/>
                 {mensajeErrores && (

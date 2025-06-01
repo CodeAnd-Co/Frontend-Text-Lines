@@ -1,6 +1,6 @@
 // RF22 - Consulta Lista de Grupo Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF22
 // RF23 Lee grupo de empleados -https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF23
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import Tabla from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';
 import { useConsultarGrupos } from '@Hooks/Empleados/useConsultarGrupos';
@@ -16,6 +16,7 @@ import { useGrupoEmpleadosId } from '@Hooks/Empleados/useLeerGrupoEmpleados';
 import ModalFlotante from '@Organismos/ModalFlotante';
 import ModalCrearGrupoEmpleado from '@Organismos/ModalCrearGrupoEmpleado';
 import InfoGrupoEmpleadosEditable from '@Moleculas/GrupoEmpleadosInfoEditable';
+import { useActualizarGrupoEmpleados } from '@Hooks/Empleados/useActualizarGrupoEmpleados';
 
 const ListaGrupoEmpleados = () => {
   const { grupos, cargando, error, refetch } = useConsultarGrupos();
@@ -33,6 +34,7 @@ const ListaGrupoEmpleados = () => {
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
   const [idGrupoSeleccionado, setIdGrupoSeleccionado] = useState(null);
   const [abrirModalEditar, setAbrirModalEditar] = useState(false);
+  const [formData, setFormData] = useState(null);
   const {
     grupoEmpleados,
     cargando: cargandoDetalle,
@@ -63,6 +65,50 @@ const ListaGrupoEmpleados = () => {
       });
     } finally {
       setAbrirPopUpEliminar(false);
+    }
+  };
+
+  const handleFormDataChange = (data) => {
+    setFormData(data);
+  };
+
+  const handleGuardar = async () => {
+    if (!formData?.isValid) {
+      setAlerta({
+        tipo: 'warning',
+        mensaje: 'Por favor completa todos los campos requeridos',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+      return;
+    }
+    console.log('Guardando grupo de empleados:', formData);
+    try {
+      useActualizarGrupoEmpleados(
+        idGrupoSeleccionado,
+        formData.nombre,
+        formData.descripcion,
+        formData.empleados,
+        formData.setsDeProductos
+      );
+      setAbrirModalEditar(false);
+      await refetch();
+      setAlerta({
+        tipo: 'success',
+        mensaje: 'Grupo de empleados actualizado correctamente.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+    } catch (error) {
+      setAlerta({
+        tipo: 'error',
+        mensaje: 'Error al actualizar el grupo de empleados.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
     }
   };
 
@@ -246,10 +292,8 @@ const ListaGrupoEmpleados = () => {
               variant: 'contained',
               color: 'primary',
               outlineColor: colores.primario[10],
-              onClick: () => {
-                setAbrirModalEditar(false);
-                refetch();
-              },
+              onClick: handleGuardar,
+              disabled: !formData?.isValid,
             },
             {
               label: 'Cancelar',
@@ -272,6 +316,7 @@ const ListaGrupoEmpleados = () => {
               idsSetProductos={grupoEmpleados?.idsSetProductos || []}
               empleados={grupoEmpleados?.empleadosActualizar || []}
               idsEmpleados={grupoEmpleados?.idsEmpleados || []}
+              onFormDataChange={handleFormDataChange}
             />
           )}
         </ModalFlotante>

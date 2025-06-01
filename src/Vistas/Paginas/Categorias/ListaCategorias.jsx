@@ -42,6 +42,7 @@ const ListaCategorias = () => {
       flex: 1,
     },
   ];
+
   // Las filas deben tener un campo `id`, usamos `idCategoria`
   const rows = categorias.map((cat) => ({
     id: cat.idCategoria,
@@ -66,6 +67,25 @@ const ListaCategorias = () => {
     handleCerrarModalCrear();
     // Recarga la lista de categorías
     recargar();
+    // Show success alert
+    setAlerta({
+      tipo: 'success',
+      mensaje: 'Categoría creada exitosamente.',
+      icono: true,
+      cerrable: true,
+      centradoInferior: true,
+    });
+  };
+
+  // Manejador para errores al crear categoría
+  const handleErrorCrearCategoria = (mensajeError) => {
+    setAlerta({
+      tipo: 'error',
+      mensaje: mensajeError,
+      icono: true,
+      cerrable: true,
+      centradoInferior: true,
+    });
   };
 
   const botones = [
@@ -75,7 +95,7 @@ const ListaCategorias = () => {
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
-      onClick: handleAbrirModalCrear, // Ahora abre el modal para crear
+      onClick: handleAbrirModalCrear,
     },
     {
       label: 'Eliminar',
@@ -120,12 +140,15 @@ const ListaCategorias = () => {
           />
         </Box>
       </ContenedorLista>
+
       {/* Modal para crear categoria */}
       <ModalCrearCategoria
         abierto={modalCrearAbierto}
         onCerrar={handleCerrarModalCrear}
         onCreado={handleCategoriaCreadaExitosamente}
+        onError={handleErrorCrearCategoria}
       />
+
       {/* Modal para eliminar categoria */}
       <ModalEliminarCategoria
         open={openModalEliminar}
@@ -134,6 +157,8 @@ const ListaCategorias = () => {
         setAlerta={setAlerta}
         refrescarPagina={recargar}
       />
+
+      {/* Alert that appears on the page level */}
       {alerta && (
         <Alerta
           tipo={alerta.tipo}

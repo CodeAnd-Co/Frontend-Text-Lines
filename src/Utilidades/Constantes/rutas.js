@@ -42,6 +42,7 @@ export const RUTAS = {
       BASE: '/usuarios',
       CONSULTAR_ROLES: '/consultar-roles',
       CONFIRMAR_CREACION: '/confirmar-creacion',
+      ACTUALIZAR_USUARIO: '/actualizar-usuario',
     },
   },
   SISTEMA_TIENDA: {

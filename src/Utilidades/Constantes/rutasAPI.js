@@ -13,13 +13,13 @@ const BASE_EVENTOS = `${BASE_URL}/api/eventos`;
 const BASE_PAGOS = `${BASE_URL}/api/pagos`;
 const BASE_AUTENTICACION = `${BASE_URL}/api/autenticacion`;
 
-
 export const RUTAS_API = {
   USUARIOS: {
     BASE: BASE_USUARIOS,
     CONSULTAR_LISTA: `${BASE_USUARIOS}/consultar-lista-usuarios`,
     CONSULTAR_USUARIO: `${BASE_USUARIOS}/consultar-usuario`,
     ELIMINAR_USUARIOS: `${BASE_USUARIOS}/eliminar-usuarios`,
+    ACTUALIZAR_USUARIO: `${BASE_USUARIOS}/actualizar-usuario`,
   },
 
   AUTENTICACION: {
@@ -27,7 +27,7 @@ export const RUTAS_API = {
     ACTIVAR_2FA: `${BASE_AUTENTICACION}/activar-2fa`,
     VERIFICAR_2FA: `${BASE_AUTENTICACION}/verificar-2fa`,
   },
-  
+
   CATEGORIAS: {
     BASE: BASE_CATEGORIAS,
     CONSULTAR_LISTA: `${BASE_CATEGORIAS}/consultar-lista-categorias`,

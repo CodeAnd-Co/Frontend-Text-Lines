@@ -12,6 +12,8 @@ export class GrupoEmpleadosLectura {
     idsSetProductos = [],
     empleados = [],
     idsEmpleados = [],
+    empleadosActualizar = [],
+    setProductosActualizar = [],
   }) {
     this.idGrupo = idGrupo;
     this.nombre = nombre;
@@ -20,5 +22,7 @@ export class GrupoEmpleadosLectura {
     this.idsSetProductos = idsSetProductos;
     this.empleados = empleados;
     this.idsEmpleados = idsEmpleados;
+    this.empleadosActualizar = empleadosActualizar;
+    this.setProductosActualizar = setProductosActualizar;
   }
 }

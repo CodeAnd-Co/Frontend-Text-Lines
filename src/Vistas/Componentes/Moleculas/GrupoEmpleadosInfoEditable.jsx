@@ -3,18 +3,40 @@ import CampoTexto from '@Atomos/CampoTexto';
 import { useState, useEffect } from 'react';
 import obtenerSetsProductos from '@Servicios/obtenerSetsProductos';
 import obtenerEmpleados from '@Servicios/obtenerEmpleados';
-import TablaSetsEmpleados from '@Organismos/TablaSetsEmpleados';
 import { useAuth } from '@Hooks/AuthProvider';
-import { Box, Button, Chip, Grid } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid,
+  Card,
+  CardHeader,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Checkbox,
+  Divider,
+} from '@mui/material';
 import Texto from '@Atomos/Texto';
+
+// Funciones auxiliares para la lista de transferencia
+function not(a, b) {
+  return a.filter((value) => !b.find((item) => item.id === value.id));
+}
+
+function intersection(a, b) {
+  return a.filter((value) => b.find((item) => item.id === value.id));
+}
+
+function union(a, b) {
+  return [...a, ...not(b, a)];
+}
 
 const InfoGrupoEmpleadosEditable = ({
   nombre: nombreInicial,
   descripcion: descripcionInicial,
   setsProductos: setsProductosInicial,
-  idsSetProductos: idsSetsProductosInicial, // IDs iniciales de sets de productos
   empleados: empleadosInicial,
-  idsEmpleados: idsEmpleadosInicial, // IDs iniciales de empleados
 }) => {
   const [productosDisponibles, setProductosDisponibles] = useState([]);
   const [empleadosDisponibles, setEmpleadosDisponibles] = useState([]);
@@ -24,128 +46,262 @@ const InfoGrupoEmpleadosEditable = ({
   // Estados locales
   const [nombre, setNombre] = useState(nombreInicial || '');
   const [descripcion, setDescripcion] = useState(descripcionInicial || '');
-  const [setsProductos, setSetsProductos] = useState(setsProductosInicial || []);
-  const [empleados, setEmpleados] = useState(empleadosInicial || []);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
 
-  // Estados para manejar las selecciones en las tablas - INICIALIZADOS CON LOS IDs
-  const [productosSeleccionados, setProductosSeleccionados] = useState(
-    idsSetsProductosInicial || []
-  );
-  const [empleadosSeleccionados, setEmpleadosSeleccionados] = useState(idsEmpleadosInicial || []);
+  // Estados para la lista de transferencia de empleados
+  const [checkedEmpleados, setCheckedEmpleados] = useState([]);
+  const [leftEmpleados, setLeftEmpleados] = useState([]);
+  const [rightEmpleados, setRightEmpleados] = useState(empleadosInicial || []);
+
+  // Estados para la lista de transferencia de sets productos
+  const [checkedSets, setCheckedSets] = useState([]);
+  const [leftSets, setLeftSets] = useState([]);
+  const [rightSets, setRightSets] = useState(setsProductosInicial || []);
 
   useEffect(() => {
     const obtenerDatos = async () => {
       const productos = await obtenerSetsProductos(clienteSeleccionado);
-      setProductosDisponibles(productos);
+      console.log('Productos obtenidos:', productos);
+      setLeftSets(productos.filter((prod) => !rightSets.find((r) => r.id === prod.id)));
 
       const empleadosData = await obtenerEmpleados(clienteSeleccionado);
-      setEmpleadosDisponibles(empleadosData);
+      setLeftEmpleados(empleadosData.filter((emp) => !rightEmpleados.find((r) => r.id === emp.id)));
     };
 
     obtenerDatos();
   }, [clienteSeleccionado]);
 
-  // Efecto para sincronizar cuando cambien los IDs iniciales (por si se recarga el componente)
-  useEffect(() => {
-    if (idsSetsProductosInicial && idsSetsProductosInicial.length > 0) {
-      setProductosSeleccionados(idsSetsProductosInicial);
-    }
-  }, [idsSetsProductosInicial]);
+  // Handlers para empleados
+  const handleToggleEmpleados = (value) => () => {
+    const currentIndex = checkedEmpleados.findIndex((item) => item.id === value.id);
+    const newChecked = [...checkedEmpleados];
 
-  useEffect(() => {
-    if (idsEmpleadosInicial && idsEmpleadosInicial.length > 0) {
-      setEmpleadosSeleccionados(idsEmpleadosInicial);
-    }
-  }, [idsEmpleadosInicial]);
-
-  // Efecto para mantener sincronizados los chips con las selecciones
-  useEffect(() => {
-    if (productosDisponibles.length > 0 && productosSeleccionados.length > 0) {
-      const productosActualizados = productosDisponibles.filter((producto) =>
-        productosSeleccionados.includes(producto.id)
-      );
-      setSetsProductos(productosActualizados);
-    }
-  }, [productosDisponibles, productosSeleccionados]);
-
-  useEffect(() => {
-    if (empleadosDisponibles.length > 0 && empleadosSeleccionados.length > 0) {
-      const empleadosActualizados = empleadosDisponibles.filter((empleado) =>
-        empleadosSeleccionados.includes(empleado.id)
-      );
-      setEmpleados(empleadosActualizados);
-    }
-  }, [empleadosDisponibles, empleadosSeleccionados]);
-
-  // Manejar cambios en la selección de productos
-  const handleSeleccionProductos = (selectionData) => {
-    console.log('Selecciones productos recibidas:', selectionData);
-
-    let seleccionesArray = [];
-    if (selectionData && selectionData.ids && selectionData.ids instanceof Set) {
-      seleccionesArray = Array.from(selectionData.ids);
-    } else if (Array.isArray(selectionData)) {
-      seleccionesArray = selectionData;
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
     }
 
-    setProductosSeleccionados(seleccionesArray);
-
-    // Actualizar los chips basándose en las selecciones
-    const productosActualizados = productosDisponibles.filter((producto) =>
-      seleccionesArray.includes(producto.id)
-    );
-    setSetsProductos(productosActualizados);
+    setCheckedEmpleados(newChecked);
   };
 
-  // Manejar cambios en la selección de empleados
-  const handleSeleccionEmpleados = (selectionData) => {
-    console.log('Selecciones empleados recibidas:', selectionData);
-    let seleccionesArray = [];
-    if (selectionData && selectionData.ids && selectionData.ids instanceof Set) {
-      seleccionesArray = Array.from(selectionData.ids);
-    } else if (Array.isArray(selectionData)) {
-      seleccionesArray = selectionData;
-    }
-
-    setEmpleadosSeleccionados(seleccionesArray);
-
-    // Actualizar los chips basándose en las selecciones
-    const empleadosActualizados = empleadosDisponibles.filter((empleado) =>
-      seleccionesArray.includes(empleado.id)
-    );
-    setEmpleados(empleadosActualizados);
+  const handleAllLeftEmpleados = () => {
+    setLeftEmpleados(leftEmpleados.concat(rightEmpleados));
+    setRightEmpleados([]);
   };
 
-  // Preparar filas para la tabla de empleados
-  const filas = empleadosDisponibles.map((empleado) => ({
-    id: empleado.id,
-    nombreCompleto: empleado.nombre,
-    correo: empleado.correo,
-    areaTrabajo: empleado.area,
-  }));
-  console.log('Productos seleccionados:', productosSeleccionados);
-  console.log('Empleados seleccionados:', empleadosSeleccionados);
+  const handleAllRightEmpleados = () => {
+    setRightEmpleados(rightEmpleados.concat(leftEmpleados));
+    setLeftEmpleados([]);
+  };
+
+  const handleCheckedRightEmpleados = () => {
+    const leftChecked = intersection(checkedEmpleados, leftEmpleados);
+    setRightEmpleados(rightEmpleados.concat(leftChecked));
+    setLeftEmpleados(not(leftEmpleados, leftChecked));
+    setCheckedEmpleados(not(checkedEmpleados, leftChecked));
+  };
+
+  const handleCheckedLeftEmpleados = () => {
+    const rightChecked = intersection(checkedEmpleados, rightEmpleados);
+    setLeftEmpleados(leftEmpleados.concat(rightChecked));
+    setRightEmpleados(not(rightEmpleados, rightChecked));
+    setCheckedEmpleados(not(checkedEmpleados, rightChecked));
+  };
+
+  // Handlers para sets productos
+  const handleToggleSets = (value) => () => {
+    const currentIndex = checkedSets.findIndex((item) => item.id === value.id);
+    const newChecked = [...checkedSets];
+
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    setCheckedSets(newChecked);
+  };
+
+  const handleAllLeftSets = () => {
+    setLeftSets(leftSets.concat(rightSets));
+    setRightSets([]);
+  };
+
+  const handleAllRightSets = () => {
+    setRightSets(rightSets.concat(leftSets));
+    setLeftSets([]);
+  };
+
+  const handleCheckedRightSets = () => {
+    const leftChecked = intersection(checkedSets, leftSets);
+    setRightSets(rightSets.concat(leftChecked));
+    setLeftSets(not(leftSets, leftChecked));
+    setCheckedSets(not(checkedSets, leftChecked));
+  };
+
+  const handleCheckedLeftSets = () => {
+    const rightChecked = intersection(checkedSets, rightSets);
+    setLeftSets(leftSets.concat(rightChecked));
+    setRightSets(not(rightSets, rightChecked));
+    setCheckedSets(not(checkedSets, rightChecked));
+  };
+
+  const numberOfCheckedEmpleados = (items) => intersection(checkedEmpleados, items).length;
+  const numberOfCheckedSets = (items) => intersection(checkedSets, items).length;
+
+  const handleToggleAllEmpleados = (items) => () => {
+    if (numberOfCheckedEmpleados(items) === items.length) {
+      setCheckedEmpleados(not(checkedEmpleados, items));
+    } else {
+      setCheckedEmpleados(union(checkedEmpleados, items));
+    }
+  };
+
+  const handleToggleAllSets = (items) => () => {
+    if (numberOfCheckedSets(items) === items.length) {
+      setCheckedSets(not(checkedSets, items));
+    } else {
+      setCheckedSets(union(checkedSets, items));
+    }
+  };
+
+  const customListEmpleados = (title, items) => (
+    <Card>
+      <CardHeader
+        sx={{ px: 2, py: 1 }}
+        avatar={
+          <Checkbox
+            onClick={handleToggleAllEmpleados(items)}
+            checked={numberOfCheckedEmpleados(items) === items.length && items.length !== 0}
+            indeterminate={
+              numberOfCheckedEmpleados(items) !== items.length &&
+              numberOfCheckedEmpleados(items) !== 0
+            }
+            disabled={items.length === 0}
+            inputProps={{
+              'aria-label': 'all items selected',
+            }}
+          />
+        }
+        title={title}
+        subheader={`${numberOfCheckedEmpleados(items)}/${items.length} seleccionados`}
+      />
+      <Divider />
+      <List
+        sx={{
+          width: 350,
+          height: 300,
+          bgcolor: 'background.paper',
+          overflow: 'auto',
+        }}
+        dense
+        component='div'
+        role='list'
+      >
+        {items.map((value) => {
+          const labelId = `transfer-list-empleados-${value.id}-label`;
+
+          return (
+            <ListItemButton key={value.id} role='listitem' onClick={handleToggleEmpleados(value)}>
+              <ListItemIcon>
+                <Checkbox
+                  checked={checkedEmpleados.some((item) => item.id === value.id)}
+                  tabIndex={-1}
+                  disableRipple
+                  inputProps={{
+                    'aria-labelledby': labelId,
+                  }}
+                />
+              </ListItemIcon>
+              <ListItemText
+                id={labelId}
+                primary={value.nombreCompleto || value.nombre}
+                secondary={value.correoElectronico || value.correo}
+              />
+            </ListItemButton>
+          );
+        })}
+      </List>
+    </Card>
+  );
+
+  const customListSets = (title, items) => (
+    <Card>
+      <CardHeader
+        sx={{ px: 2, py: 1 }}
+        avatar={
+          <Checkbox
+            onClick={handleToggleAllSets(items)}
+            checked={numberOfCheckedSets(items) === items.length && items.length !== 0}
+            indeterminate={
+              numberOfCheckedSets(items) !== items.length && numberOfCheckedSets(items) !== 0
+            }
+            disabled={items.length === 0}
+            inputProps={{
+              'aria-label': 'all items selected',
+            }}
+          />
+        }
+        title={title}
+        subheader={`${numberOfCheckedSets(items)}/${items.length} seleccionados`}
+      />
+      <Divider />
+      <List
+        sx={{
+          width: 350,
+          height: 300,
+          bgcolor: 'background.paper',
+          overflow: 'auto',
+        }}
+        dense
+        component='div'
+        role='list'
+      >
+        {items.map((value) => {
+          const labelId = `transfer-list-sets-${value.id}-label`;
+
+          return (
+            <ListItemButton key={value.id} role='listitem' onClick={handleToggleSets(value)}>
+              <ListItemIcon>
+                <Checkbox
+                  checked={checkedSets.some((item) => item.id === value.id)}
+                  tabIndex={-1}
+                  disableRipple
+                  inputProps={{
+                    'aria-labelledby': labelId,
+                  }}
+                />
+              </ListItemIcon>
+              <ListItemText
+                id={labelId}
+                primary={value.nombreProducto}
+                secondary={`ID: ${value.id}`}
+              />
+            </ListItemButton>
+          );
+        })}
+      </List>
+    </Card>
+  );
 
   const handleGuardar = () => {
-    if (!nombre || !descripcion || setsProductos.length === 0 || empleados.length === 0) {
+    if (!nombre || !descripcion || rightSets.length === 0 || rightEmpleados.length === 0) {
       setMostrarAlerta(true);
       return;
     }
 
     console.log('Nombre:', nombre);
     console.log('Descripción:', descripcion);
-    console.log('Sets de Productos:', setsProductos);
-    console.log('Empleados:', empleados);
-    console.log('IDs Sets Productos:', productosSeleccionados);
-    console.log('IDs Empleados:', empleadosSeleccionados);
+    console.log('Sets de Productos:', rightSets);
+    console.log('Empleados:', rightEmpleados);
   };
 
   return (
-    <Box p={3}>
-      <Grid container spacing={2}>
+    <Box sx={{ width: '800px', margin: '0 auto', borderRadius: '10px' }}>
+      <Grid container spacing={3}>
         {/* Nombre */}
-        <Grid item xs={12}>
+        <Grid item xs={20} direction={'column'}>
           <Texto variant='h6'>Nombre:</Texto>
           <CampoTexto
             fullWidth
@@ -153,12 +309,12 @@ const InfoGrupoEmpleadosEditable = ({
             value={nombre}
             placeholder='Nombre del grupo'
             onChange={(e) => setNombre(e.target.value)}
-            sx={{ mt: 1 }}
+            sx={{ mt: 1, mb: 2, width: '300px', overflow: 'auto' }}
           />
         </Grid>
 
         {/* Descripción */}
-        <Grid item xs={12}>
+        <Grid item xs={20} direction={'column'}>
           <Texto variant='h6'>Descripción:</Texto>
           <CampoTexto
             fullWidth
@@ -166,88 +322,130 @@ const InfoGrupoEmpleadosEditable = ({
             value={descripcion}
             placeholder='Escribe una descripción'
             onChange={(e) => setDescripcion(e.target.value)}
-            sx={{ mt: 1 }}
+            sx={{ mt: 1, mb: 2, width: '400px', overflow: 'auto' }}
           />
         </Grid>
 
         {/* Sets de Productos */}
         <Grid item xs={12}>
           <Texto variant='h6'>Sets de Productos:</Texto>
-          <Box display='flex' gap={1} flexWrap='wrap' mb={2}>
-            {setsProductos?.length > 0 ? (
-              setsProductos.map((set, index) => (
-                <Chip
-                  key={index}
-                  label={set.nombreProducto || set}
-                  sx={{
-                    borderRadius: '16px',
-                    backgroundColor: '#e0f7fa',
-                    color: '#006064',
-                  }}
-                />
-              ))
-            ) : (
-              <Texto variant='body1' sx={{ color: '#9e9e9e' }}>
-                No especificada
-              </Texto>
-            )}
+          <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', mt: 2 }}>
+            <Grid
+              container
+              spacing={2}
+              justifyContent='center'
+              alignItems='center'
+              sx={{ maxWidth: '800px' }}
+            >
+              <Grid item>{customListSets('Sets Disponibles', leftSets)}</Grid>
+              <Grid item>
+                <Grid container direction='column' alignItems='center'>
+                  <Button
+                    sx={{ my: 0.5 }}
+                    variant='outlined'
+                    size='small'
+                    onClick={handleAllRightSets}
+                    disabled={leftSets.length === 0}
+                    aria-label='move all right'
+                  >
+                    ≫
+                  </Button>
+                  <Button
+                    sx={{ my: 0.5 }}
+                    variant='outlined'
+                    size='small'
+                    onClick={handleCheckedRightSets}
+                    disabled={numberOfCheckedSets(leftSets) === 0}
+                    aria-label='move selected right'
+                  >
+                    &gt;
+                  </Button>
+                  <Button
+                    sx={{ my: 0.5 }}
+                    variant='outlined'
+                    size='small'
+                    onClick={handleCheckedLeftSets}
+                    disabled={numberOfCheckedSets(rightSets) === 0}
+                    aria-label='move selected left'
+                  >
+                    &lt;
+                  </Button>
+                  <Button
+                    sx={{ my: 0.5 }}
+                    variant='outlined'
+                    size='small'
+                    onClick={handleAllLeftSets}
+                    disabled={rightSets.length === 0}
+                    aria-label='move all left'
+                  >
+                    ≪
+                  </Button>
+                </Grid>
+              </Grid>
+              <Grid item>{customListSets('Sets Seleccionados', rightSets)}</Grid>
+            </Grid>
           </Box>
-          <TablaSetsEmpleados
-            elevacion={1}
-            sx={{ width: '100%', height: '350px' }}
-            columnas={[
-              { field: 'id', headerName: 'Id', width: 100 },
-              { field: 'nombreProducto', headerName: 'Nombre', width: 220 },
-              { field: 'tipo', headerName: 'Tipo', width: 100 },
-            ]}
-            filas={productosDisponibles}
-            paginacion={4}
-            checkBox={true}
-            selectionModel={productosSeleccionados}
-            onRowSelectionModelChange={handleSeleccionProductos}
-          />
         </Grid>
 
-        {/* Empleados */}
+        {/* Lista de transferencia de empleados */}
         <Grid item xs={12}>
           <Texto variant='h6'>Empleados:</Texto>
-          <Box display='flex' gap={1} flexWrap='wrap' mb={2}>
-            {empleados?.length > 0 ? (
-              empleados.map((empleado, index) => (
-                <Chip
-                  key={index}
-                  label={
-                    empleado.nombre && empleado.correo && empleado.area
-                      ? `${empleado.nombre} | ${empleado.correo} | ${empleado.area}`
-                      : empleado.toString()
-                  }
-                  sx={{
-                    borderRadius: '16px',
-                    backgroundColor: '#e0f7fa',
-                    color: '#006064',
-                  }}
-                />
-              ))
-            ) : (
-              <Texto variant='body1' sx={{ color: '#9e9e9e' }}>
-                No especificada
-              </Texto>
-            )}
+          <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', mt: 2 }}>
+            <Grid
+              container
+              spacing={2}
+              justifyContent='center'
+              alignItems='center'
+              sx={{ maxWidth: '800px' }}
+            >
+              <Grid item>{customListEmpleados('Empleados Disponibles', leftEmpleados)}</Grid>
+              <Grid item>
+                <Grid container direction='column' alignItems='center'>
+                  <Button
+                    sx={{ my: 0.5 }}
+                    variant='outlined'
+                    size='small'
+                    onClick={handleAllRightEmpleados}
+                    disabled={leftEmpleados.length === 0}
+                    aria-label='move all right'
+                  >
+                    ≫
+                  </Button>
+                  <Button
+                    sx={{ my: 0.5 }}
+                    variant='outlined'
+                    size='small'
+                    onClick={handleCheckedRightEmpleados}
+                    disabled={numberOfCheckedEmpleados(leftEmpleados) === 0}
+                    aria-label='move selected right'
+                  >
+                    &gt;
+                  </Button>
+                  <Button
+                    sx={{ my: 0.5 }}
+                    variant='outlined'
+                    size='small'
+                    onClick={handleCheckedLeftEmpleados}
+                    disabled={numberOfCheckedEmpleados(rightEmpleados) === 0}
+                    aria-label='move selected left'
+                  >
+                    &lt;
+                  </Button>
+                  <Button
+                    sx={{ my: 0.5 }}
+                    variant='outlined'
+                    size='small'
+                    onClick={handleAllLeftEmpleados}
+                    disabled={rightEmpleados.length === 0}
+                    aria-label='move all left'
+                  >
+                    ≪
+                  </Button>
+                </Grid>
+              </Grid>
+              <Grid item>{customListEmpleados('Empleados Seleccionados', rightEmpleados)}</Grid>
+            </Grid>
           </Box>
-          <TablaSetsEmpleados
-            elevacion={1}
-            sx={{}}
-            columnas={[
-              { field: 'nombreCompleto', headerName: 'Nombre del Empleado', flex: 0.9 },
-              { field: 'correo', headerName: 'Correo Electrónico', flex: 1 },
-              { field: 'areaTrabajo', headerName: 'Área de Trabajo', flex: 0.85 },
-            ]}
-            filas={filas}
-            paginacion={4}
-            checkBox={true}
-            selectionModel={empleadosSeleccionados}
-            onRowSelectionModelChange={handleSeleccionEmpleados}
-          />
         </Grid>
 
         {/* Botón Guardar */}
@@ -261,7 +459,7 @@ const InfoGrupoEmpleadosEditable = ({
       {mostrarAlerta && (
         <Alerta
           tipo='warning'
-          mensaje='Completa todos los campos y selecciona al menos un producto.'
+          mensaje='Completa todos los campos y selecciona al menos un producto y un empleado.'
           cerrable
           duracion={10000}
           onClose={() => setMostrarAlerta(false)}

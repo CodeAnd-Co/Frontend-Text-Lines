@@ -239,7 +239,7 @@ const ListaGrupoEmpleados = () => {
           onClose={() => setAbrirModalEditar(false)}
           titulo='Editar Grupo de Empleados'
           tituloVariant='h4'
-          customWidth={700}
+          customWidth={900}
           botones={[
             {
               label: 'Guardar',
@@ -268,9 +268,9 @@ const ListaGrupoEmpleados = () => {
             <InfoGrupoEmpleadosEditable
               nombre={grupoEmpleados?.nombre || ''}
               descripcion={grupoEmpleados?.descripcion || ''}
-              setsProductos={grupoEmpleados?.setsProductos || []}
+              setsProductos={grupoEmpleados?.setProductosActualizar || []}
               idsSetProductos={grupoEmpleados?.idsSetProductos || []}
-              empleados={grupoEmpleados?.empleados || []}
+              empleados={grupoEmpleados?.empleadosActualizar || []}
               idsEmpleados={grupoEmpleados?.idsEmpleados || []}
             />
           )}

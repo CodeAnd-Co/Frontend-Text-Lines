@@ -10,7 +10,13 @@ const ModalCrearSetsProductos = ({ abierto = false, onCerrar, onCreado }) => {
   const [descripcionSetsProducto, setDescripcionSetsProducto] = useState('');
   const [productos, setProductos] = useState([]);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
-  const [mensajeAlerta, setMensajeAlerta] = useState('')
+  const [mensajeAlerta, setMensajeAlerta] = useState('');
+  const [erroresCampos, setErroresCampos] = useState({
+    nombre: false,
+    nombreVisible: false,
+    descripcion: false,
+    productos: false
+  });
 
   const tieneReseteo = useRef(false);
 
@@ -27,6 +33,12 @@ const ModalCrearSetsProductos = ({ abierto = false, onCerrar, onCreado }) => {
         setDescripcionSetsProducto('');
         setProductos([]);
         setMostrarAlerta(false);
+        setErroresCampos({
+          nombre: false,
+          nombreVisible: false,
+          descripcion: false,
+          productos: false
+        });
       }, 0);
     } else if (abierto) {
       tieneReseteo.current = false;
@@ -56,17 +68,44 @@ const ModalCrearSetsProductos = ({ abierto = false, onCerrar, onCreado }) => {
     onCerrar();
   }, [onCerrar]);
 
+  const validarCampos = () => {
+    const errores = {
+      nombre: !nombreSetsProducto.trim(),
+      nombreVisible: !nombreVisible.trim(),
+      descripcion: !descripcionSetsProducto.trim(),
+      productos: productos.length === 0
+    };
+
+    setErroresCampos(errores);
+
+    let mensaje = '';
+    if (errores.productos) {
+      mensaje = 'Debe seleccionar al menos un producto.';
+    } else if (errores.nombre || errores.nombreVisible || errores.descripcion) {
+      mensaje = 'Por favor complete todos los campos obligatorios.';
+    }
+
+    return { tieneErrores: Object.values(errores).some(error => error), mensaje };
+  };
+
   const handleConfirmar = async () => {
-    if (!nombreSetsProducto.trim() || !nombreVisible.trim() || productos.length === 0) {
+    const { tieneErrores, mensaje } = validarCampos();
+
+    if (tieneErrores) {
       setMostrarAlerta(true);
-      if (productos.length === 0) {
-        setMensajeAlerta('Debe seleccionar al menos un producto.');
-      } else {
-        setMensajeAlerta('Por favor complete todos los campos obligatorios.');
-      }
+      setMensajeAlerta(mensaje);
       return;
     }
+
+    setMostrarAlerta(false);
     setMensajeAlerta('');
+    setErroresCampos({
+      nombre: false,
+      nombreVisible: false,
+      descripcion: false,
+      productos: false
+    });
+
     await crearSetsProducto({
       nombre: nombreSetsProducto.trim(),
       nombreVisible: nombreVisible.trim(),
@@ -76,34 +115,36 @@ const ModalCrearSetsProductos = ({ abierto = false, onCerrar, onCreado }) => {
   };
 
   return (<>
-    <ModalFlotante
-      open={abierto}
-      onClose={handleCerrar}
-      onConfirm={handleConfirmar}
-      titulo='Crear sets de productos'
-      cancelLabel='Cancelar'
-      confirmLabel={cargando ? 'Creando...' : 'Crear'}
-      disabledConfirm={cargando}
-    >
-      <FormaCrearSetsProducto
-        nombreSetsProducto={nombreSetsProducto}
-        setNombreSetsProducto={setNombreSetsProducto}
-        nombreVisible={nombreVisible}
-        setNombreVisible={setNombreVisible}
-        descripcionSetsProducto={descripcionSetsProducto}
-        setDescripcionSetsProducto={setDescripcionSetsProducto}
-        productos={productos}
-        setProductos={setProductos}
-        mostrarAlerta={mostrarAlerta}
-        setMostrarAlerta={setMostrarAlerta}
-      />
-    </ModalFlotante>
+      <ModalFlotante
+        open={abierto}
+        onClose={handleCerrar}
+        onConfirm={handleConfirmar}
+        titulo='Crear sets de productos'
+        cancelLabel='Cancelar'
+        confirmLabel={cargando ? 'Creando...' : 'Crear'}
+        disabledConfirm={cargando}
+      >
+        <FormaCrearSetsProducto
+          nombreSetsProducto={nombreSetsProducto}
+          setNombreSetsProducto={setNombreSetsProducto}
+          nombreVisible={nombreVisible}
+          setNombreVisible={setNombreVisible}
+          descripcionSetsProducto={descripcionSetsProducto}
+          setDescripcionSetsProducto={setDescripcionSetsProducto}
+          productos={productos}
+          setProductos={setProductos}
+          mostrarAlerta={mostrarAlerta}
+          setMostrarAlerta={setMostrarAlerta}
+          erroresCampos={erroresCampos}
+          setErroresCampos={setErroresCampos}
+        />
+      </ModalFlotante>
 
-      {mostrarAlerta && (
+      {mostrarAlerta && !exito && !error && (
         <Alerta
           tipo="warning"
           mensaje={mensajeAlerta}
-          duracion={3000}
+          duracion={2500}
           sx={{ margin: 3 }}
           cerrable
           onClose={() => setMostrarAlerta(false)}
@@ -115,7 +156,7 @@ const ModalCrearSetsProductos = ({ abierto = false, onCerrar, onCreado }) => {
         <Alerta
           tipo={exito ? 'success' : 'error'}
           mensaje={mensaje}
-          duracion={exito ? 3000 : 3000}
+          duracion={exito ? 2500 : 2500}
           sx={{ margin: 3 }}
           cerrable
           onClose={error ? () => setError(false) : undefined}

@@ -30,7 +30,6 @@ const FormaCrearCategorias = ({
                                 setMostrarAlerta,
                                 errores,
                                 intentoEnviar,
-                                onValidationError,
                               }) => {
   const [rows, setRows] = useState([]);
   const { usuario } = useAuth();

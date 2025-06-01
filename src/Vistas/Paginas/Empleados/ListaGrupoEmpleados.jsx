@@ -1,5 +1,3 @@
-// RF22 - Consulta Lista de Grupo Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF22
-// RF23 Lee grupo de empleados -https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF23
 import React, { useState } from 'react';
 import Tabla from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';
@@ -37,9 +35,15 @@ const ListaGrupoEmpleados = () => {
     cargando: cargandoDetalle,
     error: errorDetalle,
   } = useGrupoEmpleadosId(modalDetalleAbierto ? idGrupoSeleccionado : null);
+
+  const manejarMostrarAlerta = (configAlerta) => {
+    setAlerta(configAlerta);
+  };
+
   const manejarCancelarEliminar = () => {
     setAbrirPopUpEliminar(false);
   };
+
   const manejarConfirmarEliminar = async () => {
     try {
       await eliminar(gruposSeleccionados);
@@ -86,13 +90,13 @@ const ListaGrupoEmpleados = () => {
 
   const filas = Array.isArray(grupos)
     ? grupos.map((grupo) => ({
-        id: grupo.idGrupo,
-        nombre: grupo.geNombre,
-        descripcion: grupo.descripcion,
-        idSetProducto: grupo.idSetProducto,
-        setProducto: grupo.spNombre,
-        totalEmpleados: grupo.totalEmpleados,
-      }))
+      id: grupo.idGrupo,
+      nombre: grupo.geNombre,
+      descripcion: grupo.descripcion,
+      idSetProducto: grupo.idSetProducto,
+      setProducto: grupo.spNombre,
+      totalEmpleados: grupo.totalEmpleados,
+    }))
     : [];
 
   const handleAbrirModalCrear = () => setModalCrearAbierto(true);
@@ -105,7 +109,6 @@ const ListaGrupoEmpleados = () => {
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
-      // construccion: true,
     },
     {
       label: 'Eliminar',
@@ -130,7 +133,7 @@ const ListaGrupoEmpleados = () => {
   ];
 
   const manejarGrupoCreadoExitosamente = () => {
-    refetch(); // Recarga la lista de grupos
+    refetch();
     setAlerta({
       tipo: 'success',
       mensaje: 'Grupo de empleados creado correctamente.',
@@ -173,7 +176,9 @@ const ListaGrupoEmpleados = () => {
         abierto={modalCrearAbierto}
         onCerrar={handleCerrarModalCrear}
         onCreado={manejarGrupoCreadoExitosamente}
+        onMostrarAlerta={manejarMostrarAlerta}
       />
+
       {alerta && (
         <Alerta
           tipo={alerta.tipo}
@@ -185,12 +190,14 @@ const ListaGrupoEmpleados = () => {
           onClose={() => setAlerta(null)}
         />
       )}
+
       <PopUpEliminar
         abrir={abrirPopUpEliminar}
         cerrar={manejarCancelarEliminar}
         confirmar={manejarConfirmarEliminar}
         dialogo={MENSAJE_POPUP_ELIMINAR}
       />
+
       {modalDetalleAbierto && (
         <ModalFlotante
           open={modalDetalleAbierto}
@@ -205,7 +212,6 @@ const ListaGrupoEmpleados = () => {
               color: 'primary',
               backgroundColor: colores.altertex[1],
               onClick: () => console.log('Editar usuario'),
-              //disabled: true, //disabled: !!errorDetalle,
               construccion: true,
             },
             {

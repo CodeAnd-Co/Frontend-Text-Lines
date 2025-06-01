@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { tokens, themeSettings } from '@SRC/theme';
 import { styled } from '@mui/material/styles';
 
@@ -10,8 +10,6 @@ const spanishLocaleText = {
   columnMenuSortDesc: 'Ordenar descendente',
   columnMenuUnsort: 'Restablecer orden',
   columnMenuFilter: 'Filtrar',
-  columnMenuHideColumn: 'Ocultar columna',
-  columnMenuManageColumns: 'Mostrar columnas',
   noResultsOverlayLabel: 'No se encontraron resultados.',
   filterOperatorContains: 'Contiene',
   filterOperatorEquals: 'Es igual a',
@@ -22,6 +20,7 @@ const spanishLocaleText = {
   filterOperatorAfter: 'Después de',
   filterOperatorOnOrAfter: 'En o después de',
   filterOperatorBefore: 'Antes de',
+  labelRowsPerPage: 'Filas por página:',
   filterOperatorOnOrBefore: 'En o antes de',
   filterOperatorIsEmpty: 'Está vacío',
   filterOperatorIsNotEmpty: 'No está vacío',
@@ -114,6 +113,11 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => {
     '& .MuiDataGrid-columnHeader, & .MuiDataGrid-cell': {
       outline: 'none',
     },
+
+    // Ocultar el separador de redimensionamiento de columnas
+    '& .MuiDataGrid-columnSeparator': {
+      display: 'none',
+    },
   };
 });
 
@@ -147,13 +151,38 @@ const Tabla = ({
       onRowClick={onRowClick}
       checkboxSelection={checkboxSelection}
       disableRowSelectionOnClick={disableRowSelectionOnClick}
-      onRowSelectionModelChange={handleSelectionModelChange}
+      disableColumnResize={true} // Esta prop deshabilita el redimensionamiento
+      onRowSelectionModelChange={(seleccion) => {
+        onRowSelectionModelChange(seleccion);
+      }}
       paginationModel={paginationModel}
       onPaginationModelChange={setPaginationModel}
-      pageSizeOptions={[5]}
       pagination
       localeText={spanishLocaleText}
       rowHeight={70}
+      disableColumnSelector
+      slots={{
+        toolbar: GridToolbar,
+      }}
+      componentsProps={{
+        toolbar: {
+          showQuickFilter: true,
+          quickFilterProps: { debounceMs: 500 },
+          csvOptions: { disableToolbarButton: true },
+          printOptions: { disableToolbarButton: true },
+        },
+      }}
+      initialState={{
+        columns: {
+          columnVisibilityModel: {},
+        },
+        filter: {
+          filterModel: {
+            items: [],
+          },
+        },
+      }}
+      hideColumnsButton
     />
   );
 };

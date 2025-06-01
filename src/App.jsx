@@ -11,13 +11,13 @@ function App() {
   return (
     <div className='app'>
       <ColorModeProvider>
-          <Router>
-            <AuthProvider>
-              <Routes>
-                <Route path={RUTAS.RAIZ} element={<RutasApp />} />
-              </Routes>
-            </AuthProvider>
-          </Router>
+        <Router>
+          <AuthProvider>
+            <Routes>
+              <Route path={RUTAS.RAIZ} element={<RutasApp />} />
+            </Routes>
+          </AuthProvider>
+        </Router>
       </ColorModeProvider>
     </div>
   );

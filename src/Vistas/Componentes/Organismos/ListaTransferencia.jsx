@@ -24,7 +24,7 @@ function union(a, b, funcionClave = (elemento) => elemento.id || elemento) {
 }
 
 // Componente Lista de Transferencia Personalizada
-const ListaTransferenciaPersonalizada = ({
+const ListaTransferencia = ({
                                            elementosDisponibles = [],
                                            elementosSeleccionados = [],
                                            alCambiarSeleccion,
@@ -197,4 +197,4 @@ const ListaTransferenciaPersonalizada = ({
   );
 };
 
-export default ListaTransferenciaPersonalizada;
+export default ListaTransferencia;

@@ -27,8 +27,8 @@ export const validarProducto = (producto) => {
   } else if (typeof normalizados.precioCliente !== 'number' || normalizados.precioCliente <= 0) {
     errores.precioCliente = 'El precio para el cliente debe ser un número positivo.';
   } else if (!/^\d{1,8}(\.\d{1,2})?$/.test(normalizados.precioCliente.toString())) {
-    errores.precioCliente
-      = 'El precio para el cliente debe tener máximo 8 dígitos antes del punto y 2 después.';
+    errores.precioCliente =
+      'El precio para el cliente debe tener máximo 8 dígitos antes del punto y 2 después.';
   }
 
   // Validación de precio de venta
@@ -37,8 +37,8 @@ export const validarProducto = (producto) => {
   } else if (typeof normalizados.precioVenta !== 'number' || normalizados.precioVenta <= 0) {
     errores.precioVenta = 'El precio de venta debe ser un número positivo.';
   } else if (!/^\d{1,8}(\.\d{1,2})?$/.test(normalizados.precioVenta.toString())) {
-    errores.precioVenta
-      = 'El precio de venta debe tener máximo 8 dígitos antes del punto y 2 después.';
+    errores.precioVenta =
+      'El precio de venta debe tener máximo 8 dígitos antes del punto y 2 después.';
   }
 
   // Validación de costo
@@ -66,6 +66,19 @@ export const validarProducto = (producto) => {
     errores.precioPuntos = 'El precio en puntos debe ser un número entero positivo.';
   } else if (!/^\d{1,10}$/.test(normalizados.precioPuntos.toString())) {
     errores.precioPuntos = 'El precio en puntos debe tener máximo 10 dígitos.';
+  }
+
+  // Validación de descuento
+  if (normalizados.descuento == null) {
+    errores.descuento = 'El descuento es obligatorio.';
+  } else if (
+    typeof normalizados.descuento !== 'number' ||
+    normalizados.descuento < 0 ||
+    normalizados.descuento > 100
+  ) {
+    errores.descuento = 'El descuento debe ser un número entre 0 y 100.';
+  } else if (!/^\d{1,3}(\.\d{1,2})?$/.test(normalizados.descuento.toString())) {
+    errores.descuento = 'El descuento debe tener máximo 3 dígitos antes del punto y 2 después.';
   }
 
   return errores;

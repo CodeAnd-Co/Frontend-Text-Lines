@@ -18,13 +18,13 @@ export class RepositorioActualizarGrupoEmpleados {
   static async actualizarGrupoEmpleados(idGrupo, nombre, descripcion, empleados, setsDeProductos) {
     try {
       const respuesta = await axios.put(
-        RUTAS_API.EMPLEADOS.ACTUALIZAR_GRUPO,
+        `${RUTAS_API.EMPLEADOS.ACTUALIZAR_GRUPO}`,
         {
           idGrupoEmpleado: idGrupo,
-          nombre: nombre,
-          descripcion: descripcion,
-          empleados: empleados,
-          setsDeProductos: setsDeProductos,
+          nombre,
+          descripcion,
+          empleados,
+          setsDeProductos,
         },
         {
           headers: {
@@ -34,12 +34,12 @@ export class RepositorioActualizarGrupoEmpleados {
         }
       );
 
-      const { mensaje } = respuesta.data;
-
-      return { mensaje };
+      return respuesta;
     } catch (error) {
-      const mensaje = error.response?.data?.mensaje || 'Error al actualizar el grupo de empleados.';
-      throw new Error(mensaje);
+      if (error.response?.data?.mensaje) {
+        throw new Error(error.response.data.mensaje);
+      }
+      throw error;
     }
   }
 }

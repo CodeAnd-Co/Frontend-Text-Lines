@@ -75,16 +75,6 @@ const ListaGrupoEmpleados = () => {
   const { actualizarGrupo } = useActualizarGrupoEmpleados();
 
   const handleGuardar = async () => {
-    if (!formData?.isValid) {
-      setAlerta({
-        tipo: 'warning',
-        mensaje: 'Por favor completa todos los campos requeridos',
-        icono: true,
-        cerrable: true,
-        centradoInferior: true,
-      });
-      return;
-    }
     try {
       await actualizarGrupo(
         idGrupoSeleccionado,
@@ -106,7 +96,7 @@ const ListaGrupoEmpleados = () => {
     } catch (error) {
       setAlerta({
         tipo: 'error',
-        mensaje: 'Error al actualizar el grupo de empleados.',
+        mensaje: error?.message || 'Error al actualizar el grupo de empleados.',
         icono: true,
         cerrable: true,
         centradoInferior: true,

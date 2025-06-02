@@ -7,17 +7,19 @@ import { RepositorioActualizarGrupoEmpleados } from '@Repositorios/Empleados/Rep
  */
 export const useActualizarGrupoEmpleados = () => {
   const [mensaje, setMensaje] = useState('');
+  const [exito, setExito] = useState(false);
   const [cargando, setCargando] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
 
   const actualizarGrupo = async (idGrupo, nombre, descripcion, empleados, setsDeProductos) => {
     if (!idGrupo) return;
-
     setCargando(true);
-    setError(null);
+    setExito(false);
+    setError(false);
+    setMensaje('');
 
     try {
-      const { mensaje } = await RepositorioActualizarGrupoEmpleados.actualizarGrupoEmpleados(
+      const resultado = await RepositorioActualizarGrupoEmpleados.actualizarGrupoEmpleados(
         idGrupo,
         nombre,
         descripcion,
@@ -25,15 +27,41 @@ export const useActualizarGrupoEmpleados = () => {
         setsDeProductos
       );
 
-      setMensaje(mensaje);
-      return mensaje;
+      // Consideramos la actualización exitosa si tenemos una respuesta del servidor
+      setExito(true);
+      setMensaje(resultado?.data?.mensaje || 'Grupo actualizado exitosamente');
+      return resultado;
     } catch (err) {
-      setError(err.message);
+      setExito(false);
+      setError(true);
+      const errorMessage =
+        err?.response?.data?.mensaje ||
+        err?.response?.data?.error ||
+        err?.message ||
+        'Ocurrió un error al actualizar el grupo de empleados';
+
+      setMensaje(errorMessage);
       throw err;
     } finally {
       setCargando(false);
     }
   };
 
-  return { actualizarGrupo, mensaje, cargando, error };
+  const resetEstado = () => {
+    setExito(false);
+    setError(false);
+    setMensaje('');
+  };
+
+  return {
+    actualizarGrupo,
+    cargando,
+    exito,
+    error,
+    mensaje,
+    setError,
+    resetEstado,
+  };
 };
+
+export default useActualizarGrupoEmpleados;

@@ -356,7 +356,7 @@ const InfoGrupoEmpleadosEditable = ({
             error={!!errores.nombre}
             helperText={errores.nombre || `${nombre.length}/${LIMITE_NOMBRE} ${MENSAJE_LIMITE}`}
             inputProps={{ maxLength: LIMITE_NOMBRE }}
-            sx={{ mt: 1, mb: 2, width: '300px', overflow: 'auto' }}
+            sx={{ mt: 1, mb: 2, mr: 8, width: '300px', overflow: 'auto' }}
           />
         </Grid>
 

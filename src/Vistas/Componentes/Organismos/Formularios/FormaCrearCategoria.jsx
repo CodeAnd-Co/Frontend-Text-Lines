@@ -1,4 +1,3 @@
-import Alerta from '@Moleculas/Alerta';
 import CampoTexto from '@Atomos/CampoTexto';
 import { useState, useEffect } from 'react';
 import obtenerProductos from '@Servicios/obtenerProductos';
@@ -20,17 +19,17 @@ const LIMITE_DESCRIPCION = 150;
 const MENSAJE_LIMITE = 'Máximo caracteres';
 
 const FormaCrearCategorias = ({
-                                nombreCategoria,
-                                setNombreCategoria,
-                                descripcionCategoria,
-                                setDescripcionCategoria,
-                                productos,
-                                setProductos,
-                                mostrarAlerta,
-                                setMostrarAlerta,
-                                errores,
-                                intentoEnviar,
-                              }) => {
+  nombreCategoria,
+  setNombreCategoria,
+  descripcionCategoria,
+  setDescripcionCategoria,
+  productos,
+  setProductos,
+  mostrarAlerta,
+  setMostrarAlerta,
+  errores,
+  intentoEnviar,
+}) => {
   const [rows, setRows] = useState([]);
   const { usuario } = useAuth();
   const clienteSeleccionado = usuario.clienteSeleccionado;
@@ -80,7 +79,8 @@ const FormaCrearCategorias = ({
         onChange={(evento) => setNombreCategoria(evento.target.value.slice(0, LIMITE_NOMBRE))}
         inputProps={{ maxLength: LIMITE_NOMBRE }}
         helperText={
-          errores?.nombreCategoria || `${nombreCategoria.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`
+          errores?.nombreCategoria ||
+          `${nombreCategoria.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`
         }
         error={intentoEnviar && !!errores?.nombreCategoria}
         required
@@ -103,10 +103,13 @@ const FormaCrearCategorias = ({
         fullWidth
         type='text'
         value={descripcionCategoria}
-        onChange={(evento) => setDescripcionCategoria(evento.target.value.slice(0, LIMITE_DESCRIPCION))}
+        onChange={(evento) =>
+          setDescripcionCategoria(evento.target.value.slice(0, LIMITE_DESCRIPCION))
+        }
         inputProps={{ maxLength: LIMITE_DESCRIPCION }}
         helperText={
-          errores?.descripcionCategoria || `${descripcionCategoria.length}/${LIMITE_DESCRIPCION} - ${MENSAJE_LIMITE}`
+          errores?.descripcionCategoria ||
+          `${descripcionCategoria.length}/${LIMITE_DESCRIPCION} - ${MENSAJE_LIMITE}`
         }
         error={intentoEnviar && !!errores?.descripcionCategoria}
         required
@@ -114,8 +117,6 @@ const FormaCrearCategorias = ({
         multiline
         rows={3}
       />
-
-      {/* Alert moved to parent component */}
     </>
   );
 };

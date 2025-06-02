@@ -143,12 +143,13 @@ const CamposOpcion = memo(
           value={opcion.cantidad}
           onChange={(evento) => manejarActualizarOpcion('cantidad', evento.target.value)}
           placeholder='Ingresa la cantidad'
-          textoAyuda={errores?.cantidad}
-          error={errores?.cantidad}
+          helperText={errores?.cantidad || ''}
+          error={Boolean(errores?.cantidad)}
           min={1}
-          onKeyDown={prevenirNumerosNegativos}
+          onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
-            if (evento.target.value && evento.target.value < 1) {
+            const valor = parseInt(evento.target.value, 10);
+            if (valor < 1 || isNaN(valor)) {
               evento.target.value = 1;
             }
           }}
@@ -177,12 +178,13 @@ const CamposOpcion = memo(
           value={opcion.costoAdicional}
           onChange={(evento) => manejarActualizarOpcion('costoAdicional', evento.target.value)}
           placeholder='Ingresa el costo adicional'
-          textoAyuda={errores?.costoAdicional}
-          error={errores?.costoAdicional}
+          helperText={errores?.costoAdicional || ''}
+          error={Boolean(errores?.costoAdicional)}
           min={1}
-          onKeyDown={prevenirNumerosNegativos}
+          onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
-            if (evento.target.value && evento.target.value < 1) {
+            const valor = parseInt(evento.target.value, 10);
+            if (valor < 1 || isNaN(valor)) {
               evento.target.value = 1;
             }
           }}
@@ -194,12 +196,13 @@ const CamposOpcion = memo(
           value={opcion.descuento}
           onChange={(evento) => manejarActualizarOpcion('descuento', evento.target.value)}
           placeholder='Ingresa el descuento'
-          textoAyuda={errores?.descuento}
-          error={errores?.descuento}
+          helperText={errores?.descuento || ''}
+          error={Boolean(errores?.descuento)}
           min={1}
-          onKeyDown={prevenirNumerosNegativos}
+          onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
-            if (evento.target.value && evento.target.value < 1) {
+            const valor = parseInt(evento.target.value, 10);
+            if (valor < 1 || isNaN(valor)) {
               evento.target.value = 1;
             }
           }}

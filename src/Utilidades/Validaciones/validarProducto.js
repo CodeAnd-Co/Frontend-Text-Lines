@@ -27,8 +27,8 @@ export const validarProducto = (producto) => {
   } else if (typeof normalizados.precioCliente !== 'number' || normalizados.precioCliente <= 0) {
     errores.precioCliente = 'El precio para el cliente debe ser un número positivo.';
   } else if (!/^\d{1,8}(\.\d{1,2})?$/.test(normalizados.precioCliente.toString())) {
-    errores.precioCliente
-      = 'El precio para el cliente debe tener máximo 8 dígitos antes del punto y 2 después.';
+    errores.precioCliente =
+      'El precio para el cliente debe tener máximo 8 dígitos antes del punto y 2 después.';
   }
 
   // Validación de precio de venta
@@ -37,8 +37,8 @@ export const validarProducto = (producto) => {
   } else if (typeof normalizados.precioVenta !== 'number' || normalizados.precioVenta <= 0) {
     errores.precioVenta = 'El precio de venta debe ser un número positivo.';
   } else if (!/^\d{1,8}(\.\d{1,2})?$/.test(normalizados.precioVenta.toString())) {
-    errores.precioVenta
-      = 'El precio de venta debe tener máximo 8 dígitos antes del punto y 2 después.';
+    errores.precioVenta =
+      'El precio de venta debe tener máximo 8 dígitos antes del punto y 2 después.';
   }
 
   // Validación de costo
@@ -53,10 +53,10 @@ export const validarProducto = (producto) => {
   // Validación de impuesto
   if (normalizados.impuesto == null) {
     errores.impuesto = 'El impuesto es obligatorio.';
-  } else if (typeof normalizados.impuesto !== 'number' || normalizados.impuesto <= 0) {
-    errores.impuesto = 'El impuesto debe ser un número positivo.';
-  } else if (!/^\d{1,8}(\.\d{1,2})?$/.test(normalizados.impuesto.toString())) {
-    errores.impuesto = 'El impuesto debe tener máximo 8 dígitos antes del punto y 2 después.';
+  } else if (typeof normalizados.impuesto !== 'number' || normalizados.impuesto < 0) {
+    errores.impuesto = 'El impuesto debe ser un número positivo o cero.';
+  } else if (!/^\d{1,10}(\.\d{1,2})?$/.test(normalizados.impuesto.toString())) {
+    errores.impuesto = 'El impuesto debe tener máximo 10 dígitos antes del punto y 2 después.';
   }
 
   // Validación de precio en puntos

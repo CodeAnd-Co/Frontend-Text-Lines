@@ -86,11 +86,6 @@ const ListaGrupoEmpleados = () => {
       return;
     }
     try {
-      console.log('Datos a enviar:', {
-        idGrupo: idGrupoSeleccionado,
-        ...formData,
-      });
-
       await actualizarGrupo(
         idGrupoSeleccionado,
         formData.nombre,

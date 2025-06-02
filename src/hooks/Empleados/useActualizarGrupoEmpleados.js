@@ -17,14 +17,6 @@ export const useActualizarGrupoEmpleados = () => {
     setError(null);
 
     try {
-      console.log('useActualizarGrupoEmpleados:', {
-        idGrupo,
-        nombre,
-        descripcion,
-        empleados,
-        setsDeProductos,
-      });
-
       const { mensaje } = await RepositorioActualizarGrupoEmpleados.actualizarGrupoEmpleados(
         idGrupo,
         nombre,

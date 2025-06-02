@@ -72,6 +72,8 @@ const ListaGrupoEmpleados = () => {
     setFormData(data);
   };
 
+  const { actualizarGrupo } = useActualizarGrupoEmpleados();
+
   const handleGuardar = async () => {
     if (!formData?.isValid) {
       setAlerta({
@@ -83,15 +85,20 @@ const ListaGrupoEmpleados = () => {
       });
       return;
     }
-    console.log('Guardando grupo de empleados:', formData);
     try {
-      useActualizarGrupoEmpleados(
+      console.log('Datos a enviar:', {
+        idGrupo: idGrupoSeleccionado,
+        ...formData,
+      });
+
+      await actualizarGrupo(
         idGrupoSeleccionado,
         formData.nombre,
         formData.descripcion,
         formData.empleados,
         formData.setsDeProductos
       );
+
       setAbrirModalEditar(false);
       await refetch();
       setAlerta({

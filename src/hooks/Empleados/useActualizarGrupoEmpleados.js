@@ -1,58 +1,47 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { RepositorioActualizarGrupoEmpleados } from '@Repositorios/Empleados/RepositorioActualizarGrupoEmpleados';
 
 /**
- * * Hook para actualizar los datos de un grupo de empleados
- * @param {number} idGrupo - ID del grupo de empleados a actualizar
- * @param {string} nombre - Nuevo nombre del grupo de empleados
- * @param {string} descripcion - Nueva descripción del grupo de empleados
- * @param {array} empleados - Lista de IDs de empleados a agregar al grupo
- * @param {array} setsDeProductos - Lista de IDs de sets de productos a agregar al grupo
- * @returns {{
- *    mensaje: string,
- * *    cargando: boolean,
- * *    error: string | null
- * *  }}
- * * @see [RF[24] Actualizar grupo de empleados - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF24)
+ * Hook para actualizar los datos de un grupo de empleados
+ * @returns {Object} Objeto con la función de actualización y estados
  */
-
-export const useActualizarGrupoEmpleados = (
-  idGrupo,
-  nombre,
-  descripcion,
-  empleados,
-  setsDeProductos
-) => {
+export const useActualizarGrupoEmpleados = () => {
   const [mensaje, setMensaje] = useState('');
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const actualizarGrupoEmpleados = async () => {
-      setCargando(true);
-      setError(null);
+  const actualizarGrupo = async (idGrupo, nombre, descripcion, empleados, setsDeProductos) => {
+    if (!idGrupo) return;
 
-      try {
-        const { mensaje } = await RepositorioActualizarGrupoEmpleados.actualizarGrupoEmpleados(
-          idGrupo,
-          nombre,
-          descripcion,
-          empleados,
-          setsDeProductos
-        );
+    setCargando(true);
+    setError(null);
 
-        setMensaje(mensaje);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setCargando(false);
-      }
-    };
+    try {
+      console.log('useActualizarGrupoEmpleados:', {
+        idGrupo,
+        nombre,
+        descripcion,
+        empleados,
+        setsDeProductos,
+      });
 
-    if (idGrupo) {
-      actualizarGrupoEmpleados();
+      const { mensaje } = await RepositorioActualizarGrupoEmpleados.actualizarGrupoEmpleados(
+        idGrupo,
+        nombre,
+        descripcion,
+        empleados,
+        setsDeProductos
+      );
+
+      setMensaje(mensaje);
+      return mensaje;
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setCargando(false);
     }
-  }, [idGrupo, nombre, descripcion, empleados, setsDeProductos]);
+  };
 
-  return { mensaje, cargando, error };
+  return { actualizarGrupo, mensaje, cargando, error };
 };

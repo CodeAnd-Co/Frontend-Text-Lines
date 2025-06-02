@@ -1,6 +1,6 @@
 import Alerta from '@Moleculas/Alerta';
 import CampoTexto from '@Atomos/CampoTexto';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import obtenerSetsProductos from '@Servicios/obtenerSetsProductos';
 import obtenerEmpleados from '@Servicios/obtenerEmpleados';
 import { useAuth } from '@Hooks/AuthProvider';
@@ -37,9 +37,8 @@ const InfoGrupoEmpleadosEditable = ({
   descripcion: descripcionInicial,
   setsProductos: setsProductosInicial,
   empleados: empleadosInicial,
+  onFormDataChange,
 }) => {
-  const [productosDisponibles, setProductosDisponibles] = useState([]);
-  const [empleadosDisponibles, setEmpleadosDisponibles] = useState([]);
   const { usuario } = useAuth();
   const clienteSeleccionado = usuario.clienteSeleccionado;
 
@@ -58,10 +57,27 @@ const InfoGrupoEmpleadosEditable = ({
   const [leftSets, setLeftSets] = useState([]);
   const [rightSets, setRightSets] = useState(setsProductosInicial || []);
 
+  const rightSetsIds = useMemo(
+    () =>
+      rightSets
+        .map((item) => item.id)
+        .sort()
+        .join(','),
+    [rightSets]
+  );
+
+  const rightEmpleadosIds = useMemo(
+    () =>
+      rightEmpleados
+        .map((item) => item.id)
+        .sort()
+        .join(','),
+    [rightEmpleados]
+  );
+
   useEffect(() => {
     const obtenerDatos = async () => {
       const productos = await obtenerSetsProductos(clienteSeleccionado);
-      console.log('Productos obtenidos:', productos);
       setLeftSets(productos.filter((prod) => !rightSets.find((r) => r.id === prod.id)));
 
       const empleadosData = await obtenerEmpleados(clienteSeleccionado);
@@ -70,6 +86,29 @@ const InfoGrupoEmpleadosEditable = ({
 
     obtenerDatos();
   }, [clienteSeleccionado]);
+
+  useEffect(() => {
+    const isValid = Boolean(
+      nombre && descripcion && rightSets.length > 0 && rightEmpleados.length > 0
+    );
+
+    if (onFormDataChange) {
+      onFormDataChange({
+        isValid,
+        nombre,
+        descripcion,
+        setsDeProductos: rightSets.map((set) => set.id),
+        empleados: rightEmpleados.map((emp) => emp.id),
+      });
+    }
+  }, [
+    nombre,
+    descripcion,
+    rightSets.length,
+    rightEmpleados.length,
+    rightSetsIds,
+    rightEmpleadosIds,
+  ]);
 
   // Handlers para empleados
   const handleToggleEmpleados = (value) => () => {
@@ -285,18 +324,6 @@ const InfoGrupoEmpleadosEditable = ({
     </Card>
   );
 
-  const handleGuardar = () => {
-    if (!nombre || !descripcion || rightSets.length === 0 || rightEmpleados.length === 0) {
-      setMostrarAlerta(true);
-      return;
-    }
-
-    console.log('Nombre:', nombre);
-    console.log('Descripción:', descripcion);
-    console.log('Sets de Productos:', rightSets);
-    console.log('Empleados:', rightEmpleados);
-  };
-
   return (
     <Box sx={{ width: '800px', margin: '0 auto', borderRadius: '10px' }}>
       <Grid container spacing={3}>
@@ -447,13 +474,6 @@ const InfoGrupoEmpleadosEditable = ({
             </Grid>
           </Box>
         </Grid>
-
-        {/* Botón Guardar */}
-        <Grid item xs={12}>
-          <Button variant='contained' color='primary' onClick={handleGuardar} sx={{ mt: 2 }}>
-            Guardar Cambios
-          </Button>
-        </Grid>
       </Grid>
 
       {mostrarAlerta && (
@@ -466,6 +486,7 @@ const InfoGrupoEmpleadosEditable = ({
           sx={{ mb: 2, mt: 2 }}
         />
       )}
+      <Box display='flex' justifyContent='flex-end' mt={3}></Box>
     </Box>
   );
 };

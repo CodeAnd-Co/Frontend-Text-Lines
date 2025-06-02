@@ -1,21 +1,56 @@
 // RF[8] Leer Rol - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF8
 
-import { useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
 import ModalFlotante from '@Organismos/ModalFlotante';
 import { useLeerRol } from '@Hooks/Roles/useLeerRol';
 import Alerta from '@Moleculas/Alerta';
 import Tabla from '@Organismos/Tabla';
+import ListaTransferencia from '@Organismos/ListaTransferencia';
+import obtenerPermisos from '@Servicios/obtenerPermisos';
 import { tokens } from '@SRC/theme';
 
 const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
   const { detalle, cargando, error, leerRol } = useLeerRol();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
+  const [modoEdicion, setModoEdicion] = useState(false);
+  const [permisosDisponibles, setPermisosDisponibles] = useState([]);
+  const [permisosSeleccionados, setPermisosSeleccionados] = useState([]);
+
+  // Add ref to track if permissions have been loaded
+  const permisosLoadedRef = useRef(false);
 
   useEffect(() => {
     if (abierto && idRol) leerRol(idRol);
   }, [abierto, idRol, leerRol]);
+
+  // Reset the ref when modal closes or role changes
+  useEffect(() => {
+    if (!abierto || !modoEdicion) {
+      permisosLoadedRef.current = false;
+    }
+  }, [abierto, modoEdicion]);
+
+  // Modified useEffect with ref check to prevent infinite loop
+  useEffect(() => {
+    const cargarPermisos = async () => {
+      if (detalle && modoEdicion && !permisosLoadedRef.current) {
+        const todosLosPermisos = await obtenerPermisos();
+        const permisosDelRol = detalle.permisos || [];
+
+        const permisosNoAsignados = todosLosPermisos.filter(
+          permiso => !permisosDelRol.some(asignado => asignado.id === permiso.id)
+        );
+
+        setPermisosDisponibles(permisosNoAsignados);
+        setPermisosSeleccionados(permisosDelRol);
+        permisosLoadedRef.current = true;
+      }
+    };
+
+    cargarPermisos();
+  }, [detalle, modoEdicion, permisosLoadedRef]);
 
   const columnas = [
     {
@@ -35,6 +70,55 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
     nombre: permiso.nombre,
     descripcion: permiso.descripcion,
   }));
+
+  const manejarCambioEdicion = () => {
+    setModoEdicion(!modoEdicion);
+  };
+
+  const manejarCambioTransferencia = ({ disponibles, seleccionados }) => {
+    setPermisosDisponibles(disponibles);
+    setPermisosSeleccionados(seleccionados);
+  };
+
+  const manejarCerrar = () => {
+    setModoEdicion(false);
+    onCerrar();
+  };
+
+  const botonesModo = modoEdicion ? [
+    {
+      label: 'Cancelar',
+      variant: 'outlined',
+      size: 'large',
+      outlineColor: colores.altertex[1],
+      onClick: () => setModoEdicion(false),
+    },
+    {
+      label: 'Guardar',
+      variant: 'contained',
+      size: 'large',
+      backgroundColor: colores.altertex[1],
+      onClick: () => {
+        // Aquí iría la lógica para guardar
+        setModoEdicion(false);
+      },
+    }
+  ] : [
+    {
+      label: 'Editar',
+      variant: 'contained',
+      size: 'large',
+      backgroundColor: colores.altertex[1],
+      onClick: manejarCambioEdicion,
+    },
+    {
+      label: 'Salir',
+      variant: 'outlined',
+      size: 'large',
+      outlineColor: colores.altertex[1],
+      onClick: manejarCerrar,
+    }
+  ];
 
   return (
     <>
@@ -62,20 +146,12 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
 
       <ModalFlotante
         open={abierto}
-        onClose={onCerrar}
-        onConfirm={onCerrar}
-        titulo="Detalles del Rol"
+        onClose={manejarCerrar}
+        onConfirm={manejarCerrar}
+        titulo={modoEdicion ? "Editar Rol" : "Detalles del Rol"}
         tituloVariant="h4"
-        customWidth={800}
-        botones={[
-          {
-            label: 'Salir',
-            variant: 'outlined',
-            size: 'large',
-            outlineColor: colores.altertex[1],
-            onClick: onCerrar,
-          },
-        ]}
+        customWidth={modoEdicion ? 1000 : 800}
+        botones={botonesModo}
       >
         {cargando && (
           <Typography variant="body1" sx={{ mb: 2 }}>
@@ -95,14 +171,33 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
               <strong>Número de usuarios asociados a este rol:</strong> {detalle.totalUsuarios}
             </Typography>
 
-            <Box sx={{ mb: 4 }}>
-              <Tabla
-                columns={columnas}
-                rows={filas}
-                loading={cargando}
-                disableRowSelectionOnClick
-              />
-            </Box>
+            {modoEdicion ? (
+              <Box sx={{ mb: 4 }}>
+                <Typography variant="h6" sx={{ mb: 2, textAlign: 'center' }}>
+                  Gestionar Permisos
+                </Typography>
+                <ListaTransferencia
+                  elementosDisponibles={permisosDisponibles}
+                  elementosSeleccionados={permisosSeleccionados}
+                  alCambiarSeleccion={manejarCambioTransferencia}
+                  tituloIzquierda="Permisos Disponibles"
+                  tituloDerecha="Permisos Asignados"
+                  obtenerEtiquetaElemento={(permiso) => permiso.nombre}
+                  obtenerClaveElemento={(permiso) => permiso.id}
+                  alturaMaxima={300}
+                  ancho={300}
+                />
+              </Box>
+            ) : (
+              <Box sx={{ mb: 4 }}>
+                <Tabla
+                  columns={columnas}
+                  rows={filas}
+                  loading={cargando}
+                  disableRowSelectionOnClick
+                />
+              </Box>
+            )}
           </>
         )}
       </ModalFlotante>

@@ -178,14 +178,17 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
                   <br /><br />
                   <strong>Importante:</strong><br />
                   Asegúrate de que el <strong>idProducto</strong> sea único para cada producto dentro del archivo. Puede ser cualquier número, pero debe coincidir en todas las filas relacionadas con ese producto.
+                  Tambien, asegúrate de que la primera fila de cada producto no tenga campos vacíos, ya que el sistema la usa para identificar el producto principal.
+
                   <h3>Producto</h3>
                   <strong>idProducto</strong> permite al sistema saber qué filas pertenecen al mismo producto, aunque estén en diferentes líneas del CSV. Es necesario para poder agruparlo.<br />
+                  <strong>idProveedor:</strong>Identificador del proveedor del producto. Puede ser un campo vacío <br />
                   <strong>nombreProducto, nombreComercial:</strong> Nombres básicos<br />
                   <strong>descripcionProducto:</strong> Descripción del producto<br />
-                  <strong>marca, modelo, tipoProducto</strong><br />
+                  <strong>marca, modelo, tipoProducto:</strong> Datos básicos del producto<br />
                   <strong>costo, precioVenta, precioCliente:</strong> Valores numéricos (usa punto decimal)<br />
                   <strong>precioPuntos:</strong> Número entero<br />
-                  <strong>impuesto, descuento:</strong> Porcentajes<br />
+                  <strong>impuesto, descuento:</strong> Valor numérico del porcentaje. Ejemplo: 16 (para 16%)<br />
                   <strong>estado:</strong> 1 = activo, 0 = inactivo<br />
                   <strong>envio:</strong> 1 = disponible, 0 = no disponible<br /><br />
                   <h3>Variante</h3>
@@ -197,7 +200,7 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
                   <strong>SKUcomercial:</strong> Código visible al cliente<br />
                   <strong>cantidad:</strong> Entero<br />
                   <strong>costoAdicional:</strong> Número positivo<br />
-                  <strong>descuentoOpcion:</strong> Porcentaje<br />
+                  <strong>descuentoOpcion:</strong> Valor numérico del porcentaje. Ejemplo: 50 (para 50%)<br />
                   <strong>estadoOpcion:</strong> 1 = activa, 0 = inactiva<br /><br />
                 
                 </>

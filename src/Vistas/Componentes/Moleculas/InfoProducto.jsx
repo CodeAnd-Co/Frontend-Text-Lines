@@ -64,7 +64,9 @@ const InfoProducto = ({detalleProducto, imagenProducto}) => {
           <Texto gutterBottom sx={{mb: 1.5}}>
             Costo:{' '}
             <span style={{color: colores.altertex[3]}}>
-              ${detalleProducto?.costo || 'No disponible'}
+              {detalleProducto?.costo !== undefined && detalleProducto?.costo !== null
+              ? `$${detalleProducto.costo}`
+              : 'No disponible'}
             </span>
           </Texto>
 
@@ -72,7 +74,9 @@ const InfoProducto = ({detalleProducto, imagenProducto}) => {
           <Texto gutterBottom sx={{mb: 1.5}}>
             Precio de Venta:{' '}
             <span style={{color:colores.altertex[3]}}>
-              ${detalleProducto?.precioVenta || 'No disponible'}
+              {detalleProducto?.precioVenta !== undefined && detalleProducto?.precioVenta !== null
+            ? `$${detalleProducto.precioVenta}`
+            : 'No disponible'}
             </span>
           </Texto>
 
@@ -80,7 +84,9 @@ const InfoProducto = ({detalleProducto, imagenProducto}) => {
           <Texto gutterBottom sx={{mb: 1.5}}>
             Precio Cliente:{' '}
             <span style={{color:colores.altertex[3]}}>
-              ${detalleProducto?.precioCliente || 'No disponible'}
+              {detalleProducto?.precioCliente !== undefined && detalleProducto?.precioCliente !== null
+              ? `$${detalleProducto.precioCliente}`
+              : 'No disponible'}
             </span>
           </Texto>
 
@@ -88,7 +94,9 @@ const InfoProducto = ({detalleProducto, imagenProducto}) => {
           <Texto gutterBottom sx={{mb: 1.5}}>
             Precio en puntos:{' '}
             <span style={{color:colores.altertex[3]}}>
-              {detalleProducto?.precioPuntos || 'No disponible'}
+              {detalleProducto?.precioPuntos !== undefined && detalleProducto?.precioPuntos !== null
+              ? `${detalleProducto.precioPuntos}`
+              : 'No disponible'}
             </span>
           </Texto>
 

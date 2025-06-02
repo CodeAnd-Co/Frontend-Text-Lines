@@ -9,6 +9,11 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+
 
 // Funciones utilitarias
 function no(a, b, funcionClave = (elemento) => elemento.id || elemento) {
@@ -197,7 +202,7 @@ const ListaTransferenciaPersonalizada = ({
             disabled={izquierda.length === 0 || deshabilitado}
             aria-label="mover todo a la derecha"
           >
-            ≫
+            <KeyboardDoubleArrowRightIcon/>
           </Button>
           <Button
             sx={{ my: 0.5 }}
@@ -207,7 +212,7 @@ const ListaTransferenciaPersonalizada = ({
             disabled={marcadosIzquierda.length === 0 || deshabilitado}
             aria-label="mover seleccionados a la derecha"
           >
-            →
+            <KeyboardArrowRightIcon/>
           </Button>
           <Button
             sx={{ my: 0.5 }}
@@ -217,7 +222,7 @@ const ListaTransferenciaPersonalizada = ({
             disabled={marcadosDerecha.length === 0 || deshabilitado}
             aria-label="mover seleccionados a la izquierda"
           >
-            ←
+            <KeyboardArrowLeftIcon/>
           </Button>
           <Button
             sx={{ my: 0.5 }}
@@ -227,7 +232,7 @@ const ListaTransferenciaPersonalizada = ({
             disabled={derecha.length === 0 || deshabilitado}
             aria-label="mover todo a la izquierda"
           >
-            ≪
+            <KeyboardDoubleArrowLeftIcon/>
           </Button>
         </Grid>
       </Grid>

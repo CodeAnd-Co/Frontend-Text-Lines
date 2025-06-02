@@ -34,7 +34,7 @@ const CampoTextoForm = memo(
         helperText={
           type === 'text' && maxLongitud
             ? `${value.length}/${maxLongitud} - Máximo de caracteres. ${helperText || ''}` // Cambiar textoAyuda por helperText
-            : helperText // Cambiar textoAyuda por helperText
+            : helperText
         }
         type={type}
         size='medium'

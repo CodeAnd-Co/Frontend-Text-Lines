@@ -15,7 +15,7 @@ const CampoTextoFormulario = memo(
     nombre,
     valor,
     onChange,
-    helperText, // Cambiar textoAyuda por helperText
+    helperText,
     error,
     placeholder,
     tipo = 'text',
@@ -40,7 +40,7 @@ const CampoTextoFormulario = memo(
           helperText={
             tipo === 'text' && limiteCaracteres
               ? `${valor.length}/${limiteCaracteres} - Máximo de caracteres. ${helperText || ''}` // Cambiar textoAyuda por helperText
-              : helperText // Cambiar textoAyuda por helperText
+              : helperText
           }
           type={tipo}
           size='medium'
@@ -280,9 +280,10 @@ const CamposProducto = memo(
           tipo='number'
           required={false}
           min={1}
-          onKeyDown={prevenirNumerosNegativos}
+          onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
-            if (evento.target.value && evento.target.value < 1) {
+            const valor = parseInt(evento.target.value, 10);
+            if (valor < 1 || isNaN(valor)) {
               evento.target.value = 1;
             }
           }}
@@ -299,9 +300,10 @@ const CamposProducto = memo(
           tipo='number'
           required
           min={1}
-          onKeyDown={prevenirNumerosNegativos}
+          onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
-            if (evento.target.value && evento.target.value < 1) {
+            const valor = parseInt(evento.target.value, 10);
+            if (valor < 1 || isNaN(valor)) {
               evento.target.value = 1;
             }
           }}
@@ -318,9 +320,10 @@ const CamposProducto = memo(
           tipo='number'
           required
           min={1}
-          onKeyDown={prevenirNumerosNegativos}
+          onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
-            if (evento.target.value && evento.target.value < 1) {
+            const valor = parseInt(evento.target.value, 10);
+            if (valor < 1 || isNaN(valor)) {
               evento.target.value = 1;
             }
           }}
@@ -337,9 +340,10 @@ const CamposProducto = memo(
           tipo='number'
           required
           min={1}
-          onKeyDown={prevenirNumerosNegativos}
+          onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
-            if (evento.target.value && evento.target.value < 1) {
+            const valor = parseInt(evento.target.value, 10);
+            if (valor < 1 || isNaN(valor)) {
               evento.target.value = 1;
             }
           }}
@@ -356,9 +360,10 @@ const CamposProducto = memo(
           tipo='number'
           required={false}
           min={1}
-          onKeyDown={prevenirNumerosNegativos}
+          onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
-            if (evento.target.value && evento.target.value < 1) {
+            const valor = parseInt(evento.target.value, 10);
+            if (valor < 1 || isNaN(valor)) {
               evento.target.value = 1;
             }
           }}
@@ -375,9 +380,10 @@ const CamposProducto = memo(
           tipo='number'
           required={false}
           min={1}
-          onKeyDown={prevenirNumerosNegativos}
+          onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
-            if (evento.target.value && evento.target.value < 1) {
+            const valor = parseInt(evento.target.value, 10);
+            if (valor < 1 || isNaN(valor)) {
               evento.target.value = 1;
             }
           }}

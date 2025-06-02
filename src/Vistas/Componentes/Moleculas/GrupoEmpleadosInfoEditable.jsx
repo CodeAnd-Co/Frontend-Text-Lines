@@ -1,5 +1,5 @@
 import CampoTexto from '@Atomos/CampoTexto';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import obtenerSetsProductos from '@Servicios/obtenerSetsProductos';
 import obtenerEmpleados from '@Servicios/obtenerEmpleados';
 import { useAuth } from '@Hooks/AuthProvider';
@@ -28,16 +28,16 @@ const LIMITE_DESCRIPCION = 150;
 const MENSAJE_LIMITE = 'Máximo caracteres';
 
 // Funciones auxiliares para la lista de transferencia
-function not(a, b) {
-  return a.filter((value) => !b.find((item) => item.id === value.id));
+function notInList(sourceList, compareList) {
+  return sourceList.filter((value) => !compareList.find((item) => item.id === value.id));
 }
 
-function intersection(a, b) {
-  return a.filter((value) => b.find((item) => item.id === value.id));
+function intersection(listOne, listTwo) {
+  return listOne.filter((value) => listTwo.find((item) => item.id === value.id));
 }
 
-function union(a, b) {
-  return [...a, ...not(b, a)];
+function union(listOne, listTwo) {
+  return [...listOne, ...notInList(listTwo, listOne)];
 }
 
 const InfoGrupoEmpleadosEditable = ({
@@ -54,7 +54,6 @@ const InfoGrupoEmpleadosEditable = ({
   const [nombre, setNombre] = useState(nombreInicial || '');
   const [descripcion, setDescripcion] = useState(descripcionInicial || '');
   const [errores, setErrores] = useState({});
-  const [mostrarAlerta, setMostrarAlerta] = useState(false);
 
   // Estados para la lista de transferencia de empleados
   const [checkedEmpleados, setCheckedEmpleados] = useState([]);
@@ -66,38 +65,28 @@ const InfoGrupoEmpleadosEditable = ({
   const [leftSets, setLeftSets] = useState([]);
   const [rightSets, setRightSets] = useState(setsProductosInicial || []);
 
-  const rightSetsIds = useMemo(
-    () =>
-      rightSets
-        .map((item) => item.id)
-        .sort()
-        .join(','),
-    [rightSets]
-  );
-
-  const rightEmpleadosIds = useMemo(
-    () =>
-      rightEmpleados
-        .map((item) => item.id)
-        .sort()
-        .join(','),
-    [rightEmpleados]
-  );
-
   useEffect(() => {
     const obtenerDatos = async () => {
       const productos = await obtenerSetsProductos(clienteSeleccionado);
-      setLeftSets(productos.filter((prod) => !rightSets.find((r) => r.id === prod.id)));
+      setLeftSets(
+        productos.filter(
+          (producto) => !rightSets.find((selectedSet) => selectedSet.id === producto.id)
+        )
+      );
 
       const empleadosData = await obtenerEmpleados(clienteSeleccionado);
-      setLeftEmpleados(empleadosData.filter((emp) => !rightEmpleados.find((r) => r.id === emp.id)));
+      setLeftEmpleados(
+        empleadosData.filter(
+          (empleado) => !rightEmpleados.find((selectedEmp) => selectedEmp.id === empleado.id)
+        )
+      );
     };
 
     obtenerDatos();
-  }, [clienteSeleccionado]);
+  }, [clienteSeleccionado, rightSets, rightEmpleados]);
 
   // Validación de campos
-  const validarCampos = () => {
+  const validarCampos = useCallback(() => {
     const nuevosErrores = {};
 
     if (!nombre.trim()) {
@@ -114,22 +103,19 @@ const InfoGrupoEmpleadosEditable = ({
 
     setErrores(nuevosErrores);
     return Object.keys(nuevosErrores).length === 0;
-  };
+  }, [nombre, descripcion]); // Add dependencies that validarCampos uses
 
   // Efecto para validar y notificar cambios
   useEffect(() => {
     const isValid = validarCampos();
-
-    if (onFormDataChange) {
-      onFormDataChange({
-        isValid,
-        nombre,
-        descripcion,
-        setsDeProductos: rightSets.map((set) => set.id),
-        empleados: rightEmpleados.map((emp) => emp.id),
-      });
-    }
-  }, [nombre, descripcion, rightSets, rightEmpleados]);
+    onFormDataChange?.({
+      isValid,
+      nombre,
+      descripcion,
+      setsDeProductos: rightSets.map((set) => set.id),
+      empleados: rightEmpleados.map((emp) => emp.id),
+    });
+  }, [nombre, descripcion, rightSets, rightEmpleados, onFormDataChange, validarCampos]);
 
   // Handlers para empleados
   const handleToggleEmpleados = (value) => () => {
@@ -158,15 +144,15 @@ const InfoGrupoEmpleadosEditable = ({
   const handleCheckedRightEmpleados = () => {
     const leftChecked = intersection(checkedEmpleados, leftEmpleados);
     setRightEmpleados(rightEmpleados.concat(leftChecked));
-    setLeftEmpleados(not(leftEmpleados, leftChecked));
-    setCheckedEmpleados(not(checkedEmpleados, leftChecked));
+    setLeftEmpleados(notInList(leftEmpleados, leftChecked));
+    setCheckedEmpleados(notInList(checkedEmpleados, leftChecked));
   };
 
   const handleCheckedLeftEmpleados = () => {
     const rightChecked = intersection(checkedEmpleados, rightEmpleados);
     setLeftEmpleados(leftEmpleados.concat(rightChecked));
-    setRightEmpleados(not(rightEmpleados, rightChecked));
-    setCheckedEmpleados(not(checkedEmpleados, rightChecked));
+    setRightEmpleados(notInList(rightEmpleados, rightChecked));
+    setCheckedEmpleados(notInList(checkedEmpleados, rightChecked));
   };
 
   // Handlers para sets productos
@@ -196,15 +182,15 @@ const InfoGrupoEmpleadosEditable = ({
   const handleCheckedRightSets = () => {
     const leftChecked = intersection(checkedSets, leftSets);
     setRightSets(rightSets.concat(leftChecked));
-    setLeftSets(not(leftSets, leftChecked));
-    setCheckedSets(not(checkedSets, leftChecked));
+    setLeftSets(notInList(leftSets, leftChecked));
+    setCheckedSets(notInList(checkedSets, leftChecked));
   };
 
   const handleCheckedLeftSets = () => {
     const rightChecked = intersection(checkedSets, rightSets);
     setLeftSets(leftSets.concat(rightChecked));
-    setRightSets(not(rightSets, rightChecked));
-    setCheckedSets(not(checkedSets, rightChecked));
+    setRightSets(notInList(rightSets, rightChecked));
+    setCheckedSets(notInList(checkedSets, rightChecked));
   };
 
   const numberOfCheckedEmpleados = (items) => intersection(checkedEmpleados, items).length;
@@ -212,7 +198,7 @@ const InfoGrupoEmpleadosEditable = ({
 
   const handleToggleAllEmpleados = (items) => () => {
     if (numberOfCheckedEmpleados(items) === items.length) {
-      setCheckedEmpleados(not(checkedEmpleados, items));
+      setCheckedEmpleados(notInList(checkedEmpleados, items));
     } else {
       setCheckedEmpleados(union(checkedEmpleados, items));
     }
@@ -220,7 +206,7 @@ const InfoGrupoEmpleadosEditable = ({
 
   const handleToggleAllSets = (items) => () => {
     if (numberOfCheckedSets(items) === items.length) {
-      setCheckedSets(not(checkedSets, items));
+      setCheckedSets(notInList(checkedSets, items));
     } else {
       setCheckedSets(union(checkedSets, items));
     }
@@ -235,8 +221,8 @@ const InfoGrupoEmpleadosEditable = ({
             onClick={handleToggleAllEmpleados(items)}
             checked={numberOfCheckedEmpleados(items) === items.length && items.length !== 0}
             indeterminate={
-              numberOfCheckedEmpleados(items) !== items.length &&
-              numberOfCheckedEmpleados(items) !== 0
+              numberOfCheckedEmpleados(items) !== items.length
+              && numberOfCheckedEmpleados(items) !== 0
             }
             disabled={items.length === 0}
             inputProps={{
@@ -355,7 +341,7 @@ const InfoGrupoEmpleadosEditable = ({
             variant='outlined'
             value={nombre}
             placeholder='Nombre del grupo'
-            onChange={(e) => setNombre(e.target.value)}
+            onChange={(event) => setNombre(event.target.value)}
             error={!!errores.nombre}
             helperText={errores.nombre || `${nombre.length}/${LIMITE_NOMBRE} ${MENSAJE_LIMITE}`}
             inputProps={{ maxLength: LIMITE_NOMBRE }}
@@ -371,7 +357,7 @@ const InfoGrupoEmpleadosEditable = ({
             variant='outlined'
             value={descripcion}
             placeholder='Escribe una descripción'
-            onChange={(e) => setDescripcion(e.target.value)}
+            onChange={(event) => setDescripcion(event.target.value)}
             error={!!errores.descripcion}
             helperText={
               errores.descripcion || `${descripcion.length}/${LIMITE_DESCRIPCION} ${MENSAJE_LIMITE}`

@@ -79,8 +79,8 @@ const FormaCrearCategorias = ({
         onChange={(evento) => setNombreCategoria(evento.target.value.slice(0, LIMITE_NOMBRE))}
         inputProps={{ maxLength: LIMITE_NOMBRE }}
         helperText={
-          errores?.nombreCategoria ||
-          `${nombreCategoria.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`
+          errores?.nombreCategoria
+          || `${nombreCategoria.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`
         }
         error={intentoEnviar && !!errores?.nombreCategoria}
         required
@@ -108,8 +108,8 @@ const FormaCrearCategorias = ({
         }
         inputProps={{ maxLength: LIMITE_DESCRIPCION }}
         helperText={
-          errores?.descripcionCategoria ||
-          `${descripcionCategoria.length}/${LIMITE_DESCRIPCION} - ${MENSAJE_LIMITE}`
+          errores?.descripcionCategoria
+          || `${descripcionCategoria.length}/${LIMITE_DESCRIPCION} - ${MENSAJE_LIMITE}`
         }
         error={intentoEnviar && !!errores?.descripcionCategoria}
         required

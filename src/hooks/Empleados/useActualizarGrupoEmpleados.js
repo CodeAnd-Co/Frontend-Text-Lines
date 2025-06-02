@@ -34,11 +34,11 @@ export const useActualizarGrupoEmpleados = () => {
     } catch (err) {
       setExito(false);
       setError(true);
-      const errorMessage =
-        err?.response?.data?.mensaje ||
-        err?.response?.data?.error ||
-        err?.message ||
-        'Ocurrió un error al actualizar el grupo de empleados';
+      const errorMessage
+        = err?.response?.data?.mensaje
+        || err?.response?.data?.error
+        || err?.message
+        || 'Ocurrió un error al actualizar el grupo de empleados';
 
       setMensaje(errorMessage);
       throw err;

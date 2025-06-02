@@ -1,6 +1,6 @@
 // RF22 - Consulta Lista de Grupo Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF22
 // RF23 Lee grupo de empleados -https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF23
-import React, { use, useState } from 'react';
+import React, { useState } from 'react';
 import Tabla from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';
 import { useConsultarGrupos } from '@Hooks/Empleados/useConsultarGrupos';
@@ -23,8 +23,8 @@ const ListaGrupoEmpleados = () => {
   const { usuario } = useAuth();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
-  const MENSAJE_POPUP_ELIMINAR =
-    '¿Estás seguro de que deseas eliminar los grupos seleccionados? Esta acción no se puede deshacer.';
+  const MENSAJE_POPUP_ELIMINAR
+    = '¿Estás seguro de que deseas eliminar los grupos seleccionados? Esta acción no se puede deshacer.';
 
   const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
   const [gruposSeleccionados, setGruposSeleccionados] = useState([]);

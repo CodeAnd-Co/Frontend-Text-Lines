@@ -24,18 +24,18 @@ function union(a, b, funcionClave = (elemento) => elemento.id || elemento) {
 }
 
 // Componente Lista de Transferencia Personalizada
-const ListaTransferencia = ({
-                              elementosDisponibles = [],
-                              elementosSeleccionados = [],
-                              alCambiarSeleccion,
-                              tituloIzquierda = "Disponibles",
-                              tituloDerecha = "Seleccionados",
-                              obtenerEtiquetaElemento = (elemento) => elemento.etiqueta || elemento.nombre || String(elemento),
-                              obtenerClaveElemento = (elemento) => elemento.id || elemento.clave || elemento,
-                              deshabilitado = false,
-                              alturaMaxima = 230,
-                              ancho = 250
-                            }) => {
+const ListaTransferenciaPersonalizada = ({
+                                           elementosDisponibles = [],
+                                           elementosSeleccionados = [],
+                                           alCambiarSeleccion,
+                                           tituloIzquierda = "Disponibles",
+                                           tituloDerecha = "Seleccionados",
+                                           obtenerEtiquetaElemento = (elemento) => elemento.etiqueta || elemento.nombre || String(elemento),
+                                           obtenerClaveElemento = (elemento) => elemento.id || elemento.clave || elemento,
+                                           deshabilitado = false,
+                                           alturaMaxima = 230,
+                                           ancho = 250
+                                         }) => {
   const [marcados, setMarcados] = useState([]);
   const [izquierda, setIzquierda] = useState(elementosDisponibles);
   const [derecha, setDerecha] = useState(elementosSeleccionados);
@@ -102,6 +102,18 @@ const ListaTransferencia = ({
     setIzquierda(union(izquierda, marcadosDerecha, obtenerClaveElemento));
     setDerecha(no(derecha, marcadosDerecha, obtenerClaveElemento));
     setMarcados(no(marcados, marcadosDerecha, obtenerClaveElemento));
+  };
+
+  const manejarTodoADerecha = () => {
+    setDerecha(union(derecha, izquierda, obtenerClaveElemento));
+    setIzquierda([]);
+    setMarcados([]);
+  };
+
+  const manejarTodoAIzquierda = () => {
+    setIzquierda(union(izquierda, derecha, obtenerClaveElemento));
+    setDerecha([]);
+    setMarcados([]);
   };
 
   const listaPersonalizada = (titulo, elementos) => (
@@ -181,6 +193,16 @@ const ListaTransferencia = ({
             sx={{ my: 0.5 }}
             variant="outlined"
             size="small"
+            onClick={manejarTodoADerecha}
+            disabled={izquierda.length === 0 || deshabilitado}
+            aria-label="mover todo a la derecha"
+          >
+            ≫
+          </Button>
+          <Button
+            sx={{ my: 0.5 }}
+            variant="outlined"
+            size="small"
             onClick={manejarMarcadosADerecha}
             disabled={marcadosIzquierda.length === 0 || deshabilitado}
             aria-label="mover seleccionados a la derecha"
@@ -197,6 +219,16 @@ const ListaTransferencia = ({
           >
             ←
           </Button>
+          <Button
+            sx={{ my: 0.5 }}
+            variant="outlined"
+            size="small"
+            onClick={manejarTodoAIzquierda}
+            disabled={derecha.length === 0 || deshabilitado}
+            aria-label="mover todo a la izquierda"
+          >
+            ≪
+          </Button>
         </Grid>
       </Grid>
       <Grid>{listaPersonalizada(tituloDerecha, derecha)}</Grid>
@@ -204,4 +236,4 @@ const ListaTransferencia = ({
   );
 };
 
-export default ListaTransferencia;
+export default ListaTransferenciaPersonalizada;

@@ -88,9 +88,7 @@ const InfoGrupoEmpleadosEditable = ({
   }, [clienteSeleccionado]);
 
   useEffect(() => {
-    const isValid = Boolean(
-      nombre && descripcion && rightSets.length > 0 && rightEmpleados.length > 0
-    );
+    const isValid = Boolean(nombre && descripcion);
 
     if (onFormDataChange) {
       onFormDataChange({
@@ -264,6 +262,9 @@ const InfoGrupoEmpleadosEditable = ({
       </List>
     </Card>
   );
+  const LIMITE_NOMBRE = 50;
+  const LIMITE_DESCRIPCION = 150;
+  const MENSAJE_LIMITE = 'Máximo caracteres';
 
   const customListSets = (title, items) => (
     <Card>

@@ -19,6 +19,11 @@ import {
 } from '@mui/material';
 import Texto from '@Atomos/Texto';
 
+// Constantes para los límites de caracteres
+const LIMITE_NOMBRE = 50;
+const LIMITE_DESCRIPCION = 150;
+const MENSAJE_LIMITE = 'Máximo caracteres';
+
 // Funciones auxiliares para la lista de transferencia
 function not(a, b) {
   return a.filter((value) => !b.find((item) => item.id === value.id));
@@ -45,6 +50,7 @@ const InfoGrupoEmpleadosEditable = ({
   // Estados locales
   const [nombre, setNombre] = useState(nombreInicial || '');
   const [descripcion, setDescripcion] = useState(descripcionInicial || '');
+  const [errores, setErrores] = useState({});
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
 
   // Estados para la lista de transferencia de empleados
@@ -87,8 +93,29 @@ const InfoGrupoEmpleadosEditable = ({
     obtenerDatos();
   }, [clienteSeleccionado]);
 
+  // Validación de campos
+  const validarCampos = () => {
+    const nuevosErrores = {};
+
+    if (!nombre.trim()) {
+      nuevosErrores.nombre = 'Este campo es obligatorio';
+    } else if (nombre.length > LIMITE_NOMBRE) {
+      nuevosErrores.nombre = `El nombre no puede exceder ${LIMITE_NOMBRE} caracteres`;
+    }
+
+    if (!descripcion.trim()) {
+      nuevosErrores.descripcion = 'Este campo es obligatorio';
+    } else if (descripcion.length > LIMITE_DESCRIPCION) {
+      nuevosErrores.descripcion = `La descripción no puede exceder ${LIMITE_DESCRIPCION} caracteres`;
+    }
+
+    setErrores(nuevosErrores);
+    return Object.keys(nuevosErrores).length === 0;
+  };
+
+  // Efecto para validar y notificar cambios
   useEffect(() => {
-    const isValid = Boolean(nombre && descripcion);
+    const isValid = validarCampos();
 
     if (onFormDataChange) {
       onFormDataChange({
@@ -99,14 +126,7 @@ const InfoGrupoEmpleadosEditable = ({
         empleados: rightEmpleados.map((emp) => emp.id),
       });
     }
-  }, [
-    nombre,
-    descripcion,
-    rightSets.length,
-    rightEmpleados.length,
-    rightSetsIds,
-    rightEmpleadosIds,
-  ]);
+  }, [nombre, descripcion, rightSets, rightEmpleados]);
 
   // Handlers para empleados
   const handleToggleEmpleados = (value) => () => {
@@ -262,10 +282,6 @@ const InfoGrupoEmpleadosEditable = ({
       </List>
     </Card>
   );
-  const LIMITE_NOMBRE = 50;
-  const LIMITE_DESCRIPCION = 150;
-  const MENSAJE_LIMITE = 'Máximo caracteres';
-
   const customListSets = (title, items) => (
     <Card>
       <CardHeader
@@ -337,6 +353,9 @@ const InfoGrupoEmpleadosEditable = ({
             value={nombre}
             placeholder='Nombre del grupo'
             onChange={(e) => setNombre(e.target.value)}
+            error={!!errores.nombre}
+            helperText={errores.nombre || `${nombre.length}/${LIMITE_NOMBRE} ${MENSAJE_LIMITE}`}
+            inputProps={{ maxLength: LIMITE_NOMBRE }}
             sx={{ mt: 1, mb: 2, width: '300px', overflow: 'auto' }}
           />
         </Grid>
@@ -350,6 +369,11 @@ const InfoGrupoEmpleadosEditable = ({
             value={descripcion}
             placeholder='Escribe una descripción'
             onChange={(e) => setDescripcion(e.target.value)}
+            error={!!errores.descripcion}
+            helperText={
+              errores.descripcion || `${descripcion.length}/${LIMITE_DESCRIPCION} ${MENSAJE_LIMITE}`
+            }
+            inputProps={{ maxLength: LIMITE_DESCRIPCION }}
             sx={{ mt: 1, mb: 2, width: '400px', overflow: 'auto' }}
           />
         </Grid>
@@ -477,16 +501,6 @@ const InfoGrupoEmpleadosEditable = ({
         </Grid>
       </Grid>
 
-      {mostrarAlerta && (
-        <Alerta
-          tipo='warning'
-          mensaje='Completa todos los campos y selecciona al menos un producto y un empleado.'
-          cerrable
-          duracion={10000}
-          onClose={() => setMostrarAlerta(false)}
-          sx={{ mb: 2, mt: 2 }}
-        />
-      )}
       <Box display='flex' justifyContent='flex-end' mt={3}></Box>
     </Box>
   );

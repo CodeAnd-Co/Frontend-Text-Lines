@@ -17,40 +17,39 @@ export const validarProducto = (producto) => {
       producto.precioVenta !== undefined ? Number(producto.precioVenta) : producto.precioVenta,
     costo: producto.costo !== undefined ? Number(producto.costo) : producto.costo,
     impuesto: producto.impuesto !== undefined ? Number(producto.impuesto) : producto.impuesto,
-    precioPuntos:
-      producto.precioPuntos !== undefined ? Number(producto.precioPuntos) : producto.precioPuntos,
+    descuento: producto.descuento !== undefined ? Number(producto.descuento) : producto.descuento,
   };
 
-  // Validación de precio para el cliente
+  // Validación de precio para el cliente (decimal(10,2))
   if (normalizados.precioCliente == null) {
     errores.precioCliente = 'El precio para el cliente es obligatorio.';
   } else if (typeof normalizados.precioCliente !== 'number' || normalizados.precioCliente <= 0) {
     errores.precioCliente = 'El precio para el cliente debe ser un número positivo.';
-  } else if (!/^\d{1,8}(\.\d{1,2})?$/.test(normalizados.precioCliente.toString())) {
+  } else if (!/^\d{1,10}(\.\d{1,2})?$/.test(normalizados.precioCliente.toString())) {
     errores.precioCliente =
-      'El precio para el cliente debe tener máximo 8 dígitos antes del punto y 2 después.';
+      'El precio para el cliente debe tener máximo 10 dígitos antes del punto y 2 después.';
   }
 
-  // Validación de precio de venta
+  // Validación de precio de venta (decimal(10,2))
   if (normalizados.precioVenta == null) {
     errores.precioVenta = 'El precio de venta es obligatorio.';
   } else if (typeof normalizados.precioVenta !== 'number' || normalizados.precioVenta <= 0) {
     errores.precioVenta = 'El precio de venta debe ser un número positivo.';
-  } else if (!/^\d{1,8}(\.\d{1,2})?$/.test(normalizados.precioVenta.toString())) {
+  } else if (!/^\d{1,10}(\.\d{1,2})?$/.test(normalizados.precioVenta.toString())) {
     errores.precioVenta =
-      'El precio de venta debe tener máximo 8 dígitos antes del punto y 2 después.';
+      'El precio de venta debe tener máximo 10 dígitos antes del punto y 2 después.';
   }
 
-  // Validación de costo
+  // Validación de costo (decimal(10,2))
   if (normalizados.costo == null) {
     errores.costo = 'El costo es obligatorio.';
   } else if (typeof normalizados.costo !== 'number' || normalizados.costo <= 0) {
     errores.costo = 'El costo debe ser un número positivo.';
-  } else if (!/^\d{1,8}(\.\d{1,2})?$/.test(normalizados.costo.toString())) {
-    errores.costo = 'El costo debe tener máximo 8 dígitos antes del punto y 2 después.';
+  } else if (!/^\d{1,10}(\.\d{1,2})?$/.test(normalizados.costo.toString())) {
+    errores.costo = 'El costo debe tener máximo 10 dígitos antes del punto y 2 después.';
   }
 
-  // Validación de impuesto
+  // Validación de impuesto (decimal(5,2))
   if (normalizados.impuesto == null) {
     errores.impuesto = 'El impuesto es obligatorio.';
   } else if (typeof normalizados.impuesto !== 'number' || normalizados.impuesto < 0) {
@@ -59,7 +58,7 @@ export const validarProducto = (producto) => {
     errores.impuesto = 'El impuesto debe tener máximo 5 dígitos antes del punto y 2 después.';
   }
 
-  // Validación de descuento
+  // Validación de descuento (decimal(5,2))
   if (normalizados.descuento == null) {
     errores.descuento = 'El descuento es obligatorio.';
   } else if (

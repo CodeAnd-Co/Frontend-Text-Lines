@@ -283,7 +283,7 @@ const CamposProducto = memo(
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
             const valor = evento.target.value;
-            if (valor === '' || parseInt(valor, 10) >= 1) {
+            if (valor === '' || parseFloat(valor) >= 1) {
               evento.target.value = valor;
             } else {
               evento.target.value = 1;
@@ -305,7 +305,7 @@ const CamposProducto = memo(
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
             const valor = evento.target.value;
-            if (valor === '' || parseInt(valor, 10) >= 1) {
+            if (valor === '' || parseFloat(valor) >= 1) {
               evento.target.value = valor;
             } else {
               evento.target.value = 1;
@@ -327,7 +327,7 @@ const CamposProducto = memo(
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
             const valor = evento.target.value;
-            if (valor === '' || parseInt(valor, 10) >= 1) {
+            if (valor === '' || parseFloat(valor) >= 1) {
               evento.target.value = valor;
             } else {
               evento.target.value = 1;
@@ -349,7 +349,7 @@ const CamposProducto = memo(
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
             const valor = evento.target.value;
-            if (valor === '' || parseInt(valor, 10) >= 1) {
+            if (valor === '' || parseFloat(valor) >= 1) {
               evento.target.value = valor;
             } else {
               evento.target.value = 1;
@@ -371,7 +371,7 @@ const CamposProducto = memo(
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
             const valor = evento.target.value;
-            if (valor === '' || parseInt(valor, 10) >= 0) {
+            if (valor === '' || parseFloat(valor) >= 0) {
               evento.target.value = valor;
             }
           }}
@@ -391,7 +391,7 @@ const CamposProducto = memo(
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
             const valor = evento.target.value;
-            if (valor === '' || parseInt(valor, 10) >= 0) {
+            if (valor === '' || parseFloat(valor) >= 0) {
               evento.target.value = valor;
             }
           }}

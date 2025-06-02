@@ -1,6 +1,6 @@
 // RF[8] Leer Rol - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF8
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
 import ModalFlotante from '@Organismos/ModalFlotante';
 import { useLeerRol } from '@Hooks/Roles/useLeerRol';
@@ -50,7 +50,7 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
     };
 
     cargarPermisos();
-  }, [detalle, modoEdicion, permisosLoadedRef]);
+  }, [detalle, modoEdicion]);
 
   const columnas = [
     {
@@ -75,10 +75,10 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
     setModoEdicion(!modoEdicion);
   };
 
-  const manejarCambioTransferencia = ({ disponibles, seleccionados }) => {
+  const manejarCambioTransferencia = useCallback(({ disponibles, seleccionados }) => {
     setPermisosDisponibles(disponibles);
     setPermisosSeleccionados(seleccionados);
-  };
+  }, []);
 
   const manejarCerrar = () => {
     setModoEdicion(false);

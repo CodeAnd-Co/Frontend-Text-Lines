@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import Card from '@mui/material/Card';
@@ -25,33 +25,40 @@ function union(a, b, funcionClave = (elemento) => elemento.id || elemento) {
 
 // Componente Lista de Transferencia Personalizada
 const ListaTransferencia = ({
-                                           elementosDisponibles = [],
-                                           elementosSeleccionados = [],
-                                           alCambiarSeleccion,
-                                           tituloIzquierda = "Disponibles",
-                                           tituloDerecha = "Seleccionados",
-                                           obtenerEtiquetaElemento = (elemento) => elemento.etiqueta || elemento.nombre || String(elemento),
-                                           obtenerClaveElemento = (elemento) => elemento.id || elemento.clave || elemento,
-                                           deshabilitado = false,
-                                           alturaMaxima = 230,
-                                           ancho = 250
-                                         }) => {
+                              elementosDisponibles = [],
+                              elementosSeleccionados = [],
+                              alCambiarSeleccion,
+                              tituloIzquierda = "Disponibles",
+                              tituloDerecha = "Seleccionados",
+                              obtenerEtiquetaElemento = (elemento) => elemento.etiqueta || elemento.nombre || String(elemento),
+                              obtenerClaveElemento = (elemento) => elemento.id || elemento.clave || elemento,
+                              deshabilitado = false,
+                              alturaMaxima = 230,
+                              ancho = 250
+                            }) => {
   const [marcados, setMarcados] = useState([]);
   const [izquierda, setIzquierda] = useState(elementosDisponibles);
   const [derecha, setDerecha] = useState(elementosSeleccionados);
 
+  // Use ref to track if we're in the middle of updating from props
+  const updatingFromPropsRef = useRef(false);
+
   // Actualizar estado interno cuando cambien las props
   useEffect(() => {
+    updatingFromPropsRef.current = true;
     setIzquierda(elementosDisponibles);
+    updatingFromPropsRef.current = false;
   }, [elementosDisponibles]);
 
   useEffect(() => {
+    updatingFromPropsRef.current = true;
     setDerecha(elementosSeleccionados);
+    updatingFromPropsRef.current = false;
   }, [elementosSeleccionados]);
 
-  // Notificar al componente padre de los cambios
+  // Only notify parent when changes come from user interactions, not from prop updates
   useEffect(() => {
-    if (alCambiarSeleccion) {
+    if (alCambiarSeleccion && !updatingFromPropsRef.current) {
       alCambiarSeleccion({
         disponibles: izquierda,
         seleccionados: derecha

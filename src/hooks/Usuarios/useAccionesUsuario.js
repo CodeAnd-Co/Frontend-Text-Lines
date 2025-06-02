@@ -20,8 +20,15 @@ export const useAccionesUsuario = (usuarioInicial = null) => {
         ...usuarioInicial,
         idUsuario: usuarioInicial.idUsuario || usuarioInicial.id,
         nombreCompleto: usuarioInicial.nombreCompleto || '',
+        apellido: usuarioInicial.apellido || '',
         correoElectronico: usuarioInicial.correoElectronico || '',
+        numeroTelefono: usuarioInicial.numeroTelefono || '',
+        direccion: usuarioInicial.direccion || '',
         fechaNacimiento,
+        genero: usuarioInicial.genero || '',
+        rol: usuarioInicial.rol || '',
+        cliente: usuarioInicial.cliente || [],
+        contrasenia: '',
       };
     }
     return {

@@ -1,4 +1,3 @@
-import Alerta from '@Moleculas/Alerta';
 import CampoTexto from '@Atomos/CampoTexto';
 import { useState, useEffect, useMemo } from 'react';
 import obtenerSetsProductos from '@Servicios/obtenerSetsProductos';
@@ -18,6 +17,10 @@ import {
   Divider,
 } from '@mui/material';
 import Texto from '@Atomos/Texto';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 
 // Constantes para los límites de caracteres
 const LIMITE_NOMBRE = 50;
@@ -399,9 +402,8 @@ const InfoGrupoEmpleadosEditable = ({
                     onClick={handleAllRightSets}
                     disabled={leftSets.length === 0}
                     aria-label='move all right'
-                  >
-                    ≫
-                  </Button>
+                    startIcon={<KeyboardDoubleArrowRightIcon sx={{ ml: 1 }} />}
+                  />
                   <Button
                     sx={{ my: 0.5 }}
                     variant='outlined'
@@ -409,9 +411,9 @@ const InfoGrupoEmpleadosEditable = ({
                     onClick={handleCheckedRightSets}
                     disabled={numberOfCheckedSets(leftSets) === 0}
                     aria-label='move selected right'
-                  >
-                    &gt;
-                  </Button>
+                    startIcon={<KeyboardArrowRightIcon sx={{ ml: 1 }} />}
+                    allign='center'
+                  />
                   <Button
                     sx={{ my: 0.5 }}
                     variant='outlined'
@@ -419,9 +421,8 @@ const InfoGrupoEmpleadosEditable = ({
                     onClick={handleCheckedLeftSets}
                     disabled={numberOfCheckedSets(rightSets) === 0}
                     aria-label='move selected left'
-                  >
-                    &lt;
-                  </Button>
+                    startIcon={<KeyboardArrowLeftIcon sx={{ ml: 1 }} />}
+                  />
                   <Button
                     sx={{ my: 0.5 }}
                     variant='outlined'
@@ -429,9 +430,8 @@ const InfoGrupoEmpleadosEditable = ({
                     onClick={handleAllLeftSets}
                     disabled={rightSets.length === 0}
                     aria-label='move all left'
-                  >
-                    ≪
-                  </Button>
+                    startIcon={<KeyboardDoubleArrowLeftIcon sx={{ ml: 1 }} />}
+                  />
                 </Grid>
               </Grid>
               <Grid item>{customListSets('Sets Seleccionados', rightSets)}</Grid>
@@ -460,9 +460,8 @@ const InfoGrupoEmpleadosEditable = ({
                     onClick={handleAllRightEmpleados}
                     disabled={leftEmpleados.length === 0}
                     aria-label='move all right'
-                  >
-                    ≫
-                  </Button>
+                    startIcon={<KeyboardDoubleArrowRightIcon sx={{ ml: 1 }} />}
+                  />
                   <Button
                     sx={{ my: 0.5 }}
                     variant='outlined'
@@ -470,9 +469,8 @@ const InfoGrupoEmpleadosEditable = ({
                     onClick={handleCheckedRightEmpleados}
                     disabled={numberOfCheckedEmpleados(leftEmpleados) === 0}
                     aria-label='move selected right'
-                  >
-                    &gt;
-                  </Button>
+                    startIcon={<KeyboardArrowRightIcon sx={{ ml: 1 }} />}
+                  />
                   <Button
                     sx={{ my: 0.5 }}
                     variant='outlined'
@@ -480,9 +478,8 @@ const InfoGrupoEmpleadosEditable = ({
                     onClick={handleCheckedLeftEmpleados}
                     disabled={numberOfCheckedEmpleados(rightEmpleados) === 0}
                     aria-label='move selected left'
-                  >
-                    &lt;
-                  </Button>
+                    startIcon={<KeyboardArrowLeftIcon sx={{ ml: 1 }} />}
+                  />
                   <Button
                     sx={{ my: 0.5 }}
                     variant='outlined'
@@ -490,9 +487,8 @@ const InfoGrupoEmpleadosEditable = ({
                     onClick={handleAllLeftEmpleados}
                     disabled={rightEmpleados.length === 0}
                     aria-label='move all left'
-                  >
-                    ≪
-                  </Button>
+                    startIcon={<KeyboardDoubleArrowLeftIcon sx={{ ml: 1 }} />}
+                  />
                 </Grid>
               </Grid>
               <Grid item>{customListEmpleados('Empleados Seleccionados', rightEmpleados)}</Grid>

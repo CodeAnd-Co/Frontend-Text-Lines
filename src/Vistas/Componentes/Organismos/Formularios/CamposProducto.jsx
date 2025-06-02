@@ -282,8 +282,10 @@ const CamposProducto = memo(
           min={1}
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
-            const valor = parseInt(evento.target.value, 10);
-            if (valor < 1 || isNaN(valor)) {
+            const valor = evento.target.value;
+            if (valor === '' || parseInt(valor, 10) >= 1) {
+              evento.target.value = valor;
+            } else {
               evento.target.value = 1;
             }
           }}
@@ -302,8 +304,10 @@ const CamposProducto = memo(
           min={1}
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
-            const valor = parseInt(evento.target.value, 10);
-            if (valor < 1 || isNaN(valor)) {
+            const valor = evento.target.value;
+            if (valor === '' || parseInt(valor, 10) >= 1) {
+              evento.target.value = valor;
+            } else {
               evento.target.value = 1;
             }
           }}
@@ -322,8 +326,10 @@ const CamposProducto = memo(
           min={1}
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
-            const valor = parseInt(evento.target.value, 10);
-            if (valor < 1 || isNaN(valor)) {
+            const valor = evento.target.value;
+            if (valor === '' || parseInt(valor, 10) >= 1) {
+              evento.target.value = valor;
+            } else {
               evento.target.value = 1;
             }
           }}
@@ -342,8 +348,10 @@ const CamposProducto = memo(
           min={1}
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
-            const valor = parseInt(evento.target.value, 10);
-            if (valor < 1 || isNaN(valor)) {
+            const valor = evento.target.value;
+            if (valor === '' || parseInt(valor, 10) >= 1) {
+              evento.target.value = valor;
+            } else {
               evento.target.value = 1;
             }
           }}
@@ -359,12 +367,12 @@ const CamposProducto = memo(
           placeholder='Ej: 16'
           tipo='number'
           required={false}
-          min={1}
+          min={0}
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
-            const valor = parseInt(evento.target.value, 10);
-            if (valor < 1 || isNaN(valor)) {
-              evento.target.value = 1;
+            const valor = evento.target.value;
+            if (valor === '' || parseInt(valor, 10) >= 0) {
+              evento.target.value = valor;
             }
           }}
         />
@@ -379,12 +387,12 @@ const CamposProducto = memo(
           placeholder='Ej: 10'
           tipo='number'
           required={false}
-          min={1}
+          min={0}
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
-            const valor = parseInt(evento.target.value, 10);
-            if (valor < 1 || isNaN(valor)) {
-              evento.target.value = 1;
+            const valor = evento.target.value;
+            if (valor === '' || parseInt(valor, 10) >= 0) {
+              evento.target.value = valor;
             }
           }}
         />

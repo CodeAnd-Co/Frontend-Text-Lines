@@ -148,8 +148,10 @@ const CamposOpcion = memo(
           min={1}
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
-            const valor = parseInt(evento.target.value, 10);
-            if (valor < 1 || isNaN(valor)) {
+            const valor = evento.target.value;
+            if (valor === '' || parseInt(valor, 10) >= 1) {
+              evento.target.value = valor;
+            } else {
               evento.target.value = 1;
             }
           }}
@@ -180,12 +182,14 @@ const CamposOpcion = memo(
           placeholder='Ingresa el costo adicional'
           helperText={errores?.costoAdicional || ''}
           error={Boolean(errores?.costoAdicional)}
-          min={1}
+          min={0}
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
-            const valor = parseInt(evento.target.value, 10);
-            if (valor < 1 || isNaN(valor)) {
-              evento.target.value = 1;
+            const valor = evento.target.value;
+            if (valor === '' || parseInt(valor, 10) >= 0) {
+              evento.target.value = valor;
+            } else {
+              evento.target.value = 0;
             }
           }}
         />
@@ -198,12 +202,14 @@ const CamposOpcion = memo(
           placeholder='Ingresa el descuento'
           helperText={errores?.descuento || ''}
           error={Boolean(errores?.descuento)}
-          min={1}
+          min={0}
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
           onInput={(evento) => {
-            const valor = parseInt(evento.target.value, 10);
-            if (valor < 1 || isNaN(valor)) {
-              evento.target.value = 1;
+            const valor = evento.target.value;
+            if (valor === '' || parseInt(valor, 10) >= 0) {
+              evento.target.value = valor;
+            } else {
+              evento.target.value = 0;
             }
           }}
         />

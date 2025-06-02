@@ -22,7 +22,7 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
   useEffect(() => {
     if (errores && errores.length > 0) {
       const mensaje = errores
-        .map(elemento => `Fila ${elemento.fila}: ${elemento.error}`)
+        .map(elemento => `${elemento.fila}: ${elemento.error}`)
         .join('\n');
       setMensajeErrores(mensaje);
     } else {
@@ -80,7 +80,7 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
     if (!empleadosJson.length) {
       setAlerta({
         tipo: 'error',
-        mensaje: 'Primero agrega un archivo CSV.',
+        mensaje: 'Agrega un archivo CSV válido.',
         duracion: 2500,
         cerrable: true,
         centradoInferior: true,
@@ -119,7 +119,19 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
   ]}
     >
 
-      <ContenedorImportar onFileAccepted={handleFileAccepted} cargando={cargando} />
+      <ContenedorImportar
+          onFileAccepted={handleFileAccepted}
+          cargando={cargando}
+          onError={(mensaje) =>
+            setAlerta({
+              tipo: 'error',
+              mensaje,
+              duracion: 3000,
+              cerrable: true,
+              centradoInferior: true,
+            })
+          }
+        />
 
       {archivo && (
         <List disablePadding>
@@ -155,13 +167,13 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
           onClose={() => setAbrirInfo(false)}> 
               Consideraciones para tu CSV:<br/>
               Campos obligatorios: no dejes celdas vacías en ninguna columna.<br/>
-              Fechas: formato DD/MM/AAAA (p. ej. 05/08/1998).<br/>
-              {`Contraseñas: mínimo 8 caracteres, al menos una mayúscula y un carácter especial (!@#$%^&*(),.?":{}|<>)`}<br/>
               Correo electrónico: formato válido (usuario@dominio.com).<br/>
+              {`Contraseñas: mínimo 8 caracteres, al menos una mayúscula y un carácter especial (!@#$%^&*(),.?":{}|<>)`}<br/>
               Teléfonos: exactamente 10 dígitos, sin espacios ni guiones.<br/>
               Textos largos: máximo 75 caracteres por campo.<br/>
-              EEstado: 1 → activo, 0 → inactivo.<br/>
-              idCliente: identificador numérico del cliente (p. ej. Toyota → 101).
+              Fecha Nacimiento: formato DD/MM/AAAA (p. ej. 05/08/1998).<br/>
+              Estado: 1 → activo, 0 → inactivo.<br/>
+              Antiguedad: formato DD/MM/AAAA (p. ej. 05/08/1998).<br/>
            </InfoImportar>
             </Box><br/>
                 {mensajeErrores && (

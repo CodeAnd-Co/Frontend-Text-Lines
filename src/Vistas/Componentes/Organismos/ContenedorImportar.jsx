@@ -4,17 +4,18 @@ import Icono from '@Atomos/Icono';
 import Papa from 'papaparse';
 import { tokens } from '@SRC/theme';
 
-const ContenedorImportar = ({ onFileAccepted, cargando = false }) => {
+const ContenedorImportar = ({ onFileAccepted, onError, cargando = false }) => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { 'text/csv': ['.csv'] },
     multiple: false,
-    maxSize: 3145728, // 3 MB
+    maxSize: 5242880, // 5 MB
     disabled: cargando,
     onDrop: (acceptedFiles) => {
       if (!acceptedFiles.length) return;
       const archivo = acceptedFiles[0];
+      
 
       Papa.parse(archivo, {
         header: true,
@@ -27,6 +28,21 @@ const ContenedorImportar = ({ onFileAccepted, cargando = false }) => {
         }
       });
     },
+    onDropRejected: (fileRejections) => {
+  const error = fileRejections[0]?.errors[0];
+  const file = fileRejections[0]?.file;
+
+  if (error?.code === 'file-too-large') {
+      const sizeMB = (file?.size || 0) / (1024 * 1024);
+      const mensaje = `⚠️ El archivo "${file.name}" es muy grande (${sizeMB.toFixed(2)} MB).`;
+      onError?.(mensaje);
+    } else if (error?.code === 'file-invalid-type') {
+      onError?.(`⚠️ El archivo debe ser de tipo .csv`);
+    } else {
+      onError?.(`${error?.message || 'Archivo no aceptado.'}`);
+    }
+  }
+
   });
 
   return (

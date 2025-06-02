@@ -1,7 +1,7 @@
-import { createContext, useState, useMemo } from 'react';
+import { createContext, useState, useMemo, useContext, useEffect } from 'react';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 
-// color design tokens export
 export const tokens = (mode) => ({
   ...(mode === 'dark'
     ? {
@@ -52,6 +52,9 @@ export const tokens = (mode) => ({
           3: 'rgba(0, 0, 0, 0.5)',
           4: 'rgba(136, 136, 136, 0.62)',
         },
+        noImplementado: {
+          1: 'rgba(255, 149, 56, 0.63)',
+        },
       }
     : {
         texto: {
@@ -99,6 +102,9 @@ export const tokens = (mode) => ({
           2: 'rgba(0, 0, 0, 0.10)',
           3: 'rgba(0, 0, 0, 0.5)',
           4: 'rgba(0, 0, 0, 0.4)',
+        },
+        noImplementado: {
+          1: 'rgb(255, 149, 56)',
         },
       }),
 });
@@ -203,18 +209,42 @@ export const themeSettings = (mode) => {
 
 export const ColorModeContext = createContext({
   toggleColorMode: () => {},
+  mode: 'light',
 });
 
-export const useMode = () => {
-  const [mode, setMode] = useState('light');
+export const ColorModeProvider = ({ children }) => {
+  const [mode, setMode] = useState(() => {
+    const modeAlmacenado = localStorage.getItem('tema');
+    return modeAlmacenado ? JSON.parse(modeAlmacenado) : 'light';
+  });
 
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => setMode((prev) => (prev === 'dark' ? 'light' : 'dark')),
+      mode,
     }),
-    []
+    [mode]
   );
 
-  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
-  return [theme, colorMode];
+  useEffect(() => {
+    localStorage.setItem('tema', JSON.stringify(mode));
+  }, [mode]);
+
+  const tema = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+  return (
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={tema}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
+    </ColorModeContext.Provider>
+  );
+};
+
+export const useMode = () => {
+  const context = useContext(ColorModeContext);
+  if (!context) {
+    throw new Error('useMode debe usarse dentro de un ColorModeProvider');
+  }
+  return context;
 };

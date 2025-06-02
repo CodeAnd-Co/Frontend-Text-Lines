@@ -13,9 +13,14 @@ import { useAuth } from '@Hooks/AuthProvider';
 import Alerta from '@Moleculas/Alerta';
 import PopUp from '@Moleculas/PopUp';
 import { useEliminarRol } from '@Hooks/Roles/useEliminarRol';
+import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
+import ModalDetalleRol from '@Organismos/ModalDetalleRol';
 
+const estiloImagenLogo = { marginRight: '1rem' };
 // ID del superusuario que no debe ser eliminado
 const SUPERUSER_ID = 1;
+const SUPERVISOR_ID = 2;
+const EMPLEADO_ID = 3;
 
 const ListaRoles = () => {
   const { roles, cargando, error, recargar } = useConsultarRoles();
@@ -25,6 +30,8 @@ const ListaRoles = () => {
 
   const MENSAJE_POPUP_ELIMINAR = '¿Estás seguro de que deseas eliminar los roles seleccionados?';
 
+  const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
+  const [rolSeleccionado, setRolSeleccionado] = useState(null);
   const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
   const [alerta, setAlerta] = useState(null);
   const { eliminar } = useEliminarRol();
@@ -48,18 +55,23 @@ const ListaRoles = () => {
     recargar();
   };
 
+  const manejarCerrarSesion = async () => {
+    await cerrarSesion();
+  };
+
   const verificarSeleccion = (seleccion) => {
-    const seleccionSinSuperuser = seleccion.filter((id) => Number(id) !== SUPERUSER_ID);
+    const IDS_PROTEGIDOS = [SUPERUSER_ID, SUPERVISOR_ID, EMPLEADO_ID];
+    const seleccionSinSuperuser = seleccion.filter((id) => !IDS_PROTEGIDOS.includes(Number(id)));
 
     if (seleccion.length !== seleccionSinSuperuser.length) {
       setAlerta({
         tipo: 'warning',
         mensaje:
-          'El rol de superusuario no puede ser eliminado. Se procederá con los demás roles seleccionados.',
+          'No se pueden eliminar los roles protegidos (Super Admin, Empleado). Se procederá con los demás roles seleccionados.',
         icono: true,
         cerrable: true,
         centradoInferior: true,
-        duracion: 3500,
+        //duracion: 3500,
       });
     }
 
@@ -82,7 +94,7 @@ const ListaRoles = () => {
         setAlerta({
           tipo: 'success',
           mensaje:
-            'Roles eliminados correctamente, excepto el rol de superusuario que está protegido.',
+            'Roles eliminados correctamente, excepto el rol protegido que está protegido.',
           icono: true,
           cerrable: true,
           centradoInferior: true,
@@ -108,7 +120,7 @@ const ListaRoles = () => {
       console.error('Error al eliminar roles:', error);
       setAlerta({
         tipo: 'error',
-        mensaje: 'Ocurrió un error al eliminar los roles. Puedes intentarlo de nuevo.',
+        mensaje: error.message || 'Ocurrió un error al eliminar los roles. Puedes intentarlo de nuevo.',
         icono: true,
         cerrable: true,
         centradoInferior: true,
@@ -131,7 +143,6 @@ const ListaRoles = () => {
       headerName: 'Descripción',
       flex: 1.5,
       headerAlign: 'center',
-      align: 'center',
     },
   ];
 
@@ -178,43 +189,78 @@ const ListaRoles = () => {
           });
         } else {
           const seleccionFiltrada = verificarSeleccion(seleccionados);
+          const IDS_PROTEGIDOS = [SUPERUSER_ID, SUPERVISOR_ID, EMPLEADO_ID];
 
           if (seleccionFiltrada.length > 0) {
             setAbrirPopupEliminar(true);
           } else if (
-            (seleccionFiltrada.length === 0 && seleccionados.includes(String(SUPERUSER_ID)))
-            || (seleccionFiltrada.length === 0 && seleccionados.includes(SUPERUSER_ID))
+            seleccionFiltrada.length === 0
+            && seleccionados.some(id => IDS_PROTEGIDOS.includes(Number(id)))
           ) {
             setAlerta({
               tipo: 'warning',
               mensaje:
-                'No se puede eliminar el rol de super administrador. Por favor, selecciona otros roles.',
+                'No se pueden eliminar los roles protegidos (Super Admin, Empleado).',
               icono: true,
               cerrable: true,
               centradoInferior: true,
-              duracion: 3000,
+              duracion: 2500,
             });
           }
         }
       },
       disabled: !usuario.permisos?.includes(PERMISOS.ELIMINAR_ROL),
     },
+  ];
+  const botonesBarraAdministradora = [
     {
       label: 'Atrás',
-      onClick: redirigirAUsuarios,
+      variant: 'outlined',
+      color: 'secondary',
+      outlineColor: colores.altertex[1],
       size: 'large',
-      backgroundColor: 'transparent',
-      color: colores.primario[2],
-      border: `1px solid ${colores.primario[2]}`,
-      height: '40px',
+      onClick: redirigirAUsuarios,
+    },
+    {
+      label: 'Configuración',
+      variant: 'outlined',
+      color: 'secondary',
+      size: 'large',
+      construccion: true,
+    },
+    {
+      label: 'Cerrar sesión',
+      variant: 'contained',
+      color: 'error',
+      size: 'large',
+      onClick: manejarCerrarSesion,
     },
   ];
+  const { cerrarSesion } = useAuth();
+  const redirigirATienda = () => {
+    navigate(RUTAS.SISTEMA_TIENDA.BASE, { replace: true });
+  };
 
   return (
     <>
+      <NavegadorAdministrador
+        src='/logoAltertexLight.svg'
+        alt='Logo empresa'
+        alturaImagen='auto'
+        anchoImagen={{ xs: '150px', sm: '250px', md: '400px' }}
+        ajuste='contain'
+        clickeableImagen={false}
+        estiloImagen={estiloImagenLogo}
+        alClicIcono={redirigirATienda}
+        informacionBotones={botonesBarraAdministradora}
+      />
       <ContenedorLista
-        titulo='Lista de Roles'
-        descripcion='Gestiona y organiza los roles registrados en el sistema.'
+        titulo={<span style={{ textAlign: 'center', display: 'block' }}>Lista Roles</span>}
+        descripcion={
+          <span style={{ textAlign: 'center', display: 'block' }}>
+            Gestiona y organiza los roles registrados en el sistema.
+          </span>
+        }
         informacionBotones={botones}
       >
         <Box sx={{ mt: '20px' }}>
@@ -232,7 +278,12 @@ const ListaRoles = () => {
             columns={columnas}
             rows={filas}
             loading={cargando}
+            disableRowSelectionOnClick={true}
             checkboxSelection
+            onRowClick={(params) => {
+              setRolSeleccionado(params.id);
+              setModalDetalleAbierto(true);
+            }}
             onRowSelectionModelChange={(seleccion) => {
               const ids = Array.isArray(seleccion) ? seleccion : Array.from(seleccion?.ids || []);
               setSeleccionados(ids);
@@ -252,6 +303,12 @@ const ListaRoles = () => {
         </Box>
       </ContenedorLista>
 
+      <ModalDetalleRol
+        abierto={modalDetalleAbierto}
+        onCerrar={() => setModalDetalleAbierto(false)}
+        idRol={rolSeleccionado}
+      />
+
       <ModalCrearRol
         abierto={modalCrearAbierto}
         onCerrar={handleCerrarModalCrear}
@@ -264,7 +321,7 @@ const ListaRoles = () => {
           mensaje={alerta.mensaje}
           icono={alerta.icono}
           cerrable={alerta.cerrable}
-          duracion={alerta.duracion || 2500}
+          duracion={alerta.duracion}
           centradoInferior={alerta.centradoInferior}
           onClose={() => setAlerta(null)}
         />

@@ -3,17 +3,23 @@
 
 import { useNavigate } from 'react-router-dom';
 import { Box, useTheme } from '@mui/material';
-import { useAuth } from '@Hooks/AuthProvider';
+import { tokens } from '@SRC/theme';
 import Texto from '@Atomos/Texto';
 import Cargador from '@Atomos/Cargador';
-import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
-import { tokens } from '@SRC/theme';
-import { RUTAS } from '@Utilidades/Constantes/rutas';
-import { useClientes } from '@Hooks/Clientes/useClientes';
+import TarjetaAccion from '@Moleculas/TarjetaAccion';
 import { ClientesLista } from '@Organismos/Clientes/ClientesLista';
-import { AgregarClienteTarjeta } from '@Organismos/Clientes/AgregarClienteTarjeta';
+import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
 import { EliminarClienteModal } from '@Organismos/Clientes/EliminarClientesModal';
 import { DetalleClienteModal } from '@Organismos/Clientes/DetalleClienteModal';
+import { RUTAS } from '@Utilidades/Constantes/rutas';
+import { useClientes } from '@Hooks/Clientes/useClientes';
+import { useAuth } from '@Hooks/AuthProvider';
+import { PERMISOS } from '@SRC/Utilidades/Constantes/permisos';
+import { useState } from 'react';
+import ModalCrearCliente from '@Organismos/Clientes/ModalCrearCliente';
+
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 // Estilos
 const estiloImagenLogo = { marginRight: '1rem' };
@@ -29,10 +35,12 @@ const estiloSubtitulo = {
 };
 
 const ListaClientes = () => {
-  const theme = useTheme();
-  const colores = tokens(theme.palette.mode);
-  const navigate = useNavigate();
-  const { cerrarSesion } = useAuth();
+  const tema = useTheme();
+  const MySwal = withReactContent(Swal);
+  const colores = tokens(tema.palette.mode);
+  const navegar = useNavigate();
+  const { usuario, nombreUsuario, cerrarSesion } = useAuth();
+  const [abrirCrearCliente, setAbrirCliente] = useState(false);
 
   const {
     clientes,
@@ -49,8 +57,6 @@ const ListaClientes = () => {
     errorEliminacion,
     handleClienteClick,
     handleIconoClick,
-    handleInicioPresionado,
-    handleFinPresionado,
     confirmarEliminacion,
     cancelarEliminacion,
     cerrarModalDetalle,
@@ -58,16 +64,39 @@ const ListaClientes = () => {
     handleClienteChange,
     cerrarAlertaExito,
     handleImagenChange,
+    handleToggleEliminar,
     imagenSubiendo,
     imagenError,
+    textoConfirmacion,
+    botonDeshabilitado,
+    onCambioTextoConfirmacion,
+    errorNombre,
   } = useClientes();
+
+  const handleAbrirCrearCliente = () => setAbrirCliente(true);
+
+  const handleCerrarCliente = () => setAbrirCliente(false);
+
+  const handleClienteCreadoExitosamente = () => {
+    handleCerrarCliente();
+    MySwal.fire({
+      title: <p>Por seguridad, se cerrará tu sesión</p>,
+      didOpen: () => {
+        MySwal.showLoading();
+      },
+      timer: 3000, // Muestra esta alerta por 3 segundos
+      timerProgressBar: true,
+    }).then(() => {
+      cerrarSesion();
+    });
+  };
 
   const manejarCerrarSesion = async () => {
     await cerrarSesion();
   };
 
   const redirigirATienda = () => {
-    navigate(RUTAS.SISTEMA_TIENDA.BASE, { replace: true });
+    navegar(RUTAS.SISTEMA_TIENDA.BASE, { replace: true });
   };
 
   const informacionBotones = [
@@ -75,17 +104,17 @@ const ListaClientes = () => {
       label: 'Usuarios',
       variant: 'outlined',
       color: 'secondary',
+      outlineColor: colores.altertex[1],
       size: 'large',
       onClick: () =>
-        navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE),
+        navegar(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.USUARIOS.BASE),
     },
     {
       label: 'Configuración',
       variant: 'outlined',
       color: 'secondary',
       size: 'large',
-      onClick: () =>
-        navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.CONFIGURACION),
+      construccion: true,
     },
     {
       label: 'Cerrar sesión',
@@ -122,7 +151,7 @@ const ListaClientes = () => {
         pb={6}
       >
         <Texto variant='h1' align='center' sx={estiloTitulo}>
-          Bienvenid@
+          Hola, {nombreUsuario} 👋
         </Texto>
         <Texto variant='h4' align='center' color='text.secondary' sx={estiloSubtitulo}>
           Selecciona un cliente para gestionar su sistema o crea uno nuevo
@@ -148,15 +177,23 @@ const ListaClientes = () => {
               modoEliminacion={modoEliminacion}
               onClienteClick={handleClienteClick}
               onIconoClick={handleIconoClick}
-              onMouseDown={handleInicioPresionado}
-              onMouseUp={handleFinPresionado}
-              onTouchStart={handleInicioPresionado}
-              onTouchEnd={handleFinPresionado}
             />
-            <AgregarClienteTarjeta />
+            {usuario?.permisos?.includes(PERMISOS.CREAR_CLIENTE) && (
+              <TarjetaAccion
+                icono='Add'
+                texto='Agregar cliente'
+                onClick={handleAbrirCrearCliente}
+              />
+            )}
           </Box>
         )}
       </Box>
+
+      <ModalCrearCliente
+        abierto={abrirCrearCliente}
+        onCerrar={handleCerrarCliente}
+        onCreado={handleClienteCreadoExitosamente}
+      />
 
       <EliminarClienteModal
         open={modalEliminacionAbierto}
@@ -166,6 +203,10 @@ const ListaClientes = () => {
         eliminacionExitosa={eliminacionExitosa}
         errorEliminacion={errorEliminacion}
         onCloseAlert={cerrarAlertaExito}
+        textoConfirmacion={textoConfirmacion}
+        botonDeshabilitado={botonDeshabilitado}
+        onCambioTextoConfirmacion={onCambioTextoConfirmacion}
+        errorNombre={errorNombre}
       />
 
       <DetalleClienteModal
@@ -176,6 +217,7 @@ const ListaClientes = () => {
         colores={colores}
         onClose={cerrarModalDetalle}
         onToggleEdicion={toggleModoEdicion}
+        onToggleEliminar={handleToggleEliminar}
         onChange={handleClienteChange}
         onImageChange={handleImagenChange}
         imagenSubiendo={imagenSubiendo}

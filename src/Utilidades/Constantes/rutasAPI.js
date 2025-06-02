@@ -2,6 +2,7 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 const BASE_USUARIOS = `${BASE_URL}/api/usuarios`;
 const BASE_CATEGORIAS = `${BASE_URL}/api/categorias`;
 const BASE_PRODUCTOS = `${BASE_URL}/api/productos`;
+const BASE_PROVEEDORES = `${BASE_URL}/api/proveedores`;
 const BASE_SETS_PRODUCTOS = `${BASE_URL}/api/sets-productos`;
 const BASE_CLIENTES = `${BASE_URL}/api/clientes`;
 const BASE_EMPLEADOS = `${BASE_URL}/api/empleados`;
@@ -10,6 +11,8 @@ const BASE_ROLES = `${BASE_URL}/api/roles`;
 const BASE_PEDIDOS = `${BASE_URL}/api/pedidos`;
 const BASE_EVENTOS = `${BASE_URL}/api/eventos`;
 const BASE_PAGOS = `${BASE_URL}/api/pagos`;
+const BASE_AUTENTICACION = `${BASE_URL}/api/autenticacion`;
+
 
 export const RUTAS_API = {
   USUARIOS: {
@@ -18,16 +21,31 @@ export const RUTAS_API = {
     CONSULTAR_USUARIO: `${BASE_USUARIOS}/consultar-usuario`,
     ELIMINAR_USUARIOS: `${BASE_USUARIOS}/eliminar-usuarios`,
   },
+
+  AUTENTICACION: {
+    BASE: BASE_AUTENTICACION,
+    ACTIVAR_2FA: `${BASE_AUTENTICACION}/activar-2fa`,
+    VERIFICAR_2FA: `${BASE_AUTENTICACION}/verificar-2fa`,
+  },
+  
   CATEGORIAS: {
     BASE: BASE_CATEGORIAS,
     CONSULTAR_LISTA: `${BASE_CATEGORIAS}/consultar-lista-categorias`,
     CREAR: `${BASE_CATEGORIAS}/crear-categoria`,
     ELIMINAR_CATEGORIA: `${BASE_CATEGORIAS}/eliminar`,
+    LEER: `${BASE_CATEGORIAS}/leer`,
   },
   PRODUCTOS: {
     BASE: BASE_PRODUCTOS,
     CONSULTAR_LISTA: `${BASE_PRODUCTOS}/consultar-lista`,
+    CREAR: `${BASE_PRODUCTOS}/crear`,
     ELIMINAR_PRODUCTO: `${BASE_PRODUCTOS}/eliminar`,
+    LEER_PRODCUTO: `${BASE_PRODUCTOS}/leer-producto`
+  },
+  PROVEEDORES: {
+    BASE: BASE_PROVEEDORES,
+    CONSULTAR_LISTA: `${BASE_PROVEEDORES}/consultar-lista`,
+    CREAR: `${BASE_PROVEEDORES}/crear`,
   },
   SETS_PRODUCTOS: {
     BASE: BASE_SETS_PRODUCTOS,
@@ -41,6 +59,7 @@ export const RUTAS_API = {
     ELIMINAR_CLIENTE: `${BASE_CLIENTES}/eliminar`,
     CONSULTAR_CLIENTE: `${BASE_CLIENTES}/consultar-cliente`,
     ACTUALIZAR_CLIENTE: `${BASE_CLIENTES}/actualizar-cliente`,
+    CREAR_CLIENTE: `${BASE_CLIENTES}/crear-cliente`,
   },
   EMPLEADOS: {
     BASE: BASE_EMPLEADOS,
@@ -50,6 +69,8 @@ export const RUTAS_API = {
     ELIMINAR_GRUPO: `${BASE_EMPLEADOS}/eliminar-grupo`,
     IMPORTAR_EMPLEADOS: `${BASE_EMPLEADOS}/importar-empleados`,
     LEER_GRUPO: `${BASE_EMPLEADOS}/leer-grupo`,
+    CREAR_GRUPO: `${BASE_EMPLEADOS}/crear-grupo`,
+    ACTUALIZAR_EMPLEADO: `${BASE_EMPLEADOS}/actualizar`,
   },
   CUOTAS: {
     BASE: BASE_CUOTAS,
@@ -63,6 +84,7 @@ export const RUTAS_API = {
     CONSULTAR_LISTA: `${BASE_ROLES}/consultar-lista`,
     CREAR_ROL: `${BASE_ROLES}/crear-rol`,
     ELIMINAR_ROL: `${BASE_ROLES}/eliminar`,
+    LEER_ROL: `${BASE_ROLES}/leer`
   },
   PEDIDOS: {
     BASE: BASE_PEDIDOS,

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Paper, useTheme } from '@mui/material';
+import Cargador from '@Atomos/Cargador';
+import Alerta from '@Moleculas/Alerta';
+import { Modal, Paper, useTheme, Box } from '@mui/material';
 import Texto from '@Atomos/Texto';
 import GrupoBotones from '@Moleculas/GrupoBotones';
 import { tokens } from '@SRC/theme';
@@ -13,9 +15,12 @@ const ModalFlotante = ({
   tituloVariant = 'h6',
   confirmLabel = 'Guardar',
   cancelLabel = 'Cancelar',
+  botonDeshabilitado = false,
   botones = null,
+  loading = false,
   children,
   customWidth,
+  alerta = null,
 }) => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
@@ -33,6 +38,7 @@ const ModalFlotante = ({
       onClick: onConfirm,
       color: 'error',
       backgroundColor: colores.altertex[1],
+      deshabilitado: botonDeshabilitado,
     },
   ];
 
@@ -76,8 +82,29 @@ const ModalFlotante = ({
         )}
 
         {children}
+        {alerta && alerta.mensaje && (
+          <Alerta
+            tipo={alerta.tipo}
+            mensaje={alerta.mensaje}
+            sx={{ mt: 2, mb: 1 }}
+            duracion={3000}
+            cerrable={true}
+            onClose={alerta.onClose}
+          />
+        )}
 
-        <GrupoBotones buttons={botones ?? defaultBotones} spacing={1} direction='row' align='end' />
+        {loading ? (
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+            <Cargador />
+          </Box>
+        ) : (
+          <GrupoBotones
+            buttons={botones ?? defaultBotones}
+            spacing={1}
+            direction='row'
+            align='end'
+          />
+        )}
       </Paper>
     </Modal>
   );
@@ -91,9 +118,16 @@ ModalFlotante.propTypes = {
   tituloVariant: PropTypes.string,
   confirmLabel: PropTypes.string,
   cancelLabel: PropTypes.string,
+  botonDeshabilitado: PropTypes.bool,
   botones: PropTypes.array,
   children: PropTypes.node.isRequired,
   customWidth: PropTypes.number,
+  alerta: PropTypes.shape({
+    tipo: PropTypes.string.isRequired,
+    mensaje: PropTypes.string.isRequired,
+    duracion: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    onClose: PropTypes.func,
+  }),
 };
 
 export default ModalFlotante;

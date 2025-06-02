@@ -4,6 +4,7 @@ import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import { Box, IconButton, useTheme } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { tokens } from '@SRC/theme';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
@@ -16,7 +17,7 @@ import Icono from '@Atomos/Icono';
 import TemaIcono from '@Moleculas/TemaIcono';
 import IconoMenu from '@Atomos/iconoMenu';
 import TextoMenu from '@Atomos/textoMenu';
-
+import { useAuth } from '@Hooks/AuthProvider';
 import { RUTAS } from '@Constantes/rutas';
 
 const ElementoMenu = ({ titulo, ruta, icono, seleccionado, setSeleccionado }) => {
@@ -41,12 +42,16 @@ const ElementoMenu = ({ titulo, ruta, icono, seleccionado, setSeleccionado }) =>
 
 const BarraLateral = () => {
   const theme = useTheme();
+  const { nombreUsuario } = useAuth();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
-  const [colapsado, setColapsado] = useState(false);
+  const [colapsado] = useState(false); // TODO setColapsado
   const [seleccionado, setSeleccionado] = useState('Inicio');
   const [productosAbierto, setProductosAbierto] = useState(false);
   const [empleadosAbierto, setEmpleadosAbierto] = useState(false);
+  const redirigirAInicio = () => {
+    navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE, { replace: true });
+  };
 
   return (
     <Box
@@ -77,20 +82,56 @@ const BarraLateral = () => {
       <ProSidebar collapsed={colapsado}>
         <Menu iconShape='square'>
           <MenuItem
-            onClick={() => setColapsado(!colapsado)}
+            // onClick={() => setColapsado(!colapsado)}
             icon={colapsado ? <MenuOutlinedIcon sx={{ color: colors.primario[4] }} /> : undefined}
             style={{ margin: '10px 0 20px 0' }}
           >
             {!colapsado && (
-              <Box display='flex' justifyContent='space-between' alignItems='center' ml='15px'>
+              <Box
+                display='flex'
+                justifyContent='space-between'
+                alignItems='center'
+                ml='15px'
+                onClick={redirigirAInicio}
+              >
                 <img src='/logoAltertexDark.svg' style={{ width: '150px' }} />
-                <IconButton onClick={() => setColapsado(!colapsado)}>
-                  <MenuOutlinedIcon sx={{ color: colors.primario[4] }} />
-                </IconButton>
               </Box>
             )}
           </MenuItem>
           <Box>
+            {nombreUsuario && (
+              <Box sx={{ 
+                padding: '0px 20px',
+                marginBottom: '20px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+                <Box 
+                  sx={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    backgroundColor: colors.menu[3],
+                    padding: '16px 20px', 
+                    color: colors.primario[4],
+                    borderRadius: '16px', 
+                    boxShadow: 'inset 0px 0px 6px rgba(0, 0, 0, 0.3)',
+                  }}
+                >
+                  <Box 
+                    sx={{ 
+                      marginRight: '17px',
+                      display: 'flex',
+                      alignItems: 'center'
+                    }}
+                  >
+                    <AccountCircleOutlinedIcon />
+                  </Box>
+                  <TextoMenu>{nombreUsuario}</TextoMenu>
+                </Box>
+              </Box>
+              )}
             <ElementoMenu
               titulo='Tablero'
               ruta={RUTAS.SISTEMA_ADMINISTRATIVO.BASE + RUTAS.SISTEMA_ADMINISTRATIVO.TABLERO}
@@ -99,8 +140,8 @@ const BarraLateral = () => {
               setSeleccionado={setSeleccionado}
             />
             <SubMenu
-              title='Empleados'
-              icon={<GroupsOutlinedIcon />}
+              title={<span style={{ color: 'white' }}>Empleados</span>}
+              icon={<GroupsOutlinedIcon sx={{ color: 'white' }} />}
               open={colapsado ? false : empleadosAbierto}
               onOpenChange={() => setEmpleadosAbierto(!empleadosAbierto)}
             >
@@ -126,8 +167,8 @@ const BarraLateral = () => {
               />
             </SubMenu>
             <SubMenu
-              title='Productos'
-              icon={<LocalOfferOutlinedIcon />}
+              title={<span style={{ color: 'white' }}>Productos</span>}
+              icon={<LocalOfferOutlinedIcon sx={{ color: 'white' }} />}
               open={colapsado ? false : productosAbierto}
               onOpenChange={() => setProductosAbierto(!productosAbierto)}
             >
@@ -204,7 +245,8 @@ const BarraLateral = () => {
             />
           </Box>
         </Menu>
-        <Box position='relative' height='200px'>
+        <Box sx={{ flexGrow: 1 }} />
+        <Box position='relative' height='200px' marginBottom={2}>
           <Box
             display='flex'
             justifyContent='center'
@@ -214,7 +256,7 @@ const BarraLateral = () => {
             bottom={1}
             width='100%'
           >
-            <TemaIcono />
+            {/* <TemaIcono /> */}
             <Icono
               nombre='HomeOutlined'
               color='#fff'

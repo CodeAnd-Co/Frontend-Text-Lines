@@ -14,6 +14,7 @@ const Boton = ({
   outlineColor = null,
   label,
   onClick,
+  construccion = false,
   ...props
 }) => {
   const theme = useTheme();
@@ -40,6 +41,15 @@ const Boton = ({
         }
       : {};
 
+  const estiloDeshabilitado = construccion
+    ? {
+        backgroundColor: colors.noImplementado[1],
+        color: colors.primario[4],
+        cursor: 'not-allowed',
+        pointerEvents: 'none',
+      }
+    : {};
+
   return (
     <MUIButton
       variant={variant}
@@ -50,8 +60,10 @@ const Boton = ({
         backgroundColor: backgroundColor || undefined,
         ...outlinedStyle,
         ...selectedStyle,
+        ...estiloDeshabilitado,
       }}
       onClick={onClick}
+      construccion={estiloDeshabilitado}
       {...props}
     >
       {label}
@@ -70,6 +82,7 @@ Boton.propTypes = {
   align: PropTypes.string,
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func,
+  construccion: PropTypes.bool,
 };
 
 export default Boton;

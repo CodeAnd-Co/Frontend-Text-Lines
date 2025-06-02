@@ -24,7 +24,7 @@ import CuotasInfo from '@Moleculas/CuotasInfo';
 const ListaCuotas = () => {
   const navegar = useNavigate();
   const { usuario } = useAuth();
-  const { cuotas, cargando, error } = useConsultarCuotas();
+  const { cuotas, cargando, error, recargar } = useConsultarCuotas();
   const [idCuotaDetalle, setIdCuotaDetalle] = useState(null);
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
@@ -91,6 +91,7 @@ const ListaCuotas = () => {
   const manejarConfirmarEliminar = async () => {
     try {
       await RepositorioEliminarSetCuotas.eliminarSetCuotas(idsSetCuotas);
+      await recargar();
       setAlerta({
         tipo: 'success',
         mensaje: 'Sets de cuotas eliminados correctamente.',
@@ -98,7 +99,6 @@ const ListaCuotas = () => {
         cerrable: true,
         centradoInferior: true,
       });
-      setTimeout(() => window.location.reload(), 500);
     } catch (error) {
       setAlerta({
         tipo: 'error',
@@ -165,6 +165,7 @@ const ListaCuotas = () => {
             columns={columnas}
             rows={filas}
             loading={cargando}
+            disableRowSelectionOnClick={true}
             checkboxSelection
             onRowSelectionModelChange={(nuevosIds) => {
               const ids = Array.isArray(nuevosIds) ? nuevosIds : Array.from(nuevosIds?.ids || []);

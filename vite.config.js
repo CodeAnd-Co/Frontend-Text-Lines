@@ -46,6 +46,7 @@ export default defineConfig({
       '@Hooks': path.resolve(__dirname, 'src/hooks'),
       '@Utilidades': path.resolve(__dirname, 'src/Utilidades'),
       '@Temporal': path.resolve(__dirname, 'src/temporal.jsx'),
+      '@Tienda': path.resolve(__dirname, 'src/Vistas/Paginas/Tienda.jsx'),
     },
   },
 });

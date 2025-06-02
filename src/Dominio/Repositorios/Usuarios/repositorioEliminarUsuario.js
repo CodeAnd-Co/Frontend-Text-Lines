@@ -21,6 +21,7 @@ export class RepositorioEliminarUsuarios {
         RUTAS_API.USUARIOS.ELIMINAR_USUARIOS,
         {
           ids: idsArray,
+          codigo2FA: seleccion.codigo2FA || undefined,
         },
         {
           headers: {

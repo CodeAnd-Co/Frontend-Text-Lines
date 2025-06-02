@@ -25,8 +25,6 @@ const FormaCrearSetsProducto = ({
                                   setDescripcionSetsProducto,
                                   productos,
                                   setProductos,
-                                  mostrarAlerta,
-                                  setMostrarAlerta,
                                   erroresCampos,
                                   setErroresCampos,
                                 }) => {

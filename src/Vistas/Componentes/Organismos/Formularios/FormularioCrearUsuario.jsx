@@ -76,6 +76,10 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
         setAlerta({
           tipo: 'success',
           mensaje: resumenUsuario,
+          icono: true, 
+          cerrable: true,
+          centradoInferior: true,
+          duracion: 3000,
         });
 
         setDatosUsuario({
@@ -350,7 +354,7 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
           sx={{ marginBottom: 2 }}
           tipo={alerta.tipo}
           mensaje={alerta.mensaje}
-          duracion='4000'
+          duracion='3000'
           onClose={() => setAlerta(null)}
           centradoInferior
         />

@@ -97,7 +97,7 @@ const FormaCrearCuotaSet = ({
           tipo='warning'
           mensaje={'Completa todos los campos y selecciona al menos un producto.'}
           cerrable
-          duracion={10000}
+          duracion={3000}
           onClose={() => setMostrarAlerta(false)}
           sx={{ mb: 2, mt: 2 }}
         />

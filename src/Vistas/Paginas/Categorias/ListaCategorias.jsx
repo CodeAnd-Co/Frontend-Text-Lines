@@ -67,7 +67,7 @@ const ListaCategorias = () => {
     try {
       const detalle = await leerCategoria(idCategoria);
       setCategoriaDetalle(detalle);
-    } catch (err) {
+    } catch {
       setErrorDetalle(true);
       setCategoriaDetalle({
         nombreCategoria: '',
@@ -216,7 +216,7 @@ const ListaCategorias = () => {
           mensaje={alerta.mensaje}
           icono={alerta.icono}
           cerrable={alerta.cerrable}
-          duracion={2500}
+          duracion={3000}
           centradoInferior={alerta.centradoInferior}
           onClose={() => setAlerta(null)}
         />

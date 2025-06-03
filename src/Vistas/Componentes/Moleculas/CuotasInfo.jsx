@@ -5,7 +5,7 @@ import { Grid, Box, useTheme } from '@mui/material';
 import { tokens } from '@SRC/theme';
 import Tabla from '@Organismos/Tabla'; // Asegúrate de que la ruta sea correcta
 
-const CuotasInfo = ({ nombre, descripcion, productos = [], cuotas = [] }) => {
+const CuotasInfo = ({ descripcion, productos = [], cuotas = [] }) => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
 
@@ -13,13 +13,13 @@ const CuotasInfo = ({ nombre, descripcion, productos = [], cuotas = [] }) => {
   const rows = productos.map((producto, idx) => ({
     id: idx,
     nombreComun: producto.nombre,
-    cuota_valor: cuotas[idx]?.valor ?? '',
+    cuotaValor: cuotas[idx]?.valor ?? '',
   }));
 
   const columns = [
     { field: 'nombreComun', headerName: 'Producto', width: 200 },
     {
-      field: 'cuota_valor',
+      field: 'cuotaValor',
       headerName: 'Valor de Cuota',
       width: 150,
       align: 'center',
@@ -45,7 +45,6 @@ const CuotasInfo = ({ nombre, descripcion, productos = [], cuotas = [] }) => {
 };
 
 CuotasInfo.propTypes = {
-  nombre: PropTypes.string,
   descripcion: PropTypes.string,
   productos: PropTypes.array,
   cuotas: PropTypes.array,

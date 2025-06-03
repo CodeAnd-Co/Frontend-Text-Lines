@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react';
 import { Box, Grid } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -12,11 +13,12 @@ const FormularioActualizarUsuario = ({
   manejarCambio,
   manejarFechaNacimiento,
   obtenerHelperText,
-  roles,
-  clientes,
-  esSuperAdmin,
-  cargandoRoles,
-  CAMPO_OBLIGATORIO,
+  roles = [],
+  clientes = [],
+  cargandoRoles = false,
+  cargando = false,
+  esSuperAdmin = false,
+  CAMPO_OBLIGATORIO = 'Este campo es obligatorio',
 }) => {
   const estiloCuadricula = {
     display: 'flex',
@@ -51,6 +53,7 @@ const FormularioActualizarUsuario = ({
             }}
           />
         </Grid>
+
         <Grid size={6} sx={estiloCuadricula}>
           <CampoTexto
             label='Apellido'
@@ -66,6 +69,7 @@ const FormularioActualizarUsuario = ({
             }}
           />
         </Grid>
+
         <Grid size={6} sx={estiloCuadricula}>
           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='es'>
             <DateField
@@ -87,6 +91,7 @@ const FormularioActualizarUsuario = ({
             />
           </LocalizationProvider>
         </Grid>
+
         <Grid size={6} sx={estiloCuadricula}>
           <CampoSelect
             required
@@ -104,6 +109,7 @@ const FormularioActualizarUsuario = ({
             ]}
           />
         </Grid>
+
         <Grid size={6} sx={estiloCuadricula}>
           <CampoTexto
             label='Correo Electrónico'
@@ -120,6 +126,7 @@ const FormularioActualizarUsuario = ({
             }
           />
         </Grid>
+
         <Grid size={6} sx={estiloCuadricula}>
           <CampoTexto
             label='Número de Teléfono'
@@ -139,6 +146,7 @@ const FormularioActualizarUsuario = ({
             }}
           />
         </Grid>
+
         <Grid size={6} sx={estiloCuadricula}>
           <CampoTexto
             label='Dirección'
@@ -154,6 +162,7 @@ const FormularioActualizarUsuario = ({
             }}
           />
         </Grid>
+
         <Grid size={6} sx={estiloCuadricula}>
           <CampoSelect
             label='Rol'
@@ -173,6 +182,7 @@ const FormularioActualizarUsuario = ({
             disabled={cargandoRoles}
           />
         </Grid>
+
         <Grid size={6} sx={estiloCuadricula}>
           <CampoSelectMultiple
             label='Cliente'
@@ -190,9 +200,10 @@ const FormularioActualizarUsuario = ({
             disabled={esSuperAdmin}
           />
         </Grid>
+
         <Grid size={6} sx={estiloCuadricula}>
           <CampoTexto
-            label='Contraseña (dejar en blanco para no cambiar)'
+            label='Contraseña'
             name='contrasenia'
             type='password'
             value={datosUsuario.contrasenia}
@@ -200,7 +211,11 @@ const FormularioActualizarUsuario = ({
             size='medium'
             error={!!erroresValidacion.contrasenia}
             autoComplete='new-password'
-            helperText={erroresValidacion.contrasenia || ''}
+            helperText={
+              erroresValidacion.contrasenia === true
+                ? CAMPO_OBLIGATORIO
+                : erroresValidacion.contrasenia || ''
+            }
           />
         </Grid>
       </Grid>

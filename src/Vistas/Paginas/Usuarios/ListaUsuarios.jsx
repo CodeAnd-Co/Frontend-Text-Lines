@@ -21,7 +21,7 @@ import { useTheme } from '@mui/material';
 import { useActivar2FA } from '@Hooks/Usuarios/useActivar2FA';
 import Activar2FAModal from '@Organismos/Activar2FAModal';
 import Verificar2FAModal from '@Moleculas/Verificar2FAModal';
-//import FormularioActualizarUsuario from '@Organismos/Formularios/FormularioActualizarUsuario.jsx';
+import ModalActualizarUsuario from '@Organismos/ModalActualizarUsuario';
 
 const estiloImagenLogo = { marginRight: '1rem' };
 
@@ -446,11 +446,15 @@ const ListaUsuarios = () => {
         )}
 
         {modalActualizarAbierto && usuario && (
-          <FormularioActualizarUsuario
+          <ModalActualizarUsuario
             open={modalActualizarAbierto}
             onClose={() => setModalActualizarAbierto(false)}
             onAccion={recargar}
             usuarioEdicion={usuario}
+            roles={roles}
+            clientes={[]}
+            esSuperAdmin={false}
+            cargandoRoles={false}
           />
         )}
 

@@ -280,13 +280,20 @@ const CamposProducto = memo(
           tipo='number'
           required={false}
           min={1}
-          onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
+          onKeyDown={(evento) => {
+            prevenirNumerosNegativos(evento);
+            // Evita el punto decimal
+            if (evento.key === '.' || evento.key === ',') {
+              evento.preventDefault();
+            }
+          }}
           onInput={(evento) => {
+            // Solo permite números enteros positivos
             const valor = evento.target.value;
-            if (valor === '' || parseFloat(valor) >= 1) {
+            if (valor === '' || /^\d+$/.test(valor)) {
               evento.target.value = valor;
             } else {
-              evento.target.value = 1;
+              evento.target.value = valor.replace(/\D/g, '');
             }
           }}
         />
@@ -301,16 +308,8 @@ const CamposProducto = memo(
           placeholder='Ingresa el precio para el cliente'
           tipo='number'
           required
-          min={1}
+          min={0}
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
-          onInput={(evento) => {
-            const valor = evento.target.value;
-            if (valor === '' || parseFloat(valor) >= 1) {
-              evento.target.value = valor;
-            } else {
-              evento.target.value = 1;
-            }
-          }}
         />
 
         <CampoTextoFormulario
@@ -323,16 +322,8 @@ const CamposProducto = memo(
           placeholder='Ingresa el precio de venta'
           tipo='number'
           required
-          min={1}
+          min={0}
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
-          onInput={(evento) => {
-            const valor = evento.target.value;
-            if (valor === '' || parseFloat(valor) >= 1) {
-              evento.target.value = valor;
-            } else {
-              evento.target.value = 1;
-            }
-          }}
         />
 
         <CampoTextoFormulario
@@ -345,16 +336,8 @@ const CamposProducto = memo(
           placeholder='Ingresa el costo del producto'
           tipo='number'
           required
-          min={1}
+          min={0}
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
-          onInput={(evento) => {
-            const valor = evento.target.value;
-            if (valor === '' || parseFloat(valor) >= 1) {
-              evento.target.value = valor;
-            } else {
-              evento.target.value = 1;
-            }
-          }}
         />
 
         <CampoTextoFormulario
@@ -369,12 +352,6 @@ const CamposProducto = memo(
           required={false}
           min={0}
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
-          onInput={(evento) => {
-            const valor = evento.target.value;
-            if (valor === '' || parseFloat(valor) >= 0) {
-              evento.target.value = valor;
-            }
-          }}
         />
 
         <CampoTextoFormulario
@@ -389,12 +366,6 @@ const CamposProducto = memo(
           required={false}
           min={0}
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
-          onInput={(evento) => {
-            const valor = evento.target.value;
-            if (valor === '' || parseFloat(valor) >= 0) {
-              evento.target.value = valor;
-            }
-          }}
         />
 
         <CampoSelectFormulario

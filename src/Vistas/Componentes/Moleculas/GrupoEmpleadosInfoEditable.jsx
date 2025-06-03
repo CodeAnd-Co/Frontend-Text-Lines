@@ -105,7 +105,8 @@ const InfoGrupoEmpleadosEditable = ({
         const productosOrdenados = productos.sort((productos1, productos2) =>
           (productos1.nombreProducto || '')
             .toLowerCase()
-            .localeCompare((productos2.nombreProducto || '').toLowerCase()));
+            .localeCompare((productos2.nombreProducto || '').toLowerCase())
+        );
 
         // Ordenar empleados por nombre
         const empleadosOrdenados = datosEmpleados.sort((empleado1, empleado2) => {
@@ -194,13 +195,27 @@ const InfoGrupoEmpleadosEditable = ({
   }, []);
 
   const manejarTodosDerechaEmpleados = useCallback(() => {
-    setEmpleadosDerecha((prev) => [...prev, ...empleadosIzquierda]);
+    setEmpleadosDerecha((prev) => {
+      const nuevaLista = [...prev, ...empleadosIzquierda];
+      return nuevaLista.sort((empleado1, empleado2) => {
+        const nombreA = (empleado1.nombreCompleto || empleado1.nombre || '').toLowerCase();
+        const nombreB = (empleado2.nombreCompleto || empleado2.nombre || '').toLowerCase();
+        return nombreA.localeCompare(nombreB);
+      });
+    });
     setEmpleadosSeleccionados([]);
   }, [empleadosIzquierda]);
 
   const manejarSeleccionDerechaEmpleados = useCallback(() => {
     const izquierdaSeleccionados = interseccion(empleadosSeleccionados, empleadosIzquierda);
-    setEmpleadosDerecha((prev) => [...prev, ...izquierdaSeleccionados]);
+    setEmpleadosDerecha((prev) => {
+      const nuevaLista = [...prev, ...izquierdaSeleccionados];
+      return nuevaLista.sort((empleado1, empleado2) => {
+        const nombreA = (empleado1.nombreCompleto || empleado1.nombre || '').toLowerCase();
+        const nombreB = (empleado2.nombreCompleto || empleado2.nombre || '').toLowerCase();
+        return nombreA.localeCompare(nombreB);
+      });
+    });
     setEmpleadosSeleccionados((prev) => noEstaEnLista(prev, izquierdaSeleccionados));
   }, [empleadosSeleccionados, empleadosIzquierda]);
 
@@ -235,13 +250,27 @@ const InfoGrupoEmpleadosEditable = ({
   }, []);
 
   const manejarTodosDerechaSets = useCallback(() => {
-    setSetsDerecha((prev) => [...prev, ...setsIzquierda]);
+    setSetsDerecha((prev) => {
+      const nuevaLista = [...prev, ...setsIzquierda];
+      return nuevaLista.sort((set1, set2) =>
+        (set1.nombreProducto || '')
+          .toLowerCase()
+          .localeCompare((set2.nombreProducto || '').toLowerCase())
+      );
+    });
     setSetsSeleccionados([]);
   }, [setsIzquierda]);
 
   const manejarSeleccionDerechaSets = useCallback(() => {
     const izquierdaSeleccionados = interseccion(setsSeleccionados, setsIzquierda);
-    setSetsDerecha((prev) => [...prev, ...izquierdaSeleccionados]);
+    setSetsDerecha((prev) => {
+      const nuevaLista = [...prev, ...izquierdaSeleccionados];
+      return nuevaLista.sort((set1, set2) =>
+        (set1.nombreProducto || '')
+          .toLowerCase()
+          .localeCompare((set2.nombreProducto || '').toLowerCase())
+      );
+    });
     setSetsSeleccionados((prev) => noEstaEnLista(prev, izquierdaSeleccionados));
   }, [setsSeleccionados, setsIzquierda]);
 
@@ -294,12 +323,12 @@ const InfoGrupoEmpleadosEditable = ({
             <Checkbox
               onClick={manejarSeleccionTodosEmpleados(elementos)}
               checked={
-                contarEmpleadosSeleccionados(elementos) === elementos.length
-                && elementos.length !== 0
+                contarEmpleadosSeleccionados(elementos) === elementos.length &&
+                elementos.length !== 0
               }
               indeterminate={
-                contarEmpleadosSeleccionados(elementos) !== elementos.length
-                && contarEmpleadosSeleccionados(elementos) !== 0
+                contarEmpleadosSeleccionados(elementos) !== elementos.length &&
+                contarEmpleadosSeleccionados(elementos) !== 0
               }
               disabled={elementos.length === 0}
               inputProps={{
@@ -372,8 +401,8 @@ const InfoGrupoEmpleadosEditable = ({
                 contarSetsSeleccionados(elementos) === elementos.length && elementos.length !== 0
               }
               indeterminate={
-                contarSetsSeleccionados(elementos) !== elementos.length
-                && contarSetsSeleccionados(elementos) !== 0
+                contarSetsSeleccionados(elementos) !== elementos.length &&
+                contarSetsSeleccionados(elementos) !== 0
               }
               disabled={elementos.length === 0}
               inputProps={{

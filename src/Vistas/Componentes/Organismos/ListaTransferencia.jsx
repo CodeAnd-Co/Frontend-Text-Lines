@@ -38,8 +38,8 @@ const ListaTransferenciaPersonalizada = ({
                                            obtenerEtiquetaElemento = (elemento) => elemento.etiqueta || elemento.nombre || String(elemento),
                                            obtenerClaveElemento = (elemento) => elemento.id || elemento.clave || elemento,
                                            deshabilitado = false,
-                                           alturaMaxima = 230,
-                                           ancho = 250
+                                           alturaMaxima = 357,
+                                           ancho = 350
                                          }) => {
   const [marcados, setMarcados] = useState([]);
   const [izquierda, setIzquierda] = useState(elementosDisponibles);

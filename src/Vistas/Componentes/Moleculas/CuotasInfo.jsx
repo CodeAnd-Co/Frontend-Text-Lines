@@ -3,63 +3,46 @@ import PropTypes from 'prop-types';
 import Texto from '@Atomos/Texto';
 import { Grid, Box, useTheme } from '@mui/material';
 import { tokens } from '@SRC/theme';
+import Tabla from '@Organismos/Tabla'; // Asegúrate de que la ruta sea correcta
 
-const CuotasInfo = ({
-  nombre,
-  periodoRenovacion,
-  renovacionHabilitada,
-  descripcion,
-  ultimaActualizacion,
-}) => {
+const CuotasInfo = ({ nombre, descripcion, productos = [], cuotas = [] }) => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
+
+  // Combina productos y cuotas en filas para la tabla
+  const rows = productos.map((producto, idx) => ({
+    id: idx,
+    nombreComun: producto.nombre,
+    cuota_valor: cuotas[idx]?.valor ?? '',
+  }));
+
+  const columns = [
+    { field: 'nombreComun', headerName: 'Producto', width: 200 },
+    { field: 'cuota_valor', headerName: 'Valor de Cuota', width: 150 },
+  ];
 
   return (
     <Box>
       <Grid container spacing={6} mb={4}>
         <Grid item xs={12} sm={6}>
-          <Texto gutterBottom sx={{ mb: 2, pb: 1 }}>
-            <strong>Nombre:</strong>{' '}
-            <span style={{ color: colores.altertex[4], fontWeight: 500 }}>
-              {nombre || 'No especificado'}
-            </span>
-          </Texto>
           <Texto gutterBottom sx={{ mb: 2 }}>
             <strong>Descripción:</strong>{' '}
             <span style={{ color: colores.altertex[4], fontWeight: 500 }}>
               {descripcion || 'Sin descripción'}
             </span>
           </Texto>
-          <Texto gutterBottom sx={{ mb: 2 }}>
-            <strong>Periodo de Renovación:</strong>{' '}
-            <span style={{ color: colores.altertex[4], fontWeight: 500 }}>
-              {periodoRenovacion ?? 'No especificado'}
-            </span>
-          </Texto>
-          <Texto gutterBottom sx={{ mb: 2 }}>
-            <strong>Renovación Habilitada:</strong>{' '}
-            <span style={{ color: colores.altertex[4], fontWeight: 500 }}>
-              {renovacionHabilitada === 1 || renovacionHabilitada === true ? 'Sí' : 'No'}
-            </span>
-          </Texto>
-          <Texto gutterBottom sx={{ mb: 2 }}>
-            <strong>Última Actualización:</strong>{' '}
-            <span style={{ color: colores.altertex[4], fontWeight: 500 }}>
-              {ultimaActualizacion ? new Date(ultimaActualizacion).toLocaleString() : 'N/A'}
-            </span>
-          </Texto>
         </Grid>
       </Grid>
+      <Tabla columns={columns} rows={rows} pageSize={5} loading={false} sx={{ mt: 2 }} />
     </Box>
   );
 };
 
 CuotasInfo.propTypes = {
   nombre: PropTypes.string,
-  periodoRenovacion: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  renovacionHabilitada: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
   descripcion: PropTypes.string,
-  ultimaActualizacion: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  productos: PropTypes.array,
+  cuotas: PropTypes.array,
 };
 
 export default CuotasInfo;

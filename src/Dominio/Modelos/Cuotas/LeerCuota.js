@@ -4,19 +4,11 @@ RF[33] - Leer cuota - [https://codeandco-wiki.netlify.app/docs/proyectos/textile
 */
 
 export class LeerCuota {
-  constructor({
-    idCuota,
-    nombre,
-    descripcion,
-    periodoRenovacion,
-    renovacionHabilitada,
-    ultimaActualizacion,
-  }) {
+  constructor({ idCuota, nombre, descripcion, productos = [], cuotas = [] }) {
     this.idCuota = idCuota;
     this.nombre = nombre;
     this.descripcion = descripcion;
-    this.periodoRenovacion = periodoRenovacion;
-    this.renovacionHabilitada = renovacionHabilitada;
-    this.ultimaActualizacion = ultimaActualizacion;
+    this.productos = productos;
+    this.cuotas = cuotas;
   }
 }

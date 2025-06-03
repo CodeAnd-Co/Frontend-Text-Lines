@@ -25,7 +25,6 @@ const ListaCuotas = () => {
   const navegar = useNavigate();
   const { usuario } = useAuth();
   const { cuotas, cargando, error, recargar } = useConsultarCuotas();
-  const [idCuotaDetalle, setIdCuotaDetalle] = useState(null);
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
 
@@ -34,9 +33,14 @@ const ListaCuotas = () => {
   const [idsSetCuotas, setIdsSetCuotas] = useState([]);
   const [alerta, setAlerta] = useState(null);
   const [abrirPopUpEliminar, setAbrirPopUpEliminar] = useState(false);
-  const [modalAbierto, setModalAbierto] = useState(false);
+  const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
+  const [idSetCuotaSeleccionado, setIdSetCuotaSeleccionado] = useState(null);
 
-  const { cuota, cargando: cargandoDetalle } = useCuotaId(idCuotaDetalle);
+  const {
+    cuota,
+    cargando: cargandoDetalle,
+    error: errorDetalle,
+  } = useCuotaId(modalDetalleAbierto ? idSetCuotaSeleccionado : null);
 
   useEffect(() => {
     if (!usuario?.clienteSeleccionado) {
@@ -172,8 +176,8 @@ const ListaCuotas = () => {
               setSeleccionados(ids);
             }}
             onRowClick={(params) => {
-              setIdCuotaDetalle(params.row.idCuotaSet);
-              setModalAbierto(true);
+              setIdSetCuotaSeleccionado(params.row.idCuotaSet);
+              setModalDetalleAbierto(true);
             }}
           />
         </Box>
@@ -188,22 +192,31 @@ const ListaCuotas = () => {
         dialogo='¿Estás seguro de que deseas eliminar los sets de cuotas seleccionados? Esta acción no se puede deshacer.'
       />
 
-      {modalAbierto && (
+      {modalDetalleAbierto && (
         <ModalFlotante
-          open={modalAbierto}
-          onClose={() => setModalAbierto(false)}
-          titulo='Detalles de la Cuota'
+          open={modalDetalleAbierto}
+          onClose={() => setModalDetalleAbierto(false)}
+          titulo={cuota?.nombre || 'Cargando...'}
+          tituloVariant='h4'
+          customWidth={530}
           botones={[
             {
-              label: 'Cerrar',
-              variant: 'contained',
-              color: 'error',
-              backgroundColor: colores.altertex[1],
-              onClick: () => setModalAbierto(false),
+              label: 'Salir',
+              variant: 'outlined',
+              color: 'primary',
+              outlineColor: colores.primario[1],
+              onClick: () => setModalDetalleAbierto(false),
+              style: { marginTop: '10px' },
             },
           ]}
         >
-          {cargandoDetalle || !cuota ? <span>Cargando...</span> : <CuotasInfo {...cuota} />}
+          {cargandoDetalle ? (
+            <p>Cargando información del set de cuotas...</p>
+          ) : errorDetalle ? (
+            <p>Error al cargar la información del set de cuotas: {errorDetalle}</p>
+          ) : (
+            <CuotasInfo {...cuota} />
+          )}
         </ModalFlotante>
       )}
 

@@ -314,6 +314,7 @@ const ListaGrupoEmpleados = () => {
         dialogo={MENSAJE_POPUP_EXPORTAR}
         labelCancelar = 'Cancelar'
         labelConfirmar = 'Confirma'
+        disabledConfirmar={cargando}
       />
 
       {/* Alerta inferior */}

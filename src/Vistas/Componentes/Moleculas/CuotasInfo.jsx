@@ -18,7 +18,13 @@ const CuotasInfo = ({ nombre, descripcion, productos = [], cuotas = [] }) => {
 
   const columns = [
     { field: 'nombreComun', headerName: 'Producto', width: 200 },
-    { field: 'cuota_valor', headerName: 'Valor de Cuota', width: 150 },
+    {
+      field: 'cuota_valor',
+      headerName: 'Valor de Cuota',
+      width: 150,
+      align: 'center',
+      headerAlign: 'center',
+    },
   ];
 
   return (

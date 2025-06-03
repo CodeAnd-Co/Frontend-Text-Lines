@@ -1,20 +1,25 @@
 // RF[32] - Consulta Lista de Cuotas - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF32
 //RF[31] Consulta crear set de cuota - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF31]
+//RF[33] Leer cuota - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF33]
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme, Box } from '@mui/material';
 import { tokens } from '@SRC/theme';
-import { useConsultarCuotas } from '@Hooks/Cuotas/useConsultarCuotas';
 import { useAuth } from '@Hooks/AuthProvider';
 import ContenedorLista from '@Organismos/ContenedorLista';
 import Tabla from '@Organismos/Tabla';
 import Chip from '@Atomos/Chip';
 import ModalCrearCuotaSet from '@Organismos/Cuotas/ModalCrearCuotaSet';
 import Alerta from '@Moleculas/Alerta';
+import { useCuotaId } from '@Hooks/Cuotas/useLeerCuota';
 import PopUpEliminar from '@Moleculas/PopUp';
 import { RUTAS } from '@Constantes/rutas';
 import { RepositorioEliminarSetCuotas } from '@Dominio/Repositorios/Cuotas/repositorioEliminarSetCuotas';
+import { PERMISOS } from '@Utilidades/Constantes/permisos';
+import { useConsultarCuotas } from '@Hooks/Cuotas/useConsultarCuotas';
+import ModalFlotante from '@Organismos/ModalFlotante';
+import CuotasInfo from '@Moleculas/CuotasInfo';
 
 const ListaCuotas = () => {
   const navegar = useNavigate();
@@ -28,6 +33,14 @@ const ListaCuotas = () => {
   const [idsSetCuotas, setIdsSetCuotas] = useState([]);
   const [alerta, setAlerta] = useState(null);
   const [abrirPopUpEliminar, setAbrirPopUpEliminar] = useState(false);
+  const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
+  const [idSetCuotaSeleccionado, setIdSetCuotaSeleccionado] = useState(null);
+
+  const {
+    cuota,
+    cargando: cargandoDetalle,
+    error: errorDetalle,
+  } = useCuotaId(modalDetalleAbierto ? idSetCuotaSeleccionado : null);
 
   useEffect(() => {
     if (!usuario?.clienteSeleccionado) {
@@ -66,15 +79,17 @@ const ListaCuotas = () => {
   const filas = Array.isArray(cuotas)
     ? cuotas.map((cuota) => ({
         id: cuota.idCuotaSet,
+        idCuotaSet: cuota.idCuotaSet,
         nombre: cuota.nombre,
         periodoRenovacion: cuota.periodoRenovacion,
         renovacionHabilitada: cuota.renovacionHabilitada === 1,
+        descripcion: cuota.descripcion,
+        ultimaActualizacion: cuota.ultimaActualizacion,
       }))
     : [];
 
   const handleAbrirModalCrear = () => setModalCrearAbierto(true);
   const handleCerrarModalCrear = () => setModalCrearAbierto(false);
-
   const manejarCancelarEliminar = () => setAbrirPopUpEliminar(false);
 
   const manejarConfirmarEliminar = async () => {
@@ -131,7 +146,6 @@ const ListaCuotas = () => {
       backgroundColor: colores.altertex[1],
     },
   ];
-
   return (
     <>
       <ContenedorLista
@@ -161,6 +175,10 @@ const ListaCuotas = () => {
               const ids = Array.isArray(nuevosIds) ? nuevosIds : Array.from(nuevosIds?.ids || []);
               setSeleccionados(ids);
             }}
+            onRowClick={(params) => {
+              setIdSetCuotaSeleccionado(params.row.idCuotaSet);
+              setModalDetalleAbierto(true);
+            }}
           />
         </Box>
       </ContenedorLista>
@@ -173,6 +191,34 @@ const ListaCuotas = () => {
         confirmar={manejarConfirmarEliminar}
         dialogo='¿Estás seguro de que deseas eliminar los sets de cuotas seleccionados? Esta acción no se puede deshacer.'
       />
+
+      {modalDetalleAbierto && (
+        <ModalFlotante
+          open={modalDetalleAbierto}
+          onClose={() => setModalDetalleAbierto(false)}
+          titulo={cuota?.nombre || 'Cargando...'}
+          tituloVariant='h4'
+          customWidth={530}
+          botones={[
+            {
+              label: 'Salir',
+              variant: 'outlined',
+              color: 'primary',
+              outlineColor: colores.primario[1],
+              onClick: () => setModalDetalleAbierto(false),
+              style: { marginTop: '10px' },
+            },
+          ]}
+        >
+          {cargandoDetalle ? (
+            <p>Cargando información del set de cuotas...</p>
+          ) : errorDetalle ? (
+            <p>Error al cargar la información del set de cuotas: {errorDetalle}</p>
+          ) : (
+            <CuotasInfo {...cuota} />
+          )}
+        </ModalFlotante>
+      )}
 
       {alerta && (
         <Alerta

@@ -105,8 +105,7 @@ const InfoGrupoEmpleadosEditable = ({
         const productosOrdenados = productos.sort((productos1, productos2) =>
           (productos1.nombreProducto || '')
             .toLowerCase()
-            .localeCompare((productos2.nombreProducto || '').toLowerCase())
-        );
+            .localeCompare((productos2.nombreProducto || '').toLowerCase()));
 
         // Ordenar empleados por nombre
         const empleadosOrdenados = datosEmpleados.sort((empleado1, empleado2) => {
@@ -145,7 +144,7 @@ const InfoGrupoEmpleadosEditable = ({
   // Remueve el useEffect que validaba en tiempo real
 
   // Función para validar campos al guardar
-  const validarCampos = () => {
+  const validarCampos = useCallback(() => {
     const nombreVacio = nombre.trim() === '';
     const descripcionVacia = descripcion.trim() === '';
 
@@ -155,7 +154,7 @@ const InfoGrupoEmpleadosEditable = ({
     });
 
     return !nombreVacio && !descripcionVacia;
-  };
+  }, [nombre, descripcion]);
 
   // Modificamos el useEffect para generar datos del formulario incluyendo la validación
   useEffect(() => {
@@ -179,7 +178,15 @@ const InfoGrupoEmpleadosEditable = ({
       }, 0);
       return () => clearTimeout(timeoutId);
     }
-  }, [nombre, descripcion, setsDerecha, empleadosDerecha, datosListos, onFormDataChange]);
+  }, [
+    nombre,
+    descripcion,
+    setsDerecha,
+    empleadosDerecha,
+    datosListos,
+    onFormDataChange,
+    validarCampos,
+  ]);
 
   // Handlers para empleados
   const manejarSeleccionEmpleado = useCallback(
@@ -266,8 +273,7 @@ const InfoGrupoEmpleadosEditable = ({
       return nuevaLista.sort((set1, set2) =>
         (set1.nombreProducto || '')
           .toLowerCase()
-          .localeCompare((set2.nombreProducto || '').toLowerCase())
-      );
+          .localeCompare((set2.nombreProducto || '').toLowerCase()));
     });
     setSetsSeleccionados([]);
   }, [setsIzquierda]);
@@ -279,8 +285,7 @@ const InfoGrupoEmpleadosEditable = ({
       return nuevaLista.sort((set1, set2) =>
         (set1.nombreProducto || '')
           .toLowerCase()
-          .localeCompare((set2.nombreProducto || '').toLowerCase())
-      );
+          .localeCompare((set2.nombreProducto || '').toLowerCase()));
     });
     setSetsSeleccionados((prev) => noEstaEnLista(prev, izquierdaSeleccionados));
   }, [setsSeleccionados, setsIzquierda]);
@@ -334,12 +339,12 @@ const InfoGrupoEmpleadosEditable = ({
             <Checkbox
               onClick={manejarSeleccionTodosEmpleados(elementos)}
               checked={
-                contarEmpleadosSeleccionados(elementos) === elementos.length &&
-                elementos.length !== 0
+                contarEmpleadosSeleccionados(elementos) === elementos.length
+                && elementos.length !== 0
               }
               indeterminate={
-                contarEmpleadosSeleccionados(elementos) !== elementos.length &&
-                contarEmpleadosSeleccionados(elementos) !== 0
+                contarEmpleadosSeleccionados(elementos) !== elementos.length
+                && contarEmpleadosSeleccionados(elementos) !== 0
               }
               disabled={elementos.length === 0}
               inputProps={{
@@ -412,8 +417,8 @@ const InfoGrupoEmpleadosEditable = ({
                 contarSetsSeleccionados(elementos) === elementos.length && elementos.length !== 0
               }
               indeterminate={
-                contarSetsSeleccionados(elementos) !== elementos.length &&
-                contarSetsSeleccionados(elementos) !== 0
+                contarSetsSeleccionados(elementos) !== elementos.length
+                && contarSetsSeleccionados(elementos) !== 0
               }
               disabled={elementos.length === 0}
               inputProps={{
@@ -519,7 +524,14 @@ const InfoGrupoEmpleadosEditable = ({
         {/* Sets de Productos */}
         <Grid item xs={12}>
           <Texto variant='h6'>Sets de Productos:</Texto>
-          <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', mt: 2 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              width: '100%',
+              mt: 2,
+            }}
+          >
             <Grid
               container
               spacing={2}
@@ -576,7 +588,14 @@ const InfoGrupoEmpleadosEditable = ({
         {/* Lista de transferencia de empleados */}
         <Grid item xs={12}>
           <Texto variant='h6'>Empleados:</Texto>
-          <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', mt: 2 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              width: '100%',
+              mt: 2,
+            }}
+          >
             <Grid
               container
               spacing={2}

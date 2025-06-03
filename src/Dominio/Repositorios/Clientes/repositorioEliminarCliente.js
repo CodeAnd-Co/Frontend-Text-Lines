@@ -9,6 +9,7 @@ const API_KEY = import.meta.env.VITE_API_KEY;
  * @param {number} idCliente - ID del cliente a eliminar.
  * @returns {Promise<object>} Respuesta del servidor.
  * @throws {Error} Si ocurre un error al eliminar el cliente.
+ * 
  * @see [RF15 - Elimina Cliente](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF15)
  *
  */

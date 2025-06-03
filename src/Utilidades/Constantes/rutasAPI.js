@@ -34,12 +34,14 @@ export const RUTAS_API = {
     CONSULTAR_LISTA: `${BASE_CATEGORIAS}/consultar-lista-categorias`,
     CREAR: `${BASE_CATEGORIAS}/crear-categoria`,
     ELIMINAR_CATEGORIA: `${BASE_CATEGORIAS}/eliminar`,
+    LEER: `${BASE_CATEGORIAS}/leer`,
   },
   PRODUCTOS: {
     BASE: BASE_PRODUCTOS,
     CONSULTAR_LISTA: `${BASE_PRODUCTOS}/consultar-lista`,
     CREAR: `${BASE_PRODUCTOS}/crear`,
     ELIMINAR_PRODUCTO: `${BASE_PRODUCTOS}/eliminar`,
+    LEER_PRODCUTO: `${BASE_PRODUCTOS}/leer-producto`
   },
   PROVEEDORES: {
     BASE: BASE_PROVEEDORES,
@@ -50,6 +52,7 @@ export const RUTAS_API = {
     BASE: BASE_SETS_PRODUCTOS,
     CONSULTAR_LISTA: `${BASE_SETS_PRODUCTOS}/consultar-lista`,
     ELIMINAR_SET_PRODUCTOS: `${BASE_SETS_PRODUCTOS}/eliminar`,
+    CREAR_SETS_PRODUCTOS: `${BASE_SETS_PRODUCTOS}/crear`
   },
   CLIENTES: {
     BASE: BASE_CLIENTES,
@@ -83,6 +86,7 @@ export const RUTAS_API = {
     CONSULTAR_LISTA: `${BASE_ROLES}/consultar-lista`,
     CREAR_ROL: `${BASE_ROLES}/crear-rol`,
     ELIMINAR_ROL: `${BASE_ROLES}/eliminar`,
+    LEER_ROL: `${BASE_ROLES}/leer`
   },
   PEDIDOS: {
     BASE: BASE_PEDIDOS,

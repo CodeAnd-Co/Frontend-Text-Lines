@@ -16,6 +16,26 @@ export const useAccionesUsuario = (usuarioInicial = null) => {
       if (usuarioInicial.fechaNacimiento) {
         fechaNacimiento = dayjs(usuarioInicial.fechaNacimiento);
       }
+
+      // Normalizar género
+      let genero = '';
+      if (usuarioInicial.genero) {
+        if (usuarioInicial.genero.toLowerCase() === 'femenino') genero = 'Mujer';
+        else if (usuarioInicial.genero.toLowerCase() === 'masculino') genero = 'Hombre';
+        else genero = 'Otro';
+      }
+
+      let idRol = usuarioInicial.idRol || '';
+      if (typeof usuarioInicial.rol === 'string') {
+        const rolesMap = {
+          'Super Administrador': 1,
+          Administrador: 2,
+        };
+        idRol = rolesMap[usuarioInicial.rol] || '';
+      } else if (usuarioInicial.rol) {
+        idRol = usuarioInicial.rol;
+      }
+
       return {
         ...usuarioInicial,
         idUsuario: usuarioInicial.idUsuario || usuarioInicial.id,
@@ -25,16 +45,19 @@ export const useAccionesUsuario = (usuarioInicial = null) => {
         numeroTelefono: usuarioInicial.numeroTelefono || '',
         direccion: usuarioInicial.direccion || '',
         fechaNacimiento,
-        genero: usuarioInicial.genero || '',
-        rol: usuarioInicial.rol || '',
+        genero,
+        idRol,
         cliente: usuarioInicial.cliente || [],
         contrasenia: '',
+        confirmarContrasenia: '',
       };
     }
     return {
       nombreCompleto: '',
+      apellido: '',
       correoElectronico: '',
       contrasenia: '',
+      confirmarContrasenia: '',
       numeroTelefono: '',
       direccion: '',
       fechaNacimiento: null,
@@ -77,6 +100,8 @@ export const useAccionesUsuario = (usuarioInicial = null) => {
     };
 
     const nuevosErrores = validarDatosActualizarUsuario(datosProcesados);
+
+    console.log('Errores de validación:', nuevosErrores);
 
     if (Object.keys(nuevosErrores).length > 0) {
       setErroresValidacion(nuevosErrores);

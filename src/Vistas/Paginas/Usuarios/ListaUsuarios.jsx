@@ -9,6 +9,7 @@ import Chip from '@Atomos/Chip';
 import { useConsultarListaUsuarios } from '@Hooks/Usuarios/useConsultarListaUsuarios';
 import { useEliminarUsuarios } from '@Hooks/Usuarios/useEliminarUsuarios';
 import { useConsultarRoles } from '@Hooks/Roles/useConsultarRoles';
+import { useConsultarClientes } from '@Hooks/Clientes/useConsultarClientes';
 import { RUTAS } from '@Constantes/rutas';
 import { tokens } from '@SRC/theme';
 import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
@@ -37,6 +38,7 @@ const estiloImagenLogo = { marginRight: '1rem' };
  * @see [RF02 Super Administrador Consulta Lista de Usuarios](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF2)
  * @see [RF03 Leer usuario](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF3)
  * @see [RF05 Super Administrador Eliminar Usuario](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF5)
+ * @see [RF04 Super Administrador Actualiza Usuario](https://codeandco-wiki.netlify.app/docs/next/proyectos/textiles/documentacion/requisitos/RF4)
  */
 
 const ListaUsuarios = () => {
@@ -45,6 +47,7 @@ const ListaUsuarios = () => {
   const navigate = useNavigate();
   const [alerta, setAlerta] = useState(null);
   const { usuarios, cargando, error, recargar } = useConsultarListaUsuarios();
+  const { clientes, cargando: cargandoClientes } = useConsultarClientes();
   const { roles } = useConsultarRoles();
   const { usuario: usuarioAutenticado } = useAuth();
   const [modalCrearUsuarioAbierto, setModalCrearUsuarioAbierto] = useState(false);
@@ -452,7 +455,7 @@ const ListaUsuarios = () => {
             onAccion={recargar}
             usuarioEdicion={usuario}
             roles={roles}
-            clientes={[]}
+            clientes={clientes}
             esSuperAdmin={false}
             cargandoRoles={false}
           />

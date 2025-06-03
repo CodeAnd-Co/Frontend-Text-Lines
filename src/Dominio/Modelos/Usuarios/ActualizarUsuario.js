@@ -33,6 +33,14 @@ export const validarDatosActualizarUsuario = (datos, usuariosExistentes = []) =>
     errores.contrasenia = 'La contraseña debe tener al menos 6 caracteres';
   }
 
+  if (datos.contrasenia) {
+    if (!datos.confirmarContrasenia) {
+      errores.confirmarContrasenia = true;
+    } else if (datos.contrasenia !== datos.confirmarContrasenia) {
+      errores.confirmarContrasenia = 'Las contraseñas no coinciden';
+    }
+  }
+
   if (!datos.numeroTelefono) {
     errores.numeroTelefono = 'El número de teléfono es obligatorio';
   } else if (!telefonoValido.test(datos.numeroTelefono)) {

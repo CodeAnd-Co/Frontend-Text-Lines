@@ -185,26 +185,24 @@ const CamposOpcion = memo(
           type='number'
           name={`costoAdicional-${varianteId}-${index}`}
           value={opcion.costoAdicional}
+          error={Boolean(errores?.costoAdicional)}
+          helperText={errores?.costoAdicional || ''}
           onChange={(evento) => manejarActualizarOpcion('costoAdicional', evento.target.value)}
           placeholder='Ingresa el costo adicional'
-          helperText={errores?.costoAdicional || ''}
-          error={Boolean(errores?.costoAdicional)}
           min={0}
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
-          // Quitar onInput aquí para permitir decimales
         />
         <CampoTextoForm
           label='Descuento (%)'
           type='number'
           name={`descuento-${varianteId}-${index}`}
           value={opcion.descuento}
+          error={Boolean(errores?.descuento)}
+          helperText={errores?.descuento || ''}
           onChange={(evento) => manejarActualizarOpcion('descuento', evento.target.value)}
           placeholder='Ingresa el descuento'
-          helperText={errores?.descuento || ''}
-          error={Boolean(errores?.descuento)}
           min={0}
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
-          // Quitar onInput aquí para permitir decimales
         />
         <CampoSelectForm
           label='Estado'

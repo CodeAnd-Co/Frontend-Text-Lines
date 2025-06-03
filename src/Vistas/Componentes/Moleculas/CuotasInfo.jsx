@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 import Texto from '@Atomos/Texto';
 import { Grid, Box, useTheme } from '@mui/material';
 import { tokens } from '@SRC/theme';
-import Tabla from '@Organismos/Tabla'; // Asegúrate de que la ruta sea correcta
+import Tabla from '@Organismos/Tabla';
 
 const CuotasInfo = ({ descripcion, productos = [], cuotas = [] }) => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
 
-  // Combina productos y cuotas en filas para la tabla
   const rows = productos.map((producto, idx) => ({
     id: idx,
     nombreComun: producto.nombre,
@@ -39,7 +38,7 @@ const CuotasInfo = ({ descripcion, productos = [], cuotas = [] }) => {
           </Texto>
         </Grid>
       </Grid>
-      <Tabla columns={columns} rows={rows} pageSize={5} loading={false} sx={{ mt: 2 }} />
+      <Tabla columns={columns} rows={rows} pageSize={5} />
     </Box>
   );
 };

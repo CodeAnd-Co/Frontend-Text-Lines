@@ -7,6 +7,7 @@ import { useLeerRol } from '@Hooks/Roles/useLeerRol';
 import Alerta from '@Moleculas/Alerta';
 import Tabla from '@Organismos/Tabla';
 import ListaTransferencia from '@Organismos/ListaTransferencia';
+import CampoTexto from '@Atomos/CampoTexto';
 import obtenerPermisos from '@Servicios/obtenerPermisos';
 import { tokens } from '@SRC/theme';
 
@@ -18,12 +19,24 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
   const [permisosDisponibles, setPermisosDisponibles] = useState([]);
   const [permisosSeleccionados, setPermisosSeleccionados] = useState([]);
 
+  // Estados para los campos editables
+  const [nombreRol, setNombreRol] = useState('');
+  const [descripcionRol, setDescripcionRol] = useState('');
+
   // Add ref to track if permissions have been loaded
   const permisosLoadedRef = useRef(false);
 
   useEffect(() => {
     if (abierto && idRol) leerRol(idRol);
   }, [abierto, idRol, leerRol]);
+
+  // Initialize editable fields when detail is loaded
+  useEffect(() => {
+    if (detalle) {
+      setNombreRol(detalle.nombre || '');
+      setDescripcionRol(detalle.descripcion || '');
+    }
+  }, [detalle]);
 
   // Reset the ref when modal closes or role changes
   useEffect(() => {
@@ -80,9 +93,41 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
     setPermisosSeleccionados(seleccionados);
   }, []);
 
+  const manejarGuardar = () => {
+    // Console log the data that would be sent to the API
+    const datosParaEnviar = {
+      nombre: nombreRol,
+      descripcion: descripcionRol,
+      permisos: permisosSeleccionados.map(permiso => ({ id: permiso.id, nombre: permiso.nombre }))
+    };
+
+    console.log('Datos para enviar:', datosParaEnviar);
+    console.log('Permisos seleccionados:', permisosSeleccionados);
+
+    // TODO: Implement custom hook call here
+    // useActualizarRol(idRol, datosParaEnviar);
+
+    setModoEdicion(false);
+  };
+
+  const manejarCancelar = () => {
+    // Reset fields to original values
+    setNombreRol(detalle?.nombre || '');
+    setDescripcionRol(detalle?.descripcion || '');
+    setModoEdicion(false);
+  };
+
   const manejarCerrar = () => {
     setModoEdicion(false);
     onCerrar();
+  };
+
+  const manejarCambioNombre = (event) => {
+    setNombreRol(event.target.value);
+  };
+
+  const manejarCambioDescripcion = (event) => {
+    setDescripcionRol(event.target.value);
   };
 
   const botonesModo = modoEdicion ? [
@@ -91,17 +136,14 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
       variant: 'outlined',
       size: 'large',
       outlineColor: colores.altertex[1],
-      onClick: () => setModoEdicion(false),
+      onClick: manejarCancelar,
     },
     {
       label: 'Guardar',
       variant: 'contained',
       size: 'large',
       backgroundColor: colores.altertex[1],
-      onClick: () => {
-        // Aquí iría la lógica para guardar
-        setModoEdicion(false);
-      },
+      onClick: manejarGuardar,
     }
   ] : [
     {
@@ -150,7 +192,7 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
         onConfirm={manejarCerrar}
         titulo={modoEdicion ? "Editar Rol" : "Detalles del Rol"}
         tituloVariant="h4"
-        customWidth={modoEdicion ? 1000 : 800}
+        customWidth={modoEdicion ? 800 : 800}
         botones={botonesModo}
       >
         {cargando && (
@@ -161,12 +203,43 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
 
         {!cargando && detalle && (
           <>
-            <Typography variant="body1" sx={{ mb: 2 }}>
-              <strong>Rol:</strong> {detalle.nombre}
-            </Typography>
-            <Typography variant="body1" sx={{ mb: 2 }}>
-              <strong>Descripción:</strong> {detalle.descripcion}
-            </Typography>
+            {modoEdicion ? (
+              <Box sx={{ mb: 3 }}>
+                <CampoTexto
+                  label="Nombre del Rol"
+                  name="nombreRol"
+                  value={nombreRol}
+                  onChange={manejarCambioNombre}
+                  fullWidth
+                  required
+                  maxLength={50}
+                  helperText={`${nombreRol.length}/50 caracteres`}
+                  sx={{ mb: 2 }}
+                />
+                <CampoTexto
+                  label="Descripción"
+                  name="descripcionRol"
+                  value={descripcionRol}
+                  onChange={manejarCambioDescripcion}
+                  fullWidth
+                  multiline
+                  rows={3}
+                  maxLength={150}
+                  helperText={`${descripcionRol.length}/150 caracteres`}
+                  sx={{ mb: 2 }}
+                />
+              </Box>
+            ) : (
+              <Box sx={{ mb: 3 }}>
+                <Typography variant="body1" sx={{ mb: 2 }}>
+                  <strong>Rol:</strong> {detalle.nombre}
+                </Typography>
+                <Typography variant="body1" sx={{ mb: 2 }}>
+                  <strong>Descripción:</strong> {detalle.descripcion}
+                </Typography>
+              </Box>
+            )}
+
             <Typography variant="body1" sx={{ mb: 3 }}>
               <strong>Número de usuarios asociados a este rol:</strong> {detalle.totalUsuarios}
             </Typography>

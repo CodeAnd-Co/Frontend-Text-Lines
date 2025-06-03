@@ -102,7 +102,7 @@ const FormularioInicioSesion = ({ alEnviar, cargando, mensaje }) => {
             icono={true}
             textoVariant='body1'
             cerrable={true}
-            duracion={5000}
+            duracion={3000}
             posicionAbsoluta={false}
             sx={estilosAlerta}
           />

@@ -16,6 +16,7 @@ import { useConsultarSetsProductos } from '@Hooks/SetsProductos/useConsultarSets
 import { tokens } from '@SRC/theme';
 import { PERMISOS } from '@Utilidades/Constantes/permisos';
 import { useAuth } from '@Hooks/AuthProvider';
+import ModalCrearSetsProductos from '@Organismos/ModalCrearSetsProductos.jsx';
 
 const ListaSetsProductos = () => {
   const { setsDeProductos, cargando, error, recargar } = useConsultarSetsProductos();
@@ -29,6 +30,7 @@ const ListaSetsProductos = () => {
   const [abrirEliminar, setAbrirPopUpEliminar] = useState(false);
   const [setSeleccionado, setSetSeleccionado] = useState(null);
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
+  const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
   const { eliminar } = useEliminarSetProductos();
   const { usuario } = useAuth();
 
@@ -60,6 +62,16 @@ const ListaSetsProductos = () => {
       setAbrirPopUpEliminar(false);
     }
   };
+
+
+  const handleCerrarModalCrear = () => {
+    setModalCrearAbierto(false)
+  }
+
+  const handleSetProductoCreadoExitosamente = () => {
+    handleCerrarModalCrear()
+    recargar()
+  }
 
   const columns = [
     {
@@ -119,8 +131,7 @@ const ListaSetsProductos = () => {
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
-      onClick: () => console.log('Añadir'),
-      construccion: true,
+      onClick: () => setModalCrearAbierto(true),
     },
     {
       label: 'Eliminar',
@@ -177,13 +188,19 @@ const ListaSetsProductos = () => {
         </Box>
       </ContenedorLista>
 
+      <ModalCrearSetsProductos
+        abierto={modalCrearAbierto}
+        onCerrar={handleCerrarModalCrear}
+        onCreado={handleSetProductoCreadoExitosamente}
+      />
+
       {alerta && (
         <Alerta
           tipo={alerta.tipo}
           mensaje={alerta.mensaje}
           icono={alerta.icono}
           cerrable={alerta.cerrable}
-          duracion={2500}
+          duracion={3000}
           centradoInferior={alerta.centradoInferior}
           onClose={() => setAlerta(null)}
         />

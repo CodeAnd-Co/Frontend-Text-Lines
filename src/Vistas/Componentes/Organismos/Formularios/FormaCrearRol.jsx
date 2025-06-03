@@ -80,7 +80,7 @@ const FormaCrearRol = ({
           tipo='warning'
           mensaje={erroresCampos.permisosSeleccionados}
           cerrable
-          duracion={8000}
+          duracion={3000}
           sx={{ my: 2, mb: 2 }}
         />
       )}

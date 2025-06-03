@@ -55,7 +55,7 @@ const EditarCuotas = () => {
         <Alerta
           tipo={exito ? 'success' : 'error'}
           mensaje={mensaje}
-          duracion={exito ? 8000 : 10000}
+          duracion={exito ? 3000 : 3000}
           sx={{ margin: 3 }}
           cerrable
           onClose={error ? () => setError(false) : undefined}

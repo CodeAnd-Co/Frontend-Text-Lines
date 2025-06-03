@@ -34,10 +34,10 @@ const ContenedorImportar = ({ onFileAccepted, onError, cargando = false }) => {
 
   if (error?.code === 'file-too-large') {
       const sizeMB = (file?.size || 0) / (1024 * 1024);
-      const mensaje = `⚠️ El archivo "${file.name}" es muy grande (${sizeMB.toFixed(2)} MB).`;
+      const mensaje = ` El archivo "${file.name}" es muy grande (${sizeMB.toFixed(2)} MB).`;
       onError?.(mensaje);
     } else if (error?.code === 'file-invalid-type') {
-      onError?.(`⚠️ El archivo debe ser de tipo .csv`);
+      onError?.(`El archivo debe ser de tipo .csv`);
     } else {
       onError?.(`${error?.message || 'Archivo no aceptado.'}`);
     }

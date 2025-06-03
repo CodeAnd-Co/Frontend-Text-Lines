@@ -13,6 +13,15 @@ import { useConsultarClientes } from '@Hooks/Clientes/useConsultarClientes';
 import { useCrearUsuario } from '@Hooks/Usuarios/useCrearUsuario';
 import CampoSelectMultiple from '@Atomos/CampoSelectMultiple';
 
+// Límites para los campos
+const LIMITE_NOMBRE = 50;
+const LIMITE_APELLIDO = 50;
+const LIMITE_CORREO = 100;
+const LIMITE_TELEFONO = 10;
+const LIMITE_DIRECCION = 100;
+const LIMITE_CONTRASENIA = 64; 
+const MENSAJE_LIMITE = 'Máximo caracteres';
+
 const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
   const [alerta, setAlerta] = useState(null);
   const [datosUsuario, setDatosUsuario] = useState({
@@ -76,6 +85,10 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
         setAlerta({
           tipo: 'success',
           mensaje: resumenUsuario,
+          icono: true, 
+          cerrable: true,
+          centradoInferior: true,
+          duracion: 3000,
         });
 
         setDatosUsuario({
@@ -151,13 +164,20 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
                 label='Nombre'
                 name='nombreCompleto'
                 value={datosUsuario.nombreCompleto}
-                onChange={manejarCambio}
+                onChange={(letra) => {
+                  const soloLetras = letra.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, ''); // solo letras y espacios
+                  manejarCambio({ target: { name: 'nombreCompleto', value: soloLetras } });
+                }}
                 required
                 size='medium'
                 error={!!errores.nombreCompleto}
-                helperText={errores.nombreCompleto && CAMPO_OBLIGATORIO}
+                helperText={
+                errores.nombreCompleto
+                    ? CAMPO_OBLIGATORIO
+                    : `${datosUsuario.nombreCompleto.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`
+                }
                 inputProps={{
-                  maxLength: 50,
+                  maxLength: LIMITE_NOMBRE,
                 }}
               />
             </Grid>
@@ -171,9 +191,13 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
                 required
                 size='medium'
                 error={!!errores.apellido}
-                helperText={errores.apellido && CAMPO_OBLIGATORIO}
+                helperText={
+                errores.apellido
+                    ? CAMPO_OBLIGATORIO
+                    : `${datosUsuario.apellido.length}/${LIMITE_APELLIDO} - ${MENSAJE_LIMITE}`
+                }
                 inputProps={{
-                  maxLength: 50,
+                  maxLength: LIMITE_APELLIDO,
                 }}
               />
             </Grid>
@@ -228,29 +252,40 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
                 size='medium'
                 error={!!errores.correoElectronico}
                 helperText={
-                  errores.correoElectronico === true
-                    ? CAMPO_OBLIGATORIO
-                    : errores.correoElectronico || ''
+                  errores.correoElectronico
+                    ? (errores.correoElectronico === true ? CAMPO_OBLIGATORIO : errores.correoElectronico)
+                    : `${datosUsuario.correoElectronico.length}/${LIMITE_CORREO} - ${MENSAJE_LIMITE}`
                 }
+                inputProps={{
+                  maxLength: LIMITE_CORREO,
+                }}
               />
             </Grid>
 
             <Grid size={6} sx={estiloCuadricula}>
               <CampoTexto
-                label='Número de Teléfono'
-                name='numeroTelefono'
-                value={datosUsuario.numeroTelefono}
-                onChange={manejarCambio}
-                required
-                size='medium'
-                error={!!errores.numeroTelefono}
-                helperText={
-                  errores.numeroTelefono === true ? CAMPO_OBLIGATORIO : errores.numeroTelefono || ''
-                }
-                inputProps={{
-                  maxLength: 10,
-                }}
-              />
+              label='Número de Teléfono'
+              name='numeroTelefono'
+              value={datosUsuario.numeroTelefono}
+              onChange={(num) => {
+                const soloNumeros = num.target.value.replace(/\D/g, ''); // elimina todo lo que no es dígito
+                manejarCambio({ target: { name: 'numeroTelefono', value: soloNumeros } });
+              }}
+              required
+              size='medium'
+              error={!!errores.numeroTelefono}
+              helperText={
+                errores.numeroTelefono
+                  ? (errores.numeroTelefono === true ? CAMPO_OBLIGATORIO : errores.numeroTelefono)
+                  : `${datosUsuario.numeroTelefono.length}/${LIMITE_TELEFONO} - ${MENSAJE_LIMITE}`
+              }
+              inputProps={{
+                maxLength: LIMITE_TELEFONO,
+                inputMode: 'numeric', // para teclado numérico en móviles
+                pattern: '[0-9]*',
+              }}
+            />
+
             </Grid>
 
             <Grid size={6} sx={estiloCuadricula}>
@@ -262,9 +297,13 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
                 required
                 size='medium'
                 error={!!errores.direccion}
-                helperText={errores.direccion && CAMPO_OBLIGATORIO}
+                helperText={
+                errores.direccion
+                    ? CAMPO_OBLIGATORIO
+                    : `${datosUsuario.direccion.length}/${LIMITE_DIRECCION} - ${MENSAJE_LIMITE}`
+                }
                 inputProps={{
-                  maxLength: 100,
+                  maxLength: LIMITE_DIRECCION,
                 }}
               />
             </Grid>
@@ -319,8 +358,14 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
                 error={!!errores.contrasenia}
                 autoComplete='new-password'
                 helperText={
-                  errores.contrasenia === true ? CAMPO_OBLIGATORIO : errores.contrasenia || ''
+                  errores.contrasenia
+                    ? (errores.contrasenia === true ? CAMPO_OBLIGATORIO : errores.contrasenia)
+                    : `${datosUsuario.contrasenia.length}/${LIMITE_CONTRASENIA} - ${MENSAJE_LIMITE}`
                 }
+                inputProps={{
+                  maxLength: LIMITE_CONTRASENIA,
+                }}
+                
               />
             </Grid>
 
@@ -336,10 +381,13 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
                 error={!!errores.confirmarContrasenia}
                 autoComplete='new-password'
                 helperText={
-                  errores.confirmarContrasenia === true
-                    ? CAMPO_OBLIGATORIO
-                    : errores.confirmarContrasenia || ''
+                  errores.confirmarContrasenia
+                    ? (errores.confirmarContrasenia === true ? CAMPO_OBLIGATORIO : errores.confirmarContrasenia)
+                    : `${datosUsuario.confirmarContrasenia.length}/${LIMITE_CONTRASENIA} - ${MENSAJE_LIMITE}`
                 }
+                inputProps={{
+                  maxLength: LIMITE_CONTRASENIA,
+                }}
               />
             </Grid>
           </Grid>
@@ -350,7 +398,7 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
           sx={{ marginBottom: 2 }}
           tipo={alerta.tipo}
           mensaje={alerta.mensaje}
-          duracion='4000'
+          duracion='3000'
           onClose={() => setAlerta(null)}
           centradoInferior
         />

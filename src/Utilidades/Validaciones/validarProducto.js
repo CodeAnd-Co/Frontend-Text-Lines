@@ -39,18 +39,18 @@ export const validarProducto = (producto) => {
     errores.costo = 'El costo debe tener máximo 10 dígitos antes del punto y 2 después.';
   }
 
-  // Validación de impuesto (decimal(5,2))
-  if (normalizados.impuesto === '') {
-    errores.impuesto = 'El impuesto es obligatorio.';
-  } else if (!/^\d{1,5}(\.\d{1,2})?$/.test(normalizados.impuesto)) {
+  // Validación de impuesto (decimal(5,2)), puede ser 0 o mayor, pero no menor a 0
+  if (normalizados.impuesto !== '' && !/^\d{1,5}(\.\d{1,2})?$/.test(normalizados.impuesto)) {
     errores.impuesto = 'El impuesto debe tener máximo 5 dígitos antes del punto y 2 después.';
+  } else if (Number(normalizados.impuesto) < 0) {
+    errores.impuesto = 'El impuesto no puede ser menor a 0.';
   }
 
-  // Validación de descuento (decimal(5,2))
-  if (normalizados.descuento === '') {
-    errores.descuento = 'El descuento es obligatorio.';
-  } else if (!/^\d{1,5}(\.\d{1,2})?$/.test(normalizados.descuento)) {
+  // Validación de descuento (decimal(5,2)), puede ser 0 o mayor, pero no menor a 0
+  if (normalizados.descuento !== '' && !/^\d{1,5}(\.\d{1,2})?$/.test(normalizados.descuento)) {
     errores.descuento = 'El descuento debe tener máximo 5 dígitos antes del punto y 2 después.';
+  } else if (Number(normalizados.descuento) < 0) {
+    errores.descuento = 'El descuento no puede ser menor a 0.';
   }
 
   return errores;

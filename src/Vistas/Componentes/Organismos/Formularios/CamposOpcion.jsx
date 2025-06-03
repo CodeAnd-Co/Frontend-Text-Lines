@@ -146,13 +146,20 @@ const CamposOpcion = memo(
           helperText={errores?.cantidad || ''}
           error={Boolean(errores?.cantidad)}
           min={1}
-          onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
+          onKeyDown={(evento) => {
+            prevenirNumerosNegativos(evento);
+            // Evita el punto decimal
+            if (evento.key === '.' || evento.key === ',') {
+              evento.preventDefault();
+            }
+          }}
           onInput={(evento) => {
+            // Solo permite números enteros positivos
             const valor = evento.target.value;
-            if (valor === '' || parseInt(valor, 10) >= 1) {
+            if (valor === '' || /^\d+$/.test(valor)) {
               evento.target.value = valor;
             } else {
-              evento.target.value = 1;
+              evento.target.value = valor.replace(/\D/g, '');
             }
           }}
         />
@@ -184,14 +191,7 @@ const CamposOpcion = memo(
           error={Boolean(errores?.costoAdicional)}
           min={0}
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
-          onInput={(evento) => {
-            const valor = evento.target.value;
-            if (valor === '' || parseInt(valor, 10) >= 0) {
-              evento.target.value = valor;
-            } else {
-              evento.target.value = 0;
-            }
-          }}
+          // Quitar onInput aquí para permitir decimales
         />
         <CampoTextoForm
           label='Descuento (%)'
@@ -204,14 +204,7 @@ const CamposOpcion = memo(
           error={Boolean(errores?.descuento)}
           min={0}
           onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
-          onInput={(evento) => {
-            const valor = evento.target.value;
-            if (valor === '' || parseInt(valor, 10) >= 0) {
-              evento.target.value = valor;
-            } else {
-              evento.target.value = 0;
-            }
-          }}
+          // Quitar onInput aquí para permitir decimales
         />
         <CampoSelectForm
           label='Estado'

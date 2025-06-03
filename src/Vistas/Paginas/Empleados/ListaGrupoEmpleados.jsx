@@ -23,8 +23,8 @@ const ListaGrupoEmpleados = () => {
   const { usuario } = useAuth();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
-  const MENSAJE_POPUP_ELIMINAR
-    = '¿Estás seguro de que deseas eliminar los grupos seleccionados? Esta acción no se puede deshacer.';
+  const MENSAJE_POPUP_ELIMINAR =
+    '¿Estás seguro de que deseas eliminar los grupos seleccionados? Esta acción no se puede deshacer.';
 
   const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
   const [gruposSeleccionados, setGruposSeleccionados] = useState([]);
@@ -35,6 +35,7 @@ const ListaGrupoEmpleados = () => {
   const [idGrupoSeleccionado, setIdGrupoSeleccionado] = useState(null);
   const [abrirModalEditar, setAbrirModalEditar] = useState(false);
   const [formData, setFormData] = useState(null);
+
   const {
     grupoEmpleados,
     cargando: cargandoDetalle,
@@ -75,6 +76,17 @@ const ListaGrupoEmpleados = () => {
   const { actualizarGrupo } = useActualizarGrupoEmpleados();
 
   const handleGuardar = async () => {
+    if (!formData?.nombre?.trim() || !formData?.descripcion?.trim()) {
+      setAlerta({
+        tipo: 'error',
+        mensaje: 'El nombre y la descripción son obligatorios.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+      return;
+    }
+
     try {
       await actualizarGrupo(
         idGrupoSeleccionado,
@@ -83,9 +95,8 @@ const ListaGrupoEmpleados = () => {
         formData.empleados,
         formData.setsDeProductos
       );
-
-      setAbrirModalEditar(false);
       await refetch();
+      setAbrirModalEditar(false);
       setAlerta({
         tipo: 'success',
         mensaje: 'Grupo de empleados actualizado correctamente.',
@@ -285,7 +296,6 @@ const ListaGrupoEmpleados = () => {
               color: 'primary',
               outlineColor: colores.primario[10],
               onClick: handleGuardar,
-              disabled: !formData?.isValid,
             },
             {
               label: 'Cancelar',

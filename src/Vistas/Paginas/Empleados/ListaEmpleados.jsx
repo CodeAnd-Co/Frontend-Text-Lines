@@ -1,5 +1,7 @@
 //RF17 - Consulta Lista Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF17
 //RF20 - Eliminar empleado - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF20
+//RF59 - Exportar Empleados - https://codeandco-wiki.netlify.app/docs/next/proyectos/textiles/documentacion/requisitos/RF59
+
 import React, { useState, useEffect } from 'react';
 import { Box, useTheme } from '@mui/material';
 import Tabla from '@Organismos/Tabla';
@@ -86,7 +88,7 @@ const ListaGrupoEmpleados = () => {
       return;
     }
 
-    await exportar(empleadosSeleccionados); // ✅ Pasa los IDs seleccionados
+    await exportar(empleadosSeleccionados);
     setAbrirPopUpExportar(false);
   };
 

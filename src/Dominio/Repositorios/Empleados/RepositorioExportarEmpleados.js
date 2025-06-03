@@ -9,6 +9,8 @@ const API_KEY = import.meta.env.VITE_API_KEY;
  * @param {number[]} idsEmpleado - Arreglo de IDs de empleados seleccionados para exportar.
  * @returns {Promise<{ mensaje: string, csv: string }>} Respuesta con mensaje y contenido CSV.
  * @throws {Error} Si la petición falla o el servidor devuelve un mensaje de error.
+ * 
+ * @see [RF59 - Exportar Empleados](https://codeandco-wiki.netlify.app/docs/next/proyectos/textiles/documentacion/requisitos/RF59)
  */
 
 export const exportarEmpleados = async (idsEmpleado) => {

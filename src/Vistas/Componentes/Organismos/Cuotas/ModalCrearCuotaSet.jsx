@@ -19,6 +19,8 @@ const ModalCrearCuotaSet = ({ abierto = false, onCerrar, onCreado }) => {
   const [descripcionCuotaSet, setDescripcionCuotaSet] = useState('');
   const [productos, setProductos] = useState([]);
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
+  const [errores, setErrores] = useState({});
+  const [intentoEnviar, setIntentoEnviar] = useState(false);
 
   // Limpiar los campos cuando se cierra el modal
   useEffect(() => {
@@ -27,34 +29,49 @@ const ModalCrearCuotaSet = ({ abierto = false, onCerrar, onCreado }) => {
       setDescripcionCuotaSet('');
       setProductos([]);
       setMostrarAlerta(false);
+      setErrores({});
+      setIntentoEnviar(false);
     }
   }, [abierto]);
 
   const handleConfirmar = () => {
-    // Validar que el nombre y descripción no estén vacíos después de eliminar espacios
-    // y que haya al menos un producto seleccionado
-    if (!nombreCuotaSet.trim() || !descripcionCuotaSet.trim() || productos.length === 0) {
-      setMostrarAlerta(true);
-      return;
-    }
+  setIntentoEnviar(true);
+  const nuevosErrores = {};
 
-    // Navegar a la siguiente página con datos limpios (sin espacios innecesarios)
-    navegar(
-      `${RUTAS.SISTEMA_ADMINISTRATIVO.BASE_TABLERO}${RUTAS.SISTEMA_ADMINISTRATIVO.CUOTAS.EDITAR_CUOTAS}`,
-      {
-        state: {
-          nombreCuotaSet: nombreCuotaSet.trim(),
-          descripcion: descripcionCuotaSet.trim(),
-          productos,
-        },
-      }
-    );
+  if (!nombreCuotaSet.trim()) {
+    nuevosErrores.nombreCuotaSet = 'El nombre es obligatorio.';
+  }
 
-    // Notificar que se ha creado exitosamente
-    if (onCreado) {
-      onCreado();
+  if (!descripcionCuotaSet.trim()) {
+    nuevosErrores.descripcionCuotaSet = 'La descripción es obligatoria.';
+  }
+
+  if (productos.length === 0) {
+    setMostrarAlerta(true);
+  }
+
+  setErrores(nuevosErrores);
+
+  if (Object.keys(nuevosErrores).length > 0 || productos.length === 0) {
+    return;
+  }
+
+  navegar(
+    `${RUTAS.SISTEMA_ADMINISTRATIVO.BASE_TABLERO}${RUTAS.SISTEMA_ADMINISTRATIVO.CUOTAS.EDITAR_CUOTAS}`,
+    {
+      state: {
+        nombreCuotaSet: nombreCuotaSet.trim(),
+        descripcion: descripcionCuotaSet.trim(),
+        productos,
+      },
     }
-  };
+  );
+
+  if (onCreado) {
+    onCreado();
+  }
+};
+
 
   // Manejar el cierre del modal
   const handleCerrar = () => {
@@ -82,6 +99,8 @@ const ModalCrearCuotaSet = ({ abierto = false, onCerrar, onCreado }) => {
         setProductos={setProductos}
         mostrarAlerta={mostrarAlerta}
         setMostrarAlerta={setMostrarAlerta}
+        errores={errores}
+        intentoEnviar={intentoEnviar}
       />
     </ModalFlotante>
   );

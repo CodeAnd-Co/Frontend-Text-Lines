@@ -1,3 +1,5 @@
+import { A } from 'storybook/internal/components';
+
 const BASE_URL = import.meta.env.VITE_API_URL;
 const BASE_USUARIOS = `${BASE_URL}/api/usuarios`;
 const BASE_CATEGORIAS = `${BASE_URL}/api/categorias`;
@@ -13,7 +15,6 @@ const BASE_EVENTOS = `${BASE_URL}/api/eventos`;
 const BASE_PAGOS = `${BASE_URL}/api/pagos`;
 const BASE_AUTENTICACION = `${BASE_URL}/api/autenticacion`;
 
-
 export const RUTAS_API = {
   USUARIOS: {
     BASE: BASE_USUARIOS,
@@ -27,7 +28,7 @@ export const RUTAS_API = {
     ACTIVAR_2FA: `${BASE_AUTENTICACION}/activar-2fa`,
     VERIFICAR_2FA: `${BASE_AUTENTICACION}/verificar-2fa`,
   },
-  
+
   CATEGORIAS: {
     BASE: BASE_CATEGORIAS,
     CONSULTAR_LISTA: `${BASE_CATEGORIAS}/consultar-lista-categorias`,
@@ -72,6 +73,7 @@ export const RUTAS_API = {
     LEER_GRUPO: `${BASE_EMPLEADOS}/leer-grupo`,
     CREAR_GRUPO: `${BASE_EMPLEADOS}/crear-grupo`,
     ACTUALIZAR_EMPLEADO: `${BASE_EMPLEADOS}/actualizar`,
+    ACTUALIZAR_GRUPO: `${BASE_EMPLEADOS}/actualizar-grupo`,
   },
   CUOTAS: {
     BASE: BASE_CUOTAS,

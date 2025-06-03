@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
 
   const cerrarSesion = async () => {
     const resultado = await Swal.fire({
-      title: '¿Estás seguro que quieres cerrar sesion?',
+      title: '¿Estás seguro que quieres cerrar sesión?',
 
       showCancelButton: true,
       confirmButtonColor: 'rgba(24, 50, 165, 1)',

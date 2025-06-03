@@ -1,44 +1,25 @@
-import { useState } from 'react';
-// import { API_ENDPOINTS } from '@Constants/api'; // Adjust import path as needed
+//RF[8] Leer Rol - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF8
 
-/**
- * Custom hook para actualizar un rol
- * @returns {Object} - Estado y función para actualizar rol
- */
+import { useState } from 'react';
+import { RepositorioActualizarRol } from '@Repositorios/Roles/RepositorioActualizarRol';
+
 const useActualizarRol = () => {
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
   const [exitoso, setExitoso] = useState(false);
+  const [mensaje, setMensaje] = useState('');
 
   const actualizarRol = async (idRol, datosRol) => {
     setCargando(true);
     setError(null);
     setExitoso(false);
+    setMensaje('');
 
     try {
-      // TODO: Replace with actual API call
-      // const response = await fetch(`${API_ENDPOINTS.ROLES}/${idRol}`, {
-      //   method: 'PUT',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     // Add authorization headers if needed
-      //   },
-      //   body: JSON.stringify(datosRol),
-      // });
-
-      // if (!response.ok) {
-      //   throw new Error(`Error ${response.status}: ${response.statusText}`);
-      // }
-
-      // const resultado = await response.json();
-
-      // For now, simulate API call with timeout
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      console.log('Actualizando rol:', idRol, 'con datos:', datosRol);
-
+      const respuesta = await RepositorioActualizarRol.actualizar(idRol, datosRol);
+      setMensaje(respuesta.mensaje || 'Rol actualizado exitosamente');
       setExitoso(true);
-      return { success: true, data: datosRol };
+      return { success: true, data: respuesta };
 
     } catch (err) {
       const mensajeError = err.message || 'Error al actualizar el rol';
@@ -53,6 +34,7 @@ const useActualizarRol = () => {
   const limpiarEstado = () => {
     setError(null);
     setExitoso(false);
+    setMensaje('');
   };
 
   return {
@@ -60,6 +42,7 @@ const useActualizarRol = () => {
     cargando,
     error,
     exitoso,
+    mensaje,
     limpiarEstado,
   };
 };

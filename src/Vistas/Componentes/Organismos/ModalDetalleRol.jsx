@@ -4,6 +4,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
 import ModalFlotante from '@Organismos/ModalFlotante';
 import { useLeerRol } from '@Hooks/Roles/useLeerRol';
+import useActualizarRol from '@Hooks/Roles/useActualizarRol';
 import Alerta from '@Moleculas/Alerta';
 import Tabla from '@Organismos/Tabla';
 import ListaTransferencia from '@Organismos/ListaTransferencia';
@@ -13,24 +14,22 @@ import { tokens } from '@SRC/theme';
 
 const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
   const { detalle, cargando, error, leerRol } = useLeerRol();
+  const { actualizarRol, cargando: cargandoActualizacion, error: errorActualizacion, exitoso, mensaje, limpiarEstado } = useActualizarRol();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const [modoEdicion, setModoEdicion] = useState(false);
   const [permisosDisponibles, setPermisosDisponibles] = useState([]);
   const [permisosSeleccionados, setPermisosSeleccionados] = useState([]);
 
-  // Estados para los campos editables
   const [nombreRol, setNombreRol] = useState('');
   const [descripcionRol, setDescripcionRol] = useState('');
 
-  // Add ref to track if permissions have been loaded
   const permisosLoadedRef = useRef(false);
 
   useEffect(() => {
     if (abierto && idRol) leerRol(idRol);
   }, [abierto, idRol, leerRol]);
 
-  // Initialize editable fields when detail is loaded
   useEffect(() => {
     if (detalle) {
       setNombreRol(detalle.nombre || '');
@@ -38,14 +37,12 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
     }
   }, [detalle]);
 
-  // Reset the ref when modal closes or role changes
   useEffect(() => {
     if (!abierto || !modoEdicion) {
       permisosLoadedRef.current = false;
     }
   }, [abierto, modoEdicion]);
 
-  // Modified useEffect with ref check to prevent infinite loop
   useEffect(() => {
     const cargarPermisos = async () => {
       if (detalle && modoEdicion && !permisosLoadedRef.current) {
@@ -86,39 +83,45 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
 
   const manejarCambioEdicion = () => {
     setModoEdicion(!modoEdicion);
+    // Limpiar estados de actualización al entrar en modo edición
+    if (!modoEdicion) {
+      limpiarEstado();
+    }
   };
+
+  const puedeEditarse = idRol !== 1 && idRol !== 3;
 
   const manejarCambioTransferencia = useCallback(({ disponibles, seleccionados }) => {
     setPermisosDisponibles(disponibles);
     setPermisosSeleccionados(seleccionados);
   }, []);
 
-  const manejarGuardar = () => {
-    // Console log the data that would be sent to the API
+  const manejarGuardar = async () => {
     const datosParaEnviar = {
       nombre: nombreRol,
       descripcion: descripcionRol,
       permisos: permisosSeleccionados.map(permiso => ({ id: permiso.id, nombre: permiso.nombre }))
     };
 
-    console.log('Datos para enviar:', datosParaEnviar);
-    console.log('Permisos seleccionados:', permisosSeleccionados);
+    const resultado = await actualizarRol(idRol, datosParaEnviar);
 
-    // TODO: Implement custom hook call here
-    // useActualizarRol(idRol, datosParaEnviar);
-
-    setModoEdicion(false);
+    if (resultado.success) {
+      setModoEdicion(false);
+      // Recargar los detalles del rol para mostrar los cambios actualizados
+      leerRol(idRol);
+    }
   };
 
   const manejarCancelar = () => {
-    // Reset fields to original values
     setNombreRol(detalle?.nombre || '');
     setDescripcionRol(detalle?.descripcion || '');
     setModoEdicion(false);
+    limpiarEstado();
   };
 
   const manejarCerrar = () => {
     setModoEdicion(false);
+    limpiarEstado();
     onCerrar();
   };
 
@@ -137,6 +140,7 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
       size: 'large',
       outlineColor: colores.altertex[1],
       onClick: manejarCancelar,
+      disabled: cargandoActualizacion,
     },
     {
       label: 'Guardar',
@@ -144,15 +148,16 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
       size: 'large',
       backgroundColor: colores.altertex[1],
       onClick: manejarGuardar,
+      disabled: cargandoActualizacion,
     }
   ] : [
-    {
+    ...(puedeEditarse ? [{
       label: 'Editar',
       variant: 'contained',
       size: 'large',
       backgroundColor: colores.altertex[1],
       onClick: manejarCambioEdicion,
-    },
+    }] : []),
     {
       label: 'Salir',
       variant: 'outlined',
@@ -164,7 +169,7 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
 
   return (
     <>
-      {error && (
+      {(error || errorActualizacion) && (
         <Box
           sx={{
             position: 'fixed',
@@ -178,10 +183,32 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
         >
           <Alerta
             tipo="error"
-            mensaje={error}
+            mensaje={error || errorActualizacion}
             duracion={4000}
             cerrable
             onClose={() => {}}
+          />
+        </Box>
+      )}
+
+      {exitoso && mensaje && (
+        <Box
+          sx={{
+            position: 'fixed',
+            bottom: '24px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 1500,
+            width: 'calc(100% - 32px)',
+            maxWidth: 600,
+          }}
+        >
+          <Alerta
+            tipo="success"
+            mensaje={mensaje}
+            duracion={3000}
+            cerrable
+            onClose={limpiarEstado}
           />
         </Box>
       )}
@@ -195,9 +222,9 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
         customWidth={modoEdicion ? 800 : 800}
         botones={botonesModo}
       >
-        {cargando && (
+        {(cargando || cargandoActualizacion) && (
           <Typography variant="body1" sx={{ mb: 2 }}>
-            Cargando...
+            {cargandoActualizacion ? 'Guardando cambios...' : 'Cargando...'}
           </Typography>
         )}
 
@@ -205,29 +232,31 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
           <>
             {modoEdicion ? (
               <Box sx={{ mb: 3 }}>
-                <CampoTexto
-                  label="Nombre del Rol"
-                  name="nombreRol"
-                  value={nombreRol}
-                  onChange={manejarCambioNombre}
-                  fullWidth
-                  required
-                  maxLength={50}
-                  helperText={`${nombreRol.length}/50 caracteres`}
-                  sx={{ mb: 2 }}
-                />
-                <CampoTexto
-                  label="Descripción"
-                  name="descripcionRol"
-                  value={descripcionRol}
-                  onChange={manejarCambioDescripcion}
-                  fullWidth
-                  multiline
-                  rows={3}
-                  maxLength={150}
-                  helperText={`${descripcionRol.length}/150 caracteres`}
-                  sx={{ mb: 2 }}
-                />
+                <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+                  <CampoTexto
+                    label="Nombre del Rol"
+                    name="nombreRol"
+                    value={nombreRol}
+                    onChange={manejarCambioNombre}
+                    fullWidth
+                    required
+                    maxLength={50}
+                    helperText={`${nombreRol.length}/50 caracteres`}
+                    disabled={cargandoActualizacion}
+                  />
+                  <CampoTexto
+                    label="Descripción"
+                    name="descripcionRol"
+                    value={descripcionRol}
+                    onChange={manejarCambioDescripcion}
+                    fullWidth
+                    multiline
+                    rows={3}
+                    maxLength={150}
+                    helperText={`${descripcionRol.length}/150 caracteres`}
+                    disabled={cargandoActualizacion}
+                  />
+                </Box>
               </Box>
             ) : (
               <Box sx={{ mb: 3 }}>
@@ -259,6 +288,7 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
                   obtenerClaveElemento={(permiso) => permiso.id}
                   alturaMaxima={300}
                   ancho={300}
+                  disabled={cargandoActualizacion}
                 />
               </Box>
             ) : (

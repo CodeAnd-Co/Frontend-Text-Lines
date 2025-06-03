@@ -23,8 +23,8 @@ const ListaGrupoEmpleados = () => {
   const { usuario } = useAuth();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
-  const MENSAJE_POPUP_ELIMINAR
-    = '¿Estás seguro de que deseas eliminar los grupos seleccionados? Esta acción no se puede deshacer.';
+  const MENSAJE_POPUP_ELIMINAR =
+    '¿Estás seguro de que deseas eliminar los grupos seleccionados? Esta acción no se puede deshacer.';
 
   const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
   const [gruposSeleccionados, setGruposSeleccionados] = useState([]);
@@ -76,7 +76,7 @@ const ListaGrupoEmpleados = () => {
   const { actualizarGrupo } = useActualizarGrupoEmpleados();
 
   const handleGuardar = async () => {
-    if (!formData?.nombre?.trim() || !formData?.descripcion?.trim()) {
+    if (!formData?.esValido()) {
       setAlerta({
         tipo: 'error',
         mensaje: 'El nombre y la descripción son obligatorios.',

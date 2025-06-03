@@ -136,39 +136,50 @@ const InfoGrupoEmpleadosEditable = ({
     [todosLosEmpleados, empleadosDerecha]
   );
 
-  // Función estable para generar los datos del formulario
-  const generarDatosFormulario = useCallback(() => {
-    if (!datosListos) return null;
+  // Estado para controlar errores
+  const [errores, setErrores] = useState({
+    nombre: false,
+    descripcion: false,
+  });
 
-    return {
+  // Remueve el useEffect que validaba en tiempo real
+
+  // Función para validar campos al guardar
+  const validarCampos = () => {
+    const nombreVacio = nombre.trim() === '';
+    const descripcionVacia = descripcion.trim() === '';
+
+    setErrores({
+      nombre: nombreVacio,
+      descripcion: descripcionVacia,
+    });
+
+    return !nombreVacio && !descripcionVacia;
+  };
+
+  // Modificamos el useEffect para generar datos del formulario incluyendo la validación
+  useEffect(() => {
+    if (!datosListos || !onFormDataChange) return;
+
+    const formData = {
       nombre: nombre.trim(),
       descripcion: descripcion.trim(),
       setsDeProductos: setsDerecha.map((set) => set.id),
       empleados: empleadosDerecha.map((emp) => emp.id),
+      esValido: validarCampos,
     };
-  }, [nombre, descripcion, setsDerecha, empleadosDerecha, datosListos]);
 
-  // Efecto para notificar cambios en el formulario con debounce y comparación
-  useEffect(() => {
-    if (!datosListos || !onFormDataChange) return;
-
-    const formData = generarDatosFormulario();
-
-    // Comparar con los datos anteriores para evitar llamadas innecesarias
     const formDataString = JSON.stringify(formData);
     const lastFormDataString = JSON.stringify(referenciaUltimosFormData.current);
 
     if (formDataString !== lastFormDataString) {
       referenciaUltimosFormData.current = formData;
-
-      // Usar setTimeout para debounce y evitar llamadas síncronas que causen loops
       const timeoutId = setTimeout(() => {
         onFormDataChange(formData);
       }, 0);
-
       return () => clearTimeout(timeoutId);
     }
-  }, [generarDatosFormulario, onFormDataChange, datosListos]);
+  }, [nombre, descripcion, setsDerecha, empleadosDerecha, datosListos, onFormDataChange]);
 
   // Handlers para empleados
   const manejarSeleccionEmpleado = useCallback(
@@ -473,7 +484,12 @@ const InfoGrupoEmpleadosEditable = ({
             placeholder='Nombre del grupo'
             onChange={(evento) => setNombre(evento.target.value.slice(0, LIMITE_NOMBRE))}
             required
-            helperText={`${nombre.length}/${LIMITE_NOMBRE} ${MENSAJE_LIMITE}`}
+            error={errores.nombre}
+            helperText={
+              errores.nombre
+                ? 'Este campo es obligatorio'
+                : `${nombre.length}/${LIMITE_NOMBRE} ${MENSAJE_LIMITE}`
+            }
             inputProps={{ maxLength: LIMITE_NOMBRE }}
             sx={{ mt: 1, mb: 2, mr: 8, width: '300px', overflow: 'auto' }}
           />
@@ -488,9 +504,15 @@ const InfoGrupoEmpleadosEditable = ({
             value={descripcion}
             placeholder='Escribe una descripción'
             onChange={(evento) => setDescripcion(evento.target.value.slice(0, LIMITE_DESCRIPCION))}
-            helperText={`${descripcion.length}/${LIMITE_DESCRIPCION} ${MENSAJE_LIMITE}`}
+            error={errores.descripcion}
+            helperText={
+              errores.descripcion
+                ? 'Este campo es obligatorio'
+                : `${descripcion.length}/${LIMITE_DESCRIPCION} ${MENSAJE_LIMITE}`
+            }
             inputProps={{ maxLength: LIMITE_DESCRIPCION }}
             sx={{ mt: 1, mb: 2, width: '400px', overflow: 'auto' }}
+            required
           />
         </Grid>
 

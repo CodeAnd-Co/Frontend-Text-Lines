@@ -147,7 +147,6 @@ const ListaCategorias = () => {
         abierto={modalCrearAbierto}
         onCerrar={handleCerrarModalCrear}
         onCreado={handleCategoriaCreadaExitosamente}
-        onError={handleErrorCrearCategoria}
       />
 
       <ModalEliminarCategoria

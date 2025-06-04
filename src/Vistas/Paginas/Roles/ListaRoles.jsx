@@ -186,6 +186,7 @@ const ListaRoles = () => {
             icono: true,
             cerrable: true,
             centradoInferior: true,
+            duracion: 3000,
           });
         } else {
           const seleccionFiltrada = verificarSeleccion(seleccionados);

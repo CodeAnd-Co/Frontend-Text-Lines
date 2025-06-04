@@ -28,8 +28,8 @@ export const validarVariantes = (variantes) => {
 
     if (!normalizados.descripcion) {
       erroresVariante.descripcion = 'La descripción de la variante es obligatoria';
-    } else if (normalizados.descripcion.length > 500) {
-      erroresVariante.descripcion = 'La descripción debe tener máximo 500 caracteres';
+    } else if (normalizados.descripcion.length > 300) {
+      erroresVariante.descripcion = 'La descripción debe tener máximo 300 caracteres';
     }
 
     const erroresOpciones = {};
@@ -52,25 +52,31 @@ export const validarVariantes = (variantes) => {
         erroresOpcion.valorOpcion = 'El valor de la opción debe tener máximo 50 caracteres';
       }
 
+      // Validación de cantidad
       if (!Number.isFinite(normalizadosOpcion.cantidad) || normalizadosOpcion.cantidad <= 0) {
         erroresOpcion.cantidad = 'La cantidad debe ser un número mayor a 0';
+      } else if (!/^\d{1,10}$/.test(normalizadosOpcion.cantidad.toString())) {
+        erroresOpcion.cantidad = 'La cantidad debe tener máximo 10 dígitos.';
       }
 
-      // prettier-ignore
+      // Validación de descuento
       if (
-        !Number.isFinite(normalizadosOpcion.descuento) 
-        || normalizadosOpcion.descuento < 0 
+        !Number.isFinite(normalizadosOpcion.descuento)
+        || normalizadosOpcion.descuento < 0
         || normalizadosOpcion.descuento > 100
       ) {
         erroresOpcion.descuento = 'El descuento debe estar entre 0 y 100';
       }
 
-      // prettier-ignore
+      // Validación de costo adicional con formato (10,2)
       if (
-        !Number.isFinite(normalizadosOpcion.costoAdicional) 
+        !Number.isFinite(normalizadosOpcion.costoAdicional)
         || normalizadosOpcion.costoAdicional < 0
       ) {
         erroresOpcion.costoAdicional = 'El costo adicional debe ser un número positivo';
+      } else if (!/^\d{1,8}(\.\d{1,2})?$/.test(normalizadosOpcion.costoAdicional.toString())) {
+        erroresOpcion.costoAdicional
+          = 'El costo adicional debe tener máximo 8 dígitos antes del punto y 2 después.';
       }
 
       if (!normalizadosOpcion.SKUautomatico) {

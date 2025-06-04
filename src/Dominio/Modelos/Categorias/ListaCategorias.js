@@ -7,6 +7,8 @@ import { Categoria } from '@Modelos/Categorias/Categoria';
  *   categorias: Categoria[],
  *   mensaje: string
  * }}
+ * 
+ * @see [RF[47] Consulta lista de categorías](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF47)
  */
 export function listaCategorias(respuestaJson) {
   const { mensaje, listaCategoria } = respuestaJson;

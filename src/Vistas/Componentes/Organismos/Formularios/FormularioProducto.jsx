@@ -32,6 +32,7 @@ const ContenidoFormulario = memo(({ alMostrarFormularioProveedor }) => {
     setImagenes,
     erroresProducto,
     erroresVariantes,
+    intentosEnviar,
     listaProveedores,
     manejarCrearVariante,
     manejarActualizarVariante,
@@ -82,6 +83,7 @@ const ContenidoFormulario = memo(({ alMostrarFormularioProveedor }) => {
               }
               imagenesVariante={imagenes.imagenesVariantes[idVariante] || []}
               erroresVariantes={erroresVariantes}
+              intentosEnviar={intentosEnviar}
               alActualizarVariante={manejarActualizarVariante}
               alEliminarVariante={manejarEliminarVariante}
               alAgregarOpcion={manejarAgregarOpcion}

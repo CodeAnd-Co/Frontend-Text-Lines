@@ -4,75 +4,59 @@
  * @param {Object} proveedor - Datos del proveedor
  * @returns {Object} errores - Campos con error
  */
-export const validarProveedor = (proveedor) => {
+export const validarProveedor = (datosProveedor) => {
   const errores = {};
 
-  const normalizados = {
-    ...proveedor,
-    nombre: proveedor.nombre?.trim(),
-    nombreCompania: proveedor.nombreCompania?.trim(),
-    telefonoContacto: proveedor.telefonoContacto?.trim(),
-    correoContacto: proveedor.correoContacto?.trim(),
-    direccion: proveedor.direccion?.trim(),
-    codigoPostal: proveedor.codigoPostal?.trim(),
-    pais: proveedor.pais?.trim(),
-  };
-
-  if (!normalizados.nombre) {
-    errores.nombre = 'El nombre es obligatorio';
-  } else if (normalizados.nombre.length > 100) {
-    errores.nombre = 'El nombre debe tener máximo 100 caracteres';
+  // Validación de nombre
+  if (!datosProveedor.nombre || datosProveedor.nombre.trim() === '') {
+    errores.nombre = 'El nombre es obligatorio.';
   }
 
-  if (!normalizados.nombreCompania) {
-    errores.nombreCompania = 'El nombre de la compañía es obligatorio';
-  } else if (normalizados.nombreCompania.length > 150) {
-    errores.nombreCompania = 'El nombre de la compañía debe tener máximo 150 caracteres';
+  // Validación de nombre de la compañía
+  if (!datosProveedor.nombreCompania || datosProveedor.nombreCompania.trim() === '') {
+    errores.nombreCompania = 'El nombre de la compañía es obligatorio.';
   }
 
-  if (!normalizados.telefonoContacto) {
-    errores.telefonoContacto = 'El teléfono de contacto es obligatorio';
-  } else if (normalizados.telefonoContacto.length > 10) {
-    errores.telefonoContacto = 'El teléfono de contacto debe tener máximo 10 caracteres';
-  } else if (!/^\d+$/.test(normalizados.telefonoContacto)) {
-    errores.telefonoContacto = 'El teléfono de contacto debe contener solo números';
+  // Validación de dirección
+  if (!datosProveedor.direccion || datosProveedor.direccion.trim() === '') {
+    errores.direccion = 'La dirección es obligatoria.';
   }
 
-  if (!normalizados.correoContacto) {
-    errores.correoContacto = 'El correo electrónico es obligatorio';
-  } else {
-    if (normalizados.correoContacto.length > 100) {
-      errores.correoContacto = 'El correo electrónico debe tener máximo 100 caracteres';
-    } else {
-      const correoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!correoValido.test(normalizados.correoContacto)) {
-        errores.correoContacto = 'Debe ser un correo electrónico válido';
-      }
-    }
+  // Validación de país
+  if (!datosProveedor.pais || datosProveedor.pais.trim() === '') {
+    errores.pais = 'El país es obligatorio.';
+  }
+  if (datosProveedor.pais.length > 60) {
+    errores.pais = 'El país no puede exceder los 60 caracteres.';
   }
 
-  if (!normalizados.direccion) {
-    errores.direccion = 'La dirección es obligatoria';
-  } else if (normalizados.direccion.length > 200) {
-    errores.direccion = 'La dirección debe tener máximo 200 caracteres';
+  // Validación de estado
+  if (typeof datosProveedor.estado !== 'number' || ![0, 1].includes(datosProveedor.estado)) {
+    errores.estado = 'El estado debe ser 0 (Inactivo) o 1 (Activo).';
   }
 
-  if (!normalizados.codigoPostal) {
-    errores.codigoPostal = 'El código postal es obligatorio';
-  } else if (normalizados.codigoPostal.length > 20) {
-    errores.codigoPostal = 'El código postal debe tener máximo 20 caracteres';
-  } else if (!/^\d+$/.test(normalizados.codigoPostal)) {
-    errores.codigoPostal = 'El código postal debe contener solo números';
+  // Validación de correo electrónico
+  const regexCorreo
+    = /^[^\s,;:{}[\]/\\=+?"()<>]+@[^\s,;:{}[\]/\\=+?"()<>]+\.[^\s,;:{}[\]/\\=+?"()<>]+$/;
+  if (!datosProveedor.correoContacto || !regexCorreo.test(datosProveedor.correoContacto)) {
+    errores.correoContacto
+      = 'El correo electrónico no es válido. Asegúrate de usar un formato correcto.';
+  }
+  if (
+    datosProveedor.correoContacto.startsWith('.')
+    || datosProveedor.correoContacto.endsWith('.')
+  ) {
+    errores.correoContacto = 'El correo no puede comenzar ni terminar con un punto.';
   }
 
-  if (!normalizados.pais) {
-    errores.pais = 'El país es obligatorio';
-  } else if (normalizados.pais.length > 50) {
-    errores.pais = 'El país debe tener máximo 50 caracteres';
+  // Validación de código postal
+  if (!datosProveedor.codigoPostal || !/^\d{5}$/.test(datosProveedor.codigoPostal)) {
+    errores.codigoPostal = 'El código postal debe tener exactamente 5 dígitos.';
   }
 
-  if (typeof proveedor.estado !== 'number' || (proveedor.estado !== 0 && proveedor.estado !== 1)) {
-    errores.estado = 'El estado debe ser 1 (activo) o 0 (inactivo)';
+  // Validación de teléfono
+  if (!datosProveedor.telefonoContacto || !/^\d{10}$/.test(datosProveedor.telefonoContacto)) {
+    errores.telefonoContacto = 'El teléfono debe tener exactamente 10 dígitos.';
   }
 
   return errores;

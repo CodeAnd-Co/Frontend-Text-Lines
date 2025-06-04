@@ -55,15 +55,12 @@ const FormaCrearCategorias = ({
   const handleFilaSeleccion = (itemSeleccion) => {
     const ids = Array.isArray(itemSeleccion) ? itemSeleccion : Array.from(itemSeleccion?.ids || []);
 
-    // Get the products that correspond to the selected IDs
     const productosSeleccionados = ids
       .map((id) => rows.find((row) => row.id === id))
-      .filter((fila) => fila); // Remove any undefined entries
+      .filter((fila) => fila);
 
-    // Update the productos state to match exactly what's selected
     setProductos(productosSeleccionados);
 
-    // Clear the validation alert when products are selected
     if (productosSeleccionados.length > 0 && mostrarAlerta) {
       setMostrarAlerta(false);
     }
@@ -117,6 +114,17 @@ const FormaCrearCategorias = ({
         multiline
         rows={3}
       />
+      {mostrarAlerta && (
+        <Alerta
+          tipo='warning'
+          mensaje={'Ingresa el nombre y selecciona al menos un producto.'}
+          cerrable
+          duracion={3000}
+          onClose={() => setMostrarAlerta(false)}
+          sx={{ mb: 2, mt: 2 }}
+        />
+      )}
+
     </>
   );
 };

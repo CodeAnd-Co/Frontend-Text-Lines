@@ -76,7 +76,7 @@ const ListaCategorias = () => {
     try {
       const detalle = await leerCategoria(idCategoria);
       setCategoriaDetalle(detalle);
-    } catch (err) {
+    } catch {
       setErrorDetalle(true);
       setCategoriaDetalle({
         nombreCategoria: '',

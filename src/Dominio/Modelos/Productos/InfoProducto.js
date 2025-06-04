@@ -24,7 +24,7 @@ export class InfoProducto {
 
     // Variantes del producto (puede ser un arreglo vacío)
     this.variantes = Array.isArray(producto.variantes)
-      ? producto.variantes.map((v) => new VarianteProducto(v))
+      ? producto.variantes.map((variante) => new VarianteProducto(variante))
       : [];
   }
 }
@@ -35,7 +35,7 @@ class VarianteProducto {
     this.nombreVariante = nombreVariante ?? '';
     this.descripcion = descripcion ?? '';
     this.opciones = Array.isArray(opciones)
-      ? opciones.map((o) => new OpcionVariante(o))
+      ? opciones.map((opcion) => new OpcionVariante(opcion))
       : [];
   }
 }

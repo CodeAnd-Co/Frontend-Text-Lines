@@ -177,7 +177,7 @@ const FormularioActualizarUsuario = ({
         <CampoSelect
           label='Rol'
           name='idRol'
-          value={datosUsuario.idRol}
+          value={datosUsuario.idRol !== undefined ? datosUsuario.idRol : ''}
           onChange={manejarCambio}
           required
           size='medium'
@@ -190,6 +190,23 @@ const FormularioActualizarUsuario = ({
               label: rol.nombre,
             }))}
           disabled={cargandoRoles}
+        />
+      </Grid>
+
+      <Grid size={6} sx={estiloCuadricula}>
+        <CampoSelect
+          label='Estatus'
+          name='estatus'
+          value={datosUsuario.estatus}
+          onChange={manejarCambio}
+          required
+          size='medium'
+          error={!!erroresValidacion.estatus}
+          helperText={erroresValidacion.estatus && CAMPO_OBLIGATORIO}
+          options={[
+            { value: 1, label: 'Activo' },
+            { value: 0, label: 'Inactivo' },
+          ]}
         />
       </Grid>
 

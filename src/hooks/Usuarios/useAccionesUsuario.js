@@ -9,7 +9,6 @@ export const useAccionesUsuario = (usuarioInicial = null) => {
   const [cargando, setCargando] = useState(false);
   const [alerta, setAlerta] = useState(null);
 
-  // Inicializar con datos de edición o vacío
   const [datosUsuario, setDatosUsuario] = useState(() => {
     if (esEdicion) {
       let fechaNacimiento = null;
@@ -17,7 +16,6 @@ export const useAccionesUsuario = (usuarioInicial = null) => {
         fechaNacimiento = dayjs(usuarioInicial.fechaNacimiento);
       }
 
-      // Normalizar género
       let genero = '';
       if (usuarioInicial.genero) {
         if (usuarioInicial.genero.toLowerCase() === 'femenino') genero = 'Mujer';
@@ -25,7 +23,7 @@ export const useAccionesUsuario = (usuarioInicial = null) => {
         else genero = 'Otro';
       }
 
-      let idRol = usuarioInicial.idRol || '';
+      let idRol = usuarioInicial.idRol ?? '';
       if (typeof usuarioInicial.rol === 'string') {
         const rolesMap = {
           'Super Administrador': 1,
@@ -37,19 +35,18 @@ export const useAccionesUsuario = (usuarioInicial = null) => {
       }
 
       return {
-        ...usuarioInicial,
-        idUsuario: usuarioInicial.idUsuario || usuarioInicial.id,
-        nombreCompleto: usuarioInicial.nombreCompleto || '',
-        apellido: usuarioInicial.apellido || '',
-        correoElectronico: usuarioInicial.correoElectronico || '',
-        numeroTelefono: usuarioInicial.numeroTelefono || '',
-        direccion: usuarioInicial.direccion || '',
-        fechaNacimiento,
-        genero,
-        idRol,
-        cliente: usuarioInicial.cliente || [],
+        nombreCompleto: usuarioInicial.nombreCompleto ?? '',
+        apellido: usuarioInicial.apellido ?? '',
+        correoElectronico: usuarioInicial.correoElectronico ?? '',
         contrasenia: '',
         confirmarContrasenia: '',
+        numeroTelefono: usuarioInicial.numeroTelefono ?? '',
+        direccion: usuarioInicial.direccion ?? '',
+        fechaNacimiento,
+        genero,
+        idRol: idRol ?? '',
+        cliente: usuarioInicial.cliente ?? [],
+        estatus: usuarioInicial.estatus !== undefined ? usuarioInicial.estatus : 1,
       };
     }
     return {
@@ -62,8 +59,9 @@ export const useAccionesUsuario = (usuarioInicial = null) => {
       direccion: '',
       fechaNacimiento: null,
       genero: '',
-      rol: '',
+      idRol: '',
       cliente: [],
+      estatus: 1,
     };
   });
 
@@ -97,7 +95,11 @@ export const useAccionesUsuario = (usuarioInicial = null) => {
       fechaNacimiento: datosUsuario.fechaNacimiento
         ? dayjs(datosUsuario.fechaNacimiento).format('YYYY-MM-DD')
         : null,
+      nombreCompleto: datosUsuario.nombreCompleto,
+      apellido: datosUsuario.apellido,
     };
+
+    console.log('Enviando al backend:', datosProcesados);
 
     const nuevosErrores = validarDatosActualizarUsuario(datosProcesados);
 
@@ -146,7 +148,7 @@ export const useAccionesUsuario = (usuarioInicial = null) => {
       direccion: '',
       fechaNacimiento: null,
       genero: '',
-      rol: '',
+      idrol: '',
       cliente: [],
     });
     setErroresValidacion({});

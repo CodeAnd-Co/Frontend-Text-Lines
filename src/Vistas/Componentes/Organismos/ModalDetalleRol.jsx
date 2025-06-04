@@ -24,6 +24,9 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
   const [nombreRol, setNombreRol] = useState('');
   const [descripcionRol, setDescripcionRol] = useState('');
 
+  const [nombreOriginal, setNombreOriginal] = useState('');
+  const [descripcionOriginal, setDescripcionOriginal] = useState('');
+
   const permisosLoadedRef = useRef(false);
 
   useEffect(() => {
@@ -32,8 +35,14 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
 
   useEffect(() => {
     if (detalle) {
-      setNombreRol(detalle.nombre || '');
-      setDescripcionRol(detalle.descripcion || '');
+      const nombre = detalle.nombre || '';
+      const descripcion = detalle.descripcion || '';
+
+      setNombreRol(nombre);
+      setDescripcionRol(descripcion);
+
+      setNombreOriginal(nombre);
+      setDescripcionOriginal(descripcion);
     }
   }, [detalle]);
 
@@ -98,23 +107,24 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
 
   const manejarGuardar = async () => {
     const datosParaEnviar = {
-      nombre: nombreRol,
-      descripcion: descripcionRol,
-      permisos: permisosSeleccionados.map(permiso => ({ id: permiso.id, nombre: permiso.nombre }))
+      // Only send the name value if it was actually changed
+      nombre: nombreRol !== nombreOriginal ? nombreRol : null,
+      // Only send the description value if it was actually changed
+      descripcion: descripcionRol !== descripcionOriginal ? descripcionRol : null,
+      permisos: permisosSeleccionados.map(permiso => permiso.id)
     };
 
     const resultado = await actualizarRol(idRol, datosParaEnviar);
 
     if (resultado.success) {
       setModoEdicion(false);
-      // Recargar los detalles del rol para mostrar los cambios actualizados
       leerRol(idRol);
     }
   };
 
   const manejarCancelar = () => {
-    setNombreRol(detalle?.nombre || '');
-    setDescripcionRol(detalle?.descripcion || '');
+    setNombreRol(nombreOriginal);
+    setDescripcionRol(descripcionOriginal);
     setModoEdicion(false);
     limpiarEstado();
   };

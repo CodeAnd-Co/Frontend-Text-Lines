@@ -8,9 +8,10 @@ const API_KEY = import.meta.env.VITE_API_KEY;
 export class RepositorioActualizarRol {
   static async actualizar(idRol, datosRol) {
     try {
+      const datosRolActualizacion = {datosRol, idRol}
       const respuesta = await axios.put(
         `${RUTAS_API.ROLES.ACTUALIZAR}`,
-        { datosRol, idRol },
+        { datosRolActualizacion },
         {
           withCredentials: true,
           headers: {

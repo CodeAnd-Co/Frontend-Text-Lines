@@ -1,4 +1,3 @@
-import Alerta from '@Moleculas/Alerta';
 import CampoTexto from '@Atomos/CampoTexto';
 import { useState, useEffect } from 'react';
 import obtenerProductos from '@Servicios/obtenerProductos';
@@ -28,7 +27,7 @@ const FormaCrearCategorias = ({
   setProductos,
   mostrarAlerta,
   setMostrarAlerta,
-  errores, 
+  errores,
   intentoEnviar,
 }) => {
   const [rows, setRows] = useState([]);
@@ -56,12 +55,17 @@ const FormaCrearCategorias = ({
   const handleFilaSeleccion = (itemSeleccion) => {
     const ids = Array.isArray(itemSeleccion) ? itemSeleccion : Array.from(itemSeleccion?.ids || []);
 
-    const nuevasFilas = ids
+    // Get the products that correspond to the selected IDs
+    const productosSeleccionados = ids
       .map((id) => rows.find((row) => row.id === id))
-      .filter((fila) => fila && !productos.some((producto) => producto.id === fila.id));
+      .filter((fila) => fila); // Remove any undefined entries
 
-    if (nuevasFilas.length > 0) {
-      setProductos((prev) => [...prev, ...nuevasFilas]);
+    // Update the productos state to match exactly what's selected
+    setProductos(productosSeleccionados);
+
+    // Clear the validation alert when products are selected
+    if (productosSeleccionados.length > 0 && mostrarAlerta) {
+      setMostrarAlerta(false);
     }
   };
 
@@ -75,13 +79,13 @@ const FormaCrearCategorias = ({
         onChange={(evento) => setNombreCategoria(evento.target.value.slice(0, LIMITE_NOMBRE))}
         inputProps={{ maxLength: LIMITE_NOMBRE }}
         helperText={
-          errores?.nombreCategoria || `${nombreCategoria.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`
+          errores?.nombreCategoria
+          || `${nombreCategoria.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`
         }
         error={intentoEnviar && !!errores?.nombreCategoria}
         required
         sx={{ mb: 2 }}
       />
-
 
       <ProductosModal
         elevacion={1}
@@ -99,10 +103,13 @@ const FormaCrearCategorias = ({
         fullWidth
         type='text'
         value={descripcionCategoria}
-        onChange={(evento) => setDescripcionCategoria(evento.target.value.slice(0, LIMITE_DESCRIPCION))}
+        onChange={(evento) =>
+          setDescripcionCategoria(evento.target.value.slice(0, LIMITE_DESCRIPCION))
+        }
         inputProps={{ maxLength: LIMITE_DESCRIPCION }}
         helperText={
-          errores?.descripcionCategoria || `${descripcionCategoria.length}/${LIMITE_DESCRIPCION} - ${MENSAJE_LIMITE}`
+          errores?.descripcionCategoria
+          || `${descripcionCategoria.length}/${LIMITE_DESCRIPCION} - ${MENSAJE_LIMITE}`
         }
         error={intentoEnviar && !!errores?.descripcionCategoria}
         required
@@ -110,18 +117,6 @@ const FormaCrearCategorias = ({
         multiline
         rows={3}
       />
-
-
-      {mostrarAlerta && (
-        <Alerta
-          tipo='warning'
-          mensaje={'Ingresa el nombre y selecciona al menos un producto.'}
-          cerrable
-          duracion={3000}
-          onClose={() => setMostrarAlerta(false)}
-          sx={{ mb: 2, mt: 2 }}
-        />
-      )}
     </>
   );
 };

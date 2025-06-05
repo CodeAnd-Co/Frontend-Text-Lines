@@ -50,7 +50,7 @@ const ListaRoles = () => {
       icono: true,
       cerrable: true,
       centradoInferior: true,
-      duracion: 3000,
+      duracion: 2500,
     });
     recargar();
   };
@@ -71,7 +71,7 @@ const ListaRoles = () => {
         icono: true,
         cerrable: true,
         centradoInferior: true,
-        duracion: 3000,
+        duracion: 2500,
       });
     }
 
@@ -98,7 +98,7 @@ const ListaRoles = () => {
           icono: true,
           cerrable: true,
           centradoInferior: true,
-          duracion: 3000,
+          duracion: 2500,
         });
       } else {
         setAlerta({
@@ -107,7 +107,6 @@ const ListaRoles = () => {
           icono: true,
           cerrable: true,
           centradoInferior: true,
-          duracion: 3000,
         });
       }
 
@@ -125,7 +124,7 @@ const ListaRoles = () => {
         icono: true,
         cerrable: true,
         centradoInferior: true,
-        duracion: 3000,
+        duracion: 2500,
       });
     } finally {
       setAbrirPopupEliminar(false);
@@ -206,7 +205,7 @@ const ListaRoles = () => {
               icono: true,
               cerrable: true,
               centradoInferior: true,
-              duracion: 3000,
+              duracion: 2500,
             });
           }
         }
@@ -307,7 +306,10 @@ const ListaRoles = () => {
 
       <ModalDetalleRol
         abierto={modalDetalleAbierto}
-        onCerrar={() => setModalDetalleAbierto(false)}
+        onCerrar={() => {
+          setModalDetalleAbierto(false);
+          recargar()
+        }}
         idRol={rolSeleccionado}
       />
 

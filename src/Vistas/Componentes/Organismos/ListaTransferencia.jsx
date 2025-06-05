@@ -16,16 +16,16 @@ import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrow
 
 
 // Funciones utilitarias
-function no(a, b, funcionClave = (elemento) => elemento.id || elemento) {
-  return a.filter((valorA) => !b.some((valorB) => funcionClave(valorA) === funcionClave(valorB)));
+function no(no1, no2, funcionClave = (elemento) => elemento.id || elemento) {
+  return no1.filter((valorA) => !no2.some((valorB) => funcionClave(valorA) === funcionClave(valorB)));
 }
 
-function interseccion(a, b, funcionClave = (elemento) => elemento.id || elemento) {
-  return a.filter((valorA) => b.some((valorB) => funcionClave(valorA) === funcionClave(valorB)));
+function interseccion(inter1, inter2, funcionClave = (elemento) => elemento.id || elemento) {
+  return inter1.filter((valorA) => inter2.some((valorB) => funcionClave(valorA) === funcionClave(valorB)));
 }
 
-function union(a, b, funcionClave = (elemento) => elemento.id || elemento) {
-  return [...a, ...no(b, a, funcionClave)];
+function union(union1, union2, funcionClave = (elemento) => elemento.id || elemento) {
+  return [...union1, ...no(union2, union1, funcionClave)];
 }
 
 // Componente Lista de Transferencia Personalizada
@@ -61,7 +61,7 @@ const ListaTransferenciaPersonalizada = ({
     updatingFromPropsRef.current = false;
   }, [elementosSeleccionados]);
 
-  // Solo notificar al padre cuando el cambio venga de interacción de usuario
+  // Only notify parent when changes come from user interactions, not from prop updates
   useEffect(() => {
     if (alCambiarSeleccion && !updatingFromPropsRef.current) {
       alCambiarSeleccion({
@@ -69,8 +69,7 @@ const ListaTransferenciaPersonalizada = ({
         seleccionados: derecha
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [izquierda, derecha]); // alCambiarSeleccion no debe estar en deps para evitar loops
+  }, [izquierda, derecha, alCambiarSeleccion]);
 
   const marcadosIzquierda = interseccion(marcados, izquierda, obtenerClaveElemento);
   const marcadosDerecha = interseccion(marcados, derecha, obtenerClaveElemento);
@@ -153,14 +152,14 @@ const ListaTransferenciaPersonalizada = ({
         component="div"
         role="list"
       >
-        {elementos.map((elemento, idx) => {
+        {elementos.map((elemento) => {
           const claveElemento = obtenerClaveElemento(elemento);
           const etiquetaElemento = obtenerEtiquetaElemento(elemento);
           const estaMarcado = marcados.some(elementoMarcado => obtenerClaveElemento(elementoMarcado) === claveElemento);
 
           return (
             <ListItemButton
-              key={claveElemento ?? idx} // Asegura que siempre haya un key único
+              key={claveElemento}
               role="listitem"
               onClick={manejarAlternar(elemento)}
             >

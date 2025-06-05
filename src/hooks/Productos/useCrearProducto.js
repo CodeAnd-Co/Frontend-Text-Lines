@@ -13,7 +13,11 @@ export const useCrearProducto = () => {
   const guardarProducto = async ({ producto, variantes, imagenProducto, imagenesVariantes }) => {
     const erroresValidacionProducto = validarProducto(producto);
     setErroresProducto(erroresValidacionProducto);
-    if (Object.keys(erroresValidacionProducto).length > 0) {
+
+    const erroresValidacionVariantes = validarVariantes(variantes);
+    setErroresVariantes(erroresValidacionVariantes);
+
+    if (Object.keys(erroresValidacionProducto).length > 0 || Object.keys(erroresValidacionVariantes).length > 0) {
       return {
         exito: false,
         mensaje: 'Por favor revisa los campos del producto. Algunos datos no son válidos.',
@@ -60,18 +64,6 @@ export const useCrearProducto = () => {
       };
     }
 
-    const erroresValidacionVariantes = validarVariantes(variantes);
-    setErroresVariantes(erroresValidacionVariantes);
-
-    if (Object.keys(erroresValidacionVariantes).length > 0) {
-      return {
-        exito: false,
-        mensaje:
-          'Revisa los campos de las variantes. Algunos datos son inválidos o están incompletos.',
-      };
-    }
-
-    // prettier-ignore
     if (
       !imagenesVariantes 
       || Object.keys(imagenesVariantes).length !== Object.keys(variantes).length 

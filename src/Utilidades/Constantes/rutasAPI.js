@@ -1,3 +1,5 @@
+import { A } from 'storybook/internal/components';
+
 const BASE_URL = import.meta.env.VITE_API_URL;
 const BASE_USUARIOS = `${BASE_URL}/api/usuarios`;
 const BASE_CATEGORIAS = `${BASE_URL}/api/categorias`;
@@ -72,12 +74,15 @@ export const RUTAS_API = {
     LEER_GRUPO: `${BASE_EMPLEADOS}/leer-grupo`,
     CREAR_GRUPO: `${BASE_EMPLEADOS}/crear-grupo`,
     ACTUALIZAR_EMPLEADO: `${BASE_EMPLEADOS}/actualizar`,
+    EXPORTAR_EMPLEADOS: `${BASE_EMPLEADOS}/exportar-empleados`,
+    ACTUALIZAR_GRUPO: `${BASE_EMPLEADOS}/actualizar-grupo`,
   },
   CUOTAS: {
     BASE: BASE_CUOTAS,
     CREAR_CUOTA: `${BASE_CUOTAS}/crear-cuota`,
     CONSULTAR_LISTA: `${BASE_CUOTAS}/consultar-lista`,
     ELIMINAR_SET_CUOTAS: `${BASE_CUOTAS}/eliminar-set-cuotas`,
+    LEER_SET_CUOTAS: `${BASE_CUOTAS}/leer-set-cuotas`,
   },
   ROLES: {
     BASE: BASE_ROLES,
@@ -85,6 +90,7 @@ export const RUTAS_API = {
     CREAR_ROL: `${BASE_ROLES}/crear-rol`,
     ELIMINAR_ROL: `${BASE_ROLES}/eliminar`,
     LEER_ROL: `${BASE_ROLES}/leer`,
+    ACTUALIZAR: `${BASE_ROLES}/actualizar-rol`,
   },
   PEDIDOS: {
     BASE: BASE_PEDIDOS,
@@ -93,6 +99,7 @@ export const RUTAS_API = {
   },
   EVENTOS: {
     BASE: BASE_EVENTOS,
+    CREAR_EVENTO: `${BASE_EVENTOS}/crear`,
     CONSULTAR_LISTA: `${BASE_EVENTOS}/consultar-lista-eventos`,
     ELIMINAR_EVENTO: `${BASE_EVENTOS}/eliminar`,
     CONSULTAR_EVENTO: `${BASE_EVENTOS}/consultar-evento`,

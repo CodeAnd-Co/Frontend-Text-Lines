@@ -1,11 +1,8 @@
-import Alerta from '@Moleculas/Alerta';
 import CampoTexto from '@Atomos/CampoTexto';
 import { useState, useEffect } from 'react';
 import obtenerProductos from '@Servicios/obtenerProductos';
 import ProductosModal from '@Organismos/ProductosModal';
 import { useAuth } from '@Hooks/AuthProvider';
-
-//RF[31] Consulta crear set de cuota - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF31]
 
 const columns = [
   { field: 'id', headerName: 'Id', width: 100 },
@@ -13,21 +10,20 @@ const columns = [
   { field: 'tipo', headerName: 'Tipo', width: 100 },
 ];
 
-// Constantes para mensajes y límites
 const LIMITE_NOMBRE = 50;
 const LIMITE_DESCRIPCION = 150;
 const MENSAJE_LIMITE = 'Máximo caracteres';
 
 const FormaCrearCuotaSet = ({
-  nombreCuotaSet,
-  setNombreCuotaSet,
-  descripcionCuotaSet,
-  setDescripcionCuotaSet,
-  productos,
-  setProductos,
-  mostrarAlerta,
-  setMostrarAlerta,
-}) => {
+                              nombreCuotaSet,
+                              setNombreCuotaSet,
+                              descripcionCuotaSet,
+                              setDescripcionCuotaSet,
+                              productos,
+                              setProductos,
+                              errores,
+                              intentoEnviar,
+                            }) => {
   const [rows, setRows] = useState([]);
   const { usuario } = useAuth();
   const clienteSeleccionado = usuario.clienteSeleccionado;
@@ -62,7 +58,10 @@ const FormaCrearCuotaSet = ({
         value={nombreCuotaSet}
         onChange={(evento) => setNombreCuotaSet(evento.target.value.slice(0, LIMITE_NOMBRE))}
         inputProps={{ maxLength: LIMITE_NOMBRE }}
-        helperText={`${nombreCuotaSet.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`}
+        helperText={
+          errores?.nombreCuotaSet || `${nombreCuotaSet.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`
+        }
+        error={intentoEnviar && !!errores?.nombreCuotaSet}
         sx={{ mb: 2 }}
       />
 
@@ -73,7 +72,6 @@ const FormaCrearCuotaSet = ({
         filas={rows}
         paginacion={4}
         checkBox={true}
-        // onRowClick={handleClickFila}
         onRowSeleccion={(ids) => handleFilaSeleccion(ids)}
       />
 
@@ -86,22 +84,14 @@ const FormaCrearCuotaSet = ({
           setDescripcionCuotaSet(evento.target.value.slice(0, LIMITE_DESCRIPCION))
         }
         inputProps={{ maxLength: LIMITE_DESCRIPCION }}
-        helperText={`${descripcionCuotaSet.length}/${LIMITE_DESCRIPCION} - ${MENSAJE_LIMITE}`}
+        helperText={
+          errores?.descripcionCuotaSet || `${descripcionCuotaSet.length}/${LIMITE_DESCRIPCION} - ${MENSAJE_LIMITE}`
+        }
+        error={intentoEnviar && !!errores?.descripcionCuotaSet}
         sx={{ mt: 2 }}
         multiline
         rows={3}
       />
-
-      {mostrarAlerta && (
-        <Alerta
-          tipo='warning'
-          mensaje={'Completa todos los campos y selecciona al menos un producto.'}
-          cerrable
-          duracion={3000}
-          onClose={() => setMostrarAlerta(false)}
-          sx={{ mb: 2, mt: 2 }}
-        />
-      )}
     </>
   );
 };

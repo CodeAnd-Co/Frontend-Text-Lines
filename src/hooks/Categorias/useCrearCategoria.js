@@ -33,25 +33,27 @@ const useCrearCategoria = () => {
         setMensaje(resultado.data.exito);
         return resultado;
       } else {
-        // In case there's an error in the successful response
-        throw new Error(resultado.data?.error || 'Error desconocido');
+        throw new Error(resultado.data?.mensaje || resultado.data?.error || 'Error desconocido');
       }
     } catch (err) {
       setExito(false);
       setError(true);
 
-      // Handle backend error message
-      if (err.response?.data?.error) {
-        // Backend API error with error message
-        setMensaje(err.response.data.error);
-      } else if (err instanceof Error) {
-        // Error thrown manually or from other sources
-        setMensaje(err.message);
-      } else {
-        // Fallback error message
-        setMensaje('Ocurrió un error al crear la categoría');
+      // Consolidated error handling for all possible response formats
+      let errorMessage = 'Ocurrió un error al crear la categoría';
+
+      if (err.response?.data) {
+        // Try different possible error message fields from backend
+        errorMessage = err.response.data.mensaje
+          || err.response.data.error
+          || err.response.data.message
+          || errorMessage;
+      } else if (err.message) {
+        // Handle direct Error messages (including those thrown from repository)
+        errorMessage = err.message;
       }
 
+      setMensaje(errorMessage);
       return false;
     } finally {
       setCargando(false);

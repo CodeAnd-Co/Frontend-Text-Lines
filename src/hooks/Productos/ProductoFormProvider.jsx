@@ -197,8 +197,8 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
           valorOpcion: '',
           SKUautomatico: sku,
           SKUcomercial: '',
-          costoAdicional: undefined,
-          descuento: undefined,
+          costoAdicional: 0,
+          descuento: 0,
           estado: 1,
         };
 

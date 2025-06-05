@@ -65,8 +65,12 @@ export const validarProducto = (producto) => {
       errores.descuento = 'El descuento debe tener máximo 10 dígitos antes del punto y 2 después.';
     }
   }
-
   // Validación de descuento
+
+  if (producto.descuento < 0 || producto.descuento > 100) {
+    errores.descuento = 'El descuento debe estar entre 0 y 100.';
+  }
+
   if (producto.descuento === false) {
     errores.descuento = 'El descuento no es válido.';
   }

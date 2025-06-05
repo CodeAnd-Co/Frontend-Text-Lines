@@ -8,6 +8,7 @@ import { repositorioEliminarCliente } from '@Repositorios/Clientes/repositorioEl
  * @param {Function} setEliminacionExitosa - Función para marcar si fue exitosa la eliminación.
  * @param {Function} onSuccess - Función a ejecutar si la eliminación fue exitosa (recibe el ID eliminado).
  * @returns {{ error: string|null }}
+ * @see [RF15 - Elimina Cliente](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF15)
  */
 export function useEliminarCliente(idCliente, setEliminacionExitosa, onSuccess) {
   const [error, setError] = useState(null);

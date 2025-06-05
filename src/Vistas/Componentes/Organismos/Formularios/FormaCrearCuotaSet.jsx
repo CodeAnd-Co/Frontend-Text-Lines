@@ -1,11 +1,8 @@
-import Alerta from '@Moleculas/Alerta';
 import CampoTexto from '@Atomos/CampoTexto';
 import { useState, useEffect } from 'react';
 import obtenerProductos from '@Servicios/obtenerProductos';
 import ProductosModal from '@Organismos/ProductosModal';
 import { useAuth } from '@Hooks/AuthProvider';
-
-//RF[31] Consulta crear set de cuota - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF31]
 
 const columns = [
   { field: 'id', headerName: 'Id', width: 100 },
@@ -13,23 +10,20 @@ const columns = [
   { field: 'tipo', headerName: 'Tipo', width: 100 },
 ];
 
-// Constantes para mensajes y límites
 const LIMITE_NOMBRE = 50;
 const LIMITE_DESCRIPCION = 150;
 const MENSAJE_LIMITE = 'Máximo caracteres';
 
 const FormaCrearCuotaSet = ({
-  nombreCuotaSet,
-  setNombreCuotaSet,
-  descripcionCuotaSet,
-  setDescripcionCuotaSet,
-  productos,
-  setProductos,
-  mostrarAlerta,
-  setMostrarAlerta,
-  errores,
-  intentoEnviar,
-}) => {
+                              nombreCuotaSet,
+                              setNombreCuotaSet,
+                              descripcionCuotaSet,
+                              setDescripcionCuotaSet,
+                              productos,
+                              setProductos,
+                              errores,
+                              intentoEnviar,
+                            }) => {
   const [rows, setRows] = useState([]);
   const { usuario } = useAuth();
   const clienteSeleccionado = usuario.clienteSeleccionado;
@@ -71,7 +65,6 @@ const FormaCrearCuotaSet = ({
         sx={{ mb: 2 }}
       />
 
-
       <ProductosModal
         elevacion={1}
         sx={{ width: '100%', height: '350px', my: 2 }}
@@ -99,18 +92,6 @@ const FormaCrearCuotaSet = ({
         multiline
         rows={3}
       />
-
-
-      {mostrarAlerta && (
-        <Alerta
-          tipo='warning'
-          mensaje={'Completa todos los campos y selecciona al menos un producto.'}
-          cerrable
-          duracion={3000}
-          onClose={() => setMostrarAlerta(false)}
-          sx={{ mb: 2, mt: 2 }}
-        />
-      )}
     </>
   );
 };

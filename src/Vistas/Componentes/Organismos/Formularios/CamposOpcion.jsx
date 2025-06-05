@@ -153,7 +153,6 @@ const CamposOpcion = memo(
           onChange={(evento) => manejarActualizarOpcion('cantidad', evento.target.value)}
           placeholder='Ingresa la cantidad'
           helperText={errores?.cantidad || ''}
-          error={Boolean(errores?.cantidad)}
           min={1}
           onKeyDown={(evento) => {
             prevenirNumerosNegativos(evento);
@@ -194,11 +193,9 @@ const CamposOpcion = memo(
           type='number'
           name={`costoAdicional-${varianteId}-${index}`}
           value={opcion.costoAdicional}
-          error={Boolean(errores?.costoAdicional)}
-          helperText={errores?.costoAdicional || ''}
           onChange={(evento) => manejarActualizarOpcion('costoAdicional', evento.target.value)}
           placeholder='Ingresa el costo adicional'
-          textoAyuda={errores?.costoAdicional}
+          helperText={errores?.costoAdicional} // Consolidado con helperText
           error={errores?.costoAdicional}
           min={1}
           onKeyDown={prevenirNumerosNoDecimales}
@@ -213,11 +210,9 @@ const CamposOpcion = memo(
           type='number'
           name={`descuento-${varianteId}-${index}`}
           value={opcion.descuento}
-          error={Boolean(errores?.descuento)}
-          helperText={errores?.descuento || ''}
           onChange={(evento) => manejarActualizarOpcion('descuento', evento.target.value)}
           placeholder='Ingresa el descuento'
-          textoAyuda={errores?.descuento}
+          helperText={errores?.descuento} // Consolidado con helperText
           error={errores?.descuento}
           min={1}
           onKeyDown={prevenirNumerosNoDecimales}

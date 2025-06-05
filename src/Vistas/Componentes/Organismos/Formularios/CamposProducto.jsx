@@ -15,7 +15,7 @@ const CampoTextoFormulario = memo(
     nombre,
     valor,
     onChange,
-    helperText, // Cambiar textoAyuda por helperText
+    helperText,
     error,
     placeholder,
     tipo = 'text',
@@ -172,6 +172,8 @@ const CamposProducto = memo(
     alAgregarImagenProducto,
     setImagenes,
     alMostrarFormularioProveedor,
+    prevenirNumerosNegativos,
+    prevenirNumerosNoDecimales,
   }) => {
     return (
       <>
@@ -299,7 +301,7 @@ const CamposProducto = memo(
           tipo='number'
           required
           min={1}
-          onKeyDown={prevenirNumerosNegativos}
+          onKeyDown={prevenirNumerosNoDecimales}
           onInput={(evento) => {
             if (evento.target.value && evento.target.value < 1) {
               evento.target.value = 1;
@@ -318,7 +320,7 @@ const CamposProducto = memo(
           tipo='number'
           required
           min={1}
-          onKeyDown={prevenirNumerosNegativos}
+          onKeyDown={prevenirNumerosNoDecimales}
           onInput={(evento) => {
             if (evento.target.value && evento.target.value < 1) {
               evento.target.value = 1;
@@ -337,7 +339,7 @@ const CamposProducto = memo(
           tipo='number'
           required
           min={1}
-          onKeyDown={prevenirNumerosNegativos}
+          onKeyDown={prevenirNumerosNoDecimales}
           onInput={(evento) => {
             if (evento.target.value && evento.target.value < 1) {
               evento.target.value = 1;
@@ -356,7 +358,7 @@ const CamposProducto = memo(
           tipo='number'
           required={false}
           min={1}
-          onKeyDown={prevenirNumerosNegativos}
+          onKeyDown={prevenirNumerosNoDecimales}
           onInput={(evento) => {
             if (evento.target.value && evento.target.value < 1) {
               evento.target.value = 1;
@@ -375,7 +377,7 @@ const CamposProducto = memo(
           tipo='number'
           required={false}
           min={1}
-          onKeyDown={prevenirNumerosNegativos}
+          onKeyDown={prevenirNumerosNoDecimales}
           onInput={(evento) => {
             if (evento.target.value && evento.target.value < 1) {
               evento.target.value = 1;
@@ -423,11 +425,5 @@ const CamposProducto = memo(
     );
   }
 );
-
-const prevenirNumerosNegativos = (evento) => {
-  if (['-', 'e', 'E', '+'].includes(evento.key)) {
-    evento.preventDefault();
-  }
-};
 
 export default CamposProducto;

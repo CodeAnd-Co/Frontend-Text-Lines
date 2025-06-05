@@ -6,6 +6,20 @@ import { v4 as uuidv4 } from 'uuid';
 
 const ProductoFormContext = createContext();
 
+const prevenirNumerosNegativos = (evento) => {
+  const regex = /^[0-9]$/;
+  if (!regex.test(evento.key) && evento.key !== 'Backspace' && evento.key !== 'Tab') {
+    evento.preventDefault();
+  }
+};
+
+const prevenirNumerosNoDecimales = (evento) => {
+  const regex = /^[0-9.]$/;
+  if (!regex.test(evento.key) && evento.key !== 'Backspace' && evento.key !== 'Tab') {
+    evento.preventDefault();
+  }
+};
+
 export const useProductoForm = () => {
   const context = useContext(ProductoFormContext);
   if (!context) {
@@ -39,15 +53,15 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
     marca: '',
     modelo: '',
     tipoProducto: '',
-    precioPuntos: 0,
-    precioCliente: 0,
-    precioVenta: 0,
-    costo: 0,
+    precioPuntos: undefined,
+    precioCliente: undefined,
+    precioVenta: undefined,
+    costo: undefined,
     impuesto: 16,
-    descuento: 0,
+    descuento: undefined,
     estado: 1,
-    envio: 1,
-    idProveedor: -1,
+    envio: undefined,
+    idProveedor: undefined,
   });
 
   const [imagenes, setImagenes] = useState({
@@ -171,12 +185,12 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
 
         const nuevaOpcion = {
           id: Date.now(),
-          cantidad: 0,
+          cantidad: undefined,
           valorOpcion: '',
           SKUautomatico: sku,
           SKUcomercial: '',
-          costoAdicional: 0,
-          descuento: 0,
+          costoAdicional: undefined,
+          descuento: undefined,
           estado: 1,
         };
 
@@ -385,15 +399,15 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
           marca: '',
           modelo: '',
           tipoProducto: '',
-          precioPuntos: 0,
-          precioCliente: 0,
-          precioVenta: 0,
-          costo: 0,
+          precioPuntos: undefined,
+          precioCliente: undefined,
+          precioVenta: undefined,
+          costo: undefined,
           impuesto: 16,
-          descuento: 0,
+          descuento: undefined,
           estado: 1,
           envio: 1,
-          idProveedor: -1,
+          idProveedor: undefined,
         });
 
         setVariantes({
@@ -495,6 +509,8 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
     manejarCrearProducto,
     manejarActualizarProducto,
     manejarAgregarImagenProducto,
+    prevenirNumerosNegativos,
+    prevenirNumerosNoDecimales,
   };
 
   return (

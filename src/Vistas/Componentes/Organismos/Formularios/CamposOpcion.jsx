@@ -106,7 +106,16 @@ const BotonForm = memo(({ selected, fullWidth, backgroundColor, outlineColor, la
 ));
 
 const CamposOpcion = memo(
-  ({ opcion, index, varianteId, erroresOpciones, alActualizarOpcion, alEliminarOpcion }) => {
+  ({
+    opcion,
+    index,
+    varianteId,
+    erroresOpciones,
+    alActualizarOpcion,
+    alEliminarOpcion,
+    prevenirNumerosNegativos,
+    prevenirNumerosNoDecimales,
+  }) => {
     const manejarActualizarOpcion = useCallback(
       (campo, valor) => {
         alActualizarOpcion(varianteId, index, campo, valor);
@@ -180,7 +189,7 @@ const CamposOpcion = memo(
           textoAyuda={errores?.costoAdicional}
           error={errores?.costoAdicional}
           min={1}
-          onKeyDown={prevenirNumerosNegativos}
+          onKeyDown={prevenirNumerosNoDecimales}
           onInput={(evento) => {
             if (evento.target.value && evento.target.value < 1) {
               evento.target.value = 1;
@@ -197,7 +206,7 @@ const CamposOpcion = memo(
           textoAyuda={errores?.descuento}
           error={errores?.descuento}
           min={1}
-          onKeyDown={prevenirNumerosNegativos}
+          onKeyDown={prevenirNumerosNoDecimales}
           onInput={(evento) => {
             if (evento.target.value && evento.target.value < 1) {
               evento.target.value = 1;
@@ -221,11 +230,5 @@ const CamposOpcion = memo(
     );
   }
 );
-
-const prevenirNumerosNegativos = (evento) => {
-  if (['-', 'e', 'E', '+'].includes(evento.key)) {
-    evento.preventDefault();
-  }
-};
 
 export default CamposOpcion;

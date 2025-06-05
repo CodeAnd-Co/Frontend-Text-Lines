@@ -26,9 +26,9 @@ export const validarProducto = (producto) => {
     errores.precioCliente = 'El precio para el cliente es obligatorio.';
   } else if (typeof normalizados.precioCliente !== 'number' || normalizados.precioCliente <= 0) {
     errores.precioCliente = 'El precio para el cliente debe ser un número positivo.';
-  } else if (!/^\d{1,8}(\.\d{1,2})?$/.test(normalizados.precioCliente.toString())) {
-    errores.precioCliente
-      = 'El precio para el cliente debe tener máximo 8 dígitos antes del punto y 2 después.';
+  } else if (!/^[1-9]\d{0,7}(\.\d{1,2})?$/.test(normalizados.precioCliente.toString())) {
+    errores.precioCliente =
+      'El precio para el cliente debe tener máximo 8 dígitos antes del punto y 2 después, y no puede comenzar con 0.';
   }
 
   // Validación de precio de venta
@@ -36,9 +36,9 @@ export const validarProducto = (producto) => {
     errores.precioVenta = 'El precio de venta es obligatorio.';
   } else if (typeof normalizados.precioVenta !== 'number' || normalizados.precioVenta <= 0) {
     errores.precioVenta = 'El precio de venta debe ser un número positivo.';
-  } else if (!/^\d{1,8}(\.\d{1,2})?$/.test(normalizados.precioVenta.toString())) {
-    errores.precioVenta
-      = 'El precio de venta debe tener máximo 8 dígitos antes del punto y 2 después.';
+  } else if (!/^[1-9]\d{0,7}(\.\d{1,2})?$/.test(normalizados.precioVenta.toString())) {
+    errores.precioVenta =
+      'El precio de venta debe tener máximo 8 dígitos antes del punto y 2 después, y no puede comenzar con 0.';
   }
 
   // Validación de costo
@@ -46,8 +46,9 @@ export const validarProducto = (producto) => {
     errores.costo = 'El costo es obligatorio.';
   } else if (typeof normalizados.costo !== 'number' || normalizados.costo <= 0) {
     errores.costo = 'El costo debe ser un número positivo.';
-  } else if (!/^\d{1,8}(\.\d{1,2})?$/.test(normalizados.costo.toString())) {
-    errores.costo = 'El costo debe tener máximo 8 dígitos antes del punto y 2 después.';
+  } else if (!/^[1-9]\d{0,7}(\.\d{1,2})?$/.test(normalizados.costo.toString())) {
+    errores.costo =
+      'El costo debe tener máximo 8 dígitos antes del punto y 2 después, y no puede comenzar con 0.';
   }
 
   // Validación de impuesto
@@ -55,8 +56,9 @@ export const validarProducto = (producto) => {
     errores.impuesto = 'El impuesto es obligatorio.';
   } else if (typeof normalizados.impuesto !== 'number' || normalizados.impuesto <= 0) {
     errores.impuesto = 'El impuesto debe ser un número positivo.';
-  } else if (!/^\d{1,8}(\.\d{1,2})?$/.test(normalizados.impuesto.toString())) {
-    errores.impuesto = 'El impuesto debe tener máximo 8 dígitos antes del punto y 2 después.';
+  } else if (!/^[1-9]\d{0,7}(\.\d{1,2})?$/.test(normalizados.impuesto.toString())) {
+    errores.impuesto =
+      'El impuesto debe tener máximo 8 dígitos antes del punto y 2 después, y no puede comenzar con 0.';
   }
 
   // Validación de precio en puntos
@@ -64,8 +66,9 @@ export const validarProducto = (producto) => {
     errores.precioPuntos = 'El precio en puntos es obligatorio.';
   } else if (typeof normalizados.precioPuntos !== 'number' || normalizados.precioPuntos <= 0) {
     errores.precioPuntos = 'El precio en puntos debe ser un número entero positivo.';
-  } else if (!/^\d{1,10}$/.test(normalizados.precioPuntos.toString())) {
-    errores.precioPuntos = 'El precio en puntos debe tener máximo 10 dígitos.';
+  } else if (!/^[1-9]\d{0,9}$/.test(normalizados.precioPuntos.toString())) {
+    errores.precioPuntos =
+      'El precio en puntos debe tener máximo 10 dígitos y no puede comenzar con 0.';
   }
 
   return errores;

@@ -13,7 +13,6 @@ const BASE_EVENTOS = `${BASE_URL}/api/eventos`;
 const BASE_PAGOS = `${BASE_URL}/api/pagos`;
 const BASE_AUTENTICACION = `${BASE_URL}/api/autenticacion`;
 
-
 export const RUTAS_API = {
   USUARIOS: {
     BASE: BASE_USUARIOS,
@@ -27,7 +26,7 @@ export const RUTAS_API = {
     ACTIVAR_2FA: `${BASE_AUTENTICACION}/activar-2fa`,
     VERIFICAR_2FA: `${BASE_AUTENTICACION}/verificar-2fa`,
   },
-  
+
   CATEGORIAS: {
     BASE: BASE_CATEGORIAS,
     CONSULTAR_LISTA: `${BASE_CATEGORIAS}/consultar-lista-categorias`,
@@ -40,7 +39,7 @@ export const RUTAS_API = {
     CONSULTAR_LISTA: `${BASE_PRODUCTOS}/consultar-lista`,
     CREAR: `${BASE_PRODUCTOS}/crear`,
     ELIMINAR_PRODUCTO: `${BASE_PRODUCTOS}/eliminar`,
-    LEER_PRODCUTO: `${BASE_PRODUCTOS}/leer-producto`
+    LEER_PRODCUTO: `${BASE_PRODUCTOS}/leer-producto`,
   },
   PROVEEDORES: {
     BASE: BASE_PROVEEDORES,
@@ -51,7 +50,8 @@ export const RUTAS_API = {
     BASE: BASE_SETS_PRODUCTOS,
     CONSULTAR_LISTA: `${BASE_SETS_PRODUCTOS}/consultar-lista`,
     ELIMINAR_SET_PRODUCTOS: `${BASE_SETS_PRODUCTOS}/eliminar`,
-    CREAR_SETS_PRODUCTOS: `${BASE_SETS_PRODUCTOS}/crear`
+    CREAR_SETS_PRODUCTOS: `${BASE_SETS_PRODUCTOS}/crear`,
+    ACTUALIZAR_SETS_PRODUCTO: `${BASE_SETS_PRODUCTOS}/actualizar`,
   },
   CLIENTES: {
     BASE: BASE_CLIENTES,
@@ -84,7 +84,7 @@ export const RUTAS_API = {
     CONSULTAR_LISTA: `${BASE_ROLES}/consultar-lista`,
     CREAR_ROL: `${BASE_ROLES}/crear-rol`,
     ELIMINAR_ROL: `${BASE_ROLES}/eliminar`,
-    LEER_ROL: `${BASE_ROLES}/leer`
+    LEER_ROL: `${BASE_ROLES}/leer`,
   },
   PEDIDOS: {
     BASE: BASE_PEDIDOS,

@@ -197,13 +197,13 @@ const CamposOpcion = memo(
           placeholder='Ingresa el costo adicional'
           helperText={errores?.costoAdicional} // Consolidado con helperText
           error={errores?.costoAdicional}
-          min={1}
+          min={0}
           onKeyDown={prevenirNumerosNoDecimales}
-          onInput={(evento) => {
+          /*onInput={(evento) => {
             if (evento.target.value && evento.target.value < 1) {
               evento.target.value = 1;
             }
-          }}
+          }}*/
         />
         <CampoTextoForm
           label='Descuento (%)'
@@ -212,15 +212,15 @@ const CamposOpcion = memo(
           value={opcion.descuento}
           onChange={(evento) => manejarActualizarOpcion('descuento', evento.target.value)}
           placeholder='Ingresa el descuento'
-          helperText={errores?.descuento} // Consolidado con helperText
+          helperText={errores?.descuento}
           error={errores?.descuento}
-          min={1}
+          min={0}
           onKeyDown={prevenirNumerosNoDecimales}
-          onInput={(evento) => {
+          /*onInput={(evento) => {
             if (evento.target.value && evento.target.value < 1) {
               evento.target.value = 1;
             }
-          }}
+          }}*/
         />
         <CampoSelectForm
           label='Estado'

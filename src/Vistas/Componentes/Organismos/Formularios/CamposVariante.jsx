@@ -189,8 +189,8 @@ const CamposVariante = memo(
       alAgregarOpcion(varianteId);
     }, [varianteId, alAgregarOpcion]);
 
-    const errores
-      = erroresVariantes && erroresVariantes[varianteId] ? erroresVariantes[varianteId] : {};
+    const errores =
+      erroresVariantes && erroresVariantes[varianteId] ? erroresVariantes[varianteId] : {};
 
     return (
       <>
@@ -226,13 +226,7 @@ const CamposVariante = memo(
           onChange={(evento) => manejarActualizarVariante('descripcion', evento.target.value)}
           placeholder='Descripción de la variante'
           error={errores?.descripcion}
-          helperText={
-            variante.descripcion
-              ? `${variante.descripcion.length}/${300} - Máximo de caracteres. ${
-                  errores?.descripcion || ''
-                }`
-              : errores?.descripcion
-          }
+          helperText={errores?.descripcion || ''}
           maxLongitudDescripcion={300}
         />
 

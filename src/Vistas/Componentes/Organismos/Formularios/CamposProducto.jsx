@@ -313,7 +313,15 @@ const CamposProducto = memo(
           min={1}
           onKeyDown={prevenirNumerosNoDecimales}
           onInput={(evento) => {
-            if (evento.target.value && evento.target.value < 1) {
+            const valor = evento.target.value;
+
+            // Si el valor contiene más de un punto decimal, lo invalida
+            if ((valor.match(/\./g) || []).length > 1) {
+              evento.target.value = valor.slice(0, -1); // Elimina el último carácter ingresado
+            }
+
+            // Si el valor es menor a 1, lo ajusta a 1
+            if (valor && parseFloat(valor) < 1) {
               evento.target.value = 1;
             }
           }}
@@ -369,11 +377,11 @@ const CamposProducto = memo(
           required={false}
           min={1}
           onKeyDown={prevenirNumerosNoDecimales}
-          onInput={(evento) => {
+          /*onInput={(evento) => {
             if (evento.target.value && evento.target.value < 1) {
               evento.target.value = 1;
             }
-          }}
+          }}*/
         />
 
         <CampoTextoFormulario
@@ -386,13 +394,13 @@ const CamposProducto = memo(
           placeholder='Ej: 10'
           tipo='number'
           required={false}
-          min={1}
+          min={0}
           onKeyDown={prevenirNumerosNoDecimales}
-          onInput={(evento) => {
+          /*onInput={(evento) => {
             if (evento.target.value && evento.target.value < 1) {
               evento.target.value = 1;
             }
-          }}
+          }}*/
         />
 
         <CampoSelectFormulario

@@ -73,6 +73,7 @@ export const RUTAS_API = {
     LEER_GRUPO: `${BASE_EMPLEADOS}/leer-grupo`,
     CREAR_GRUPO: `${BASE_EMPLEADOS}/crear-grupo`,
     ACTUALIZAR_EMPLEADO: `${BASE_EMPLEADOS}/actualizar`,
+    EXPORTAR_EMPLEADOS: `${BASE_EMPLEADOS}/exportar-empleados`,
     ACTUALIZAR_GRUPO: `${BASE_EMPLEADOS}/actualizar-grupo`,
   },
   CUOTAS: {

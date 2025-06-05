@@ -18,6 +18,7 @@ const CampoSelect = ({
   helperText = '',
   disabled = false,
   size = 'small',
+  margin = 'normal',
   ...props
 }) => {
   return (
@@ -27,6 +28,7 @@ const CampoSelect = ({
       error={error}
       size={size}
       disabled={disabled}
+      margin={margin}
     >
       <InputLabel id={`${name}-label`}>{label}</InputLabel>
       <Select

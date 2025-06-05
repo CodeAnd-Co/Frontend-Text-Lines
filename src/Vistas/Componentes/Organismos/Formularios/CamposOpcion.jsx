@@ -106,7 +106,16 @@ const BotonForm = memo(({ selected, fullWidth, backgroundColor, outlineColor, la
 ));
 
 const CamposOpcion = memo(
-  ({ opcion, index, varianteId, erroresOpciones, alActualizarOpcion, alEliminarOpcion }) => {
+  ({
+    opcion,
+    index,
+    varianteId,
+    erroresOpciones,
+    alActualizarOpcion,
+    alEliminarOpcion,
+    prevenirNumerosNegativos,
+    prevenirNumerosNoDecimales,
+  }) => {
     const manejarActualizarOpcion = useCallback(
       (campo, valor) => {
         alActualizarOpcion(varianteId, index, campo, valor);
@@ -189,8 +198,15 @@ const CamposOpcion = memo(
           helperText={errores?.costoAdicional || ''}
           onChange={(evento) => manejarActualizarOpcion('costoAdicional', evento.target.value)}
           placeholder='Ingresa el costo adicional'
-          min={0}
-          onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
+          textoAyuda={errores?.costoAdicional}
+          error={errores?.costoAdicional}
+          min={1}
+          onKeyDown={prevenirNumerosNoDecimales}
+          onInput={(evento) => {
+            if (evento.target.value && evento.target.value < 1) {
+              evento.target.value = 1;
+            }
+          }}
         />
         <CampoTextoForm
           label='Descuento (%)'
@@ -201,8 +217,15 @@ const CamposOpcion = memo(
           helperText={errores?.descuento || ''}
           onChange={(evento) => manejarActualizarOpcion('descuento', evento.target.value)}
           placeholder='Ingresa el descuento'
-          min={0}
-          onKeyDown={(evento) => prevenirNumerosNegativos(evento)}
+          textoAyuda={errores?.descuento}
+          error={errores?.descuento}
+          min={1}
+          onKeyDown={prevenirNumerosNoDecimales}
+          onInput={(evento) => {
+            if (evento.target.value && evento.target.value < 1) {
+              evento.target.value = 1;
+            }
+          }}
         />
         <CampoSelectForm
           label='Estado'
@@ -221,11 +244,5 @@ const CamposOpcion = memo(
     );
   }
 );
-
-const prevenirNumerosNegativos = (evento) => {
-  if (['-', 'e', 'E', '+'].includes(evento.key)) {
-    evento.preventDefault();
-  }
-};
 
 export default CamposOpcion;

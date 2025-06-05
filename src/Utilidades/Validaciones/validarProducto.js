@@ -29,47 +29,51 @@ export const validarProducto = (producto) => {
   // Validación de precio para el cliente (decimal(10,2))
   if (normalizados.precioCliente === '') {
     errores.precioCliente = 'El precio para el cliente es obligatorio.';
-  } else if (Number(normalizados.precioCliente) < 0) {
-    errores.precioCliente = 'El precio para el cliente no puede ser negativo.';
-  } else if (!/^\d{1,10}(\.\d{1,2})?$/.test(normalizados.precioCliente)) {
+  } else if (typeof normalizados.precioCliente !== 'number' || normalizados.precioCliente <= 0) {
+    errores.precioCliente = 'El precio para el cliente debe ser un número positivo.';
+  } else if (!/^[1-9]\d{0,7}(\.\d{1,2})?$/.test(normalizados.precioCliente.toString())) {
     errores.precioCliente =
-      'El precio para el cliente debe tener máximo 10 dígitos antes del punto y 2 después.';
+      'El precio para el cliente debe tener máximo 8 dígitos antes del punto y 2 después, y no puede comenzar con 0.';
   }
 
   // Validación de precio de venta (decimal(10,2))
   if (normalizados.precioVenta === '') {
     errores.precioVenta = 'El precio de venta es obligatorio.';
-  } else if (Number(normalizados.precioVenta) < 0) {
-    errores.precioVenta = 'El precio de venta no puede ser negativo.';
-  } else if (!/^\d{1,10}(\.\d{1,2})?$/.test(normalizados.precioVenta)) {
+  } else if (typeof normalizados.precioVenta !== 'number' || normalizados.precioVenta <= 0) {
+    errores.precioVenta = 'El precio de venta debe ser un número positivo.';
+  } else if (!/^[1-9]\d{0,7}(\.\d{1,2})?$/.test(normalizados.precioVenta.toString())) {
     errores.precioVenta =
-      'El precio de venta debe tener máximo 10 dígitos antes del punto y 2 después.';
+      'El precio de venta debe tener máximo 8 dígitos antes del punto y 2 después, y no puede comenzar con 0.';
   }
 
   // Validación de costo (decimal(10,2))
   if (normalizados.costo === '') {
     errores.costo = 'El costo es obligatorio.';
-  } else if (Number(normalizados.costo) < 0) {
-    errores.costo = 'El costo no puede ser negativo.';
-  } else if (!/^\d{1,10}(\.\d{1,2})?$/.test(normalizados.costo)) {
-    errores.costo = 'El costo debe tener máximo 10 dígitos antes del punto y 2 después.';
+  } else if (typeof normalizados.costo !== 'number' || normalizados.costo <= 0) {
+    errores.costo = 'El costo debe ser un número positivo.';
+  } else if (!/^[1-9]\d{0,7}(\.\d{1,2})?$/.test(normalizados.costo.toString())) {
+    errores.costo =
+      'El costo debe tener máximo 8 dígitos antes del punto y 2 después, y no puede comenzar con 0.';
   }
 
-  // Validación de impuesto (decimal(5,2)), puede ser 0 o mayor, pero no menor a 0
-  if (normalizados.impuesto !== '' && Number(normalizados.impuesto) < 0) {
-    errores.impuesto = 'El impuesto no puede ser negativo.';
-  } else if (normalizados.impuesto !== '' && !/^\d{1,5}(\.\d{1,2})?$/.test(normalizados.impuesto)) {
-    errores.impuesto = 'El impuesto debe tener máximo 5 dígitos antes del punto y 2 después.';
+  // Validación de impuesto
+  if (normalizados.impuesto == null) {
+    errores.impuesto = 'El impuesto es obligatorio.';
+  } else if (typeof normalizados.impuesto !== 'number' || normalizados.impuesto <= 0) {
+    errores.impuesto = 'El impuesto debe ser un número positivo.';
+  } else if (!/^[1-9]\d{0,7}(\.\d{1,2})?$/.test(normalizados.impuesto.toString())) {
+    errores.impuesto =
+      'El impuesto debe tener máximo 8 dígitos antes del punto y 2 después, y no puede comenzar con 0.';
   }
 
-  // Validación de descuento (decimal(5,2)), puede ser 0 o mayor, pero no menor a 0
-  if (normalizados.descuento !== '' && Number(normalizados.descuento) < 0) {
-    errores.descuento = 'El descuento no puede ser negativo.';
-  } else if (
-    normalizados.descuento !== '' &&
-    !/^\d{1,5}(\.\d{1,2})?$/.test(normalizados.descuento)
-  ) {
-    errores.descuento = 'El descuento debe tener máximo 5 dígitos antes del punto y 2 después.';
+  // Validación de precio en puntos
+  if (normalizados.precioPuntos == null) {
+    errores.precioPuntos = 'El precio en puntos es obligatorio.';
+  } else if (typeof normalizados.precioPuntos !== 'number' || normalizados.precioPuntos <= 0) {
+    errores.precioPuntos = 'El precio en puntos debe ser un número entero positivo.';
+  } else if (!/^[1-9]\d{0,9}$/.test(normalizados.precioPuntos.toString())) {
+    errores.precioPuntos =
+      'El precio en puntos debe tener máximo 10 dígitos y no puede comenzar con 0.';
   }
 
   return errores;

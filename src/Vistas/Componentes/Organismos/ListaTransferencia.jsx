@@ -16,16 +16,16 @@ import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrow
 
 
 // Funciones utilitarias
-function no(a, b, funcionClave = (elemento) => elemento.id || elemento) {
-  return a.filter((valorA) => !b.some((valorB) => funcionClave(valorA) === funcionClave(valorB)));
+function no(no1, no2, funcionClave = (elemento) => elemento.id || elemento) {
+  return no1.filter((valorA) => !no2.some((valorB) => funcionClave(valorA) === funcionClave(valorB)));
 }
 
-function interseccion(a, b, funcionClave = (elemento) => elemento.id || elemento) {
-  return a.filter((valorA) => b.some((valorB) => funcionClave(valorA) === funcionClave(valorB)));
+function interseccion(inter1, inter2, funcionClave = (elemento) => elemento.id || elemento) {
+  return inter1.filter((valorA) => inter2.some((valorB) => funcionClave(valorA) === funcionClave(valorB)));
 }
 
-function union(a, b, funcionClave = (elemento) => elemento.id || elemento) {
-  return [...a, ...no(b, a, funcionClave)];
+function union(union1, union2, funcionClave = (elemento) => elemento.id || elemento) {
+  return [...union1, ...no(union2, union1, funcionClave)];
 }
 
 // Componente Lista de Transferencia Personalizada

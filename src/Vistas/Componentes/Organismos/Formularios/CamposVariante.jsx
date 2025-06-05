@@ -189,8 +189,8 @@ const CamposVariante = memo(
       alAgregarOpcion(varianteId);
     }, [varianteId, alAgregarOpcion]);
 
-    const errores =
-      erroresVariantes && erroresVariantes[varianteId] ? erroresVariantes[varianteId] : {};
+    const errores
+      = erroresVariantes && erroresVariantes[varianteId] ? erroresVariantes[varianteId] : {};
 
     return (
       <>

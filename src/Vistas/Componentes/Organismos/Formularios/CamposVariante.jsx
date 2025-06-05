@@ -226,14 +226,8 @@ const CamposVariante = memo(
           onChange={(evento) => manejarActualizarVariante('descripcion', evento.target.value)}
           placeholder='Descripción de la variante'
           error={errores?.descripcion}
-          helperText={
-            variante.descripcion
-              ? `${variante.descripcion.length}/${300} - Máximo de caracteres. ${
-                  errores?.descripcion || ''
-                }`
-              : errores?.descripcion
-          }
-          maxLongitudDescripcion={300}
+          helperText={errores?.descripcion || ''}
+          opcion={300}
         />
 
         {(variante.opciones || []).map((opcion, index) => (

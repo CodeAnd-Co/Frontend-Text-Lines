@@ -19,7 +19,7 @@ export class RepositorioActualizarSetProductos {
       const respuesta = await axios.put(
         `${RUTAS_API.SETS_PRODUCTOS.ACTUALIZAR_SETS_PRODUCTO}`,
         {
-          idSetProductos: idSet,
+          idSetProducto: idSet,
           nombre,
           activo,
           descripcion,

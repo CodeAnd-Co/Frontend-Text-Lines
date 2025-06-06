@@ -38,6 +38,7 @@ const SetProductosEditable = ({
   descripcion: descripcionInicial = '',
   activo: activoInicial = true,
   productos: productosInicial = [],
+  idsProductos = [],
   onFormDataChange,
 }) => {
   const { usuario } = useAuth();
@@ -49,7 +50,10 @@ const SetProductosEditable = ({
   const [descripcion, setDescripcion] = useState(descripcionInicial);
   const [todosProductos, setTodosProductos] = useState([]);
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
-  const [productosAsignados, setProductosAsignados] = useState(productosInicial);
+  //const [productosAsignados, setProductosAsignados] = useState(productosInicial);
+  const [productosAsignados, setProductosAsignados] = useState(() => {
+    return productosInicial.filter((p) => p && p.id); // Filtra productos válidos
+  });
 
   const [loading, setLoading] = useState(true);
   const [errores, setErrores] = useState({
@@ -72,6 +76,16 @@ const SetProductosEditable = ({
 
     cargarProductos();
   }, [usuario.clienteSeleccionado]);
+
+  // Sincronizar productos asignados con los IDs recibidos
+  useEffect(() => {
+    if (!loading && idsProductos && idsProductos.length > 0 && todosProductos.length > 0) {
+      const productosAsignadosIniciales = todosProductos.filter((p) => idsProductos.includes(p.id));
+
+      console.log('Productos asignados iniciales:', productosAsignadosIniciales);
+      setProductosAsignados(productosAsignadosIniciales);
+    }
+  }, [loading, idsProductos, todosProductos]);
 
   // Productos disponibles (no asignados)
   const productosDisponibles = useMemo(() => {

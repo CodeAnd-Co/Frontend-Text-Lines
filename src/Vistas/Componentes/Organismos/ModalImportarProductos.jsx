@@ -176,9 +176,19 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
                   <br /><br />
                   Así se puede importar correctamente todo: producto, variantes y sus opciones.
                   <br /><br />
-                  <strong>Importante:</strong><br />
-                  Asegúrate de que el <strong>idProducto</strong> sea único para cada producto dentro del archivo. Puede ser cualquier número, pero debe coincidir en todas las filas relacionadas con ese producto.
-                  Tambien, asegúrate de que la primera fila de cada producto no tenga campos vacíos, ya que el sistema la usa para identificar el producto principal.
+                  
+                  <strong>Asegúrate de lo sigiente:</strong>
+                  <ul>
+                    <li>
+                      El <strong>idProducto</strong> sea único para cada producto dentro del archivo. Puede ser cualquier número, pero debe coincidir en todas las filas relacionadas con ese producto.
+                    </li>
+                    <li>
+                      La primera fila de cada producto no debe tener campos vacíos, ya que el sistema la usa para identificar el producto principal. Por cada campo vacío, el sistema podría generar varios productos con el mismo nombre.
+                    </li>
+                    <li>
+                      El csv tenga formato UTF-8 para evitar problemas con caracteres especiales.
+                    </li>
+                  </ul>
 
                   <h3>Producto</h3>
                   <strong>idProducto</strong> permite al sistema saber qué filas pertenecen al mismo producto, aunque estén en diferentes líneas del CSV. Es necesario para poder agruparlo.<br />

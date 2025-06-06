@@ -1,3 +1,4 @@
+// src/Organismos/ModalEditarCuotas.jsx
 import { useState, useEffect } from 'react';
 import ModalFlotante from '@Organismos/ModalFlotante';
 import CampoTexto from '@Atomos/CampoTexto';
@@ -5,20 +6,30 @@ import { NumeroInput } from '@Atomos/NumeroInput';
 import Switch from '@Atomos/Switch';
 import { useActualizarCuota } from '@Hooks/Cuotas/useActualizarCuota';
 import { useObtenerOpcionesCuotas } from '@Hooks/Cuotas/useObtenerOpcionesCuotas';
-import { Box, Typography, IconButton, Select, MenuItem, FormControl, InputLabel, TextField, Alert} from '@mui/material';
+import {
+  Box,
+  Typography,
+  IconButton,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  TextField,
+  Alert,
+} from '@mui/material';
 import { Delete as DeleteIcon, Add as AddIcon } from '@mui/icons-material';
 
-const ModalEditarCuotas = ({ 
-  open, 
-  cuotaOriginal, 
-  onClose, 
-  onActualizado, 
-  cargandoDetalle, 
-  errorDetalle 
+const ModalEditarCuotas = ({
+  open,
+  cuotaOriginal,
+  onClose,
+  onActualizado,
+  cargandoDetalle,
+  errorDetalle
 }) => {
   const { actualizarCuota, cargando, error } = useActualizarCuota();
   const { opciones, cargando: cargandoOpciones } = useObtenerOpcionesCuotas();
-  
+
   const [datos, setDatos] = useState({
     idCuotaSet: null,
     nombre: '',
@@ -27,10 +38,9 @@ const ModalEditarCuotas = ({
     renovacionHabilitada: false,
     productos: []
   });
-  
+
   const [alerta, setAlerta] = useState('');
 
-  // Cargar datos cuando se abre el modal
   useEffect(() => {
     if (cuotaOriginal && open) {
       const productosFormateados = (cuotaOriginal.productos || []).map(p => ({
@@ -39,7 +49,7 @@ const ModalEditarCuotas = ({
         limite: p.limite || p.cuota_valor || 0,
         limiteActual: p.limiteActual || p.limite_actual || 0
       }));
-      
+
       setDatos({
         idCuotaSet: cuotaOriginal.idCuotaSet || cuotaOriginal.idSetCuota,
         nombre: cuotaOriginal.nombre || '',
@@ -52,7 +62,6 @@ const ModalEditarCuotas = ({
     }
   }, [cuotaOriginal, open]);
 
-  // Limpiar al cerrar
   useEffect(() => {
     if (!open) {
       setAlerta('');
@@ -64,7 +73,6 @@ const ModalEditarCuotas = ({
       const timer = setTimeout(() => {
         setAlerta('');
       }, 3000);
-      
       return () => clearTimeout(timer);
     }
   }, [alerta]);
@@ -89,22 +97,22 @@ const ModalEditarCuotas = ({
       productos: prev.productos.map((producto, i) => {
         if (i === index) {
           const nuevoProducto = { ...producto, [campo]: valor };
-          
+
           if (campo === 'idProducto') {
-            const opcionSeleccionada = opciones?.find(opcion => opcion.id == valor);
+            const opcionSeleccionada = opciones?.find(op => op.id == valor);
             nuevoProducto.nombreProducto = opcionSeleccionada?.nombreProducto || '';
-            
-            const yaExiste = prev.productos.some((p, idx) => 
+
+            const yaExiste = prev.productos.some((p, idx) =>
               idx !== index && p.idProducto === valor && valor !== ''
             );
-            
+
             if (yaExiste && valor !== '') {
               const nombreProducto = opcionSeleccionada?.nombreProducto || 'este producto';
               setAlerta(`${nombreProducto} ya está asignado a esta cuota`);
               return producto;
             }
           }
-          
+
           return nuevoProducto;
         }
         return producto;
@@ -147,7 +155,7 @@ const ModalEditarCuotas = ({
       onClose();
     } catch (err) {
       let mensajeAmigable = 'Ocurrió un error al actualizar la cuota';
-      
+
       if (err.message.includes('Duplicate')) {
         mensajeAmigable = 'No se puede guardar: hay productos duplicados';
       } else if (err.message.includes('foreign key')) {
@@ -155,18 +163,14 @@ const ModalEditarCuotas = ({
       } else if (err.message.includes('Network')) {
         mensajeAmigable = 'Sin conexión a internet';
       }
-      
+
       setAlerta(mensajeAmigable);
     }
   };
 
   if (cargandoDetalle) {
     return (
-      <ModalFlotante
-        open={open}
-        onClose={onClose}
-        titulo="Cargando..."
-      >
+      <ModalFlotante open={open} onClose={onClose} titulo="Cargando...">
         <Box sx={{ p: 3, textAlign: 'center' }}>
           <Typography>Cargando información del set de cuotas...</Typography>
         </Box>
@@ -176,12 +180,7 @@ const ModalEditarCuotas = ({
 
   if (errorDetalle) {
     return (
-      <ModalFlotante
-        open={open}
-        onClose={onClose}
-        titulo="Error"
-        cancelLabel="Cerrar"
-      >
+      <ModalFlotante open={open} onClose={onClose} titulo="Error" cancelLabel="Cerrar">
         <Box sx={{ p: 2 }}>
           <Alert severity="error">Error al cargar la información: {errorDetalle}</Alert>
         </Box>
@@ -200,20 +199,8 @@ const ModalEditarCuotas = ({
       disabledConfirm={cargando}
       customWidth={800}
     >
+      {/* SCROLLABLE CONTENT */}
       <Box sx={{ maxHeight: '70vh', overflow: 'auto', p: 2 }}>
-        
-        {alerta && (
-          <Alert severity="error" sx={{ mb: 2 }} onClose={() => setAlerta('')}>
-            {alerta}
-          </Alert>
-        )}
-        
-        {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            Error del sistema: Por favor intenta de nuevo
-          </Alert>
-        )}
-
         <Typography variant="h6" sx={{ mb: 2 }}>Información Básica</Typography>
 
         <CampoTexto
@@ -242,9 +229,9 @@ const ModalEditarCuotas = ({
           <NumeroInput
             label="Período de Renovación (meses) *"
             value={datos.periodoRenovacion}
-            onChange={(e) => setDatos(prev => ({ 
-              ...prev, 
-              periodoRenovacion: parseInt(e.target.value) || 6 
+            onChange={(e) => setDatos(prev => ({
+              ...prev,
+              periodoRenovacion: parseInt(e.target.value) || 6
             }))}
             min={1}
             max={12}
@@ -254,20 +241,16 @@ const ModalEditarCuotas = ({
           <Switch
             label="Renovación Habilitada"
             checked={datos.renovacionHabilitada}
-            onChange={(e) => setDatos(prev => ({ 
-              ...prev, 
-              renovacionHabilitada: e.target.checked 
+            onChange={(e) => setDatos(prev => ({
+              ...prev,
+              renovacionHabilitada: e.target.checked
             }))}
           />
         </Box>
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-          <Typography variant="h6">
-            Productos Asociados ({datos.productos.length})
-          </Typography>
-          <IconButton color="primary" onClick={agregarProducto}>
-            <AddIcon />
-          </IconButton>
+          <Typography variant="h6">Productos Asociados ({datos.productos.length})</Typography>
+          <IconButton color="primary" onClick={agregarProducto}><AddIcon /></IconButton>
         </Box>
 
         {!cargandoOpciones && (!opciones || opciones.length === 0) && (
@@ -282,22 +265,22 @@ const ModalEditarCuotas = ({
           </Typography>
         ) : (
           datos.productos.map((producto, index) => (
-            <Box 
-              key={index} 
-              sx={{ 
-                border: '1px solid #e0e0e0', 
-                borderRadius: 1, 
-                p: 2, 
+            <Box
+              key={index}
+              sx={{
+                border: '1px solid #e0e0e0',
+                borderRadius: 1,
+                p: 2,
                 mb: 2,
                 backgroundColor: '#fafafa'
               }}
             >
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                 <Typography variant="subtitle2">
-                  Producto {index + 1} 
+                  Producto {index + 1}
                   {producto.nombreProducto && (
                     <span style={{ color: '#666', fontWeight: 'normal' }}>
-                      - {producto.nombreProducto}
+                      {' '} - {producto.nombreProducto}
                     </span>
                   )}
                 </Typography>
@@ -316,23 +299,18 @@ const ModalEditarCuotas = ({
                     disabled={cargandoOpciones}
                   >
                     <MenuItem value="">Seleccione un producto</MenuItem>
-                    {opciones && opciones.length > 0 ? (
+                    {opciones?.length > 0 ? (
                       opciones
-                        .filter(opcion => {
-                          const yaSeleccionado = datos.productos.some((p, idx) => 
-                            idx !== index && p.idProducto == opcion.id
-                          );
-                          return !yaSeleccionado;
-                        })
+                        .filter(op => !datos.productos.some((p, idx) =>
+                          idx !== index && p.idProducto == op.id
+                        ))
                         .map((opcion) => (
                           <MenuItem key={opcion.id} value={opcion.id}>
                             {opcion.nombreProducto} ({opcion.tipo})
                           </MenuItem>
                         ))
                     ) : (
-                      <MenuItem disabled>
-                        No hay opciones disponibles
-                      </MenuItem>
+                      <MenuItem disabled>No hay opciones disponibles</MenuItem>
                     )}
                   </Select>
                 </FormControl>
@@ -359,6 +337,15 @@ const ModalEditarCuotas = ({
           ))
         )}
       </Box>
+
+      {/* ✅ Alerta abajo del modal, como en ModalCrearRol */}
+      {(alerta || error) && (
+        <Box sx={{ px: 2, pb: 2 }}>
+          <Alert severity="error" onClose={() => setAlerta('')}>
+            {alerta || 'Error del sistema: Por favor intenta de nuevo'}
+          </Alert>
+        </Box>
+      )}
     </ModalFlotante>
   );
 };

@@ -1,6 +1,5 @@
 //RF16 - Crear empleado - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF16
 import { useState } from 'react';
-import dayjs from 'dayjs';
 import { useAuth } from '@Hooks/AuthProvider';
 import { RepositorioCrearEmpleado } from '@Repositorios/Empleados/RepositorioCrearEmpleado';
 
@@ -57,8 +56,8 @@ const validarDatosCrearEmpleado = (datos) => {
   } else if (!tieneNumero.test(datos.contrasenia)) {
     errores.contrasenia = 'Debe contener al menos un número';
   } else if (datos.contrasenia.replace(/\s/g, '').length < 2) {
-    errores.contrasenia =
-      'La contraseña no puede estar compuesta solo de espacios y un carácter especial';
+    errores.contrasenia
+      = 'La contraseña no puede estar compuesta solo de espacios y un carácter especial';
   }
 
   if (!datos.confirmarContrasenia || datos.confirmarContrasenia.trim() === '') {
@@ -76,9 +75,9 @@ const validarDatosCrearEmpleado = (datos) => {
     errores.posicion = true;
   }
   if (
-    !datos.cantidadPuntos ||
-    isNaN(Number(datos.cantidadPuntos)) ||
-    Number(datos.cantidadPuntos) < 0
+    !datos.cantidadPuntos
+    || isNaN(Number(datos.cantidadPuntos))
+    || Number(datos.cantidadPuntos) < 0
   ) {
     errores.cantidadPuntos = 'La cantidad de puntos debe ser un número positivo';
   }
@@ -109,7 +108,7 @@ export const useCrearEmpleado = () => {
     cantidadPuntos: '',
     antiguedad: null,
     estatus: '1',
-    idCliente: idCliente,
+    idCliente,
     idRol: '3',
   };
 

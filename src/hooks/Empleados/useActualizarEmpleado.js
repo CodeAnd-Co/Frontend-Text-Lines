@@ -83,8 +83,8 @@ export const useActualizarEmpleado = (empleadoInicial = null) => {
       return typeof err === 'string' ? err : CAMPO_OBLIGATORIO;
     }
     if (
-      !esEdicion &&
-      ['numeroEmergencia', 'areaTrabajo', 'posicion', 'cantidadPuntos', 'antiguedad'].includes(
+      !esEdicion
+      && ['numeroEmergencia', 'areaTrabajo', 'posicion', 'cantidadPuntos', 'antiguedad'].includes(
         campo
       )
     ) {

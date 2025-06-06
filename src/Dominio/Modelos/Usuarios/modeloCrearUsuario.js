@@ -58,11 +58,11 @@ export const validarDatosCrearUsuario = (datos, usuariosExistentes = []) => {
     if (datos.contrasenia.length < 8) {
       errores.contrasenia = 'La contraseña debe tener al menos 8 caracteres';
     } else if (!tieneCaracterEspecial.test(datos.contrasenia)) {
-      errores.contrasenia =
-        'Debe contener al menos uno de estos caracteres: ! @ # $ % ^ & * ( ) , . ? " : { } | < >';
+      errores.contrasenia
+        = 'Debe contener al menos uno de estos caracteres: ! @ # $ % ^ & * ( ) , . ? " : { } | < >';
     } else if (contraseniaSinEspacios.length < 2) {
-      errores.contrasenia =
-        'La contraseña no puede estar compuesta solo de espacios y un carácter especial';
+      errores.contrasenia
+        = 'La contraseña no puede estar compuesta solo de espacios y un carácter especial';
     } else if (!tieneMayuscula.test(datos.contrasenia)) {
       errores.contrasenia = 'Debe contener al menos una letra mayúscula';
     }

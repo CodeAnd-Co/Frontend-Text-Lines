@@ -5,7 +5,8 @@ import { Box, useTheme } from '@mui/material';
 import Tabla from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';
 import ModalFlotante from '@Organismos/ModalFlotante';
-import ModalEmpleados from '@Organismos/ModalEmpleados';
+import ModalActualizarEmpleado from '@Organismos/ModalActualizarEmpleado';
+import ModalCrearEmpleado from '@Organismos/ModalCrearEmpleado';
 import InfoEmpleado from '@Moleculas/EmpleadoInfo';
 import PopUp from '@Moleculas/PopUp';
 import Alerta from '@Moleculas/Alerta';
@@ -31,8 +32,8 @@ const ListaGrupoEmpleados = () => {
   const [openModalEliminar, setAbrirPopUpEliminar] = useState(false);
   const [empleadoSeleccionado, setEmpleadoSeleccionado] = useState(null);
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
-  const MENSAJE_POPUP_ELIMINAR
-    = '¿Estás seguro de que deseas eliminar los empleados seleccionados? Esta acción no se puede deshacer.';
+  const MENSAJE_POPUP_ELIMINAR =
+    '¿Estás seguro de que deseas eliminar los empleados seleccionados? Esta acción no se puede deshacer.';
   const handleAbrirImportar = () => setModalImportarAbierto(true);
   const manejarCancelarEliminar = () => {
     setAbrirPopUpEliminar(false);
@@ -97,7 +98,7 @@ const ListaGrupoEmpleados = () => {
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
-      construccion: true,
+      disabled: !usuario?.permisos?.includes(PERMISOS.CREAR_EMPLEADO),
     },
     {
       variant: 'outlined',
@@ -214,22 +215,23 @@ const ListaGrupoEmpleados = () => {
           />
         </ModalFlotante>
       )}
-      {/* Modal para agregar empleado */}
-      {modalAgregarAbierto && (
-        <ModalEmpleados
-          open={modalAgregarAbierto}
-          onClose={manejarCerrarAgregar}
-          onUsuarioCreado={recargar}
-        />
-      )}
 
       {/* Modal para actualizar empleado */}
       {modalActualizarAbierto && (
-        <ModalEmpleados
+        <ModalActualizarEmpleado
           open={modalActualizarAbierto}
           onClose={() => setModalActualizarAbierto(false)}
           onAccion={recargar}
           empleadoEdicion={empleadoSeleccionado}
+        />
+      )}
+
+      {/* Modal para agregar empleado */}
+      {modalAgregarAbierto && (
+        <ModalCrearEmpleado
+          open={modalAgregarAbierto}
+          onClose={manejarCerrarAgregar}
+          onAccion={recargar}
         />
       )}
 

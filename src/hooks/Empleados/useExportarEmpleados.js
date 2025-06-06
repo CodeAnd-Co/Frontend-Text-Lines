@@ -27,6 +27,26 @@ const useExportarEmpleados = () => {
 
     try {
       const { mensaje, csv } = await repoExportarEmpleados(idsEmpleado);
+
+      const fecha = new Date()
+        .toLocaleDateString('es-CO', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        })
+        .split('/')
+        .reverse()
+        .join('-');
+
+      const url = window.URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `empleados_${fecha}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
       setMensaje(mensaje);
       setCsv(csv);
     } catch (err) {

@@ -24,12 +24,22 @@ const useExportarProductos = () => {
     setMensaje('');
 
     try {
-      const response = await repoExportarProductos(idsProducto); 
+      const response = await repoExportarProductos(idsProducto);
 
-      const fecha = new Date().toISOString().split('T')[0];
-      const url = window.URL.createObjectURL(new Blob([response], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      }));
+      const fecha = new Date()
+        .toLocaleDateString('es-CO', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        })
+        .split('/')
+        .reverse()
+        .join('-');
+      const url = window.URL.createObjectURL(
+        new Blob([response], {
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        })
+      );
 
       const link = document.createElement('a');
       link.href = url;

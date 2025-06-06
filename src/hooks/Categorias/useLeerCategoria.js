@@ -22,6 +22,7 @@ export const leerCategoria = async (idCategoria) => {
     const productos = data.categoria.productos?.map((produc) => produc.nombreComun) || [];
 
     return {
+      idCategoria: data.categoria.idCategoria,
       nombreCategoria: data.categoria.nombreCategoria,
       descripcion: data.categoria.descripcion,
       productos,

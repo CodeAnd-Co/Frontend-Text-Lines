@@ -24,7 +24,6 @@ function parsearNumero(valor) {
   console.log('parsearNumero', valor);
   if (valor === undefined || valor === null || valor === '') return false;
   const numero = Number(valor);
-  // Si no es un número válido (NaN), retorna 0; si es válido, retorna el número
   return isNaN(numero) ? false : numero;
 }
 

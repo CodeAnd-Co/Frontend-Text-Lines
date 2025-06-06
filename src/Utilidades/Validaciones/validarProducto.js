@@ -16,8 +16,7 @@ export const validarProducto = (producto) => {
   ) {
     errores.precioPuntos = 'El precio en puntos debe ser un número entero positivo.';
   } else if (!/^[1-9]\d{0,9}$/.test(producto.precioPuntos.toString())) {
-    errores.precioPuntos =
-      'El precio en puntos debe tener máximo 10 dígitos y no puede comenzar con 0.';
+    errores.precioPuntos = 'El precio en puntos debe tener máximo 10 dígitos.';
   }
 
   // Validación de precio para el cliente
@@ -28,8 +27,7 @@ export const validarProducto = (producto) => {
   } else if (Number(producto.precioCliente) <= 0) {
     errores.precioCliente = 'El precio para el cliente debe ser un número positivo.';
   } else if (!/^[1-9]\d{0,7}(\.\d{1,2})?$/.test(producto.precioCliente.toString())) {
-    errores.precioCliente =
-      'El precio para el cliente debe tener máximo 8 dígitos antes del punto y 2 después, y no puede comenzar con 0.';
+    errores.precioCliente = 'El precio para el cliente debe tener máximo 10 dígitos.';
   }
 
   // Validación de precio de venta
@@ -40,8 +38,7 @@ export const validarProducto = (producto) => {
   } else if (Number(producto.precioVenta) <= 0) {
     errores.precioVenta = 'El precio de venta debe ser un número positivo.';
   } else if (!/^[1-9]\d{0,7}(\.\d{1,2})?$/.test(producto.precioVenta.toString())) {
-    errores.precioVenta =
-      'El precio de venta debe tener máximo 8 dígitos antes del punto y 2 después, y no puede comenzar con 0.';
+    errores.precioVenta = 'El precio de venta debe tener máximo 10 dígitos.';
   }
 
   // Validación de costo
@@ -52,8 +49,7 @@ export const validarProducto = (producto) => {
   } else if (Number(producto.costo) <= 0) {
     errores.costo = 'El costo debe ser un número positivo.';
   } else if (!/^[1-9]\d{0,7}(\.\d{1,2})?$/.test(producto.costo.toString())) {
-    errores.costo =
-      'El costo debe tener máximo 8 dígitos antes del punto y 2 después, y no puede comenzar con 0.';
+    errores.costo = 'El costo debe tener máximo 10 dígitos.';
   }
 
   // Validación de impuesto
@@ -61,8 +57,8 @@ export const validarProducto = (producto) => {
     errores.impuesto = 'El impuesto no es válido.';
   }
   if (typeof producto.impuesto === 'number') {
-    if (!/^[0-9]\d{0,9}(\.\d{1,2})?$/.test(producto.impuesto.toString())) {
-      errores.descuento = 'El descuento debe tener máximo 10 dígitos antes del punto y 2 después.';
+    if (!/^[0-9]\d{1,5}(\.\d{1,2})?$/.test(producto.impuesto.toString())) {
+      errores.impuesto = 'El impuesto debe tener máximo 5 dígitos';
     }
   }
   // Validación de descuento
@@ -75,8 +71,8 @@ export const validarProducto = (producto) => {
     errores.descuento = 'El descuento no es válido.';
   }
   if (typeof producto.descuento === 'number') {
-    if (!/^[0-9]\d{0,9}(\.\d{1,2})?$/.test(producto.descuento.toString())) {
-      errores.descuento = 'El descuento debe tener máximo 10 dígitos antes del punto y 2 después.';
+    if (!/^[0-9]\d{1,5}(\.\d{1,2})?$/.test(producto.descuento.toString())) {
+      errores.descuento = 'El descuento debe tener máximo 5 dígitos.';
     }
   }
 

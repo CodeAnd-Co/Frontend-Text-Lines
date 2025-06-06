@@ -60,23 +60,27 @@ export const validarVariantes = (variantes) => {
       }
 
       // Validación de descuento
-      if (
-        !Number.isFinite(normalizadosOpcion.descuento)
-        || normalizadosOpcion.descuento < 0
-        || normalizadosOpcion.descuento > 100
-      ) {
-        erroresOpcion.descuento = 'El descuento debe estar entre 0 y 100';
+      if (normalizadosOpcion.descuento < 0 || normalizadosOpcion.descuento > 100) {
+        erroresOpcion.descuento = 'El descuento debe estar entre 0 y 100.';
+      }
+
+      if (normalizadosOpcion.descuento === false) {
+        erroresOpcion.descuento = 'El descuento no es válido.';
+      }
+      if (typeof normalizadosOpcion.descuento === 'number') {
+        if (!/^[0-9]\d{1,5}(\.\d{1,2})?$/.test(normalizadosOpcion.descuento.toString())) {
+          erroresOpcion.descuento = 'El descuento debe tener máximo 5 dígitos.';
+        }
       }
 
       // Validación de costo adicional con formato (10,2)
       if (
-        !Number.isFinite(normalizadosOpcion.costoAdicional)
-        || normalizadosOpcion.costoAdicional < 0
+        !Number.isFinite(normalizadosOpcion.costoAdicional) ||
+        normalizadosOpcion.costoAdicional < 0
       ) {
         erroresOpcion.costoAdicional = 'El costo adicional debe ser un número positivo';
       } else if (!/^\d{1,8}(\.\d{1,2})?$/.test(normalizadosOpcion.costoAdicional.toString())) {
-        erroresOpcion.costoAdicional
-          = 'El costo adicional debe tener máximo 8 dígitos antes del punto y 2 después.';
+        erroresOpcion.costoAdicional = 'El costo adicional debe tener máximo 10 dígitos.';
       }
 
       if (!normalizadosOpcion.SKUautomatico) {

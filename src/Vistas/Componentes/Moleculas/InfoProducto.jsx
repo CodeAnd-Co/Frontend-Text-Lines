@@ -166,7 +166,7 @@ const InfoProducto = ({detalleProducto, imagenProducto}) => {
               ]}
               rows={varianteSeleccionada.opciones.map((opcion, index) => ({
                 id: index + 1,
-                opcion: `Opción ${index + 1}`,
+                opcion: opcion.valorOpcion || 'No disponible',
                 skuComercial: opcion.SKUcomercial || 'No disponible',
                 skuAutomatico: opcion.SKUautomatico || 'No disponible',
                 costo: opcion.costoAdicional ? `${opcion.costoAdicional}` : '$0',

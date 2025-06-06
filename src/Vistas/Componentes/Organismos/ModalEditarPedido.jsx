@@ -6,7 +6,13 @@ import Alerta from '@Moleculas/Alerta';
 import { useActualizarPedido } from '@Hooks/Pedidos/useActualizarPedido';
 import { tokens } from '@SRC/theme';
 
-const ModalEditarPedido = ({ abierto, onCerrar, datosIniciales, onActualizar, onMostrarAlerta }) => {
+const ModalEditarPedido = ({
+  abierto,
+  onCerrar,
+  datosIniciales,
+  onActualizar,
+  onMostrarAlerta,
+}) => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const { actualizarPedido, cargando } = useActualizarPedido();
@@ -23,8 +29,8 @@ const ModalEditarPedido = ({ abierto, onCerrar, datosIniciales, onActualizar, on
 
   const manejarCambio = useCallback((e) => {
     const { name, value } = e.target;
-    setPedido(prev => ({ ...prev, [name]: value }));
-    setErrores(prev => ({ ...prev, [name]: false }));
+    setPedido((prev) => ({ ...prev, [name]: value }));
+    setErrores((prev) => ({ ...prev, [name]: false }));
   }, []);
 
   const validarCampos = () => {
@@ -36,34 +42,51 @@ const ModalEditarPedido = ({ abierto, onCerrar, datosIniciales, onActualizar, on
     setErrores(nuevosErrores);
     return Object.keys(nuevosErrores).length === 0;
   };
-
   const manejarGuardar = async () => {
+    console.log('Iniciando manejarGuardar');
+    console.log('Pedido actual:', pedido);
     if (!validarCampos()) {
+      console.log('Validación de campos falló');
       onMostrarAlerta('Completa todos los campos obligatorios.', 'error');
       return;
     }
 
-    if (!pedido.idPedido) {
+    if (!pedido.id) {
+      console.log('Falta ID del pedido');
       onMostrarAlerta('Falta el ID del pedido. No se puede actualizar.', 'error');
       return;
     }
+    console.log('Validaciones pasadas correctamente');
 
-    // ✅ Mapeo de campos como espera el backend
+    // ✅ Mapeo de campos como espera el backend    console.log('Preparando datos para mapeo');
     const pedidoMapeado = {
-      idPedido: pedido.idPedido,
+      idPedido: pedido.id.toString(),
       estado: pedido.estatusPedido, // Mapeo correcto para el backend
       precioTotal: parseFloat(pedido.precioTotal),
-      idPago: pedido.idPago,
-      idEnvio: pedido.idEnvio,
+      idEnvio: pedido.estatusEnvio,
+      idPago: pedido.estatusPago,
     };
 
-    const exito = await actualizarPedido(pedidoMapeado);
-    if (exito) {
-      onMostrarAlerta('Pedido actualizado correctamente', 'success');
-      onActualizar();
-      onCerrar();
-    } else {
-      onMostrarAlerta('Error al actualizar el pedido.', 'error');
+    console.log('[DEBUG] Pedido original:', pedido);
+    console.log('[DEBUG] Pedido mapeado:', pedidoMapeado);
+    console.log('Intentando actualizar pedido...');
+
+    try {
+      const resultado = await actualizarPedido(pedidoMapeado);
+      console.log('Resultado de actualización:', resultado);
+
+      if (resultado.exito) {
+        console.log('Actualización exitosa');
+        onMostrarAlerta(resultado.mensaje, 'success');
+        onActualizar();
+        onCerrar();
+      } else {
+        console.log('Actualización fallida:', resultado.mensaje);
+        onMostrarAlerta(resultado.mensaje, 'error');
+      }
+    } catch (error) {
+      console.error('Error en la actualización:', error);
+      onMostrarAlerta(error.message || 'Error al actualizar el pedido.', 'error');
     }
   };
 

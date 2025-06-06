@@ -52,7 +52,7 @@ const SetProductosEditable = ({
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   //const [productosAsignados, setProductosAsignados] = useState(productosInicial);
   const [productosAsignados, setProductosAsignados] = useState(() => {
-    return productosInicial.filter((p) => p && p.id); // Filtra productos válidos
+    return productosInicial.filter((pro) => pro && pro.id); // Filtra productos válidos
   });
 
   const [loading, setLoading] = useState(true);
@@ -80,9 +80,9 @@ const SetProductosEditable = ({
   // Sincronizar productos asignados con los IDs recibidos
   useEffect(() => {
     if (!loading && idsProductos && idsProductos.length > 0 && todosProductos.length > 0) {
-      const productosAsignadosIniciales = todosProductos.filter((p) => idsProductos.includes(p.id));
+      const productosAsignadosIniciales = todosProductos.filter((pro) =>
+        idsProductos.includes(pro.id));
 
-      console.log('Productos asignados iniciales:', productosAsignadosIniciales);
       setProductosAsignados(productosAsignadosIniciales);
     }
   }, [loading, idsProductos, todosProductos]);
@@ -90,8 +90,9 @@ const SetProductosEditable = ({
   // Productos disponibles (no asignados)
   const productosDisponibles = useMemo(() => {
     return todosProductos
-      .filter((p) => !productosAsignados.some((pa) => pa.id === p.id))
-      .sort((a, b) => (a.nombreProducto || a.nombre).localeCompare(b.nombreProducto || b.nombre));
+      .filter((pro) => !productosAsignados.some((pa) => pa.id === pro.id))
+      .sort((prodA, prodB) =>
+        (prodA.nombreProducto || prodA.nombre).localeCompare(prodB.nombreProducto || prodB.nombre));
   }, [todosProductos, productosAsignados]);
 
   // Validación de campos
@@ -112,7 +113,7 @@ const SetProductosEditable = ({
       nombre: nombre.trim(),
       activo,
       descripcion: descripcion.trim(),
-      productos: productosAsignados.map((p) => p.id),
+      productos: productosAsignados.map((pro) => pro.id),
       esValido: validarCampos(),
     };
 
@@ -126,77 +127,65 @@ const SetProductosEditable = ({
   // Manejar selección de productos
   const toggleSeleccionProducto = useCallback((producto) => {
     setProductosSeleccionados((prev) =>
-      prev.some((p) => p.id === producto.id)
-        ? prev.filter((p) => p.id !== producto.id)
-        : [...prev, producto]
-    );
+      prev.some((pro) => pro.id === producto.id)
+        ? prev.filter((pro) => pro.id !== producto.id)
+        : [...prev, producto]);
   }, []);
 
   // Transferir productos
   const transferirSeleccionados = useCallback(() => {
-    const paraTransferir = productosSeleccionados.filter((p) =>
-      productosDisponibles.some((pd) => pd.id === p.id)
-    );
+    const paraTransferir = productosSeleccionados.filter((pro) =>
+      productosDisponibles.some((pd) => pd.id === pro.id));
 
     setProductosAsignados((prev) =>
-      [...prev, ...paraTransferir].sort((a, b) =>
-        (a.nombreProducto || a.nombre).localeCompare(b.nombreProducto || b.nombre)
-      )
-    );
+      [...prev, ...paraTransferir].sort((prodA, prodB) =>
+        (prodA.nombreProducto || prodA.nombre).localeCompare(prodB.nombreProducto || prodB.nombre)));
     setProductosSeleccionados((prev) =>
-      prev.filter((p) => !paraTransferir.some((pt) => pt.id === p.id))
-    );
+      prev.filter((pro) => !paraTransferir.some((pt) => pt.id === pro.id)));
   }, [productosSeleccionados, productosDisponibles]);
 
   const quitarSeleccionados = useCallback(() => {
-    const paraQuitar = productosSeleccionados.filter((p) =>
-      productosAsignados.some((pa) => pa.id === p.id)
-    );
+    const paraQuitar = productosSeleccionados.filter((pro) =>
+      productosAsignados.some((pa) => pa.id === pro.id));
 
-    setProductosAsignados((prev) => prev.filter((p) => !paraQuitar.some((pq) => pq.id === p.id)));
+    setProductosAsignados((prev) =>
+      prev.filter((pro) => !paraQuitar.some((pq) => pq.id === pro.id)));
     setProductosSeleccionados((prev) =>
-      prev.filter((p) => !paraQuitar.some((pq) => pq.id === p.id))
-    );
+      prev.filter((pro) => !paraQuitar.some((pq) => pq.id === pro.id)));
   }, [productosSeleccionados, productosAsignados]);
 
   const transferirTodos = useCallback(() => {
     setProductosAsignados((prev) =>
-      [...prev, ...productosDisponibles].sort((a, b) =>
-        (a.nombreProducto || a.nombre).localeCompare(b.nombreProducto || b.nombre)
-      )
-    );
+      [...prev, ...productosDisponibles].sort((prodA, prodB) =>
+        (prodA.nombreProducto || prodA.nombre).localeCompare(prodB.nombreProducto || prodB.nombre)));
     setProductosSeleccionados((prev) =>
-      prev.filter((p) => !productosDisponibles.some((pd) => pd.id === p.id))
-    );
+      prev.filter((pro) => !productosDisponibles.some((pd) => pd.id === pro.id)));
   }, [productosDisponibles]);
 
   const quitarTodos = useCallback(() => {
     setProductosAsignados([]);
     setProductosSeleccionados((prev) =>
-      prev.filter((p) => !productosAsignados.some((pa) => pa.id === p.id))
-    );
+      prev.filter((pro) => !productosAsignados.some((pa) => pa.id === pro.id)));
   }, [productosAsignados]);
 
   // Seleccionar/deseleccionar todos
   const toggleSeleccionTodos = useCallback(
     (productos, esDisponibles) => {
-      const todosSeleccionados = productos.every((p) =>
-        productosSeleccionados.some((ps) => ps.id === p.id)
-      );
+      const todosSeleccionados = productos.every((pro) =>
+        productosSeleccionados.some((ps) => ps.id === pro.id));
 
       if (todosSeleccionados) {
         setProductosSeleccionados((prev) =>
-          prev.filter((p) => !productos.some((prod) => prod.id === p.id))
-        );
+          prev.filter((pro) => !productos.some((prod) => prod.id === pro.id)));
       } else {
         setProductosSeleccionados((prev) => [
           ...prev,
           ...productos.filter(
-            (p) =>
-              !prev.some((ps) => ps.id === p.id) &&
-              (esDisponibles
-                ? !productosAsignados.some((pa) => pa.id === p.id)
-                : productosAsignados.some((pa) => pa.id === p.id))
+            (pro) =>
+              !prev.some((ps) => ps.id === pro.id)
+              && (esDisponibles
+                ? !productosAsignados.some((pa) => pa.id === pro.id)
+                : productosAsignados.some((pa) => pa.id === pro.id))
           ),
         ]);
       }
@@ -207,13 +196,12 @@ const SetProductosEditable = ({
   // Componente de lista de productos
   const ListaProductos = useCallback(
     ({ titulo, productos, esDisponibles }) => {
-      const seleccionadosEnLista = productos.filter((p) =>
-        productosSeleccionados.some((ps) => ps.id === p.id)
-      ).length;
+      const seleccionadosEnLista = productos.filter((pro) =>
+        productosSeleccionados.some((ps) => ps.id === pro.id)).length;
 
       const todosSeleccionados = productos.length > 0 && seleccionadosEnLista === productos.length;
-      const algunosSeleccionados =
-        seleccionadosEnLista > 0 && seleccionadosEnLista < productos.length;
+      const algunosSeleccionados
+        = seleccionadosEnLista > 0 && seleccionadosEnLista < productos.length;
 
       return (
         <Card>
@@ -247,7 +235,7 @@ const SetProductosEditable = ({
                 >
                   <ListItemIcon>
                     <Checkbox
-                      checked={productosSeleccionados.some((p) => p.id === producto.id)}
+                      checked={productosSeleccionados.some((pro) => pro.id === producto.id)}
                       tabIndex={-1}
                       disableRipple
                     />
@@ -267,18 +255,18 @@ const SetProductosEditable = ({
   );
 
   if (loading) {
-    return <Box sx={{ p: 3, textAlign: 'center' }}>Cargando productos...</Box>;
+    return <Box sx={{ pro: 3, textAlign: 'center' }}>Cargando productos...</Box>;
   }
 
   return (
-    <Box sx={{ maxWidth: 1000, mx: 'auto', p: 2 }}>
+    <Box sx={{ maxWidth: 1000, mx: 'auto', pro: 2 }}>
       {/* Campos de texto */}
       <Grid item xs={12}>
         <FormControlLabel
           control={
             <Switch
               checked={activo}
-              onChange={(e) => setActivo(e.target.checked)}
+              onChange={(evento) => setActivo(evento.target.checked)}
               color='primary'
             />
           }
@@ -292,7 +280,7 @@ const SetProductosEditable = ({
           <CampoTexto
             fullWidth
             value={nombre}
-            onChange={(e) => setNombre(e.target.value.slice(0, LIMITE_NOMBRE))}
+            onChange={(evento) => setNombre(evento.target.value.slice(0, LIMITE_NOMBRE))}
             error={errores.nombre}
             helperText={
               errores.nombre
@@ -311,7 +299,7 @@ const SetProductosEditable = ({
             multiline
             rows={3}
             value={descripcion}
-            onChange={(e) => setDescripcion(e.target.value.slice(0, LIMITE_DESCRIPCION))}
+            onChange={(evento) => setDescripcion(evento.target.value.slice(0, LIMITE_DESCRIPCION))}
             error={errores.descripcion}
             helperText={
               errores.descripcion
@@ -350,9 +338,8 @@ const SetProductosEditable = ({
                   size='small'
                   onClick={transferirSeleccionados}
                   disabled={
-                    productosSeleccionados.filter((p) =>
-                      productosDisponibles.some((pd) => pd.id === p.id)
-                    ).length === 0
+                    productosSeleccionados.filter((pro) =>
+                      productosDisponibles.some((pd) => pd.id === pro.id)).length === 0
                   }
                   aria-label='Mover seleccionados a seleccionados'
                   startIcon={<KeyboardArrowRight />}
@@ -362,9 +349,8 @@ const SetProductosEditable = ({
                   size='small'
                   onClick={quitarSeleccionados}
                   disabled={
-                    productosSeleccionados.filter((p) =>
-                      productosAsignados.some((pa) => pa.id === p.id)
-                    ).length === 0
+                    productosSeleccionados.filter((pro) =>
+                      productosAsignados.some((pa) => pa.id === pro.id)).length === 0
                   }
                   aria-label='Quitar seleccionados'
                   startIcon={<KeyboardArrowLeft />}
@@ -380,7 +366,7 @@ const SetProductosEditable = ({
               </Grid>
             </Grid>
 
-            <Grid item>
+            <Grid item sx={{ my: 2 }}>
               <ListaProductos
                 titulo='Seleccionados'
                 productos={productosAsignados}

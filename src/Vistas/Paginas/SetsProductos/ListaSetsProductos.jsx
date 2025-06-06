@@ -25,8 +25,8 @@ const ListaSetsProductos = () => {
   const { setsDeProductos, cargando, error, recargar } = useConsultarSetsProductos();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
-  const MENSAJE_POPUP_ELIMINAR =
-    '¿Estás seguro de que deseas eliminar los sets de productos seleccionados?';
+  const MENSAJE_POPUP_ELIMINAR
+    = '¿Estás seguro de que deseas eliminar los sets de productos seleccionados?';
 
   const [seleccionados, setSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
@@ -98,14 +98,6 @@ const ListaSetsProductos = () => {
       });
       return;
     }
-    // Log para ver los datos que se enviarán
-    console.log('Datos que se enviarán para actualizar el set:', {
-      idSetProducto: setSeleccionado.idSetProducto,
-      nombre: formData.nombre,
-      descripcion: formData.descripcion,
-      activo: formData.activo ? 1 : 0,
-      productos: formData.productos,
-    });
 
     try {
       await actualizarSet(
@@ -293,8 +285,6 @@ const ListaSetsProductos = () => {
               color: 'error',
               backgroundColor: colores.altertex[1],
               onClick: () => {
-                console.log('productos:', setSeleccionado.productos);
-                console.log('idsProductos:', setSeleccionado.idsProductos);
                 setModalDetalleAbierto(false);
                 setAbrirModalEditar(true);
               },

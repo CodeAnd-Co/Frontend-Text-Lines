@@ -36,11 +36,11 @@ export const useActualizarSetsProductos = () => {
     } catch (err) {
       setExito(false);
       setError(true);
-      const errorMessage =
-        err?.response?.data?.mensaje ||
-        err?.response?.data?.error ||
-        err?.message ||
-        'Ocurrió un error al actualizar el set de productos';
+      const errorMessage
+        = err?.response?.data?.mensaje
+        || err?.response?.data?.error
+        || err?.message
+        || 'Ocurrió un error al actualizar el set de productos';
 
       setMensaje(errorMessage);
       throw err;

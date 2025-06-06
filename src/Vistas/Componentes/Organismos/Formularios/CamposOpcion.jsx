@@ -33,8 +33,8 @@ const CampoTextoForm = memo(
         }}
         helperText={
           type === 'text' && maxLongitud
-            ? `${value.length}/${maxLongitud} - Máximo de caracteres. ${helperText || ''}` // Cambiar textoAyuda por helperText
-            : helperText // Cambiar textoAyuda por helperText
+            ? `${value.length}/${maxLongitud} - Máximo de caracteres. ${helperText || ''}`
+            : helperText
         }
         type={type}
         size='medium'
@@ -106,7 +106,16 @@ const BotonForm = memo(({ selected, fullWidth, backgroundColor, outlineColor, la
 ));
 
 const CamposOpcion = memo(
-  ({ opcion, index, varianteId, erroresOpciones, alActualizarOpcion, alEliminarOpcion }) => {
+  ({
+    opcion,
+    index,
+    varianteId,
+    erroresOpciones,
+    alActualizarOpcion,
+    alEliminarOpcion,
+    prevenirNumerosNegativos,
+    prevenirNumerosNoDecimales,
+  }) => {
     const manejarActualizarOpcion = useCallback(
       (campo, valor) => {
         alActualizarOpcion(varianteId, index, campo, valor);
@@ -143,13 +152,19 @@ const CamposOpcion = memo(
           value={opcion.cantidad}
           onChange={(evento) => manejarActualizarOpcion('cantidad', evento.target.value)}
           placeholder='Ingresa la cantidad'
-          textoAyuda={errores?.cantidad}
-          error={errores?.cantidad}
+          error={Boolean(errores?.cantidad)}
+          helperText={errores?.cantidad || ''}
           min={1}
-          onKeyDown={prevenirNumerosNegativos}
+          onKeyDown={(evento) => {
+            prevenirNumerosNegativos(evento);
+          }}
           onInput={(evento) => {
-            if (evento.target.value && evento.target.value < 1) {
-              evento.target.value = 1;
+            // Solo permite números enteros positivos
+            const valor = evento.target.value;
+            if (valor === '' || /^\d+$/.test(valor)) {
+              evento.target.value = valor;
+            } else {
+              evento.target.value = valor.replace(/\D/g, '');
             }
           }}
         />
@@ -177,15 +192,15 @@ const CamposOpcion = memo(
           value={opcion.costoAdicional}
           onChange={(evento) => manejarActualizarOpcion('costoAdicional', evento.target.value)}
           placeholder='Ingresa el costo adicional'
-          textoAyuda={errores?.costoAdicional}
+          helperText={errores?.costoAdicional} // Consolidado con helperText
           error={errores?.costoAdicional}
-          min={1}
-          onKeyDown={prevenirNumerosNegativos}
-          onInput={(evento) => {
+          min={0}
+          onKeyDown={prevenirNumerosNoDecimales}
+          /*onInput={(evento) => {
             if (evento.target.value && evento.target.value < 1) {
               evento.target.value = 1;
             }
-          }}
+          }}*/
         />
         <CampoTextoForm
           label='Descuento (%)'
@@ -194,15 +209,15 @@ const CamposOpcion = memo(
           value={opcion.descuento}
           onChange={(evento) => manejarActualizarOpcion('descuento', evento.target.value)}
           placeholder='Ingresa el descuento'
-          textoAyuda={errores?.descuento}
+          helperText={errores?.descuento}
           error={errores?.descuento}
-          min={1}
-          onKeyDown={prevenirNumerosNegativos}
-          onInput={(evento) => {
+          min={0}
+          onKeyDown={prevenirNumerosNoDecimales}
+          /*onInput={(evento) => {
             if (evento.target.value && evento.target.value < 1) {
               evento.target.value = 1;
             }
-          }}
+          }}*/
         />
         <CampoSelectForm
           label='Estado'
@@ -221,11 +236,5 @@ const CamposOpcion = memo(
     );
   }
 );
-
-const prevenirNumerosNegativos = (evento) => {
-  if (['-', 'e', 'E', '+'].includes(evento.key)) {
-    evento.preventDefault();
-  }
-};
 
 export default CamposOpcion;

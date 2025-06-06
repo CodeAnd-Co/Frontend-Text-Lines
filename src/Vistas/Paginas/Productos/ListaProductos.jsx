@@ -331,7 +331,7 @@ const ListaProductos = () => {
           onClose={() => setAbrirModalDetalle(false)}
           titulo={detalleProducto?.nombreComun || 'Cargando...'}
           tituloVariant='h4'
-          customWidth={750}
+          customWidth={950}
           botones={[
             {
               label: 'Editar',

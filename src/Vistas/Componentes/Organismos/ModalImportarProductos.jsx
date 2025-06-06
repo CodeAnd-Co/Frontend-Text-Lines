@@ -7,6 +7,7 @@ import { tokens } from '@SRC/theme';
 import InfoImportar from '@Organismos/InfoImportar';
 import CajaDesplazable from '@Organismos/CajaDesplazable';
 import ContenedorImportarProductos from './ContenedorImportarProductos';
+import Boton from '../Atomos/Boton';
 
 const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errores, exito, recargar }) => {
   const [archivo, setFile] = useState(null);
@@ -17,6 +18,7 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
   const colores = tokens(theme.palette.mode);
   const [abririnfo, setAbrirInfo] = useState(false);
   const [mensajeErrores, setMensajeErrores] = useState('');
+  const [descargarCSV, setDescargarCSV] = useState(false);
 
   // Manejo de errores en la importación
   useEffect(() => {
@@ -49,6 +51,19 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
       setMensajeErrores('');
     }
   }, [exito, onCerrar, recargar]);
+
+  const handleDescargarPlantilla = useCallback(() => {
+    setDescargarCSV(true);
+    const link = document.createElement('a');
+    link.href = '/ejemplo_importar_productos.csv';
+    link.download = 'ejemplo_importar_productos.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => {
+      setDescargarCSV(false);
+    }, 2000);
+  }, []);
 
   // Manejo de cierre del modal de importar
   const handleCerrar = useCallback(() => {
@@ -159,20 +174,19 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
       )}
 
       <Box mt={2} display="inline-flex" alignItems="center" gap={1}>
-        <a href="/ejemplo_importar_productos.csv" download="ejemplo_importar_productos.csv">
-          Descargar ejemplo de plantilla CSV
-        </a>
+        <Boton style={{border: "none", textDecoration: 'underline', color: colores.altertex[1]}} onClick={handleDescargarPlantilla} label="Descargar plantilla de ejemplo CSV" variant="outlined" deshabilitado={descargarCSV} />
         <InfoImportar 
           open={abririnfo}
           onClose={() => setAbrirInfo(false)}> 
                 <>
                   <strong>¿Cómo funciona la estructura del archivo CSV?</strong>
                   <br /><br />
-                  Cada fila del archivo representa una opción específica de un producto. Por eso, en cada fila se debe repetir la información general del producto.
-                  El sistema necesita saber qué filas pertenecen al mismo producto. Para eso sirve el campo <strong>idProducto</strong>.
+                  Cada fila del archivo representa una opción específica de un producto. El sistema necesita saber qué filas pertenecen al mismo producto. Para eso sirve el campo <strong>idProducto</strong>.
                   <br /><br />
                   Dentro de ese producto, se organizan las <strong>variantes</strong> usando el campo <strong>nombreVariante</strong>.
-                  Y dentro de cada variante, se agrupan las <strong>opciones</strong> como "Rojo", "M", "32GB", etc.
+                  Y dentro de cada variante, se agrupan las <strong>opciones</strong> como "Rojo", "M", "32GB", etc. Consulta el siguente archivo de ejemplo: <a href="/ejemplo_importar_productos.csv" download="ejemplo_importar_productos.csv">
+                  Descargar ejemplo de plantilla CSV.
+                  </a>
                   <br /><br />
                   Así se puede importar correctamente todo: producto, variantes y sus opciones.
                   <br /><br />
@@ -180,19 +194,22 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
                   <strong>Asegúrate de lo sigiente:</strong>
                   <ul>
                     <li>
-                      El <strong>idProducto</strong> sea único para cada producto dentro del archivo. Puede ser cualquier número, pero debe coincidir en todas las filas relacionadas con ese producto.
+                      El <strong>idProducto</strong> sea único para cada producto dentro del archivo. Puede ser cualquier número, pero debe coincidir en todas las filas relacionadas con ese producto. Por cada campo vacío de idProducto, el sistema podría generar varios productos con el mismo nombre.
                     </li>
                     <li>
-                      La primera fila de cada producto no debe tener campos vacíos, ya que el sistema la usa para identificar el producto principal. Por cada campo vacío, el sistema podría generar varios productos con el mismo nombre.
+                      La primera fila de cada producto no debe tener campos vacíos, ya que el sistema la usa para identificar el producto principal. 
                     </li>
                     <li>
                       El csv tenga formato UTF-8 para evitar problemas con caracteres especiales.
+                    </li>
+                    <li>
+                      El idProveedor exista en el sistema. El campo puede estar vacío si no se usa.
                     </li>
                   </ul>
 
                   <h3>Producto</h3>
                   <strong>idProducto</strong> permite al sistema saber qué filas pertenecen al mismo producto, aunque estén en diferentes líneas del CSV. Es necesario para poder agruparlo.<br />
-                  <strong>idProveedor:</strong>Identificador del proveedor del producto. Puede ser un campo vacío <br />
+                  <strong>idProveedor (opcional): </strong>Identificador del proveedor del producto. Puede ser un campo vacío <br />
                   <strong>nombreProducto, nombreComercial:</strong> Nombres básicos<br />
                   <strong>descripcionProducto:</strong> Descripción del producto<br />
                   <strong>marca, modelo, tipoProducto:</strong> Datos básicos del producto<br />
@@ -203,7 +220,7 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
                   <strong>envio:</strong> 1 = disponible, 0 = no disponible<br /><br />
                   <h3>Variante</h3>
                   <strong>nombreVariante:</strong> Ej. "Color", "Tamaño"<br />
-                  <strong>descripcionVariante:</strong> (opcional)<br /><br />
+                  <strong>descripcionVariante:</strong> Descripción de la variante <br /><br />
                   <h3>Opción</h3>
                   <strong>valorOpcion:</strong> Ej. "Rojo", "XL"<br />
                   <strong>SKUautomatico:</strong> Obligatorio<br />

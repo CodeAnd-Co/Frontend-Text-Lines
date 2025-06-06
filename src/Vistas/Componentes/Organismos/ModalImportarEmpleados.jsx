@@ -7,6 +7,7 @@ import Alerta from '@Moleculas/Alerta';
 import { tokens } from '@SRC/theme';
 import InfoImportar from '@Organismos/InfoImportar';
 import CajaDesplazable from '@Organismos/CajaDesplazable';
+import Boton from '@Atomos/Boton';
 
 const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errores, exito, recargar }) => {
   const [archivo, setFile] = useState(null);
@@ -17,6 +18,7 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
   const colores = tokens(theme.palette.mode);
   const [abririnfo, setAbrirInfo] = useState(false);
   const [mensajeErrores, setMensajeErrores] = useState('');
+  const [descargarCSV, setDescargarCSV] = useState(false);
 
   // Manejo de errores en la importación
   useEffect(() => {
@@ -49,6 +51,19 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
       setMensajeErrores('');
     }
   }, [exito, onCerrar, recargar]);
+
+  const handleDescargarPlantilla = useCallback(() => {
+    setDescargarCSV(true);
+    const link = document.createElement('a');
+    link.href = '/plantilla_importar_empleados.csv';
+    link.download = 'plantilla_importar_empleados.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => {
+      setDescargarCSV(false);
+    }, 2000);
+  }, []);
 
   // Manejo de cierre del modal de importar
   const handleCerrar = useCallback(() => {
@@ -159,9 +174,7 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
       )}
 
       <Box mt={2} display="inline-flex" alignItems="center" gap={1}>
-        <a href="/plantilla_importar_empleados.csv" download="plantilla_importar_empleados.csv">
-          Descargar plantilla CSV
-        </a>
+          <Boton style={{border: "none", textDecoration: 'underline', color: colores.altertex[1]}} onClick={handleDescargarPlantilla} label="Descargar plantilla CSV" variant="outlined" deshabilitado={descargarCSV} />
         <InfoImportar 
           open={abririnfo}
           onClose={() => setAbrirInfo(false)}> 

@@ -15,6 +15,7 @@ const Boton = ({
   label,
   onClick,
   construccion = false,
+  deshabilitado = false,
   ...props
 }) => {
   const theme = useTheme();
@@ -64,6 +65,7 @@ const Boton = ({
       }}
       onClick={onClick}
       construccion={estiloDeshabilitado}
+      disabled={deshabilitado}
       {...props}
     >
       {label}
@@ -83,6 +85,7 @@ Boton.propTypes = {
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func,
   construccion: PropTypes.bool,
+  deshabilitado: PropTypes.bool,
 };
 
 export default Boton;

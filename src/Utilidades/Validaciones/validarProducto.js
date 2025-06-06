@@ -57,13 +57,13 @@ export const validarProducto = (producto) => {
     errores.impuesto = 'El impuesto no es válido.';
   }
   if (typeof producto.impuesto === 'number') {
-    if (!/^[0-9]\d{1,5}(\.\d{1,2})?$/.test(producto.impuesto.toString())) {
-      errores.impuesto = 'El impuesto debe tener máximo 5 dígitos';
+    if (!/^(0|[1-9]\d{0,4})(\.\d{1,2})?$/.test(producto.impuesto.toString())) {
+      errores.impuesto = 'El impuesto debe ser un número válido con máximo 5 dígitos.';
     }
   }
   // Validación de descuento
 
-  if (producto.descuento < 0 || producto.descuento > 100) {
+  if (producto.descuento > 100) {
     errores.descuento = 'El descuento debe estar entre 0 y 100.';
   }
 
@@ -71,8 +71,8 @@ export const validarProducto = (producto) => {
     errores.descuento = 'El descuento no es válido.';
   }
   if (typeof producto.descuento === 'number') {
-    if (!/^[0-9]\d{1,5}(\.\d{1,2})?$/.test(producto.descuento.toString())) {
-      errores.descuento = 'El descuento debe tener máximo 5 dígitos.';
+    if (!/^(0|[1-9]\d{0,4})(\.\d{1,2})?$/.test(producto.descuento.toString())) {
+      errores.descuento = 'El descuento debe ser un número válido con máximo 5 dígitos.';
     }
   }
 

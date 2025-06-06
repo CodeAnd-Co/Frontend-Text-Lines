@@ -3,12 +3,8 @@ import Tabla from '@Organismos/Tabla';
 import Alerta from '@Moleculas/Alerta';
 import ContenedorLista from '@Organismos/ContenedorLista';
 import ModalEliminarCategoria from '@Organismos/ModalEliminarCategoria';
-import CategoriaInfo from '@Organismos/CategoriaInfo';
-import ModalFlotante from '@Organismos/ModalFlotante';
 import { useConsultarCategorias } from '@Hooks/Categorias/useConsultarCategorias';
-import { leerCategoria } from '@Hooks/Categorias/useLeerCategoria';
 import { Box, useTheme } from '@mui/material';
-import Texto from '@Atomos/Texto';
 import { tokens } from '@SRC/theme';
 import ModalCrearCategoria from '@Organismos/ModalCrearCategoria';
 
@@ -26,16 +22,16 @@ const ListaCategorias = () => {
   const [seleccionados, setSeleccionados] = useState(new Set());
   const [alerta, setAlerta] = useState(null);
   const [idsCategoria, setIdsCategoria] = useState([]);
-  const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
-  const [openModalEliminar, setOpenModalEliminar] = useState(false);
-  const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
-  const [categoriaDetalle, setCategoriaDetalle] = useState(null);
-  const [errorDetalle, setErrorDetalle] = useState(false);
-  const [cargandoDetalle, setCargandoDetalle] = useState(false);
-
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
 
+  // Estado para controlar la visualización del modal crear
+  const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
+
+  // Estado para controlar la visualización del modal eliminar
+  const [openModalEliminar, setOpenModalEliminar] = useState(false);
+
+  // Columnas para el DataGrid
   const columns = [
     { field: 'nombreCategoria', headerName: 'Nombre', flex: 1 },
     { field: 'descripcion', headerName: 'Descripción', flex: 2 },
@@ -47,6 +43,7 @@ const ListaCategorias = () => {
     },
   ];
 
+  // Las filas deben tener un campo `id`, usamos `idCategoria`
   const rows = categorias.map((cat) => ({
     id: cat.idCategoria,
     nombreCategoria: cat.nombreCategoria,
@@ -55,45 +52,40 @@ const ListaCategorias = () => {
     idCliente: cat.idCliente,
   }));
 
+  // Manejador para abrir el modal
   const handleAbrirModalCrear = () => {
     setModalCrearAbierto(true);
   };
 
+  // Manejador para cerrar el modal
   const handleCerrarModalCrear = () => {
     setModalCrearAbierto(false);
   };
 
+  // Manejador para cuando se crea una nueva categoría
   const handleCategoriaCreadaExitosamente = () => {
     handleCerrarModalCrear();
+    // Recarga la lista de categorías
     recargar();
+    // Show success alert
+    setAlerta({
+      tipo: 'success',
+      mensaje: 'Categoría creada exitosamente.',
+      icono: true,
+      cerrable: true,
+      centradoInferior: true,
+    });
   };
 
-  const mostrarDetalleCategoria = async (idCategoria) => {
-    setCargandoDetalle(true);
-    setCategoriaDetalle(null);
-    setErrorDetalle(false);
-
-    try {
-      const detalle = await leerCategoria(idCategoria);
-      setCategoriaDetalle(detalle);
-    } catch {
-      setErrorDetalle(true);
-      setCategoriaDetalle({
-        nombreCategoria: '',
-        descripcion: '',
-        productos: [],
-      });
-      setAlerta({
-        tipo: 'error',
-        mensaje: 'Error al obtener los datos de la categoría.',
-        icono: true,
-        cerrable: true,
-        centradoInferior: true,
-      });
-    } finally {
-      setCargandoDetalle(false);
-      setModalDetalleAbierto(true);
-    }
+  // Manejador para errores al crear categoría
+  const handleErrorCrearCategoria = (mensajeError) => {
+    setAlerta({
+      tipo: 'error',
+      mensaje: mensajeError,
+      icono: true,
+      cerrable: true,
+      centradoInferior: true,
+    });
   };
 
   const botones = [
@@ -103,7 +95,7 @@ const ListaCategorias = () => {
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
-      onClick: handleAbrirModalCrear, // Ahora abre el modal para crear
+      onClick: handleAbrirModalCrear,
     },
     {
       label: 'Eliminar',
@@ -145,19 +137,19 @@ const ListaCategorias = () => {
             onRowSelectionModelChange={(newSelection) => {
               setSeleccionados(newSelection);
             }}
-            onRowClick={(params) => {
-              mostrarDetalleCategoria(params.row.id);
-            }}
           />
         </Box>
       </ContenedorLista>
 
+      {/* Modal para crear categoria */}
       <ModalCrearCategoria
         abierto={modalCrearAbierto}
         onCerrar={handleCerrarModalCrear}
         onCreado={handleCategoriaCreadaExitosamente}
+        onError={handleErrorCrearCategoria}
       />
 
+      {/* Modal para eliminar categoria */}
       <ModalEliminarCategoria
         open={openModalEliminar}
         onClose={() => setOpenModalEliminar(false)}
@@ -166,66 +158,14 @@ const ListaCategorias = () => {
         refrescarPagina={recargar}
       />
 
-      {modalDetalleAbierto && !cargandoDetalle && (
-        <ModalFlotante
-          open={modalDetalleAbierto}
-          onClose={() => {
-            setModalDetalleAbierto(false);
-            setCategoriaDetalle(null);
-            setErrorDetalle(false);
-          }}
-          onConfirm={() => setModalDetalleAbierto(false)}
-          titulo={
-            errorDetalle
-              ? 'Cargando...'
-              : categoriaDetalle?.nombreCategoria || 'Detalles de la categoría'
-          }
-          tituloVariant='h4'
-          botones={
-            errorDetalle
-              ? [
-                  {
-                    label: 'SALIR',
-                    variant: 'outlined',
-                    color: 'primary',
-                    outlineColor: colores.primario[1],
-                    onClick: () => setModalDetalleAbierto(false),
-                  },
-                ]
-              : [
-                  {
-                    label: 'EDITAR',
-                    variant: 'contained',
-                    color: 'error',
-                    backgroundColor: colores.altertex[1],
-                    construccion: true,
-                  },
-                  {
-                    label: 'SALIR',
-                    variant: 'outlined',
-                    color: 'primary',
-                    outlineColor: colores.primario[1],
-                    onClick: () => setModalDetalleAbierto(false),
-                  },
-                ]
-          }
-        >
-          {errorDetalle ? null : (
-            <CategoriaInfo
-              descripcion={categoriaDetalle?.descripcion}
-              productos={categoriaDetalle?.productos}
-            />
-          )}
-        </ModalFlotante>
-      )}
-
+      {/* Alert that appears on the page level */}
       {alerta && (
         <Alerta
           tipo={alerta.tipo}
           mensaje={alerta.mensaje}
           icono={alerta.icono}
           cerrable={alerta.cerrable}
-          duracion={2500}
+          duracion={3000}
           centradoInferior={alerta.centradoInferior}
           onClose={() => setAlerta(null)}
         />

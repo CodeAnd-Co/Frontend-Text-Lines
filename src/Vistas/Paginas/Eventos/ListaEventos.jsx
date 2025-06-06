@@ -1,5 +1,6 @@
+// RF36 - Crear Evento - [https://codeandco-wiki.netlify.app/docs/next/proyectos/textiles/documentacion/requisitos/RF36]
 // RF37 - Consulta Lista de Eventos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF37
-//RF38 - Leer Evento - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF38
+// RF38 - Leer Evento - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF38
 
 import React, { useState } from 'react';
 import Tabla from '@Organismos/Tabla';
@@ -8,6 +9,7 @@ import Alerta from '@Moleculas/Alerta';
 import PopUp from '@Moleculas/PopUp';
 import { Box, useTheme } from '@mui/material';
 import ModalFlotante from '@Organismos/ModalFlotante';
+import ModalCrearEvento from '@Organismos/Eventos/ModalCrearEvento';
 import { useEventoId } from '@Hooks/Eventos/useLeerEvento';
 import { useConsultarEventos } from '@Hooks/Eventos/useConsultarEventos';
 import InfoEvento from '@Moleculas/EventoInfo';
@@ -15,25 +17,60 @@ import { tokens } from '@SRC/theme';
 import { PERMISOS } from '@Utilidades/Constantes/permisos';
 import { useAuth } from '@Hooks/AuthProvider';
 import { useEliminarEvento } from '@Hooks/Eventos/useEliminarEvento';
+import { useCrearEvento } from '@SRC/hooks/Eventos/useCrearEvento';
 
 const ListaEventos = () => {
   const { eventos, cargando, error, recargar } = useConsultarEventos();
+  const { crear } = useCrearEvento();
+  const { eliminar } = useEliminarEvento();
+  const { usuario } = useAuth();
+
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
+
   const MENSAJE_POPUP_ELIMINAR = '¿Estás seguro de que deseas eliminar los eventos seleccionados?';
 
   const [seleccionados, setSeleccionados] = useState([]);
   const [alerta, setAlerta] = useState(null);
-  const { eliminar } = useEliminarEvento();
-  const [abrirEliminar, setAbrirPopUpEliminar] = useState(false);
-  const { usuario } = useAuth();
+  const [abrirCrear, setAbrirCrear] = useState(false);
+  const [abrirEliminar, setAbrirEliminar] = useState(false);
 
   const [eventoSeleccionado, setEventoSeleccionado] = useState(null);
   const [modalAbierto, setModalAbierto] = useState(false);
   const { evento } = useEventoId(eventoSeleccionado ? eventoSeleccionado.id : null);
 
+  const manejarAbrirCrear = () => {
+    setAbrirCrear(true);
+  };
+  const manejarCancelarCrear = () => {
+    setAbrirCrear(false);
+  };
+
+  const manejarConfirmarCrear = async (evento) => {
+    try {
+      await crear(evento);
+      if (typeof recargar === 'function') await recargar();
+      setAlerta({
+        tipo: 'success',
+        mensaje: 'Evento creado correctamente.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+      setAbrirCrear(false);
+    } catch (error) {
+      setAlerta({
+        tipo: 'error',
+        mensaje: `Error al crear el evento: ${error.message || 'Ocurrió un error desconocido'}`,
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+    }
+  };
+
   const manejarCancelarEliminar = () => {
-    setAbrirPopUpEliminar(false);
+    setAbrirEliminar(false);
   };
 
   const manejarConfirmarEliminar = async () => {
@@ -57,7 +94,7 @@ const ListaEventos = () => {
         centradoInferior: true,
       });
     } finally {
-      setAbrirPopUpEliminar(false);
+      setAbrirEliminar(false);
     }
   };
 
@@ -65,8 +102,6 @@ const ListaEventos = () => {
     { field: 'nombre', headerName: 'Nombre', flex: 1 },
     { field: 'descripcion', headerName: 'Descripción', flex: 2 },
     { field: 'puntos', headerName: 'Puntos', flex: 1 },
-    { field: 'periodo', headerName: 'Periodo', flex: 1 },
-    { field: 'renovacion', headerName: 'Renovación', flex: 1 },
   ];
 
   const filas = (eventos || []).map((evento) => ({
@@ -85,8 +120,7 @@ const ListaEventos = () => {
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
-      onClick: () => console.log('Añadir'),
-      construccion: true,
+      onClick: manejarAbrirCrear,
     },
     {
       label: 'Eliminar',
@@ -100,7 +134,7 @@ const ListaEventos = () => {
             centradoInferior: true,
           });
         } else {
-          setAbrirPopUpEliminar(true);
+          setAbrirEliminar(true);
         }
       },
       disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_EVENTO),
@@ -196,6 +230,11 @@ const ListaEventos = () => {
         cerrar={manejarCancelarEliminar}
         confirmar={manejarConfirmarEliminar}
         dialogo={MENSAJE_POPUP_ELIMINAR}
+      />
+      <ModalCrearEvento
+        abierto={abrirCrear}
+        onCerrar={manejarCancelarCrear}
+        onCreado={manejarConfirmarCrear}
       />
     </>
   );

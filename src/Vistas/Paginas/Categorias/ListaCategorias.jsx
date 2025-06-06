@@ -1,6 +1,6 @@
 // RF49 - Actualizar Categoría - ListaCategorias.jsx
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Tabla from '@Organismos/Tabla';
 import Alerta from '@Moleculas/Alerta';
 import ContenedorLista from '@Organismos/ContenedorLista';
@@ -16,15 +16,6 @@ import { Box, useTheme } from '@mui/material';
 import { tokens } from '@SRC/theme';
 import ModalCrearCategoria from '@Organismos/ModalCrearCategoria';
 
-/**
- * Página para consultar y mostrar la lista de categorías en una tabla.
- *
- * Muestra los resultados en un CustomDataGrid, incluyendo
- * nombre, descripción y número de productos de cada categoría.
- *
- * @see [RF[47] Consulta lista de categorías](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF47)
- */
-
 const ListaCategorias = () => {
   const { categorias, cargando, error, recargar } = useConsultarCategorias();
   const [productos, setProductos] = useState([]);
@@ -39,10 +30,29 @@ const ListaCategorias = () => {
   const [cargandoDetalle, setCargandoDetalle] = useState(false);
   const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
   const [categoriaEditable, setCategoriaEditable] = useState(null);
+  
   const actualizar = useActualizarCategoria();
-
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
+
+  const columns = useMemo(() => [
+    { field: 'nombreCategoria', headerName: 'Nombre', flex: 1 },
+    { field: 'descripcion', headerName: 'Descripción', flex: 2 },
+    {
+      field: 'cantidadProductos',
+      headerName: 'Número de productos asociados',
+      type: 'number',
+      flex: 1,
+    },
+  ], []);
+
+  const rows = useMemo(() => categorias.map((cat) => ({
+    id: cat.idCategoria,
+    nombreCategoria: cat.nombreCategoria,
+    descripcion: cat.descripcion,
+    cantidadProductos: cat.cantidadProductos,
+    idCliente: cat.idCliente,
+  })), [categorias]);
 
   useEffect(() => {
     const cargarProductos = async () => {
@@ -50,7 +60,6 @@ const ListaCategorias = () => {
         const resultado = await obtenerProductosCategoria();
         setProductos(resultado);
       } catch (error) {
-        console.error('Error al cargar productos:', error);
         setAlerta({
           tipo: 'error',
           mensaje: 'Error al cargar productos.',
@@ -63,36 +72,14 @@ const ListaCategorias = () => {
     cargarProductos();
   }, []);
 
-  const columns = [
-    { field: 'nombreCategoria', headerName: 'Nombre', flex: 1 },
-    { field: 'descripcion', headerName: 'Descripción', flex: 2 },
-    {
-      field: 'cantidadProductos',
-      headerName: 'Número de productos asociados',
-      type: 'number',
-      flex: 1,
-    },
-  ];
-
-
-  // Las filas deben tener un campo `id`, usamos `idCategoria`
-  // para que coincida con el campo `id` de la tabla.
-  const rows = categorias.map((cat) => ({
-    id: cat.idCategoria,
-    nombreCategoria: cat.nombreCategoria,
-    descripcion: cat.descripcion,
-    cantidadProductos: cat.cantidadProductos,
-    idCliente: cat.idCliente,
-  }));
-
-  const handleAbrirModalCrear = () => setModalCrearAbierto(true);
-  const handleCerrarModalCrear = () => setModalCrearAbierto(false);
-  const handleCategoriaCreadaExitosamente = () => {
+  const handleAbrirModalCrear = useCallback(() => setModalCrearAbierto(true), []);
+  const handleCerrarModalCrear = useCallback(() => setModalCrearAbierto(false), []);
+  const handleCategoriaCreadaExitosamente = useCallback(() => {
     handleCerrarModalCrear();
     recargar();
-  };
+  }, [recargar]);
 
-  const mostrarDetalleCategoria = async (idCategoria) => {
+  const mostrarDetalleCategoria = useCallback(async (idCategoria) => {
     setCargandoDetalle(true);
     setCategoriaDetalle(null);
     setErrorDetalle(false);
@@ -115,56 +102,82 @@ const ListaCategorias = () => {
       setCargandoDetalle(false);
       setModalDetalleAbierto(true);
     }
-  };
+  }, []);
 
-  const manejarCambioTransferencia = ({ disponibles, seleccionados }) => {
+  const manejarCambioTransferencia = useCallback(({ disponibles, seleccionados }) => {
     setCategoriaEditable((prev) => ({
       ...prev,
       productosDisponibles: disponibles,
       productosSeleccionados: seleccionados,
     }));
-  };
+  }, []);
 
-const manejarGuardarCategoria = async () => {
-  if (!categoriaEditable?.idCategoria) {
-    console.error('❌ ID de categoría no definido');
-    setAlerta({
-      tipo: 'error',
-      mensaje: 'No se pudo determinar el ID de la categoría.',
-      icono: true,
-      cerrable: true,
-      centradoInferior: true,
-    });
-    return;
-  }
+  const manejarGuardarCategoria = useCallback(async () => {
+    if (!categoriaEditable?.idCategoria) {
+      setAlerta({
+        tipo: 'error',
+        mensaje: 'No se pudo determinar el ID de la categoría.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+      return;
+    }
 
-  const datos = {
-    nombreCategoria: categoriaEditable.nombreCategoria,
-    descripcion: categoriaEditable.descripcion,
-    productos: categoriaEditable.productosSeleccionados.map((producto) => producto.id),
-  };
+    const datos = {
+      nombreCategoria: categoriaEditable.nombreCategoria,
+      descripcion: categoriaEditable.descripcion,
+      productos: categoriaEditable.productosSeleccionados.map((producto) => producto.id),
+    };
 
-  const resultado = await actualizar.actualizarCategoria(categoriaEditable.idCategoria, datos);
+    const resultado = await actualizar.actualizarCategoria(categoriaEditable.idCategoria, datos);
 
-  if (resultado.success) {
-    // Esperar 2 segundos para mostrar la alerta antes de cerrar
-    setTimeout(() => {
-      setModalEditarAbierto(false);
-      setCategoriaEditable(null);
-      actualizar.limpiarEstado(); // evitar que persista en la siguiente apertura
-      recargar();
-    }, 2000);
-  }
-};
+    if (resultado.success) {
+      setTimeout(() => {
+        setModalEditarAbierto(false);
+        setCategoriaEditable(null);
+        actualizar.limpiarEstado();
+        recargar();
+      }, 2000);
+    }
+  }, [categoriaEditable, actualizar, recargar]);
 
-  const botones = [
+  const cerrarModalEditar = useCallback(() => {
+    setModalEditarAbierto(false);
+    setCategoriaEditable(null);
+    actualizar.limpiarEstado();
+  }, [actualizar]);
+
+  const abrirModalEditar = useCallback(async () => {
+    setModalDetalleAbierto(false);
+
+    const productosAsociados = productos.filter((producto) =>
+      categoriaDetalle.productos.includes(producto.nombre));
+
+    const productosDisponibles = productos.filter(
+      (producto) => !categoriaDetalle.productos.includes(producto.nombre)
+    );
+
+    const nuevaCategoriaEditable = {
+      idCategoria: categoriaDetalle.idCategoria,
+      nombreCategoria: categoriaDetalle.nombreCategoria,
+      descripcion: categoriaDetalle.descripcion,
+      productosSeleccionados: productosAsociados,
+      productosDisponibles,
+    };
+
+    setCategoriaEditable(nuevaCategoriaEditable);
+    setModalEditarAbierto(true);
+  }, [productos, categoriaDetalle]);
+
+  const botones = useMemo(() => [
     {
       label: 'Añadir',
       variant: 'contained',
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
-      onClick: handleAbrirModalCrear, // Ahora abre el modal para crear
+      onClick: handleAbrirModalCrear,
     },
     {
       label: 'Eliminar',
@@ -186,7 +199,38 @@ const manejarGuardarCategoria = async () => {
       size: 'large',
       backgroundColor: colores.altertex[1],
     },
-  ];
+  ], [colores.altertex, handleAbrirModalCrear, seleccionados]);
+
+  const botonesModalDetalle = useMemo(() => {
+    if (errorDetalle) {
+      return [
+        {
+          label: 'SALIR',
+          variant: 'outlined',
+          color: 'primary',
+          outlineColor: colores.primario[1],
+          onClick: () => setModalDetalleAbierto(false),
+        },
+      ];
+    }
+
+    return [
+      {
+        label: 'EDITAR',
+        variant: 'contained',
+        color: 'error',
+        backgroundColor: colores.altertex[1],
+        onClick: abrirModalEditar,
+      },
+      {
+        label: 'SALIR',
+        variant: 'outlined',
+        color: 'primary',
+        outlineColor: colores.primario[1],
+        onClick: () => setModalDetalleAbierto(false),
+      },
+    ];
+  }, [errorDetalle, colores.primario, colores.altertex, abrirModalEditar]);
 
   return (
     <>
@@ -238,53 +282,7 @@ const manejarGuardarCategoria = async () => {
               : categoriaDetalle?.nombreCategoria || 'Detalles de la categoría'
           }
           tituloVariant='h4'
-          botones={
-            errorDetalle
-              ? [
-                  {
-                    label: 'SALIR',
-                    variant: 'outlined',
-                    color: 'primary',
-                    outlineColor: colores.primario[1],
-                    onClick: () => setModalDetalleAbierto(false),
-                  },
-                ]
-              : [
-                  {
-                    label: 'EDITAR',
-                    variant: 'contained',
-                    color: 'error',
-                    backgroundColor: colores.altertex[1],
-                    onClick: async () => {
-                      setModalDetalleAbierto(false);
-
-                    const productosAsociados = productos.filter((producto) =>
-                      categoriaDetalle.productos.includes(producto.nombre));
-
-                    const productosDisponibles = productos.filter(
-                      (producto) => !categoriaDetalle.productos.includes(producto.nombre)
-                    );
-
-
-                      setCategoriaEditable({
-                        idCategoria: categoriaDetalle.idCategoria,
-                        nombreCategoria: categoriaDetalle.nombreCategoria,
-                        descripcion: categoriaDetalle.descripcion,
-                        productosSeleccionados: productosAsociados,
-                        productosDisponibles,
-                      });
-                      setModalEditarAbierto(true);
-                    },
-                  },
-                  {
-                    label: 'SALIR',
-                    variant: 'outlined',
-                    color: 'primary',
-                    outlineColor: colores.primario[1],
-                    onClick: () => setModalDetalleAbierto(false),
-                  },
-                ]
-          }
+          botones={botonesModalDetalle}
         >
           {!errorDetalle && (
             <CategoriaInfo
@@ -296,12 +294,9 @@ const manejarGuardarCategoria = async () => {
       )}
 
       <ModalEditarCategoria
+        key={categoriaEditable?.idCategoria || 'sin-categoria'}
         abierto={modalEditarAbierto}
-        onCerrar={() => {
-          setModalEditarAbierto(false);
-          setCategoriaEditable(null);
-          actualizar.limpiarEstado();
-        }}
+        onCerrar={cerrarModalEditar}
         categoria={categoriaEditable}
         onGuardar={manejarGuardarCategoria}
         onCambioTransferencia={manejarCambioTransferencia}

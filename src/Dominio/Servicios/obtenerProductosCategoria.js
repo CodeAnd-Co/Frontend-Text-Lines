@@ -30,8 +30,7 @@ const obtenerProductosCategoria = async () => {
     }));
 
     return productosFormateados;
-  } catch (error) {
-    console.error('❌ Error al obtener productos:', error);
+  } catch {
     return [];
   }
 };

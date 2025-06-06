@@ -71,4 +71,5 @@ const CategoriaInfoEditable = ({
   );
 };
 
-export default CategoriaInfoEditable;
+// Exportar con React.memo para optimización
+export default React.memo(CategoriaInfoEditable);

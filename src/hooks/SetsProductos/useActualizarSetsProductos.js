@@ -13,7 +13,7 @@ export const useActualizarSetsProductos = () => {
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(false);
 
-  const actualizarSetProductos = async (idSet, nombre, descripcion, productos, grupos) => {
+  const actualizarSet = async (idSet, nombre, descripcion, activo, productos) => {
     if (!idSet) return;
 
     setCargando(true);
@@ -26,8 +26,8 @@ export const useActualizarSetsProductos = () => {
         idSet,
         nombre,
         descripcion,
-        productos,
-        grupos
+        activo,
+        productos
       );
 
       setExito(true);
@@ -56,7 +56,7 @@ export const useActualizarSetsProductos = () => {
   };
 
   return {
-    actualizarSetProductos,
+    actualizarSet,
     cargando,
     exito,
     error,

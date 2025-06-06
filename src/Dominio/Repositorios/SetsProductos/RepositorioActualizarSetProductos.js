@@ -10,21 +10,19 @@ export class RepositorioActualizarSetProductos {
    * @param {string} nombre - Nuevo nombre del set
    * @param {string} descripcion - Nueva descripción del set
    * @param {array} productos - Lista de IDs de productos
-   * @param {array} grupos - Lista de IDs de grupos de empleados asignados
    * @returns {Promise<{mensaje: string}>}
    *
    * @see [RF44] Actualizar set de productos - https://codeandco-wiki.netlify.app/docs/next/proyectos/textiles/documentacion/requisitos/RF44
    */
-  static async actualizarSetProductos(idSet, nombre, descripcion, productos, grupos) {
+  static async actualizarSetProductos(idSet, nombre, descripcion, productos) {
     try {
       const respuesta = await axios.put(
-        `${RUTAS_API.PRODUCTOS.ACTUALIZAR_SET}`,
+        `${RUTAS_API.SETS_PRODUCTOS.ACTUALIZAR_SETS_PRODUCTO}`,
         {
           idSetProductos: idSet,
           nombre,
           descripcion,
           productos,
-          grupos,
         },
         {
           headers: {

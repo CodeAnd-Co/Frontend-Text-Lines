@@ -19,6 +19,8 @@ import {
   Checkbox,
   Divider,
   Button,
+  Switch,
+  FormControlLabel,
 } from '@mui/material';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
@@ -26,12 +28,15 @@ import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArro
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 
 const LIMITE_NOMBRE = 50;
+const LIMITE_NOMBRE_VISIBLE = 50;
 const LIMITE_DESCRIPCION = 150;
 const MENSAJE_LIMITE = 'Máximo caracteres';
 
 const SetProductosEditable = ({
   nombre: nombreInicial,
+  //nombreVisible: nombreVisibleInicial,
   descripcion: descripcionInicial,
+  activo: activoInicial = true,
   productos: productosInicial,
   onFormDataChange,
 }) => {
@@ -40,10 +45,11 @@ const SetProductosEditable = ({
   const clienteSeleccionado = usuario?.clienteSeleccionado;
 
   const [nombre, setNombre] = useState(nombreInicial || '');
+  //const [nombreVisible, setNombreVisible] = useState(nombreVisibleInicial || '');
   const [descripcion, setDescripcion] = useState(descripcionInicial || '');
+  const [activo, setActivo] = useState(activoInicial);
   const [todosProductos, setTodosProductos] = useState([]);
   const [productosDerecha, setProductosDerecha] = useState(productosInicial || []);
-  const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [productosSeleccionadosIzquierda, setSeleccionadosIzquierda] = useState([]);
   const [productosSeleccionadosDerecha, setSeleccionadosDerecha] = useState([]);
   const [errores, setErrores] = useState({ nombre: false, descripcion: false });
@@ -119,13 +125,16 @@ const SetProductosEditable = ({
 
   useEffect(() => {
     const nombreVacio = nombre.trim() === '';
+    //const nombreVisibleVacio = nombreVisible.trim() === '';
     const descripcionVacia = descripcion.trim() === '';
     const esValido = !nombreVacio && !descripcionVacia;
     setErrores({ nombre: nombreVacio, descripcion: descripcionVacia });
 
     const formData = {
       nombre: nombre.trim(),
+      //nombreVisible: nombreVisibleVacio,
       descripcion: descripcion.trim(),
+      activo,
       productos: productosDerecha.map((p) => p.id),
       esValido,
     };
@@ -135,7 +144,8 @@ const SetProductosEditable = ({
       referenciaFormData.current = formData;
       onFormDataChange?.(formData);
     }
-  }, [nombre, descripcion, productosDerecha]);
+  }, [nombre, descripcion, activo, productosDerecha]);
+  //}, [nombre, nombreVisible, descripcion, activo, productosDerecha]);
 
   const renderLista = (titulo, items, lado) => {
     const seleccionados =
@@ -153,7 +163,7 @@ const SetProductosEditable = ({
     const estaTodoSeleccionado = seleccionados.length === items.length && items.length !== 0;
     const estaIndeterminado = seleccionados.length > 0 && seleccionados.length < items.length;
 
-    const tituloFinal = lado === 'izquierda' ? 'Productos Disponibles' : 'Sets Seleccionados';
+    const tituloFinal = lado === 'izquierda' ? 'Productos Disponibles' : 'Productos Seleccionados';
     const subheader = `${seleccionados.length}/${items.length} seleccionados`;
 
     return (
@@ -193,70 +203,85 @@ const SetProductosEditable = ({
 
   return (
     <Box sx={{ width: '100%', maxWidth: 1000, mx: 'auto' }}>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={4}>
+      {/* Switch Activo/Inactivo */}
+      <Grid item xs={12} sx={{ mb: 2 }}>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={activo}
+              onChange={(e) => setActivo(e.target.checked)}
+              color='primary'
+            />
+          }
+          label={activo ? 'Activo' : 'Inactivo'}
+        />
+      </Grid>
+
+      {/* Nombre y Nombre Visible */}
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={6}>
           <Texto variant='h6'>Nombre:</Texto>
-          <CampoTexto
-            fullWidth
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value.slice(0, LIMITE_NOMBRE))}
-            error={errores.nombre}
-            helperText={
-              errores.nombre
-                ? 'Campo obligatorio'
-                : `${nombre.length}/${LIMITE_NOMBRE} ${MENSAJE_LIMITE}`
-            }
-            sx={{ mt: 1, mb: 2, mr: 8, width: '300px', overflow: 'auto' }}
-          />
+          <Box sx={{ width: '100%' }}>
+            <CampoTexto
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value.slice(0, LIMITE_NOMBRE))}
+              error={errores.nombre}
+              helperText={
+                errores.nombre
+                  ? 'Campo obligatorio'
+                  : `${nombre.length}/${LIMITE_NOMBRE} ${MENSAJE_LIMITE}`
+              }
+              sx={{ mt: 1, mb: 2, mr: 4, width: '385px', overflow: 'auto' }}
+            />
+          </Box>
         </Grid>
+      </Grid>
 
-        <Grid item xs={12} md={8}>
-          <Texto variant='h6'>Descripción:</Texto>
-          <CampoTexto
-            fullWidth
-            value={descripcion}
-            onChange={(e) => setDescripcion(e.target.value.slice(0, LIMITE_DESCRIPCION))}
-            error={errores.descripcion}
-            helperText={
-              errores.descripcion
-                ? 'Campo obligatorio'
-                : `${descripcion.length}/${LIMITE_DESCRIPCION} ${MENSAJE_LIMITE}`
-            }
-            sx={{ mt: 1, mb: 2, width: '400px', overflow: 'auto' }}
-          />
-        </Grid>
+      {/* Descripción */}
+      <Grid item xs={12}>
+        <Texto variant='h6'>Descripción:</Texto>
+        <CampoTexto
+          fullWidth
+          value={descripcion}
+          onChange={(e) => setDescripcion(e.target.value.slice(0, LIMITE_DESCRIPCION))}
+          error={errores.descripcion}
+          helperText={
+            errores.descripcion
+              ? 'Campo obligatorio'
+              : `${descripcion.length}/${LIMITE_DESCRIPCION} ${MENSAJE_LIMITE}`
+          }
+          sx={{ mt: 1, mb: 2, width: '815px', overflow: 'auto' }}
+        />
+      </Grid>
 
-        <Grid item xs={12}>
-          <Texto variant='h6'>Productos:</Texto>
-          <Grid container spacing={2} alignItems='center' justifyContent='center'>
-            <Grid item>{renderLista('Disponibles', productosIzquierda, 'izquierda')}</Grid>
-            <Grid item>
-              <Grid item>
-                <Grid container direction='column' spacing={1}>
-                  {/* Mover todos a la derecha */}
-                  <Button onClick={transferirTodos} disabled={!productosIzquierda.length}>
-                    <KeyboardDoubleArrowRightIcon />
-                  </Button>
-
-                  {/* Mover seleccionados a la derecha */}
-                  <Button onClick={transferir} disabled={!productosSeleccionadosIzquierda.length}>
-                    <KeyboardArrowRightIcon />
-                  </Button>
-
-                  {/* Mover seleccionados a la izquierda */}
-                  <Button onClick={quitar} disabled={!productosSeleccionadosDerecha.length}>
-                    <KeyboardArrowLeftIcon />
-                  </Button>
-
-                  {/* Mover todos a la izquierda */}
-                  <Button onClick={quitarTodos} disabled={!productosDerecha.length}>
-                    <KeyboardDoubleArrowLeftIcon />
-                  </Button>
-                </Grid>
-              </Grid>
+      {/* Productos */}
+      <Grid item xs={12}>
+        <Texto variant='h6'>Productos:</Texto>
+        <Grid
+          container
+          spacing={2}
+          alignItems='center'
+          justifyContent='center'
+          sx={{ mb: 5 }} // Espacio extra debajo de la tabla de productos
+        >
+          <Grid item>{renderLista('Disponibles', productosIzquierda, 'izquierda')}</Grid>
+          <Grid item>
+            <Grid container direction='column' spacing={1}>
+              <Button onClick={transferirTodos} disabled={!productosIzquierda.length}>
+                <KeyboardDoubleArrowRightIcon />
+              </Button>
+              <Button onClick={transferir} disabled={!productosSeleccionadosIzquierda.length}>
+                <KeyboardArrowRightIcon />
+              </Button>
+              <Button onClick={quitar} disabled={!productosSeleccionadosDerecha.length}>
+                <KeyboardArrowLeftIcon />
+              </Button>
+              <Button onClick={quitarTodos} disabled={!productosDerecha.length}>
+                <KeyboardDoubleArrowLeftIcon />
+              </Button>
             </Grid>
-            <Grid item>{renderLista('Seleccionados', productosDerecha, 'derecha')}</Grid>
           </Grid>
+          <Grid item>{renderLista('Seleccionados', productosDerecha, 'derecha')}</Grid>
         </Grid>
       </Grid>
     </Box>
@@ -265,7 +290,9 @@ const SetProductosEditable = ({
 
 SetProductosEditable.propTypes = {
   nombre: PropTypes.string,
+  //nombreVisible: PropTypes.string,
   descripcion: PropTypes.string,
+  activo: PropTypes.bool,
   productos: PropTypes.array,
   onFormDataChange: PropTypes.func,
 };

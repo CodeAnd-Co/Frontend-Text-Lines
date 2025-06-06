@@ -83,8 +83,12 @@ const ListaSetsProductos = () => {
 
   const { actualizarSet } = useActualizarSetsProductos();
 
+  const esValido = (data) => {
+    return data?.nombre?.trim() !== '' && data?.descripcion?.trim() !== '';
+  };
+
   const handleGuardar = async () => {
-    if (!formData?.esValido()) {
+    if (!esValido(formData)) {
       setAlerta({
         tipo: 'error',
         mensaje: 'El nombre y la descripción son obligatorios.',
@@ -94,14 +98,24 @@ const ListaSetsProductos = () => {
       });
       return;
     }
+    // Log para ver los datos que se enviarán
+    console.log('Datos que se enviarán para actualizar el set:', {
+      idSetProducto: setSeleccionado.idSetProducto,
+      nombre: formData.nombre,
+      //nombreVisible: formData.nombreVisible,
+      descripcion: formData.descripcion,
+      activo: formData.activo ? 1 : 0,
+      productos: formData.productos,
+    });
 
     try {
       await actualizarSet(
         setSeleccionado.idSetProducto,
         formData.nombre,
+        //formData.nombreVisible,
         formData.descripcion,
-        formData.productos,
-        formData.grupos
+        formData.activo,
+        formData.productos
       );
       await recargar();
       setAbrirModalEditar(false);
@@ -298,7 +312,6 @@ const ListaSetsProductos = () => {
             nombre={''}
             descripcion={setSeleccionado.descripcion}
             productos={setSeleccionado.productos || []}
-            grupos={setSeleccionado.grupos || []}
           />
         </ModalFlotante>
       )}
@@ -328,9 +341,10 @@ const ListaSetsProductos = () => {
         >
           <InfoSetProductosEditable
             nombre={setSeleccionado?.nombre || ''}
+            //nombreVisible={setSeleccionado?.nombreVisible ?? ''}
             descripcion={setSeleccionado?.descripcion || ''}
             productos={setSeleccionado?.productos || []}
-            grupos={setSeleccionado?.grupos || []}
+            activo={setSeleccionado?.activo ?? 1}
             onFormDataChange={handleFormDataChange}
           />
         </ModalFlotante>

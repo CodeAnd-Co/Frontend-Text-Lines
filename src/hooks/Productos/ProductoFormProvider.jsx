@@ -191,7 +191,7 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
 
         const nuevaOpcion = {
           id: Date.now(),
-          cantidad: undefined,
+          cantidad: 1,
           valorOpcion: '',
           SKUautomatico: sku,
           SKUcomercial: '',

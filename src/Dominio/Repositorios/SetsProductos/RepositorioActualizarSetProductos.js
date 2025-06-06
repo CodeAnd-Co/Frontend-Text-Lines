@@ -14,13 +14,14 @@ export class RepositorioActualizarSetProductos {
    *
    * @see [RF44] Actualizar set de productos - https://codeandco-wiki.netlify.app/docs/next/proyectos/textiles/documentacion/requisitos/RF44
    */
-  static async actualizarSetProductos(idSet, nombre, descripcion, productos) {
+  static async actualizarSetProductos(idSet, nombre, activo, descripcion, productos) {
     try {
       const respuesta = await axios.put(
         `${RUTAS_API.SETS_PRODUCTOS.ACTUALIZAR_SETS_PRODUCTO}`,
         {
           idSetProductos: idSet,
           nombre,
+          activo,
           descripcion,
           productos,
         },

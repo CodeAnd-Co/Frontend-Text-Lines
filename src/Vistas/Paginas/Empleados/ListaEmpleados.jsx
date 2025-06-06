@@ -1,6 +1,8 @@
 //RF17 - Consulta Lista Empleados - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF17
 //RF20 - Eliminar empleado - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF20
-import React, { useState } from 'react';
+//RF59 - Exportar Empleados - https://codeandco-wiki.netlify.app/docs/next/proyectos/textiles/documentacion/requisitos/RF59
+
+import React, { useState, useEffect } from 'react';
 import { Box, useTheme } from '@mui/material';
 import Tabla from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';
@@ -16,6 +18,7 @@ import { tokens } from '@SRC/theme';
 import { PERMISOS } from '@Constantes/permisos';
 import ModalImportarEmpleados from '@Organismos/ModalImportarEmpleados';
 import useImportarEmpleados from '@Hooks/Empleados/useImportarEmpleados';
+import useExportarEmpleados from '@Hooks/Empleados/useExportarEmpleados';
 
 const ListaGrupoEmpleados = () => {
   const { empleados, cargando, error, recargar } = useConsultarEmpleados();
@@ -45,7 +48,7 @@ const ListaGrupoEmpleados = () => {
   const manejarConfirmarEliminar = async () => {
     try {
       await eliminar(empleadosSeleccionados);
-      await recargar(); // Se asegura de que se recargue la lista
+      await recargar();
       setAlerta({
         tipo: 'success',
         mensaje: 'Empleados eliminados correctamente.',
@@ -66,6 +69,68 @@ const ListaGrupoEmpleados = () => {
       setAbrirPopUpEliminar(false);
     }
   };
+
+  const [openModalExportar, setAbrirPopUpExportar] = useState(false);
+  const MENSAJE_POPUP_EXPORTAR = '¿Deseas exportar la lista de empleados? El archivo será generado en formato CSV.';
+  const manejarCancelarExportar = () => {
+    setAbrirPopUpExportar(false);
+  };
+
+  const manejarConfirmarExportar = async () => {
+    if (empleadosSeleccionados.length === 0) {
+      setAlerta({
+        tipo: 'warning',
+        mensaje: 'Selecciona al menos un empleado para exportar.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+      return;
+    }
+
+    await exportar(empleadosSeleccionados);
+    setAbrirPopUpExportar(false);
+  };
+
+  const { exportar, error: errorExportar, csv, mensaje } = useExportarEmpleados();
+
+  useEffect(() => {
+  if (csv) {
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'empleados.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    }
+  }, [csv]);
+  
+  useEffect(() => {
+    if (errorExportar) {
+      setAlerta({
+        tipo: 'error',
+        mensaje: errorExportar,
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+    }
+  }, [errorExportar]);
+
+  useEffect(() => {
+    if (csv && mensaje) {
+      setAlerta({
+        tipo: 'success',
+        mensaje,
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+    }
+  }, [csv, mensaje]);
 
   const columnas = [
     { field: 'nombreCompleto', headerName: 'Nombre del Empleado', flex: 1 },
@@ -109,13 +174,13 @@ const ListaGrupoEmpleados = () => {
       disabled: !usuario?.permisos?.includes(PERMISOS.IMPORTAR_EMPLEADOS),
     },
     {
-      //variant: 'outlined',
+      variant: 'outlined',
       label: 'Exportar',
-      onClick: () => console.log('Exportar'),
+      onClick: () => setAbrirPopUpExportar(true),
       color: 'primary',
+      outlineColor: colores.altertex[1],
       size: 'large',
-      //outlineColor: colores.primario[10],
-      construccion: true,
+      disabled: !usuario?.permisos?.includes(PERMISOS.EXPORTAR_EMPLEADOS),
     },
     {
       label: 'Eliminar',
@@ -159,7 +224,8 @@ const ListaGrupoEmpleados = () => {
               setModalDetalleAbierto(true);
             }}
             onRowSelectionModelChange={(nuevosIds) => {
-              const ids = Array.isArray(nuevosIds) ? nuevosIds : Array.from(nuevosIds?.ids || []);
+              const ids = (Array.isArray(nuevosIds) ? nuevosIds : Array.from(nuevosIds?.ids || []))
+                .map(id => parseInt(id));
               setEmpleadosSeleccionados(ids);
             }}
           />
@@ -239,6 +305,16 @@ const ListaGrupoEmpleados = () => {
         cerrar={manejarCancelarEliminar}
         confirmar={manejarConfirmarEliminar}
         dialogo={MENSAJE_POPUP_ELIMINAR}
+      />
+
+      <PopUp
+        abrir={openModalExportar}
+        cerrar={manejarCancelarExportar}
+        confirmar={manejarConfirmarExportar}
+        dialogo={MENSAJE_POPUP_EXPORTAR}
+        labelCancelar = 'Cancelar'
+        labelConfirmar = 'Confirmar'
+        disabledConfirmar={cargando}
       />
 
       {/* Alerta inferior */}

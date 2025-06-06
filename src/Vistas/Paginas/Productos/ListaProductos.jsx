@@ -1,8 +1,10 @@
 //RF[26] Crea Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF26]
 //RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
 //RF[30] Elimina Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF30]
+//RF[58] - Exportar Productos - [https://codeandco-wiki.netlify.app/docs/next/proyectos/textiles/documentacion/requisitos/RF58]
+
 import { Box, useTheme, Chip } from '@mui/material';
-import { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Tabla from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';
 import Alerta from '@Moleculas/Alerta';
@@ -19,6 +21,7 @@ import useImportarProductos from '@Hooks/Productos/useImportarProductos';
 import ModalFlotante from '@Organismos/ModalFlotante.jsx';
 import InfoProducto from '@Moleculas/InfoProducto.jsx';
 import { useLeerProducto } from '@Hooks/Productos/useLeerProducto.js';
+import useExportarProductos from '@Hooks/Productos/useExportarProductos';
 
 const ListaProductos = () => {
   const { productos, cargando, error, recargar } = useConsultarProductos();
@@ -39,6 +42,54 @@ const ListaProductos = () => {
   
   const [abrirModalDetalle, setAbrirModalDetalle] = useState(false);
   const [imagenProducto, setImagenProducto] = useState('')
+
+  const [openModalExportar, setAbrirPopUpExportar] = useState(false);
+  const MENSAJE_POPUP_EXPORTAR = '¿Deseas exportar la lista de productos? El archivo será generado en formato .xlsx';
+  const manejarCancelarExportar = () => {
+    setAbrirPopUpExportar(false);
+  };
+
+  const manejarConfirmarExportar = async () => {
+    if (productosSeleccionados.length === 0) {
+      setAlerta({
+        tipo: 'warning',
+        mensaje: 'Selecciona al menos un producto para exportar.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+      return;
+    }
+
+    await exportar(productosSeleccionados);
+    setAbrirPopUpExportar(false);
+  };
+
+  const { exportar, error: errorExportar, mensaje } = useExportarProductos();
+  
+  useEffect(() => {
+    if (errorExportar) {
+      setAlerta({
+        tipo: 'error',
+        mensaje: errorExportar,
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+    }
+  }, [errorExportar]);
+
+  useEffect(() => {
+    if (mensaje) {
+      setAlerta({
+        tipo: 'success',
+        mensaje,
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+    }
+  }, [mensaje]);
 
   const {
     detalleProducto,
@@ -179,12 +230,13 @@ const ListaProductos = () => {
 
     },
     {
+      variant: 'outlined',
       label: 'Exportar',
-      onClick: () => console.log('Exportar'),
+      onClick: () => setAbrirPopUpExportar(true),
       color: 'primary',
+      outlineColor: colores.altertex[1],
       size: 'large',
-      outlineColor: colores.primario[10],
-      construccion: true,
+      disabled: !usuario?.permisos?.includes(PERMISOS.EXPORTAR_PRODUCTOS),
     },
     {
       label: 'Eliminar',
@@ -240,9 +292,8 @@ const ListaProductos = () => {
             checkboxSelection
             rowHeight={80}
             onRowSelectionModelChange={(nuevosIds) => {
-              const ids = Array.isArray(nuevosIds)
-                ? nuevosIds
-                : Array.from(nuevosIds?.ids || []);
+              const ids = (Array.isArray(nuevosIds) ? nuevosIds : Array.from(nuevosIds?.ids || []))
+                .map(id => parseInt(id));
               setProductosSeleccionados(ids);
             }}
             onRowClick={(parametros) => {
@@ -281,6 +332,16 @@ const ListaProductos = () => {
         exito={exito}
         recargar={recargar}
       ></ModalImportarProdctos>
+
+      <PopUp
+        abrir={openModalExportar}
+        cerrar={manejarCancelarExportar}
+        confirmar={manejarConfirmarExportar}
+        dialogo={MENSAJE_POPUP_EXPORTAR}
+        labelCancelar = 'Cancelar'
+        labelConfirmar = 'Confirmar'
+        disabledConfirmar={cargando}
+      />
 
       {abrirModalDetalle && (
         <ModalFlotante

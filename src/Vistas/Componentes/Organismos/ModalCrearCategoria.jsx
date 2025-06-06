@@ -2,9 +2,8 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import ModalFlotante from '@Organismos/ModalFlotante';
 import FormaCrearCategorias from '@Organismos/Formularios/FormaCrearCategoria';
 import useCrearCategoria from '@Hooks/Categorias/useCrearCategoria';
-import Alerta from '@Moleculas/Alerta';
 
-const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
+const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado, onError }) => {
   const [nombreCategoria, setNombreCategoria] = useState('');
   const [descripcionCategoria, setDescripcionCategoria] = useState('');
   const [productos, setProductos] = useState([]);
@@ -35,55 +34,55 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
   }, [abierto, resetEstado]);
 
   useEffect(() => {
-    let timeoutId;
     if (exito) {
-      timeoutId = setTimeout(() => {
-        if (onCreado) {
-          onCreado();
-        } else {
-          onCerrar();
-        }
-      }, 2000);
-    }
-
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
+      if (onCreado) {
+        onCreado();
+      } else {
+        onCerrar();
       }
-    };
+    }
   }, [exito, onCreado, onCerrar]);
+
+  useEffect(() => {
+    if (error && onError) {
+      onError(mensaje);
+      setError(false);
+    }
+  }, [error, mensaje, onError, setError]);
 
   const handleCerrar = useCallback(() => {
     onCerrar();
   }, [onCerrar]);
 
   const handleConfirmar = async () => {
-  setIntentoEnviar(true);
-  const nuevosErrores = {};
+    setIntentoEnviar(true);
+    const nuevosErrores = {};
 
-  if (!nombreCategoria.trim()) {
-    nuevosErrores.nombreCategoria = 'El nombre es obligatorio.';
-  }
+    if (!nombreCategoria.trim()) {
+      nuevosErrores.nombreCategoria = 'El nombre es obligatorio.';
+    }
 
-  if (!descripcionCategoria.trim()) {
-    nuevosErrores.descripcionCategoria = 'La descripción es obligatoria.';
-  }
+    if (!descripcionCategoria.trim()) {
+      nuevosErrores.descripcionCategoria = 'La descripción es obligatoria.';
+    }
 
-  if (productos.length === 0) {
-    setMostrarAlerta(true);
-  }
+    if (productos.length === 0) {
+      setMostrarAlerta(true);
+      if (onError) {
+        onError('Ingresa el nombre y selecciona al menos un producto.');
+      }
+    }
 
-  setErrores(nuevosErrores);
+    setErrores(nuevosErrores);
 
-  if (Object.keys(nuevosErrores).length > 0 || productos.length === 0) return;
+    if (Object.keys(nuevosErrores).length > 0 || productos.length === 0) return;
 
-  await crearCategoria({
-    nombreCategoria: nombreCategoria.trim(),
-    descripcion: descripcionCategoria.trim(),
-    productos,
-  });
-};
-
+    await crearCategoria({
+      nombreCategoria: nombreCategoria.trim(),
+      descripcion: descripcionCategoria.trim(),
+      productos,
+    });
+  };
 
   return (
     <ModalFlotante
@@ -106,17 +105,18 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado }) => {
         setMostrarAlerta={setMostrarAlerta}
         errores={errores}
         intentoEnviar={intentoEnviar}
-/>
+      />
       {(exito || error) && (
         <Alerta
           tipo={exito ? 'success' : 'error'}
           mensaje={mensaje}
-          duracion={exito ? 3000 : 3000 }
+          duracion={exito ? 3000 :3000 }
           sx={{ margin: 3 }}
           cerrable
           onClose={error ? () => setError(false) : undefined}
         />
       )}
+
     </ModalFlotante>
   );
 };

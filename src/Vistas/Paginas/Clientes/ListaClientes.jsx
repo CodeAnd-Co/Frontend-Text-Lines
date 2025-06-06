@@ -1,5 +1,7 @@
 // ListaClientes.jsx
 // RF14 - Actualiza Cliente - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF14
+// RF13 Leer cliente - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF13
+// RF15 Elimina Cliente - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF15
 
 import { useNavigate } from 'react-router-dom';
 import { Box, useTheme } from '@mui/material';

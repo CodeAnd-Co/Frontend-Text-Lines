@@ -20,9 +20,8 @@ const ModalActualizarCategoria = ({ open, onClose, categoria, onActualizado }) =
       setDescripcionCategoria(categoria.descripcion || '');
 
       // Asegurarse de transformar productos a IDs si vienen como objetos
-      const productosParseados = categoria.productos?.map((p) =>
-        typeof p === 'object' ? p.idProducto : p
-      );
+      const productosParseados = categoria.productos?.map((producto) =>
+        typeof producto === 'object' ? producto.idProducto : producto);
       setProductos(productosParseados || []);
     }
   }, [open, categoria]);

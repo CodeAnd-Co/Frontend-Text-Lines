@@ -11,8 +11,8 @@ export const validarProducto = (producto) => {
   if (producto.precioPuntos == null || producto.precioPuntos === '') {
     errores.precioPuntos = 'El precio en puntos es obligatorio.';
   } else if (
-    Number(producto.precioPuntos) <= 0 ||
-    !Number.isInteger(Number(producto.precioPuntos))
+    Number(producto.precioPuntos) <= 0
+    || !Number.isInteger(Number(producto.precioPuntos))
   ) {
     errores.precioPuntos = 'El precio en puntos debe ser un número entero positivo.';
   } else if (!/^[1-9]\d{0,9}$/.test(producto.precioPuntos.toString())) {

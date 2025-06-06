@@ -10,6 +10,7 @@ import ContenedorLista from '@Organismos/ContenedorLista';
 import Alerta from '@Moleculas/Alerta';
 import PopUp from '@Moleculas/PopUp';
 import FormularioProducto from '@Organismos/Formularios/FormularioProducto';
+import FormularioActualizarProducto from '@Organismos/Formularios/FormularioActualizarProducto';
 import FormularioProveedor from '@Organismos/Formularios/FormularioProveedor';
 import { useConsultarProductos } from '@Hooks/Productos/useConsultarProductos';
 import { useEliminarProductos } from '@Hooks/Productos/useEliminarProductos';
@@ -36,7 +37,7 @@ const ListaProductos = () => {
   const [openModalEliminar, setAbrirPopUp] = useState(false);
   const [abrirModalDetalle, setAbrirModalDetalle] = useState(false);
   const [imagenProducto, setImagenProducto] = useState('');
-
+  const [mostrarModalActualizarProducto, setMostrarModalActualizarProducto] = useState(false);
   const [openModalExportar, setAbrirPopUpExportar] = useState(false);
   const MENSAJE_POPUP_EXPORTAR =
     '¿Deseas exportar la lista de productos? El archivo será generado en formato .xlsx';
@@ -102,6 +103,10 @@ const ListaProductos = () => {
   const mostrarFormularioProducto = useCallback(() => {
     setMostrarModalProducto(true);
     setMostrarModalProveedor(false);
+  }, []);
+
+  const mostrarFormularioActualizarProducto = useCallback(() => {
+    setMostrarModalActualizarProducto(true);
   }, []);
 
   const mostrarFormularioProveedor = useCallback(() => {
@@ -266,6 +271,14 @@ const ListaProductos = () => {
             alMostrarFormularioProveedor={mostrarFormularioProveedor}
           />
         )}
+
+        {mostrarModalActualizarProducto && (
+          <FormularioActualizarProducto
+            formularioAbierto={mostrarModalActualizarProducto}
+            alCerrarFormularioProducto={cerrarFormularioProducto}
+          />
+        )}
+
         {mostrarModalProveedor && (
           <FormularioProveedor
             formularioAbierto={mostrarModalProveedor}
@@ -338,7 +351,7 @@ const ListaProductos = () => {
               variant: 'contained',
               color: 'primary',
               backgroundColor: colores.altertex[1],
-              onClick: mostrarFormularioProducto,
+              onClick: mostrarFormularioActualizarProducto,
               disabled: !usuario?.permisos?.includes(PERMISOS.ACTUALIZAR_PRODUCTO),
             },
             {

@@ -41,8 +41,8 @@ const ModalEditarPedido = ({
   }, [abierto, datosIniciales]);
 
   const manejarCambio = useCallback(
-    (e) => {
-      const { name, value } = e.target;
+    (evento) => {
+      const { name, value } = evento.target;
       setPedido((prev) => ({ ...prev, [name]: value }));
 
       // Limpiar error específico del campo
@@ -124,54 +124,54 @@ const ModalEditarPedido = ({
   }, [pedido, validarCampos, actualizarPedido, onMostrarAlerta, onActualizar, onCerrar]);
 
   const manejarCambioPrecio = useCallback(
-    (e) => {
-      const value = e.target.value;
+    (evento) => {
+      const value = evento.target.value;
 
       // Permitir campo vacío
       if (value === '') {
-        manejarCambio(e);
+        manejarCambio(evento);
         return;
       }
 
       // Validar formato mientras se escribe
       if (REGEX_PRECIO.test(value)) {
-        manejarCambio(e);
+        manejarCambio(evento);
       }
     },
     [manejarCambio]
   );
 
   const manejarCambioEstatus = useCallback(
-    (e) => {
-      const value = e.target.value;
+    (evento) => {
+      const value = evento.target.value;
 
       // Solo permitir letras, espacios y caracteres especiales del español
       if (REGEX_SOLO_LETRAS.test(value)) {
-        manejarCambio(e);
+        manejarCambio(evento);
       }
     },
     [manejarCambio]
   );
 
   const manejarCambioEstatusPago = useCallback(
-    (e) => {
-      const value = e.target.value;
+    (evento) => {
+      const value = evento.target.value;
 
       // Solo permitir letras, espacios y caracteres especiales del español
       if (REGEX_SOLO_LETRAS.test(value)) {
-        manejarCambio(e);
+        manejarCambio(evento);
       }
     },
     [manejarCambio]
   );
 
   const manejarCambioEstatusEnvio = useCallback(
-    (e) => {
-      const value = e.target.value;
+    (evento) => {
+      const value = evento.target.value;
 
       // Solo permitir letras, espacios y caracteres especiales del español
       if (REGEX_SOLO_LETRAS.test(value)) {
-        manejarCambio(e);
+        manejarCambio(evento);
       }
     },
     [manejarCambio]

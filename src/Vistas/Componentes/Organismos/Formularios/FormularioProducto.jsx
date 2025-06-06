@@ -44,6 +44,8 @@ const ContenidoFormulario = memo(({ alMostrarFormularioProveedor }) => {
     manejarEliminarImagenVariante,
     manejarActualizarProducto,
     manejarAgregarImagenProducto,
+    prevenirNumerosNegativos,
+    prevenirNumerosNoDecimales,
   } = useProductoForm();
 
   return (
@@ -72,6 +74,8 @@ const ContenidoFormulario = memo(({ alMostrarFormularioProveedor }) => {
             alAgregarImagenProducto={manejarAgregarImagenProducto}
             setImagenes={setImagenes}
             alMostrarFormularioProveedor={alMostrarFormularioProveedor}
+            prevenirNumerosNegativos={prevenirNumerosNegativos}
+            prevenirNumerosNoDecimales={prevenirNumerosNoDecimales}
           />
           <TituloFormulario titulo='Datos de las Variantes' varianteTitulo='h6' />
           {idsVariantes.map((idVariante) => (
@@ -91,6 +95,8 @@ const ContenidoFormulario = memo(({ alMostrarFormularioProveedor }) => {
               alEliminarOpcion={manejarEliminarOpcion}
               alAgregarImagenVariante={manejarAgregarImagenVariante}
               alEliminarImagenVariante={manejarEliminarImagenVariante}
+              prevenirNumerosNegativos={prevenirNumerosNegativos}
+              prevenirNumerosNoDecimales={prevenirNumerosNoDecimales}
             />
           ))}
           <CampoCrear etiqueta='Crear Variante' onClick={manejarCrearVariante} />

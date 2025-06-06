@@ -162,7 +162,7 @@ const FormularioActualizarUsuario = ({
           error={!!erroresValidacion.idRol}
           helperText={erroresValidacion.idRol && CAMPO_OBLIGATORIO}
           options={roles
-            .filter((rol) => rol.idRol !== 1)
+            .filter((rol) => rol.idRol !== 1 && rol.idRol !== 3)
             .map((rol) => ({
               value: rol.idRol,
               label: rol.nombre,

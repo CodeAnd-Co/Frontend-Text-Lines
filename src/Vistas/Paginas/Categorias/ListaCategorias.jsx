@@ -3,7 +3,6 @@ import Tabla from '@Organismos/Tabla';
 import Alerta from '@Moleculas/Alerta';
 import ContenedorLista from '@Organismos/ContenedorLista';
 import ModalEliminarCategoria from '@Organismos/ModalEliminarCategoria';
-import ModalCrearCategoria from '@Organismos/ModalCrearCategoria';
 import CategoriaInfo from '@Organismos/CategoriaInfo';
 import ModalFlotante from '@Organismos/ModalFlotante';
 import { useConsultarCategorias } from '@Hooks/Categorias/useConsultarCategorias';
@@ -11,6 +10,16 @@ import { leerCategoria } from '@Hooks/Categorias/useLeerCategoria';
 import { Box, useTheme } from '@mui/material';
 import Texto from '@Atomos/Texto';
 import { tokens } from '@SRC/theme';
+import ModalCrearCategoria from '@Organismos/ModalCrearCategoria';
+
+/**
+ * Página para consultar y mostrar la lista de categorías en una tabla.
+ *
+ * Muestra los resultados en un CustomDataGrid, incluyendo
+ * nombre, descripción y número de productos de cada categoría.
+ *
+ * @see [RF[47] Consulta lista de categorías](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF47)
+ */
 
 const ListaCategorias = () => {
   const { categorias, cargando, error, recargar } = useConsultarCategorias();
@@ -94,7 +103,7 @@ const ListaCategorias = () => {
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
-      onClick: handleAbrirModalCrear,
+      onClick: handleAbrirModalCrear, // Ahora abre el modal para crear
     },
     {
       label: 'Eliminar',
@@ -216,7 +225,7 @@ const ListaCategorias = () => {
           mensaje={alerta.mensaje}
           icono={alerta.icono}
           cerrable={alerta.cerrable}
-          duracion={3000}
+          duracion={2500}
           centradoInferior={alerta.centradoInferior}
           onClose={() => setAlerta(null)}
         />

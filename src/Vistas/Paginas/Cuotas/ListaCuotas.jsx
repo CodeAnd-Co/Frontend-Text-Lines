@@ -48,6 +48,10 @@ const ListaCuotas = () => {
     }
   }, [usuario, navegar]);
 
+  const manejarMostrarAlerta = (configAlerta) => {
+    setAlerta(configAlerta);
+  };
+
   const columnas = [
     { field: 'nombre', headerName: 'Nombre', flex: 1 },
     {
@@ -90,6 +94,7 @@ const ListaCuotas = () => {
 
   const handleAbrirModalCrear = () => setModalCrearAbierto(true);
   const handleCerrarModalCrear = () => setModalCrearAbierto(false);
+
   const manejarCancelarEliminar = () => setAbrirPopUpEliminar(false);
 
   const manejarConfirmarEliminar = async () => {
@@ -146,6 +151,7 @@ const ListaCuotas = () => {
       backgroundColor: colores.altertex[1],
     },
   ];
+
   return (
     <>
       <ContenedorLista
@@ -183,7 +189,11 @@ const ListaCuotas = () => {
         </Box>
       </ContenedorLista>
 
-      <ModalCrearCuotaSet abierto={modalCrearAbierto} onCerrar={handleCerrarModalCrear} />
+      <ModalCrearCuotaSet
+        abierto={modalCrearAbierto}
+        onCerrar={handleCerrarModalCrear}
+        onMostrarAlerta={manejarMostrarAlerta}
+      />
 
       <PopUpEliminar
         abrir={abrirPopUpEliminar}

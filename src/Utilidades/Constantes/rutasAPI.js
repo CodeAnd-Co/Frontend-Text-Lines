@@ -41,7 +41,8 @@ export const RUTAS_API = {
     CONSULTAR_LISTA: `${BASE_PRODUCTOS}/consultar-lista`,
     CREAR: `${BASE_PRODUCTOS}/crear`,
     ELIMINAR_PRODUCTO: `${BASE_PRODUCTOS}/eliminar`,
-    LEER_PRODCUTO: `${BASE_PRODUCTOS}/leer-producto`
+    LEER_PRODCUTO: `${BASE_PRODUCTOS}/leer-producto`,
+    EXPORTAR_PRODUCTOS: `${BASE_PRODUCTOS}/exportar-productos`
   },
   PROVEEDORES: {
     BASE: BASE_PROVEEDORES,
@@ -73,6 +74,7 @@ export const RUTAS_API = {
     LEER_GRUPO: `${BASE_EMPLEADOS}/leer-grupo`,
     CREAR_GRUPO: `${BASE_EMPLEADOS}/crear-grupo`,
     ACTUALIZAR_EMPLEADO: `${BASE_EMPLEADOS}/actualizar`,
+    EXPORTAR_EMPLEADOS: `${BASE_EMPLEADOS}/exportar-empleados`,
     ACTUALIZAR_GRUPO: `${BASE_EMPLEADOS}/actualizar-grupo`,
   },
   CUOTAS: {
@@ -87,7 +89,8 @@ export const RUTAS_API = {
     CONSULTAR_LISTA: `${BASE_ROLES}/consultar-lista`,
     CREAR_ROL: `${BASE_ROLES}/crear-rol`,
     ELIMINAR_ROL: `${BASE_ROLES}/eliminar`,
-    LEER_ROL: `${BASE_ROLES}/leer`
+    LEER_ROL: `${BASE_ROLES}/leer`,
+    ACTUALIZAR: `${BASE_ROLES}/actualizar-rol`
   },
   PEDIDOS: {
     BASE: BASE_PEDIDOS,

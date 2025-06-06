@@ -247,7 +247,7 @@ const ListaCategorias = () => {
           label: 'SALIR',
           variant: 'outlined',
           color: 'primary',
-          outlineColor: colores.primario[1],
+          outlineColor: colores.altertex[1],
           onClick: () => setModalDetalleAbierto(false),
         },
       ];
@@ -265,7 +265,7 @@ const ListaCategorias = () => {
         label: 'SALIR',
         variant: 'outlined',
         color: 'primary',
-        outlineColor: colores.primario[1],
+        outlineColor: colores.altertex[1],
         onClick: () => setModalDetalleAbierto(false),
       },
     ];

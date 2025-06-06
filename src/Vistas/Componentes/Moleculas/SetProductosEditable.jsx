@@ -108,7 +108,7 @@ const SetProductosEditable = ({
   }, [nombre, activo, descripcion, productosAsignados, loading, validarCampos, onFormDataChange]);
 
   // Manejar cambios en la lista de transferencia
-  const manejarCambioTransferencia = useCallback(({ disponibles, seleccionados }) => {
+  const manejarCambioTransferencia = useCallback(({ seleccionados }) => {
     setProductosAsignados(seleccionados);
   }, []);
 
@@ -123,11 +123,11 @@ const SetProductosEditable = ({
   }, []);
 
   if (loading) {
-    return <Box sx={{ p: 3, textAlign: 'center' }}>Cargando productos...</Box>;
+    return <Box sx={{ textAlign: 'center' }}>Cargando productos...</Box>;
   }
 
   return (
-    <Box sx={{ maxWidth: 1000, mx: 'auto', p: 2 }}>
+    <Box sx={{ maxWidth: 1000, mx: 'auto'}}>
       {/* Switch de activo/inactivo */}
       <Grid item xs={12} mb={2}>
         <FormControlLabel

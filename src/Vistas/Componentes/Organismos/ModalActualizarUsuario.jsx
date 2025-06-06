@@ -32,10 +32,10 @@ const ModalActualizarUsuario = ({
     const resultado = await handleGuardar();
     if (resultado?.exito) {
       if (onAccion) await onAccion();
-      limpiarFormulario();
       setTimeout(() => {
+        limpiarFormulario();
         onClose();
-      }, 0);
+      }, 800);
     }
   };
 
@@ -76,16 +76,17 @@ const ModalActualizarUsuario = ({
             cargando={cargando}
           />
         </Box>
+
+        {alerta && (
+          <Alerta
+            sx={{ marginBottom: 2 }}
+            tipo={alerta.tipo}
+            mensaje={alerta.mensaje}
+            duracion='2000'
+            onClose={() => setAlerta(null)}
+          />
+        )}
       </ModalFlotante>
-      {alerta && (
-        <Alerta
-          sx={{ marginBottom: 2 }}
-          tipo={alerta.tipo}
-          mensaje={alerta.mensaje}
-          duracion='3000'
-          onClose={() => setAlerta(null)}
-        />
-      )}
     </>
   );
 };

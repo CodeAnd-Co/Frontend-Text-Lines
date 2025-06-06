@@ -45,7 +45,13 @@ export const useAccionesUsuario = (usuarioInicial = null) => {
         fechaNacimiento,
         genero,
         idRol: idRol ?? '',
-        cliente: usuarioInicial.cliente ?? [],
+        cliente: Array.isArray(usuarioInicial.cliente)
+          ? usuarioInicial.cliente
+          : usuarioInicial.idCliente
+          ? [usuarioInicial.idCliente]
+          : typeof usuarioInicial.cliente === 'number'
+          ? [usuarioInicial.cliente]
+          : [],
         estatus: usuarioInicial.estatus !== undefined ? usuarioInicial.estatus : 1,
       };
     }
@@ -99,11 +105,7 @@ export const useAccionesUsuario = (usuarioInicial = null) => {
       apellido: datosUsuario.apellido,
     };
 
-    console.log('Enviando al backend:', datosProcesados);
-
     const nuevosErrores = validarDatosActualizarUsuario(datosProcesados);
-
-    console.log('Errores de validación:', nuevosErrores);
 
     if (Object.keys(nuevosErrores).length > 0) {
       setErroresValidacion(nuevosErrores);
@@ -119,21 +121,24 @@ export const useAccionesUsuario = (usuarioInicial = null) => {
     setCargando(true);
 
     try {
-      await RepositorioActualizarUsuario.actualizar(datosProcesados);
+      const respuesta = await RepositorioActualizarUsuario.actualizar(datosProcesados);
       setAlerta({
         tipo: 'success',
-        mensaje: esEdicion ? 'Usuario actualizado correctamente' : 'Usuario creado correctamente',
+        mensaje: respuesta?.mensaje || 'Usuario actualizado correctamente',
       });
       return {
         exito: true,
-        mensaje: esEdicion ? 'Usuario actualizado correctamente' : 'Usuario creado correctamente',
+        mensaje: respuesta?.mensaje || (esEdicion ? 'Usuario actualizado correctamente' : ''),
       };
     } catch (error) {
       setAlerta({
         tipo: 'error',
-        mensaje: error.message || 'Error al guardar el usuario',
+        mensaje: error?.message || 'Error al guardar el usuario',
       });
-      return { exito: false, mensaje: error.message || 'Error al guardar el usuario' };
+      return {
+        exito: false,
+        mensaje: error?.message || 'Error al guardar el usuario',
+      };
     } finally {
       setCargando(false);
     }

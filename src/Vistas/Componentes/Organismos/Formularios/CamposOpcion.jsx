@@ -152,6 +152,7 @@ const CamposOpcion = memo(
           value={opcion.cantidad}
           onChange={(evento) => manejarActualizarOpcion('cantidad', evento.target.value)}
           placeholder='Ingresa la cantidad'
+          error={Boolean(errores?.cantidad)}
           helperText={errores?.cantidad || ''}
           min={1}
           onKeyDown={(evento) => {

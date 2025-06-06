@@ -63,7 +63,6 @@ const FormularioActualizarUsuario = ({
           }}
         />
       </Grid>
-
       <Grid size={6} sx={estiloCuadricula}>
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='es'>
           <DateField
@@ -85,7 +84,6 @@ const FormularioActualizarUsuario = ({
           />
         </LocalizationProvider>
       </Grid>
-
       <Grid size={6} sx={estiloCuadricula}>
         <CampoSelect
           required
@@ -103,7 +101,6 @@ const FormularioActualizarUsuario = ({
           ]}
         />
       </Grid>
-
       <Grid size={6} sx={estiloCuadricula}>
         <CampoTexto
           label='Correo Electrónico'
@@ -120,7 +117,6 @@ const FormularioActualizarUsuario = ({
           }
         />
       </Grid>
-
       <Grid size={6} sx={estiloCuadricula}>
         <CampoTexto
           label='Número de Teléfono'
@@ -140,7 +136,6 @@ const FormularioActualizarUsuario = ({
           }}
         />
       </Grid>
-
       <Grid size={6} sx={estiloCuadricula}>
         <CampoTexto
           label='Dirección'
@@ -156,7 +151,6 @@ const FormularioActualizarUsuario = ({
           }}
         />
       </Grid>
-
       <Grid size={6} sx={estiloCuadricula}>
         <CampoSelect
           label='Rol'
@@ -176,7 +170,6 @@ const FormularioActualizarUsuario = ({
           disabled={cargandoRoles}
         />
       </Grid>
-
       <Grid size={6} sx={estiloCuadricula}>
         <CampoSelect
           label='Estatus'
@@ -193,12 +186,11 @@ const FormularioActualizarUsuario = ({
           ]}
         />
       </Grid>
-
       <Grid size={6} sx={estiloCuadricula}>
         <CampoSelectMultiple
           label='Cliente'
           name='cliente'
-          value={datosUsuario.cliente}
+          value={datosUsuario.cliente[0] == null ? [] : datosUsuario.cliente} //datosUsuario.cliente || ['']}
           onChange={manejarCambio}
           required
           size='medium'
@@ -211,7 +203,6 @@ const FormularioActualizarUsuario = ({
           //disabled={esSuperAdmin}
         />
       </Grid>
-
       <Grid size={6} sx={estiloCuadricula}>
         <CampoTexto
           label='Contraseña'
@@ -229,7 +220,6 @@ const FormularioActualizarUsuario = ({
           }
         />
       </Grid>
-
       <Grid size={6} sx={estiloCuadricula}>
         <CampoTexto
           label='Confirmar contraseña'

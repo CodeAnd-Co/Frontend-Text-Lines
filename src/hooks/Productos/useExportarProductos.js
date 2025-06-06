@@ -24,7 +24,7 @@ const useExportarProductos = () => {
     setMensaje('');
 
     try {
-      const response = await repoExportarProductos(idsProducto);
+      const respuesta = await repoExportarProductos(idsProducto);
 
       const fecha = new Date()
         .toLocaleDateString('es-CO', {
@@ -36,7 +36,7 @@ const useExportarProductos = () => {
         .reverse()
         .join('-');
       const url = window.URL.createObjectURL(
-        new Blob([response], {
+        new Blob([respuesta], {
           type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         })
       );

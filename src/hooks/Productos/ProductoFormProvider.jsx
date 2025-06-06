@@ -21,7 +21,6 @@ const prevenirNumerosNoDecimales = (evento) => {
 };
 
 function parsearNumero(valor) {
-  console.log('parsearNumero', valor);
   if (valor === undefined || valor === null || valor === '') return false;
   const numero = Number(valor);
   return isNaN(numero) ? false : numero;

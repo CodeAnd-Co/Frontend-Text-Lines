@@ -156,10 +156,6 @@ const CamposOpcion = memo(
           min={1}
           onKeyDown={(evento) => {
             prevenirNumerosNegativos(evento);
-            // Evita el punto decimal
-            if (evento.key === '.' || evento.key === ',') {
-              evento.preventDefault();
-            }
           }}
           onInput={(evento) => {
             // Solo permite números enteros positivos

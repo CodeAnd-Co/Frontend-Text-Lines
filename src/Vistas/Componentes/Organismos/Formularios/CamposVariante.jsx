@@ -227,7 +227,7 @@ const CamposVariante = memo(
           placeholder='Descripción de la variante'
           error={errores?.descripcion}
           helperText={errores?.descripcion || ''}
-          opcion={300}
+          maxLongitudDescripcion={300}
         />
 
         {(variante.opciones || []).map((opcion, index) => (

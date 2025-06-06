@@ -20,6 +20,12 @@ const prevenirNumerosNoDecimales = (evento) => {
   }
 };
 
+function parsearNumero(valor) {
+  if (valor === undefined || valor === null || valor === '') return false;
+  const numero = Number(valor);
+  return isNaN(numero) ? false : numero;
+}
+
 export const useProductoForm = () => {
   const context = useContext(ProductoFormContext);
   if (!context) {
@@ -115,8 +121,8 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
           [campo]: valor,
         },
       };
-    });
-  }, []);
+    }, []);
+  });
 
   const manejarEliminarVariante = useCallback((idVariante) => {
     setVariantes((prev) => {
@@ -185,7 +191,7 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
 
         const nuevaOpcion = {
           id: Date.now(),
-          cantidad: undefined,
+          cantidad: 1,
           valorOpcion: '',
           SKUautomatico: sku,
           SKUcomercial: '',
@@ -344,27 +350,27 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       nombreVariante: datos.nombreVariante,
       descripcion: datos.descripcion,
       opciones: datos.opciones.map((opcion) => ({
-        cantidad: Number(opcion.cantidad) || 0,
+        cantidad: parsearNumero(opcion.cantidad),
         valorOpcion: opcion.valorOpcion,
         SKUautomatico: opcion.SKUautomatico || '',
         SKUcomercial: opcion.SKUcomercial || '',
-        costoAdicional: Number(opcion.costoAdicional) || 0,
-        descuento: Number(opcion.descuento) || 0,
+        costoAdicional: parsearNumero(opcion.costoAdicional),
+        descuento: parsearNumero(opcion.descuento),
         estado: Number(opcion.estado) || 1,
       })),
     }));
 
     const productoFormateado = {
       ...producto,
-      precioPuntos: Number(producto.precioPuntos) || 0,
-      precioCliente: Number(producto.precioCliente) || 0,
-      precioVenta: Number(producto.precioVenta) || 0,
-      costo: Number(producto.costo) || 0,
-      impuesto: Number(producto.impuesto) || 0,
-      descuento: Number(producto.descuento) || 0,
+      precioPuntos: parsearNumero(producto.precioPuntos),
+      precioCliente: parsearNumero(producto.precioCliente),
+      precioVenta: parsearNumero(producto.precioVenta),
+      costo: parsearNumero(producto.costo),
+      impuesto: parsearNumero(producto.impuesto),
+      descuento: parsearNumero(producto.descuento),
       estado: Number(producto.estado) || 1,
-      envio: Number(producto.envio),
-      idProveedor: Number(producto.idProveedor),
+      envio: parsearNumero(producto.envio),
+      idProveedor: parsearNumero(producto.idProveedor),
     };
 
     setAlerta({

@@ -40,7 +40,7 @@ const CampoTextoFormulario = memo(
           helperText={
             tipo === 'text' && limiteCaracteres
               ? `${valor.length}/${limiteCaracteres} - Máximo de caracteres. ${helperText || ''}` // Cambiar textoAyuda por helperText
-              : helperText // Cambiar textoAyuda por helperText
+              : helperText
           }
           type={tipo}
           size='medium'
@@ -282,10 +282,20 @@ const CamposProducto = memo(
           tipo='number'
           required={false}
           min={1}
-          onKeyDown={prevenirNumerosNegativos}
+          onKeyDown={(evento) => {
+            prevenirNumerosNegativos(evento);
+            // Evita el punto decimal
+            if (evento.key === '.' || evento.key === ',') {
+              evento.preventDefault();
+            }
+          }}
           onInput={(evento) => {
-            if (evento.target.value && evento.target.value < 1) {
-              evento.target.value = 1;
+            // Solo permite números enteros positivos
+            const valor = evento.target.value;
+            if (valor === '' || /^\d+$/.test(valor)) {
+              evento.target.value = valor;
+            } else {
+              evento.target.value = valor.replace(/\D/g, '');
             }
           }}
         />
@@ -303,7 +313,15 @@ const CamposProducto = memo(
           min={1}
           onKeyDown={prevenirNumerosNoDecimales}
           onInput={(evento) => {
-            if (evento.target.value && evento.target.value < 1) {
+            const valor = evento.target.value;
+
+            // Si el valor contiene más de un punto decimal, lo invalida
+            if ((valor.match(/\./g) || []).length > 1) {
+              evento.target.value = valor.slice(0, -1); // Elimina el último carácter ingresado
+            }
+
+            // Si el valor es menor a 1, lo ajusta a 1
+            if (valor && parseFloat(valor) < 1) {
               evento.target.value = 1;
             }
           }}
@@ -359,11 +377,11 @@ const CamposProducto = memo(
           required={false}
           min={1}
           onKeyDown={prevenirNumerosNoDecimales}
-          onInput={(evento) => {
+          /*onInput={(evento) => {
             if (evento.target.value && evento.target.value < 1) {
               evento.target.value = 1;
             }
-          }}
+          }}*/
         />
 
         <CampoTextoFormulario
@@ -376,13 +394,13 @@ const CamposProducto = memo(
           placeholder='Ej: 10'
           tipo='number'
           required={false}
-          min={1}
+          min={0}
           onKeyDown={prevenirNumerosNoDecimales}
-          onInput={(evento) => {
+          /*onInput={(evento) => {
             if (evento.target.value && evento.target.value < 1) {
               evento.target.value = 1;
             }
-          }}
+          }}*/
         />
 
         <CampoSelectFormulario

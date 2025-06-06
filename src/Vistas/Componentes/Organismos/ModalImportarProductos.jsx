@@ -10,15 +10,15 @@ import ContenedorImportarProductos from './ContenedorImportarProductos';
 import Boton from '../Atomos/Boton';
 
 const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errores, exito, recargar }) => {
-  const [archivo, setFile] = useState(null);
+  const [archivo, setArchivo] = useState(null);
   const [estado, setEstado] = useState('idle'); 
   const [infoJson, setInfoJson] = useState([]);
   const [alerta, setAlerta] = useState(null); 
-  const theme = useTheme();
-  const colores = tokens(theme.palette.mode);
   const [abririnfo, setAbrirInfo] = useState(false);
   const [mensajeErrores, setMensajeErrores] = useState('');
   const [descargarCSV, setDescargarCSV] = useState(false);
+  const theme = useTheme();
+  const colores = tokens(theme.palette.mode);
 
   // Manejo de errores en la importación
   useEffect(() => {
@@ -45,7 +45,7 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
       });
       recargar();
       setInfoJson([]);
-      setFile(null);
+      setArchivo(null);
       setEstado('idle');
       onCerrar(false);
       setMensajeErrores('');
@@ -54,12 +54,12 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
 
   const handleDescargarPlantilla = useCallback(() => {
     setDescargarCSV(true);
-    const link = document.createElement('a');
-    link.href = '/ejemplo_importar_productos.csv';
-    link.download = 'ejemplo_importar_productos.csv';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const enlace = document.createElement('a');
+    enlace.href = '/ejemplo_importar_productos.csv';
+    enlace.download = 'ejemplo_importar_productos.csv';
+    document.body.appendChild(enlace);
+    enlace.click();
+    document.body.removeChild(enlace);
     setTimeout(() => {
       setDescargarCSV(false);
     }, 2000);
@@ -69,7 +69,7 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
   const handleCerrar = useCallback(() => {
     onCerrar(false);
     setInfoJson([]);
-    setFile(null);
+    setArchivo(null);
     setEstado('idle');
     setAlerta(null);
     setMensajeErrores('');
@@ -77,7 +77,7 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
 
   // Manejo de archivo aceptados
   const handleFileAccepted = (archivo, data) => {
-    setFile(archivo);
+    setArchivo(archivo);
     setEstado('loading');
     setInfoJson(data);
     setEstado('complete');
@@ -85,7 +85,7 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
 
   // Manejo de eliminación de archivo
   const handleEliminar = () => {
-    setFile(null);
+    setArchivo(null);
     setEstado('idle');
     setInfoJson([]);
   };
@@ -103,7 +103,7 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
       return;
     }
     onConfirm(infoJson);
-    setFile(null);
+    setArchivo(null);
     setEstado('idle');
     setAlerta(null);
     setInfoJson([]);

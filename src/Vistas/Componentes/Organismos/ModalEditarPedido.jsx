@@ -6,6 +6,14 @@ import Alerta from '@Moleculas/Alerta';
 import { useActualizarPedido } from '@Hooks/Pedidos/useActualizarPedido';
 import { tokens } from '@SRC/theme';
 
+// Constantes para los límites de caracteres
+const LIMITE_ESTATUS = 50;
+const MENSAJE_LIMITE = 'Máximo caracteres';
+
+// Expresiones regulares para validación
+const REGEX_PRECIO = /^\d{1,8}(\.\d{0,2})?$/;
+const REGEX_SOLO_LETRAS = /^[A-Za-záéíóúÁÉÍÓÚñÑ\s]*$/;
+
 const ModalEditarPedido = ({
   abierto,
   onCerrar,
@@ -20,77 +28,167 @@ const ModalEditarPedido = ({
   const [pedido, setPedido] = useState({});
   const [errores, setErrores] = useState({});
 
+  // Reiniciar estado cuando se abre/cierra el modal
   useEffect(() => {
     if (abierto && datosIniciales) {
       setPedido({ ...datosIniciales });
       setErrores({});
+    } else if (!abierto) {
+      // Limpiar estado cuando se cierra
+      setPedido({});
+      setErrores({});
     }
   }, [abierto, datosIniciales]);
 
-  const manejarCambio = useCallback((e) => {
-    const { name, value } = e.target;
-    setPedido((prev) => ({ ...prev, [name]: value }));
-    setErrores((prev) => ({ ...prev, [name]: false }));
-  }, []);
+  const manejarCambio = useCallback(
+    (e) => {
+      const { name, value } = e.target;
+      setPedido((prev) => ({ ...prev, [name]: value }));
 
-  const validarCampos = () => {
+      // Limpiar error específico del campo
+      if (errores[name]) {
+        setErrores((prev) => ({ ...prev, [name]: false }));
+      }
+    },
+    [errores]
+  );
+
+  const validarCampos = useCallback(() => {
     const nuevosErrores = {};
-    if (!pedido.estatusPedido?.trim()) nuevosErrores.estatusPedido = true;
-    if (!pedido.precioTotal?.toString().trim()) nuevosErrores.precioTotal = true;
-    if (!pedido.estatusPago?.trim()) nuevosErrores.estatusPago = true;
-    if (!pedido.estatusEnvio?.trim()) nuevosErrores.estatusEnvio = true;
+
+    // Validar estatus del pedido
+    if (!pedido.estatusPedido?.trim()) {
+      nuevosErrores.estatusPedido = true;
+    }
+
+    // Validar precio total
+    if (!pedido.precioTotal) {
+      nuevosErrores.precioTotal = true;
+    } else {
+      const valor = pedido.precioTotal.toString().trim();
+      const esValido = REGEX_PRECIO.test(valor) && parseFloat(valor) >= 0;
+
+      if (!esValido) {
+        nuevosErrores.precioTotal = true;
+      }
+    }
+
+    // Validar estatus de pago
+    if (!pedido.estatusPago?.trim()) {
+      nuevosErrores.estatusPago = true;
+    }
+
+    // Validar estatus de envío
+    if (!pedido.estatusEnvio?.trim()) {
+      nuevosErrores.estatusEnvio = true;
+    }
+
     setErrores(nuevosErrores);
     return Object.keys(nuevosErrores).length === 0;
-  };
-  const manejarGuardar = async () => {
-    console.log('Iniciando manejarGuardar');
-    console.log('Pedido actual:', pedido);
+  }, [pedido]);
+
+  const manejarGuardar = useCallback(async () => {
     if (!validarCampos()) {
-      console.log('Validación de campos falló');
-      onMostrarAlerta('Completa todos los campos obligatorios.', 'error');
+      onMostrarAlerta('Completa todos los campos obligatorios correctamente.', 'error');
       return;
     }
 
     if (!pedido.id) {
-      console.log('Falta ID del pedido');
       onMostrarAlerta('Falta el ID del pedido. No se puede actualizar.', 'error');
       return;
     }
-    console.log('Validaciones pasadas correctamente');
 
-    // ✅ Mapeo de campos como espera el backend    console.log('Preparando datos para mapeo');
+    // Mapeo de campos para el backend
     const pedidoMapeado = {
       idPedido: pedido.id.toString(),
-      estado: pedido.estatusPedido, // Mapeo correcto para el backend
+      estado: pedido.estatusPedido.trim(),
       precioTotal: parseFloat(pedido.precioTotal),
-      idEnvio: pedido.estatusEnvio,
-      idPago: pedido.estatusPago,
+      idEnvio: pedido.estatusEnvio.trim(),
+      idPago: pedido.estatusPago.trim(),
     };
-
-    console.log('[DEBUG] Pedido original:', pedido);
-    console.log('[DEBUG] Pedido mapeado:', pedidoMapeado);
-    console.log('Intentando actualizar pedido...');
 
     try {
       const resultado = await actualizarPedido(pedidoMapeado);
-      console.log('Resultado de actualización:', resultado);
 
       if (resultado.exito) {
-        console.log('Actualización exitosa');
         onMostrarAlerta(resultado.mensaje, 'success');
         onActualizar();
         onCerrar();
       } else {
-        console.log('Actualización fallida:', resultado.mensaje);
         onMostrarAlerta(resultado.mensaje, 'error');
       }
     } catch (error) {
-      console.error('Error en la actualización:', error);
+      console.error('Error al actualizar pedido:', error);
       onMostrarAlerta(error.message || 'Error al actualizar el pedido.', 'error');
     }
+  }, [pedido, validarCampos, actualizarPedido, onMostrarAlerta, onActualizar, onCerrar]);
+
+  const manejarCambioPrecio = useCallback(
+    (e) => {
+      const value = e.target.value;
+
+      // Permitir campo vacío
+      if (value === '') {
+        manejarCambio(e);
+        return;
+      }
+
+      // Validar formato mientras se escribe
+      if (REGEX_PRECIO.test(value)) {
+        manejarCambio(e);
+      }
+    },
+    [manejarCambio]
+  );
+
+  const manejarCambioEstatus = useCallback(
+    (e) => {
+      const value = e.target.value;
+
+      // Solo permitir letras, espacios y caracteres especiales del español
+      if (REGEX_SOLO_LETRAS.test(value)) {
+        manejarCambio(e);
+      }
+    },
+    [manejarCambio]
+  );
+
+  const manejarCambioEstatusPago = useCallback(
+    (e) => {
+      const value = e.target.value;
+
+      // Solo permitir letras, espacios y caracteres especiales del español
+      if (REGEX_SOLO_LETRAS.test(value)) {
+        manejarCambio(e);
+      }
+    },
+    [manejarCambio]
+  );
+
+  const manejarCambioEstatusEnvio = useCallback(
+    (e) => {
+      const value = e.target.value;
+
+      // Solo permitir letras, espacios y caracteres especiales del español
+      if (REGEX_SOLO_LETRAS.test(value)) {
+        manejarCambio(e);
+      }
+    },
+    [manejarCambio]
+  );
+
+  // Mostrar mensaje de error específico para precio
+  const obtenerMensajeErrorPrecio = () => {
+    if (!errores.precioTotal) return '';
+
+    if (!pedido.precioTotal) {
+      return 'El precio total es requerido';
+    }
+
+    return 'El precio debe tener máximo 8 dígitos enteros y hasta 2 decimales';
   };
 
-  if (!pedido) return null;
+  if (!pedido || !abierto) return null;
 
   return (
     <ModalFlotante
@@ -102,46 +200,84 @@ const ModalEditarPedido = ({
       customWidth={800}
       botones={[]}
     >
-      <Box display='grid' gridTemplateColumns='1fr 1fr' gap={2}>
+      <Box display='grid' gridTemplateColumns='1fr 1fr' gap={3}>
         <CampoTexto
           label='Empleado'
           name='nombreEmpleado'
           value={pedido.nombreEmpleado || ''}
+          style={{ marginBottom: '2rem' }}
           disabled
         />
+
         <CampoTexto
           label='Fecha de Orden'
           name='fechaOrden'
           value={pedido.fechaOrden || ''}
+          style={{ marginBottom: '2rem' }}
           disabled
         />
+
         <CampoTexto
-          label='Estatus del Pedido'
+          label='Estatus del Pedido *'
           name='estatusPedido'
           value={pedido.estatusPedido || ''}
-          onChange={manejarCambio}
+          onChange={manejarCambioEstatus}
           error={errores.estatusPedido}
+          helperText={
+            errores.estatusPedido
+              ? 'Este campo es requerido'
+              : `${(pedido.estatusPedido || '').length}/${LIMITE_ESTATUS} ${MENSAJE_LIMITE}`
+          }
+          inputProps={{
+            maxLength: LIMITE_ESTATUS,
+          }}
         />
+
         <CampoTexto
-          label='Precio Total'
+          label='Precio Total *'
           name='precioTotal'
+          type='text'
           value={pedido.precioTotal || ''}
-          onChange={manejarCambio}
+          onChange={manejarCambioPrecio}
           error={errores.precioTotal}
+          helperText={obtenerMensajeErrorPrecio()}
+          inputProps={{
+            maxLength: 11, // 8 dígitos + punto + 2 decimales
+            inputMode: 'decimal',
+            placeholder: 'Ej: 12345678.00',
+          }}
         />
+
         <CampoTexto
-          label='Estatus de Pago'
+          label='Estatus de Pago *'
           name='estatusPago'
           value={pedido.estatusPago || ''}
-          onChange={manejarCambio}
+          onChange={manejarCambioEstatusPago}
           error={errores.estatusPago}
+          helperText={
+            errores.estatusPago
+              ? 'Este campo es requerido'
+              : `${(pedido.estatusPago || '').length}/${LIMITE_ESTATUS} ${MENSAJE_LIMITE}`
+          }
+          inputProps={{
+            maxLength: LIMITE_ESTATUS,
+          }}
         />
+
         <CampoTexto
-          label='Estatus de Envío'
+          label='Estatus de Envío *'
           name='estatusEnvio'
           value={pedido.estatusEnvio || ''}
-          onChange={manejarCambio}
+          onChange={manejarCambioEstatusEnvio}
           error={errores.estatusEnvio}
+          helperText={
+            errores.estatusEnvio
+              ? 'Este campo es requerido'
+              : `${(pedido.estatusEnvio || '').length}/${LIMITE_ESTATUS} ${MENSAJE_LIMITE}`
+          }
+          inputProps={{
+            maxLength: LIMITE_ESTATUS,
+          }}
         />
       </Box>
 
@@ -160,7 +296,7 @@ const ModalEditarPedido = ({
           sx={{ backgroundColor: colores.altertex[1], color: 'white' }}
           disabled={cargando}
         >
-          GUARDAR
+          {cargando ? 'GUARDANDO...' : 'GUARDAR'}
         </Button>
       </Box>
     </ModalFlotante>

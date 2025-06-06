@@ -18,37 +18,33 @@ export const AuthProvider = ({ children }) => {
   const [csrfToken, setCsrfToken] = useState(null);
   const { toggleColorMode } = useMode();
 
-  // Configure axios interceptor for CSRF token
   useEffect(() => {
-    const requestInterceptor = axios.interceptors.request.use(
-      (config) => {
-        // Add CSRF token to non-GET requests
-        if (csrfToken && config.method !== 'get') {
-          config.headers['X-CSRF-Token'] = csrfToken;
+    const reqInterceptor = axios.interceptors.request.use(
+      (configuracion) => {
+        if (csrfToken && configuracion.method !== 'get') {
+          configuracion.headers['X-CSRF-Token'] = csrfToken;
         }
-        return config;
+        return configuracion;
       },
       (error) => Promise.reject(error)
     );
 
-    const responseInterceptor = axios.interceptors.response.use(
+    const resInterceptor = axios.interceptors.response.use(
       (response) => response,
       async (error) => {
-        // If CSRF token is invalid, refresh it
         if (error.response?.status === 403 && error.response?.data?.code === 'EBADCSRFTOKEN') {
           await obtenerCSRFToken();
-          // Retry the original request
-          const originalRequest = error.config;
-          originalRequest.headers['X-CSRF-Token'] = csrfToken;
-          return axios.request(originalRequest);
+          const reqOriginal = error.config;
+          reqOriginal.headers['X-CSRF-Token'] = csrfToken;
+          return axios.request(reqOriginal);
         }
         return Promise.reject(error);
       }
     );
 
     return () => {
-      axios.interceptors.request.eject(requestInterceptor);
-      axios.interceptors.response.eject(responseInterceptor);
+      axios.interceptors.request.eject(reqInterceptor);
+      axios.interceptors.response.eject(resInterceptor);
     };
   }, [csrfToken]);
 

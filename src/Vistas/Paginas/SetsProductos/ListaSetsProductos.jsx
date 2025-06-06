@@ -18,7 +18,7 @@ import { tokens } from '@SRC/theme';
 import { PERMISOS } from '@Utilidades/Constantes/permisos';
 import { useAuth } from '@Hooks/AuthProvider';
 import ModalCrearSetsProductos from '@Organismos/ModalCrearSetsProductos.jsx';
-import InfoSetProductosEditable from '@SRC/Vistas/Componentes/Moleculas/SetProductosEditable';
+import SetProductosEditable from '@SRC/Vistas/Componentes/Moleculas/SetProductosEditable';
 import { useActualizarSetsProductos } from '@Hooks/SetsProductos/useActualizarSetsProductos';
 
 const ListaSetsProductos = () => {
@@ -102,7 +102,6 @@ const ListaSetsProductos = () => {
     console.log('Datos que se enviarán para actualizar el set:', {
       idSetProducto: setSeleccionado.idSetProducto,
       nombre: formData.nombre,
-      //nombreVisible: formData.nombreVisible,
       descripcion: formData.descripcion,
       activo: formData.activo ? 1 : 0,
       productos: formData.productos,
@@ -112,7 +111,6 @@ const ListaSetsProductos = () => {
       await actualizarSet(
         setSeleccionado.idSetProducto,
         formData.nombre,
-        //formData.nombreVisible,
         formData.descripcion,
         formData.activo,
         formData.productos
@@ -295,6 +293,8 @@ const ListaSetsProductos = () => {
               color: 'error',
               backgroundColor: colores.altertex[1],
               onClick: () => {
+                console.log('productos:', setSeleccionado.productos);
+                console.log('idsProductos:', setSeleccionado.idsProductos);
                 setModalDetalleAbierto(false);
                 setAbrirModalEditar(true);
               },
@@ -312,6 +312,7 @@ const ListaSetsProductos = () => {
             nombre={''}
             descripcion={setSeleccionado.descripcion}
             productos={setSeleccionado.productos || []}
+            idsProductos={setSeleccionado?.idsProductos || []}
           />
         </ModalFlotante>
       )}
@@ -339,11 +340,11 @@ const ListaSetsProductos = () => {
             },
           ]}
         >
-          <InfoSetProductosEditable
+          <SetProductosEditable
             nombre={setSeleccionado?.nombre || ''}
-            //nombreVisible={setSeleccionado?.nombreVisible ?? ''}
             descripcion={setSeleccionado?.descripcion || ''}
             productos={setSeleccionado?.productos || []}
+            idsProductos={setSeleccionado?.idsProductos || []}
             activo={setSeleccionado?.activo ?? 1}
             onFormDataChange={handleFormDataChange}
           />

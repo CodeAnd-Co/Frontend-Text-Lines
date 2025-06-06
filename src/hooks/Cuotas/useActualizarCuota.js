@@ -1,31 +1,36 @@
+// useActualizarCuota.js - Versión Simple
 import { useState } from 'react';
-import { RepositorioActualizarCuota } from '@Repositorios/Cuotas/repositorioActualizarCuota';
+import axios from 'axios';
+
+const API_KEY = import.meta.env.VITE_API_KEY;
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 export const useActualizarCuota = () => {
   const [cargando, setCargando] = useState(false);
-  const [exito, setExito] = useState(false);
   const [error, setError] = useState(false);
-  const [mensaje, setMensaje] = useState('');
 
-  const actualizarCuota = async (datosActualizacion) => {
+  const actualizarCuota = async (datos) => {
     setCargando(true);
-    setExito(false);
     setError(false);
-    setMensaje('');
 
     try {
-      const resultado = await RepositorioActualizarCuota.actualizarSetCuotas(datosActualizacion);
-      setExito(true);
-      setMensaje(resultado.mensaje);
-      return resultado;
+      const response = await axios.put(
+        `${BASE_URL}/api/cuotas/actualizar-set-cuotas`,
+        datos,
+        {
+          headers: { 'x-api-key': API_KEY },
+          withCredentials: true,
+        }
+      );
+
+      return response.data;
     } catch (err) {
       setError(true);
-      setMensaje(err.message);
-      return false;
+      throw new Error(err.response?.data?.mensaje || 'Error al actualizar');
     } finally {
       setCargando(false);
     }
   };
 
-  return { actualizarCuota, cargando, exito, error, mensaje, setError };
+  return { actualizarCuota, cargando, error };
 };

@@ -44,16 +44,6 @@ const ListaCuotas = () => {
     error: errorDetalle,
   } = useCuotaId(modalDetalleAbierto || modalEditarAbierto ? idSetCuotaSeleccionado : null);
 
-  // 🔍 DEBUG - Agregar este console.log
-  useEffect(() => {
-    if (cuota) {
-      console.log('🔍 DATOS DE CUOTA CARGADOS:', {
-        cuota,
-        productos: cuota?.productos,
-        estructura: JSON.stringify(cuota, null, 2)
-      });
-    }
-  }, [cuota]);
 
   useEffect(() => {
     if (!usuario?.clienteSeleccionado) {
@@ -136,7 +126,6 @@ const ListaCuotas = () => {
 
   // 👈 FUNCIONES CORREGIDAS
   const handleAbrirEditar = () => {
-    console.log('🔍 ABRIENDO MODAL EDITAR - Datos de cuota:', cuota);
     setModalDetalleAbierto(false);
     setModalEditarAbierto(true);
   };

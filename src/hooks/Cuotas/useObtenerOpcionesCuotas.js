@@ -1,48 +1,40 @@
+// src/Hooks/Cuotas/useObtenerOpcionesCuotas.js
 import { useState, useEffect } from 'react';
 import { useAuth } from '@Hooks/AuthProvider';
-import { RepositorioObtenerOpcionesCuotas } from '@Dominio/Repositorios/Cuotas/repositorioObtenerOpcionesCuotas';
+import obtenerProductos from '@Servicios/obtenerProductos';
 
 export const useObtenerOpcionesCuotas = () => {
   const { usuario } = useAuth();
+  const idCliente = usuario?.clienteSeleccionado;
+
   const [opciones, setOpciones] = useState([]);
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
 
-  const obtenerOpciones = async () => {
-    if (!usuario?.clienteSeleccionado?.idCliente) {
-      setError('No hay cliente seleccionado');
+
+
+  useEffect(() => {
+    if (!idCliente) {
       return;
     }
 
-    setCargando(true);
-    setError(null);
+    const cargarOpciones = async () => {
+      setCargando(true);
+      setError(null);
 
-    try {
-      const resultado = await RepositorioObtenerOpcionesCuotas.obtenerOpciones(
-        usuario.clienteSeleccionado.idCliente
-      );
-      
-      console.log('🔍 Opciones obtenidas del backend:', resultado);
-      setOpciones(resultado || []);
-    } catch (err) {
-      console.error('❌ Error al obtener opciones:', err);
-      setError(err.message || 'Error al obtener opciones de productos');
-      setOpciones([]);
-    } finally {
-      setCargando(false);
-    }
-  };
+      try {
+        const productos = await obtenerProductos(idCliente);
+        setOpciones(productos);
+      } catch (err) {
+        setError('No se pudieron cargar las opciones de productos');
+        setOpciones([]);
+      } finally {
+        setCargando(false);
+      }
+    };
 
-  useEffect(() => {
-    if (usuario?.clienteSeleccionado?.idCliente) {
-      obtenerOpciones();
-    }
-  }, [usuario?.clienteSeleccionado?.idCliente]);
+    cargarOpciones();
+  }, [idCliente]);
 
-  return {
-    opciones,
-    cargando,
-    error,
-    recargar: obtenerOpciones
-  };
+  return { opciones, cargando, error };
 };

@@ -12,7 +12,6 @@ export class RepositorioActualizarPedido {
    * @see [RF[62] Actualizar pedido - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF62)]
    */
   static async actualizarPedido(pedido) {
-    console.log('[DEBUG] RepositorioActualizarPedido - Pedido a actualizar:', pedido);
     try {
       const respuesta = await axios.put(
         `${RUTAS_API.PEDIDOS.ACTUALIZAR_PEDIDO}`,

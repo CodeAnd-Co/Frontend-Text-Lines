@@ -9,11 +9,11 @@ const API_KEY = import.meta.env.VITE_API_KEY;
  * @param {number[]} idsProducto - Arreglo de IDs de productos seleccionados para exportar.
  * @returns {Promise<Blob>} Contenido binario del archivo.
  * @throws {Error} Si la petición falla o el servidor devuelve un mensaje de error.
-* @see [RF58 - Exportar Productos](https://codeandco-wiki.netlify.app/docs/next/proyectos/textiles/documentacion/requisitos/RF58) 
-*/
+ * @see [RF58 - Exportar Productos](https://codeandco-wiki.netlify.app/docs/next/proyectos/textiles/documentacion/requisitos/RF58)
+ */
 export const exportarProductos = async (idsProducto) => {
   try {
-    const response = await axios.post(
+    const respuesta = await axios.post(
       RUTAS_API.PRODUCTOS.EXPORTAR_PRODUCTOS,
       { idsProducto },
       {
@@ -22,10 +22,8 @@ export const exportarProductos = async (idsProducto) => {
         headers: { 'x-api-key': API_KEY },
       }
     );
-    return response.data;
+    return respuesta.data;
   } catch (error) {
-    throw new Error(
-      error.response?.data?.mensaje || 'Error al exportar productos en el servidor'
-    );
+    throw new Error(error.respuesta?.data?.mensaje || 'Error al exportar productos en el servidor');
   }
 };

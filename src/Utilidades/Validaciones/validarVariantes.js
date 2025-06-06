@@ -51,9 +51,14 @@ export const validarVariantes = (variantes) => {
       }
 
       // Validación de descuento
-      if (opcion.descuento < 0 || opcion.descuento > 100) {
+      if (opcion.descuento > 100) {
         erroresOpcion.descuento = 'El descuento debe estar entre 0 y 100.';
-      } else if (typeof opcion.descuento === 'number') {
+      }
+
+      if (opcion.descuento === false) {
+        erroresOpcion.descuento = 'El descuento no es válido.';
+      }
+      if (typeof opcion.descuento === 'number') {
         if (!/^(0|[1-9]\d{0,4})(\.\d{1,2})?$/.test(opcion.descuento.toString())) {
           erroresOpcion.descuento = 'El descuento debe ser un número válido con máximo 5 dígitos.';
         }
@@ -61,7 +66,7 @@ export const validarVariantes = (variantes) => {
 
       // Validación de costo adicional con formato (10,2)
       if (!Number.isFinite(opcion.costoAdicional) || opcion.costoAdicional < 0) {
-        erroresOpcion.costoAdicional = 'El costo adicional debe ser un número positivo';
+        erroresOpcion.costoAdicional = 'El costo adicional no es válido.';
       } else if (!/^\d{1,8}(\.\d{1,2})?$/.test(opcion.costoAdicional.toString())) {
         erroresOpcion.costoAdicional = 'El costo adicional debe tener máximo 10 dígitos.';
       }

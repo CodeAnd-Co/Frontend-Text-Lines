@@ -82,6 +82,8 @@ export const RUTAS_API = {
     CONSULTAR_LISTA: `${BASE_CUOTAS}/consultar-lista`,
     ELIMINAR_SET_CUOTAS: `${BASE_CUOTAS}/eliminar-set-cuotas`,
     LEER_SET_CUOTAS: `${BASE_CUOTAS}/leer-set-cuotas`,
+    ACTUALIZAR_SET_CUOTAS: `${BASE_CUOTAS}/actualizar-set-cuotas`,
+    OBTENER_OPCIONES: `${BASE_CUOTAS}/obtener-opciones`,
   },
   ROLES: {
     BASE: BASE_ROLES,

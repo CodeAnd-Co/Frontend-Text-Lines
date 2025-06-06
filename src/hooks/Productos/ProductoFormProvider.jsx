@@ -6,6 +6,26 @@ import { v4 as uuidv4 } from 'uuid';
 
 const ProductoFormContext = createContext();
 
+const prevenirNumerosNegativos = (evento) => {
+  const regex = /^[0-9]$/;
+  if (!regex.test(evento.key) && evento.key !== 'Backspace' && evento.key !== 'Tab') {
+    evento.preventDefault();
+  }
+};
+
+const prevenirNumerosNoDecimales = (evento) => {
+  const regex = /^[0-9.]$/;
+  if (!regex.test(evento.key) && evento.key !== 'Backspace' && evento.key !== 'Tab') {
+    evento.preventDefault();
+  }
+};
+
+function parsearNumero(valor) {
+  if (valor === undefined || valor === null || valor === '') return false;
+  const numero = Number(valor);
+  return isNaN(numero) ? false : numero;
+}
+
 export const useProductoForm = () => {
   const context = useContext(ProductoFormContext);
   if (!context) {
@@ -39,15 +59,15 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
     marca: '',
     modelo: '',
     tipoProducto: '',
-    precioPuntos: 0,
-    precioCliente: 0,
-    precioVenta: 0,
-    costo: 0,
+    precioPuntos: undefined,
+    precioCliente: undefined,
+    precioVenta: undefined,
+    costo: undefined,
     impuesto: 16,
     descuento: 0,
     estado: 1,
-    envio: 1,
-    idProveedor: -1,
+    envio: undefined,
+    idProveedor: undefined,
   });
 
   const [imagenes, setImagenes] = useState({
@@ -101,8 +121,8 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
           [campo]: valor,
         },
       };
-    });
-  }, []);
+    }, []);
+  });
 
   const manejarEliminarVariante = useCallback((idVariante) => {
     setVariantes((prev) => {
@@ -171,7 +191,7 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
 
         const nuevaOpcion = {
           id: Date.now(),
-          cantidad: 0,
+          cantidad: 1,
           valorOpcion: '',
           SKUautomatico: sku,
           SKUcomercial: '',
@@ -330,27 +350,27 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       nombreVariante: datos.nombreVariante,
       descripcion: datos.descripcion,
       opciones: datos.opciones.map((opcion) => ({
-        cantidad: Number(opcion.cantidad) || 0,
+        cantidad: parsearNumero(opcion.cantidad),
         valorOpcion: opcion.valorOpcion,
         SKUautomatico: opcion.SKUautomatico || '',
         SKUcomercial: opcion.SKUcomercial || '',
-        costoAdicional: Number(opcion.costoAdicional) || 0,
-        descuento: Number(opcion.descuento) || 0,
+        costoAdicional: parsearNumero(opcion.costoAdicional),
+        descuento: parsearNumero(opcion.descuento),
         estado: Number(opcion.estado) || 1,
       })),
     }));
 
     const productoFormateado = {
       ...producto,
-      precioPuntos: Number(producto.precioPuntos) || 0,
-      precioCliente: Number(producto.precioCliente) || 0,
-      precioVenta: Number(producto.precioVenta) || 0,
-      costo: Number(producto.costo) || 0,
-      impuesto: Number(producto.impuesto) || 0,
-      descuento: Number(producto.descuento) || 0,
+      precioPuntos: parsearNumero(producto.precioPuntos),
+      precioCliente: parsearNumero(producto.precioCliente),
+      precioVenta: parsearNumero(producto.precioVenta),
+      costo: parsearNumero(producto.costo),
+      impuesto: parsearNumero(producto.impuesto),
+      descuento: parsearNumero(producto.descuento),
       estado: Number(producto.estado) || 1,
-      envio: Number(producto.envio),
-      idProveedor: Number(producto.idProveedor),
+      envio: parsearNumero(producto.envio),
+      idProveedor: parsearNumero(producto.idProveedor),
     };
 
     setAlerta({
@@ -385,15 +405,15 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
           marca: '',
           modelo: '',
           tipoProducto: '',
-          precioPuntos: 0,
-          precioCliente: 0,
-          precioVenta: 0,
-          costo: 0,
+          precioPuntos: undefined,
+          precioCliente: undefined,
+          precioVenta: undefined,
+          costo: undefined,
           impuesto: 16,
-          descuento: 0,
+          descuento: undefined,
           estado: 1,
           envio: 1,
-          idProveedor: -1,
+          idProveedor: undefined,
         });
 
         setVariantes({
@@ -495,6 +515,8 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
     manejarCrearProducto,
     manejarActualizarProducto,
     manejarAgregarImagenProducto,
+    prevenirNumerosNegativos,
+    prevenirNumerosNoDecimales,
   };
 
   return (

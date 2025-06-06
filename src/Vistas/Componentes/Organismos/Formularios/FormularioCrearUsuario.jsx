@@ -383,7 +383,7 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
                 helperText={
                   errores.confirmarContrasenia
                     ? (errores.confirmarContrasenia === true ? CAMPO_OBLIGATORIO : errores.confirmarContrasenia)
-                    : `${datosUsuario.contrasenia.length}/${LIMITE_CONTRASENIA} - ${MENSAJE_LIMITE}`
+                    : `${datosUsuario.confirmarContrasenia.length}/${LIMITE_CONTRASENIA} - ${MENSAJE_LIMITE}`
                 }
                 inputProps={{
                   maxLength: LIMITE_CONTRASENIA,

@@ -37,57 +37,49 @@ export const validarVariantes = (variantes) => {
     normalizados.opciones.forEach((opcion, index) => {
       const erroresOpcion = {};
 
-      const normalizadosOpcion = {
-        valorOpcion: opcion.valorOpcion?.trim() || '',
-        cantidad: opcion.cantidad !== undefined ? Number(opcion.cantidad) : null,
-        descuento: opcion.descuento !== undefined ? Number(opcion.descuento) : null,
-        costoAdicional: opcion.costoAdicional !== undefined ? Number(opcion.costoAdicional) : null,
-        SKUautomatico: opcion.SKUautomatico?.trim() || '',
-        SKUcomercial: opcion.SKUcomercial?.trim() || '',
-      };
-
-      if (!normalizadosOpcion.valorOpcion) {
+      if (!opcion.valorOpcion?.trim()) {
         erroresOpcion.valorOpcion = 'El valor de la opción es obligatorio';
-      } else if (normalizadosOpcion.valorOpcion.length > 50) {
+      } else if (opcion.valorOpcion.trim().length > 50) {
         erroresOpcion.valorOpcion = 'El valor de la opción debe tener máximo 50 caracteres';
       }
 
       // Validación de cantidad
-      if (!Number.isFinite(normalizadosOpcion.cantidad) || normalizadosOpcion.cantidad <= 0) {
+      if (!Number.isFinite(opcion.cantidad) || opcion.cantidad <= 0) {
         erroresOpcion.cantidad = 'La cantidad debe ser un número mayor a 0';
-      } else if (!/^\d{1,10}$/.test(normalizadosOpcion.cantidad.toString())) {
+      } else if (!/^\d{1,10}$/.test(opcion.cantidad.toString())) {
         erroresOpcion.cantidad = 'La cantidad debe tener máximo 10 dígitos.';
       }
 
       // Validación de descuento
-      if (
-        !Number.isFinite(normalizadosOpcion.descuento)
-        || normalizadosOpcion.descuento < 0
-        || normalizadosOpcion.descuento > 100
-      ) {
-        erroresOpcion.descuento = 'El descuento debe estar entre 0 y 100';
+      if (opcion.descuento > 100) {
+        erroresOpcion.descuento = 'El descuento debe estar entre 0 y 100.';
+      }
+
+      if (opcion.descuento === false) {
+        erroresOpcion.descuento = 'El descuento no es válido o el campo está vacío.';
+      }
+      if (typeof opcion.descuento === 'number') {
+        if (!/^(0|[1-9]\d{0,4})(\.\d{1,2})?$/.test(opcion.descuento.toString())) {
+          erroresOpcion.descuento = 'El descuento debe ser un número válido con máximo 5 dígitos.';
+        }
       }
 
       // Validación de costo adicional con formato (10,2)
-      if (
-        !Number.isFinite(normalizadosOpcion.costoAdicional)
-        || normalizadosOpcion.costoAdicional < 0
-      ) {
-        erroresOpcion.costoAdicional = 'El costo adicional debe ser un número positivo';
-      } else if (!/^\d{1,8}(\.\d{1,2})?$/.test(normalizadosOpcion.costoAdicional.toString())) {
-        erroresOpcion.costoAdicional
-          = 'El costo adicional debe tener máximo 8 dígitos antes del punto y 2 después.';
+      if (!Number.isFinite(opcion.costoAdicional) || opcion.costoAdicional < 0) {
+        erroresOpcion.costoAdicional = 'El costo adicional no es válido o el campo está vacío.';
+      } else if (!/^\d{1,8}(\.\d{1,2})?$/.test(opcion.costoAdicional.toString())) {
+        erroresOpcion.costoAdicional = 'El costo adicional debe tener máximo 10 dígitos.';
       }
 
-      if (!normalizadosOpcion.SKUautomatico) {
+      if (!opcion.SKUautomatico?.trim()) {
         erroresOpcion.SKUautomatico = 'El SKU automático es obligatorio';
-      } else if (normalizadosOpcion.SKUautomatico.length > 50) {
+      } else if (opcion.SKUautomatico.trim().length > 50) {
         erroresOpcion.SKUautomatico = 'El SKU automático debe tener máximo 50 caracteres';
       }
 
-      if (!normalizadosOpcion.SKUcomercial) {
+      if (!opcion.SKUcomercial?.trim()) {
         erroresOpcion.SKUcomercial = 'El SKU comercial es obligatorio';
-      } else if (normalizadosOpcion.SKUcomercial.length > 50) {
+      } else if (opcion.SKUcomercial.trim().length > 50) {
         erroresOpcion.SKUcomercial = 'El SKU comercial debe tener máximo 50 caracteres';
       }
 

@@ -20,17 +20,17 @@ const LIMITE_DESCRIPCION = 150;
 const MENSAJE_LIMITE = 'Máximo caracteres';
 
 const FormaCrearCategorias = ({
-  nombreCategoria,
-  setNombreCategoria,
-  descripcionCategoria,
-  setDescripcionCategoria,
-  productos,
-  setProductos,
-  mostrarAlerta,
-  setMostrarAlerta,
-  errores, 
-  intentoEnviar,
-}) => {
+                                nombreCategoria,
+                                setNombreCategoria,
+                                descripcionCategoria,
+                                setDescripcionCategoria,
+                                productos,
+                                setProductos,
+                                mostrarAlerta,
+                                setMostrarAlerta,
+                                errores,
+                                intentoEnviar,
+                              }) => {
   const [rows, setRows] = useState([]);
   const { usuario } = useAuth();
   const clienteSeleccionado = usuario.clienteSeleccionado;
@@ -56,12 +56,17 @@ const FormaCrearCategorias = ({
   const handleFilaSeleccion = (itemSeleccion) => {
     const ids = Array.isArray(itemSeleccion) ? itemSeleccion : Array.from(itemSeleccion?.ids || []);
 
-    const nuevasFilas = ids
+    // Get the products that correspond to the selected IDs
+    const productosSeleccionados = ids
       .map((id) => rows.find((row) => row.id === id))
-      .filter((fila) => fila && !productos.some((producto) => producto.id === fila.id));
+      .filter((fila) => fila); // Remove any undefined entries
 
-    if (nuevasFilas.length > 0) {
-      setProductos((prev) => [...prev, ...nuevasFilas]);
+    // Update the productos state to match exactly what's selected
+    setProductos(productosSeleccionados);
+
+    // Clear the validation alert when products are selected
+    if (productosSeleccionados.length > 0 && mostrarAlerta) {
+      setMostrarAlerta(false);
     }
   };
 
@@ -81,7 +86,6 @@ const FormaCrearCategorias = ({
         required
         sx={{ mb: 2 }}
       />
-
 
       <ProductosModal
         elevacion={1}
@@ -111,17 +115,7 @@ const FormaCrearCategorias = ({
         rows={3}
       />
 
-
-      {mostrarAlerta && (
-        <Alerta
-          tipo='warning'
-          mensaje={'Ingresa el nombre y selecciona al menos un producto.'}
-          cerrable
-          duracion={3000}
-          onClose={() => setMostrarAlerta(false)}
-          sx={{ mb: 2, mt: 2 }}
-        />
-      )}
+      {/* Alert moved to parent component */}
     </>
   );
 };

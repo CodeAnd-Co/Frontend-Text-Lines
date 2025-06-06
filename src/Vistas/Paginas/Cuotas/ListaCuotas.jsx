@@ -1,6 +1,3 @@
-// RF[32] - Consulta Lista de Cuotas - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF32
-//RF[31] Consulta crear set de cuota - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF31]
-
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme, Box } from '@mui/material';
@@ -35,6 +32,10 @@ const ListaCuotas = () => {
     }
   }, [usuario, navegar]);
 
+  const manejarMostrarAlerta = (configAlerta) => {
+    setAlerta(configAlerta);
+  };
+
   const columnas = [
     { field: 'nombre', headerName: 'Nombre', flex: 1 },
     {
@@ -65,11 +66,11 @@ const ListaCuotas = () => {
 
   const filas = Array.isArray(cuotas)
     ? cuotas.map((cuota) => ({
-        id: cuota.idCuotaSet,
-        nombre: cuota.nombre,
-        periodoRenovacion: cuota.periodoRenovacion,
-        renovacionHabilitada: cuota.renovacionHabilitada === 1,
-      }))
+      id: cuota.idCuotaSet,
+      nombre: cuota.nombre,
+      periodoRenovacion: cuota.periodoRenovacion,
+      renovacionHabilitada: cuota.renovacionHabilitada === 1,
+    }))
     : [];
 
   const handleAbrirModalCrear = () => setModalCrearAbierto(true);
@@ -165,7 +166,11 @@ const ListaCuotas = () => {
         </Box>
       </ContenedorLista>
 
-      <ModalCrearCuotaSet abierto={modalCrearAbierto} onCerrar={handleCerrarModalCrear} />
+      <ModalCrearCuotaSet
+        abierto={modalCrearAbierto}
+        onCerrar={handleCerrarModalCrear}
+        onMostrarAlerta={manejarMostrarAlerta}
+      />
 
       <PopUpEliminar
         abrir={abrirPopUpEliminar}

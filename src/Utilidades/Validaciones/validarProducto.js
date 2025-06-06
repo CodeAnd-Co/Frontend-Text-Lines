@@ -54,7 +54,7 @@ export const validarProducto = (producto) => {
 
   // Validación de impuesto
   if (producto.impuesto === false) {
-    errores.impuesto = 'El impuesto no es válido.';
+    errores.impuesto = 'El impuesto no es válido o el campo está vacío.';
   }
   if (typeof producto.impuesto === 'number') {
     if (!/^(0|[1-9]\d{0,4})(\.\d{1,2})?$/.test(producto.impuesto.toString())) {
@@ -68,7 +68,7 @@ export const validarProducto = (producto) => {
   }
 
   if (producto.descuento === false) {
-    errores.descuento = 'El descuento no es válido.';
+    errores.descuento = 'El descuento no es válido o el campo está vacío.';
   }
   if (typeof producto.descuento === 'number') {
     if (!/^(0|[1-9]\d{0,4})(\.\d{1,2})?$/.test(producto.descuento.toString())) {

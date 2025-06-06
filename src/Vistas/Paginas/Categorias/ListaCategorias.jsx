@@ -59,7 +59,7 @@ const ListaCategorias = () => {
       try {
         const resultado = await obtenerProductosCategoria();
         setProductos(resultado);
-      } catch (error) {
+      } catch {
         setAlerta({
           tipo: 'error',
           mensaje: 'Error al cargar productos.',
@@ -133,12 +133,29 @@ const ListaCategorias = () => {
     const resultado = await actualizar.actualizarCategoria(categoriaEditable.idCategoria, datos);
 
     if (resultado.success) {
+      setAlerta({
+        tipo: 'success',
+        mensaje: actualizar.mensaje || 'Categoría actualizada correctamente',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+
       setTimeout(() => {
         setModalEditarAbierto(false);
         setCategoriaEditable(null);
         actualizar.limpiarEstado();
+        setAlerta(null); 
         recargar();
       }, 2000);
+    } else if (actualizar.error) {
+      setAlerta({
+        tipo: 'error',
+        mensaje: actualizar.error,
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
     }
   }, [categoriaEditable, actualizar, recargar]);
 

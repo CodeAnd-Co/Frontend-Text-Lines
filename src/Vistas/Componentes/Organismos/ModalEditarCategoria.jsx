@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Box, Button, useTheme } from '@mui/material';
 import ModalFlotante from '@Organismos/ModalFlotante';
-import Alerta from '@Moleculas/Alerta';
 import CategoriaInfoEditable from '@Organismos/CategoriaInfoEditable';
 import { tokens } from '@SRC/theme';
 
@@ -24,7 +23,6 @@ const ModalEditarCategoria = ({
 
   const [errorNombre, setErrorNombre] = useState(false);
 
-  // Funciones memoizadas para evitar re-renders
   const manejarCambioNombre = useCallback((evento) => {
     const nuevoNombre = evento.target.value;
     setCategoria(prev => ({
@@ -55,7 +53,7 @@ const ModalEditarCategoria = ({
 
   if (!categoria) return null;
 
-  const { cargando, error, exitoso, mensaje, limpiarEstado } = estadoActualizacion || {};
+  const { cargando } = estadoActualizacion || {};
 
   return (
     <ModalFlotante
@@ -78,30 +76,6 @@ const ModalEditarCategoria = ({
         deshabilitado={cargando || false}
         errorNombre={errorNombre}
       />
-
-      {error && (
-        <Box mt={3}>
-          <Alerta 
-            tipo='error' 
-            mensaje={error} 
-            cerrable 
-            duracion={4000} 
-            onClose={limpiarEstado} 
-          />
-        </Box>
-      )}
-
-      {exitoso && mensaje && (
-        <Box mt={3}>
-          <Alerta 
-            tipo='success' 
-            mensaje={mensaje} 
-            cerrable 
-            duracion={3000} 
-            onClose={limpiarEstado} 
-          />
-        </Box>
-      )}
 
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1, mt: 4 }}>
         <Button

@@ -12,6 +12,7 @@ import { useConsultarCategorias } from '@Hooks/Categorias/useConsultarCategorias
 import { leerCategoria } from '@Hooks/Categorias/useLeerCategoria';
 import useActualizarCategoria from '@Hooks/Categorias/useActualizarCategoria';
 import obtenerProductosCategoria from '@Servicios/obtenerProductosCategoria';
+
 import { Box, useTheme } from '@mui/material';
 import { tokens } from '@SRC/theme';
 import ModalCrearCategoria from '@Organismos/ModalCrearCategoria';
@@ -74,10 +75,31 @@ const ListaCategorias = () => {
 
   const handleAbrirModalCrear = useCallback(() => setModalCrearAbierto(true), []);
   const handleCerrarModalCrear = useCallback(() => setModalCrearAbierto(false), []);
+  
   const handleCategoriaCreadaExitosamente = useCallback(() => {
     handleCerrarModalCrear();
+    // Recarga la lista de categorías
     recargar();
-  }, [recargar]);
+    // Show success alert
+    setAlerta({
+      tipo: 'success',
+      mensaje: 'Categoría creada exitosamente.',
+      icono: true,
+      cerrable: true,
+      centradoInferior: true,
+    });
+  }, [recargar, handleCerrarModalCrear]);
+
+  // Manejador para errores al crear categoría
+  const handleErrorCrearCategoria = useCallback((mensajeError) => {
+    setAlerta({
+      tipo: 'error',
+      mensaje: mensajeError,
+      icono: true,
+      cerrable: true,
+      centradoInferior: true,
+    });
+  }, []);
 
   const mostrarDetalleCategoria = useCallback(async (idCategoria) => {
     setCargandoDetalle(true);
@@ -270,12 +292,15 @@ const ListaCategorias = () => {
         </Box>
       </ContenedorLista>
 
+      {/* Modal para crear categoria */}
       <ModalCrearCategoria
         abierto={modalCrearAbierto}
         onCerrar={handleCerrarModalCrear}
         onCreado={handleCategoriaCreadaExitosamente}
+        onError={handleErrorCrearCategoria}
       />
 
+      {/* Modal para eliminar categoria */}
       <ModalEliminarCategoria
         open={openModalEliminar}
         onClose={() => setOpenModalEliminar(false)}
@@ -283,7 +308,7 @@ const ListaCategorias = () => {
         setAlerta={setAlerta}
         refrescarPagina={recargar}
       />
-
+      
       {modalDetalleAbierto && !cargandoDetalle && (
         <ModalFlotante
           open={modalDetalleAbierto}
@@ -327,13 +352,13 @@ const ListaCategorias = () => {
           mensaje={alerta.mensaje}
           icono={alerta.icono}
           cerrable={alerta.cerrable}
-          duracion={2500}
+          duracion={3000}
           centradoInferior={alerta.centradoInferior}
           onClose={() => setAlerta(null)}
         />
       )}
     </>
   );
-};
+}; // <- Esta llave de cierre estaba faltando
 
 export default ListaCategorias;

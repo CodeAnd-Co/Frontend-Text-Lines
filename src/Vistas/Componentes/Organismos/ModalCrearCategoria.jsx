@@ -35,6 +35,7 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado, onError }) =
 
   useEffect(() => {
     if (exito) {
+      // Close modal immediately and let parent handle success alert
       if (onCreado) {
         onCreado();
       } else {
@@ -45,7 +46,9 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado, onError }) =
 
   useEffect(() => {
     if (error && onError) {
+      // Let parent handle error alert, but keep modal open
       onError(mensaje);
+      // Reset the error state to prevent loop
       setError(false);
     }
   }, [error, mensaje, onError, setError]);
@@ -68,6 +71,7 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado, onError }) =
 
     if (productos.length === 0) {
       setMostrarAlerta(true);
+      // Notify parent about validation error
       if (onError) {
         onError('Ingresa el nombre y selecciona al menos un producto.');
       }
@@ -106,17 +110,6 @@ const ModalCrearCategoria = ({ abierto = false, onCerrar, onCreado, onError }) =
         errores={errores}
         intentoEnviar={intentoEnviar}
       />
-      {(exito || error) && (
-        <Alerta
-          tipo={exito ? 'success' : 'error'}
-          mensaje={mensaje}
-          duracion={exito ? 3000 :3000 }
-          sx={{ margin: 3 }}
-          cerrable
-          onClose={error ? () => setError(false) : undefined}
-        />
-      )}
-
     </ModalFlotante>
   );
 };

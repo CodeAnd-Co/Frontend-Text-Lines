@@ -171,6 +171,8 @@ const CamposVariante = memo(
     alEliminarOpcion,
     alAgregarImagenVariante,
     alEliminarImagenVariante,
+    prevenirNumerosNegativos,
+    prevenirNumerosNoDecimales,
   }) => {
     const manejarActualizarVariante = useCallback(
       (campo, valor) => {
@@ -224,13 +226,7 @@ const CamposVariante = memo(
           onChange={(evento) => manejarActualizarVariante('descripcion', evento.target.value)}
           placeholder='Descripción de la variante'
           error={errores?.descripcion}
-          helperText={
-            variante.descripcion
-              ? `${variante.descripcion.length}/${300} - Máximo de caracteres. ${
-                  errores?.descripcion || ''
-                }`
-              : errores?.descripcion
-          }
+          helperText={errores?.descripcion || ''}
           maxLongitudDescripcion={300}
         />
 
@@ -244,6 +240,8 @@ const CamposVariante = memo(
             intentoEnviar={intentoEnviar}
             alActualizarOpcion={alActualizarOpcion}
             alEliminarOpcion={alEliminarOpcion}
+            prevenirNumerosNegativos={prevenirNumerosNegativos}
+            prevenirNumerosNoDecimales={prevenirNumerosNoDecimales}
           />
         ))}
         <CampoCrear etiqueta='Crear Opción' onClic={manejarAgregarOpcion} />

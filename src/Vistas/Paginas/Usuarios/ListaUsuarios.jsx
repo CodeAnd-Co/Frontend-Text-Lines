@@ -397,6 +397,7 @@ const ListaUsuarios = () => {
                 onClick: () => {
                   setModalDetalleAbierto(false);
                   setTimeout(() => setModalActualizarAbierto(true), 100);
+                  console.log('Editar usuario:', usuario);
                 },
                 disabled: !usuarioAutenticado?.permisos?.includes(PERMISOS.ACTUALIZAR_USUARIO),
               },
@@ -453,7 +454,10 @@ const ListaUsuarios = () => {
             open={modalActualizarAbierto}
             onClose={() => setModalActualizarAbierto(false)}
             onAccion={recargar}
-            usuarioEdicion={usuario}
+            usuarioEdicion={{
+              ...usuario,
+              cliente: usuario.clientes ? usuario.clientes.map((c) => c.idCliente) : [],
+            }}
             roles={roles}
             clientes={clientes}
             esSuperAdmin={false}

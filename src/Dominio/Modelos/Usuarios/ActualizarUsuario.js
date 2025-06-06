@@ -4,6 +4,8 @@ export const validarDatosActualizarUsuario = (datos, usuariosExistentes = []) =>
   const errores = {};
   const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const telefonoValido = /^\d{10}$/;
+  const tieneCaracterEspecial = /[!@#$%^&*(),.?":{}|<>]/;
+  const tieneMayuscula = /[A-Z]/;
 
   if (!datos.idUsuario) {
     errores.idUsuario = true;
@@ -29,16 +31,19 @@ export const validarDatosActualizarUsuario = (datos, usuariosExistentes = []) =>
     errores.correoElectronico = 'Este correo ya está registrado';
   }
 
-  if (datos.contrasenia && datos.contrasenia.length < 6) {
-    errores.contrasenia = 'La contraseña debe tener al menos 6 caracteres';
+  if (datos.contrasenia && datos.contrasenia.length < 8) {
+    errores.contrasenia = 'La contraseña debe tener al menos 8 caracteres';
+  } else if (datos.contrasenia && !tieneCaracterEspecial.test(datos.contrasenia)) {
+    errores.contrasenia =
+      'Debe contener al menos uno de estos caracteres: ! @ # $ % ^ & * ( ) , . ? " : { } | < >';
+  } else if (datos.contrasenia && !tieneMayuscula.test(datos.contrasenia)) {
+    errores.contrasenia = 'Debe contener al menos una letra mayúscula';
   }
 
-  if (datos.contrasenia) {
-    if (!datos.confirmarContrasenia) {
-      errores.confirmarContrasenia = true;
-    } else if (datos.contrasenia !== datos.confirmarContrasenia) {
-      errores.confirmarContrasenia = 'Las contraseñas no coinciden';
-    }
+  if (datos.contrasenia && !datos.confirmarContrasenia) {
+    errores.confirmarContrasenia = true;
+  } else if (datos.contrasenia && datos.contrasenia !== datos.confirmarContrasenia) {
+    errores.confirmarContrasenia = 'Las contraseñas no coinciden';
   }
 
   if (!datos.numeroTelefono) {

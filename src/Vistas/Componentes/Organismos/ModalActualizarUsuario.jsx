@@ -35,7 +35,7 @@ const ModalActualizarUsuario = ({
       limpiarFormulario();
       setTimeout(() => {
         onClose();
-      }, 1500);
+      }, 0);
     }
   };
 
@@ -45,36 +45,38 @@ const ModalActualizarUsuario = ({
   };
 
   return (
-    <ModalFlotante
-      open={open}
-      onClose={manejarCierre}
-      onConfirm={manejarConfirmacion}
-      titulo={esEdicion ? datosUsuario.nombreCompleto : 'Actualizar Usuario'}
-    >
-      <Box
-        component='form'
-        method='POST'
-        sx={{
-          flexGrow: 1,
-          '& .MuiTextField-root': { margin: 1, width: '30ch' },
-          '& .MuiFormControl-root': { margin: 1, width: '30ch' },
-        }}
-        noValidate
-        autoComplete='off'
+    <>
+      <ModalFlotante
+        open={open}
+        onClose={manejarCierre}
+        onConfirm={manejarConfirmacion}
+        titulo={esEdicion ? datosUsuario.nombreCompleto : 'Actualizar Usuario'}
       >
-        <FormularioActualizarUsuario
-          datosUsuario={datosUsuario}
-          erroresValidacion={erroresValidacion}
-          manejarCambio={manejarCambio}
-          manejarFechaNacimiento={manejarFechaNacimiento}
-          obtenerHelperText={obtenerHelperText}
-          roles={roles}
-          clientes={clientes}
-          esSuperAdmin={esSuperAdmin}
-          cargandoRoles={cargandoRoles}
-          cargando={cargando}
-        />
-      </Box>
+        <Box
+          component='form'
+          method='POST'
+          sx={{
+            flexGrow: 1,
+            '& .MuiTextField-root': { margin: 1, width: '30ch' },
+            '& .MuiFormControl-root': { margin: 1, width: '30ch' },
+          }}
+          noValidate
+          autoComplete='off'
+        >
+          <FormularioActualizarUsuario
+            datosUsuario={datosUsuario}
+            erroresValidacion={erroresValidacion}
+            manejarCambio={manejarCambio}
+            manejarFechaNacimiento={manejarFechaNacimiento}
+            obtenerHelperText={obtenerHelperText}
+            roles={roles}
+            clientes={clientes}
+            esSuperAdmin={esSuperAdmin}
+            cargandoRoles={cargandoRoles}
+            cargando={cargando}
+          />
+        </Box>
+      </ModalFlotante>
       {alerta && (
         <Alerta
           sx={{ marginBottom: 2 }}
@@ -84,7 +86,7 @@ const ModalActualizarUsuario = ({
           onClose={() => setAlerta(null)}
         />
       )}
-    </ModalFlotante>
+    </>
   );
 };
 

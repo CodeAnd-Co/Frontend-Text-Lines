@@ -65,22 +65,6 @@ const FormularioActualizarUsuario = ({
       </Grid>
 
       <Grid size={6} sx={estiloCuadricula}>
-        <CampoTexto
-          label='Apellido'
-          name='apellido'
-          value={datosUsuario.apellido}
-          onChange={manejarCambio}
-          required
-          size='medium'
-          error={!!erroresValidacion.apellido}
-          helperText={erroresValidacion.apellido && CAMPO_OBLIGATORIO}
-          inputProps={{
-            maxLength: 50,
-          }}
-        />
-      </Grid>
-
-      <Grid size={6} sx={estiloCuadricula}>
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='es'>
           <DateField
             required
@@ -224,7 +208,7 @@ const FormularioActualizarUsuario = ({
             value: cliente.idCliente,
             label: cliente.nombreComercial,
           }))}
-          disabled={esSuperAdmin}
+          //disabled={esSuperAdmin}
         />
       </Grid>
 

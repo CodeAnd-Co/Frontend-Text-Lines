@@ -313,7 +313,7 @@ const ListaGrupoEmpleados = () => {
         confirmar={manejarConfirmarExportar}
         dialogo={MENSAJE_POPUP_EXPORTAR}
         labelCancelar = 'Cancelar'
-        labelConfirmar = 'Confirma'
+        labelConfirmar = 'Confirmar'
         disabledConfirmar={cargando}
       />
 

@@ -20,7 +20,7 @@ const InfoProducto = ({detalleProducto, imagenProducto}) => {
   };
 
   return <>
-    <Grid container spacing={9} wrap='nowrap'>
+    <Grid container spacing={15} wrap='nowrap'>
       {/*Información General*/}
       <Grid >
         <Box sx={{maxWidth: '100%'}}>
@@ -166,7 +166,7 @@ const InfoProducto = ({detalleProducto, imagenProducto}) => {
               ]}
               rows={varianteSeleccionada.opciones.map((opcion, index) => ({
                 id: index + 1,
-                opcion: `Opción ${index + 1}`,
+                opcion: opcion.valorOpcion || 'No disponible',
                 skuComercial: opcion.SKUcomercial || 'No disponible',
                 skuAutomatico: opcion.SKUautomatico || 'No disponible',
                 costo: opcion.costoAdicional ? `${opcion.costoAdicional}` : '$0',

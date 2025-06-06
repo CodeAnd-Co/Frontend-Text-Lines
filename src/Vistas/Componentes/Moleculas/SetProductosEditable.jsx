@@ -261,7 +261,7 @@ const SetProductosEditable = ({
   return (
     <Box sx={{ maxWidth: 1000, mx: 'auto', pro: 2 }}>
       {/* Campos de texto */}
-      <Grid item xs={12}>
+      <Grid item xs={12} mb={2} >
         <FormControlLabel
           control={
             <Switch
@@ -274,7 +274,7 @@ const SetProductosEditable = ({
           sx={{ mb: 2 }}
         />
       </Grid>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} mb={2}>
         <Grid item xs={12} md={6}>
           <Texto variant='h6'>Nombre:</Texto>
           <CampoTexto

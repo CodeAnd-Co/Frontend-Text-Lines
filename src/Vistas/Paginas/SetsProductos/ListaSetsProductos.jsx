@@ -312,7 +312,7 @@ const ListaSetsProductos = () => {
           onClose={() => setAbrirModalEditar(false)}
           titulo='Editar Set de Productos'
           tituloVariant='h4'
-          customWidth={849}
+          customWidth={890}
           botones={[
             {
               label: 'Guardar',

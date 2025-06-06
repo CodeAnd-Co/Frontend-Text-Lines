@@ -320,10 +320,11 @@ const ListaUsuarios = () => {
           <Alerta
             tipo={alerta.tipo}
             mensaje={alerta.mensaje}
-            cerrable
+            icono={alerta.icono}
+            cerrable={alerta.cerrable}
             duracion={3000}
+            centradoInferior={alerta.centradoInferior}
             onClose={() => setAlerta(null)}
-            centradoInferior
           />
         )}
         {modalCrearUsuarioAbierto && (
@@ -452,12 +453,15 @@ const ListaUsuarios = () => {
           <ModalActualizarUsuario
             open={modalActualizarAbierto}
             onClose={() => setModalActualizarAbierto(false)}
-            onAccion={(exito) => {
+            onAccion={(exito, mensaje) => {
               recargar();
               if (exito) {
                 setAlerta({
                   tipo: 'success',
-                  mensaje: 'Usuario actualizado exitosamente',
+                  mensaje: mensaje || 'Usuario actualizado exitosamente',
+                  icono: true,
+                  cerrable: true,
+                  centradoInferior: true,
                 });
               }
             }}

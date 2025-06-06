@@ -31,7 +31,7 @@ const ModalActualizarUsuario = ({
   const manejarConfirmacion = async () => {
     const resultado = await handleGuardar();
     if (resultado?.exito) {
-      if (onAccion) await onAccion();
+      if (onAccion) await onAccion(true, resultado?.mensaje || 'Usuario actualizado exitosamente');
       setTimeout(() => {
         limpiarFormulario();
         onClose();
@@ -77,15 +77,6 @@ const ModalActualizarUsuario = ({
           />
         </Box>
       </ModalFlotante>
-      {alerta && (
-        <Alerta
-          sx={{ marginBottom: 2 }}
-          tipo={alerta.tipo}
-          mensaje={alerta.mensaje}
-          duracion='1500'
-          onClose={() => setAlerta(null)}
-        />
-      )}
     </>
   );
 };

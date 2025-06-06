@@ -74,12 +74,9 @@ const ListaCategorias = () => {
     },
   ];
 
-<<<<<<< HEAD
 
   // Las filas deben tener un campo `id`, usamos `idCategoria`
   // para que coincida con el campo `id` de la tabla.
-=======
->>>>>>> 35bc89bb8ee319eab7444929fa52e24b1708b1b5
   const rows = categorias.map((cat) => ({
     id: cat.idCategoria,
     nombreCategoria: cat.nombreCategoria,
@@ -120,9 +117,6 @@ const ListaCategorias = () => {
     }
   };
 
-<<<<<<< HEAD
-
-=======
   const manejarCambioTransferencia = ({ disponibles, seleccionados }) => {
     setCategoriaEditable((prev) => ({
       ...prev,
@@ -162,7 +156,6 @@ const manejarGuardarCategoria = async () => {
     }, 2000);
   }
 };
->>>>>>> 35bc89bb8ee319eab7444929fa52e24b1708b1b5
 
   const botones = [
     {
@@ -216,22 +209,12 @@ const manejarGuardarCategoria = async () => {
         </Box>
       </ContenedorLista>
 
-<<<<<<< HEAD
-      {/* Modal para crear categoria */}
-
-=======
->>>>>>> 35bc89bb8ee319eab7444929fa52e24b1708b1b5
       <ModalCrearCategoria
         abierto={modalCrearAbierto}
         onCerrar={handleCerrarModalCrear}
         onCreado={handleCategoriaCreadaExitosamente}
       />
 
-<<<<<<< HEAD
-      {/* Modal para eliminar categoria */}
-
-=======
->>>>>>> 35bc89bb8ee319eab7444929fa52e24b1708b1b5
       <ModalEliminarCategoria
         open={openModalEliminar}
         onClose={() => setOpenModalEliminar(false)}
@@ -240,10 +223,6 @@ const manejarGuardarCategoria = async () => {
         refrescarPagina={recargar}
       />
 
-<<<<<<< HEAD
-      {/* Alert that appears on the page level */}
-=======
->>>>>>> 35bc89bb8ee319eab7444929fa52e24b1708b1b5
       {modalDetalleAbierto && !cargandoDetalle && (
         <ModalFlotante
           open={modalDetalleAbierto}
@@ -316,8 +295,6 @@ const manejarGuardarCategoria = async () => {
         </ModalFlotante>
       )}
 
-<<<<<<< HEAD
-=======
       <ModalEditarCategoria
         abierto={modalEditarAbierto}
         onCerrar={() => {
@@ -332,7 +309,6 @@ const manejarGuardarCategoria = async () => {
         setCategoria={setCategoriaEditable}
       />
 
->>>>>>> 35bc89bb8ee319eab7444929fa52e24b1708b1b5
       {alerta && (
         <Alerta
           tipo={alerta.tipo}

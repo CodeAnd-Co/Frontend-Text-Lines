@@ -452,7 +452,15 @@ const ListaUsuarios = () => {
           <ModalActualizarUsuario
             open={modalActualizarAbierto}
             onClose={() => setModalActualizarAbierto(false)}
-            onAccion={recargar}
+            onAccion={(exito) => {
+              recargar();
+              if (exito) {
+                setAlerta({
+                  tipo: 'success',
+                  mensaje: 'Usuario actualizado exitosamente',
+                });
+              }
+            }}
             usuarioEdicion={{
               ...usuario,
               cliente: usuario.clientes ? usuario.clientes.map((c) => c.idCliente) : [],

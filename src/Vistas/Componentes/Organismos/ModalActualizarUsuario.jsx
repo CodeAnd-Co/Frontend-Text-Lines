@@ -35,7 +35,7 @@ const ModalActualizarUsuario = ({
       setTimeout(() => {
         limpiarFormulario();
         onClose();
-      }, 800);
+      }, 1000);
     }
   };
 
@@ -76,17 +76,16 @@ const ModalActualizarUsuario = ({
             cargando={cargando}
           />
         </Box>
-
-        {alerta && (
-          <Alerta
-            sx={{ marginBottom: 2 }}
-            tipo={alerta.tipo}
-            mensaje={alerta.mensaje}
-            duracion='2000'
-            onClose={() => setAlerta(null)}
-          />
-        )}
       </ModalFlotante>
+      {alerta && (
+        <Alerta
+          sx={{ marginBottom: 2 }}
+          tipo={alerta.tipo}
+          mensaje={alerta.mensaje}
+          duracion='1500'
+          onClose={() => setAlerta(null)}
+        />
+      )}
     </>
   );
 };

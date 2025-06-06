@@ -323,16 +323,16 @@ const SetProductosEditable = ({
               />
             </Grid>
 
-            <Grid item>
-              <Grid container direction='column' alignItems='center' spacing={1}>
+            <Grid>
+              <Grid container direction='column' sx={{alignItems: 'center'}} spacing={1}>
                 <Button
                   variant='outlined'
                   size='small'
                   onClick={transferirTodos}
                   disabled={productosDisponibles.length === 0}
                   aria-label='Mover todos a seleccionados'
-                  startIcon={<KeyboardDoubleArrowRight />}
-                ></Button>
+                ><KeyboardDoubleArrowRight /></Button>
+
                 <Button
                   variant='outlined'
                   size='small'
@@ -342,8 +342,7 @@ const SetProductosEditable = ({
                       productosDisponibles.some((pd) => pd.id === pro.id)).length === 0
                   }
                   aria-label='Mover seleccionados a seleccionados'
-                  startIcon={<KeyboardArrowRight />}
-                ></Button>
+                ><KeyboardArrowRight /></Button>
                 <Button
                   variant='outlined'
                   size='small'
@@ -353,16 +352,14 @@ const SetProductosEditable = ({
                       productosAsignados.some((pa) => pa.id === pro.id)).length === 0
                   }
                   aria-label='Quitar seleccionados'
-                  startIcon={<KeyboardArrowLeft />}
-                ></Button>
+                ><KeyboardArrowLeft /></Button>
                 <Button
                   variant='outlined'
                   size='small'
                   onClick={quitarTodos}
                   disabled={productosAsignados.length === 0}
                   aria-label='Quitar todos'
-                  startIcon={<KeyboardDoubleArrowLeft />}
-                ></Button>
+                ><KeyboardDoubleArrowLeft /></Button>
               </Grid>
             </Grid>
 

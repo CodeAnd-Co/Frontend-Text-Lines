@@ -312,20 +312,20 @@ const ListaSetsProductos = () => {
           onClose={() => setAbrirModalEditar(false)}
           titulo='Editar Set de Productos'
           tituloVariant='h4'
-          customWidth={900}
+          customWidth={849}
           botones={[
             {
               label: 'Guardar',
               variant: 'contained',
               color: 'primary',
-              outlineColor: colores.primario[10],
+              backgroundColor: colores.altertex[1],
               onClick: handleGuardar,
             },
             {
               label: 'Cancelar',
               variant: 'outlined',
               color: 'primary',
-              outlineColor: colores.primario[10],
+              outlineColor: colores.altertex[1],
               onClick: () => setAbrirModalEditar(false),
             },
           ]}

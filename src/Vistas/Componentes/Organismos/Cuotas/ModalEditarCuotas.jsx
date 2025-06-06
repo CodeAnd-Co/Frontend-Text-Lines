@@ -103,8 +103,7 @@ const ModalEditarCuotas = ({
             nuevoProducto.nombreProducto = opcionSeleccionada?.nombreProducto || '';
 
             const yaExiste = prev.productos.some((p, idx) =>
-              idx !== index && p.idProducto === valor && valor !== ''
-            );
+              idx !== index && p.idProducto === valor && valor !== '');
 
             if (yaExiste && valor !== '') {
               const nombreProducto = opcionSeleccionada?.nombreProducto || 'este producto';
@@ -302,8 +301,7 @@ const ModalEditarCuotas = ({
                     {opciones?.length > 0 ? (
                       opciones
                         .filter(op => !datos.productos.some((p, idx) =>
-                          idx !== index && p.idProducto == op.id
-                        ))
+                          idx !== index && p.idProducto == op.id))
                         .map((opcion) => (
                           <MenuItem key={opcion.id} value={opcion.id}>
                             {opcion.nombreProducto} ({opcion.tipo})

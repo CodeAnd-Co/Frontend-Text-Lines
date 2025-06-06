@@ -6,27 +6,13 @@ import CampoTexto from '@Atomos/CampoTexto';
 import Texto from '@Atomos/Texto';
 import obtenerProductos from '@Servicios/obtenerProductos';
 import { useAuth } from '@Hooks/AuthProvider';
+import ListaTransferenciaPersonalizada from '@Organismos/ListaTransferencia';
 import {
   Box,
   Grid,
-  Card,
-  CardHeader,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Checkbox,
-  Divider,
-  Button,
   Switch,
   FormControlLabel,
 } from '@mui/material';
-import {
-  KeyboardArrowRight,
-  KeyboardArrowLeft,
-  KeyboardDoubleArrowRight,
-  KeyboardDoubleArrowLeft,
-} from '@mui/icons-material';
 
 // Constantes
 const LIMITE_NOMBRE = 50;
@@ -49,12 +35,9 @@ const SetProductosEditable = ({
   const [activo, setActivo] = useState(activoInicial);
   const [descripcion, setDescripcion] = useState(descripcionInicial);
   const [todosProductos, setTodosProductos] = useState([]);
-  const [productosSeleccionados, setProductosSeleccionados] = useState([]);
-  //const [productosAsignados, setProductosAsignados] = useState(productosInicial);
   const [productosAsignados, setProductosAsignados] = useState(() => {
     return productosInicial.filter((pro) => pro && pro.id); // Filtra productos válidos
   });
-
   const [loading, setLoading] = useState(true);
   const [errores, setErrores] = useState({
     nombre: false,
@@ -124,144 +107,29 @@ const SetProductosEditable = ({
     }
   }, [nombre, activo, descripcion, productosAsignados, loading, validarCampos, onFormDataChange]);
 
-  // Manejar selección de productos
-  const toggleSeleccionProducto = useCallback((producto) => {
-    setProductosSeleccionados((prev) =>
-      prev.some((pro) => pro.id === producto.id)
-        ? prev.filter((pro) => pro.id !== producto.id)
-        : [...prev, producto]);
+  // Manejar cambios en la lista de transferencia
+  const manejarCambioTransferencia = useCallback(({ disponibles, seleccionados }) => {
+    setProductosAsignados(seleccionados);
   }, []);
 
-  // Transferir productos
-  const transferirSeleccionados = useCallback(() => {
-    const paraTransferir = productosSeleccionados.filter((pro) =>
-      productosDisponibles.some((pd) => pd.id === pro.id));
+  // Función para obtener la etiqueta del producto
+  const obtenerEtiquetaProducto = useCallback((producto) => {
+    return producto.nombreProducto || producto.nombre || 'Sin nombre';
+  }, []);
 
-    setProductosAsignados((prev) =>
-      [...prev, ...paraTransferir].sort((prodA, prodB) =>
-        (prodA.nombreProducto || prodA.nombre).localeCompare(prodB.nombreProducto || prodB.nombre)));
-    setProductosSeleccionados((prev) =>
-      prev.filter((pro) => !paraTransferir.some((pt) => pt.id === pro.id)));
-  }, [productosSeleccionados, productosDisponibles]);
-
-  const quitarSeleccionados = useCallback(() => {
-    const paraQuitar = productosSeleccionados.filter((pro) =>
-      productosAsignados.some((pa) => pa.id === pro.id));
-
-    setProductosAsignados((prev) =>
-      prev.filter((pro) => !paraQuitar.some((pq) => pq.id === pro.id)));
-    setProductosSeleccionados((prev) =>
-      prev.filter((pro) => !paraQuitar.some((pq) => pq.id === pro.id)));
-  }, [productosSeleccionados, productosAsignados]);
-
-  const transferirTodos = useCallback(() => {
-    setProductosAsignados((prev) =>
-      [...prev, ...productosDisponibles].sort((prodA, prodB) =>
-        (prodA.nombreProducto || prodA.nombre).localeCompare(prodB.nombreProducto || prodB.nombre)));
-    setProductosSeleccionados((prev) =>
-      prev.filter((pro) => !productosDisponibles.some((pd) => pd.id === pro.id)));
-  }, [productosDisponibles]);
-
-  const quitarTodos = useCallback(() => {
-    setProductosAsignados([]);
-    setProductosSeleccionados((prev) =>
-      prev.filter((pro) => !productosAsignados.some((pa) => pa.id === pro.id)));
-  }, [productosAsignados]);
-
-  // Seleccionar/deseleccionar todos
-  const toggleSeleccionTodos = useCallback(
-    (productos, esDisponibles) => {
-      const todosSeleccionados = productos.every((pro) =>
-        productosSeleccionados.some((ps) => ps.id === pro.id));
-
-      if (todosSeleccionados) {
-        setProductosSeleccionados((prev) =>
-          prev.filter((pro) => !productos.some((prod) => prod.id === pro.id)));
-      } else {
-        setProductosSeleccionados((prev) => [
-          ...prev,
-          ...productos.filter(
-            (pro) =>
-              !prev.some((ps) => ps.id === pro.id)
-              && (esDisponibles
-                ? !productosAsignados.some((pa) => pa.id === pro.id)
-                : productosAsignados.some((pa) => pa.id === pro.id))
-          ),
-        ]);
-      }
-    },
-    [productosSeleccionados, productosAsignados]
-  );
-
-  // Componente de lista de productos
-  const ListaProductos = useCallback(
-    ({ titulo, productos, esDisponibles }) => {
-      const seleccionadosEnLista = productos.filter((pro) =>
-        productosSeleccionados.some((ps) => ps.id === pro.id)).length;
-
-      const todosSeleccionados = productos.length > 0 && seleccionadosEnLista === productos.length;
-      const algunosSeleccionados
-        = seleccionadosEnLista > 0 && seleccionadosEnLista < productos.length;
-
-      return (
-        <Card>
-          <CardHeader
-            avatar={
-              <Checkbox
-                checked={todosSeleccionados}
-                indeterminate={algunosSeleccionados}
-                onChange={() => toggleSeleccionTodos(productos, esDisponibles)}
-                disabled={productos.length === 0}
-                inputProps={{ 'aria-label': `Seleccionar todos ${titulo}` }}
-              />
-            }
-            title={titulo}
-            subheader={`${seleccionadosEnLista}/${productos.length} seleccionados`}
-            sx={{ px: 2, py: 1 }}
-          />
-          <Divider />
-          <List sx={{ width: 350, height: 300, overflow: 'auto' }}>
-            {productos.map((producto) => {
-              // Asegurarse de que el ID existe y es único
-              const itemKey = producto.id
-                ? `producto-${producto.id}`
-                : `producto-${Math.random().toString(36).substr(2, 9)}`;
-
-              return (
-                <ListItemButton
-                  key={itemKey}
-                  onClick={() => toggleSeleccionProducto(producto)}
-                  dense
-                >
-                  <ListItemIcon>
-                    <Checkbox
-                      checked={productosSeleccionados.some((pro) => pro.id === producto.id)}
-                      tabIndex={-1}
-                      disableRipple
-                    />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={producto.nombreProducto || producto.nombre || 'Sin nombre'}
-                    secondary={`ID: ${producto.id || 'N/A'}`}
-                  />
-                </ListItemButton>
-              );
-            })}
-          </List>
-        </Card>
-      );
-    },
-    [productosSeleccionados, toggleSeleccionProducto, toggleSeleccionTodos]
-  );
+  // Función para obtener la clave del producto
+  const obtenerClaveProducto = useCallback((producto) => {
+    return producto.id;
+  }, []);
 
   if (loading) {
-    return <Box sx={{ pro: 3, textAlign: 'center' }}>Cargando productos...</Box>;
+    return <Box sx={{ p: 3, textAlign: 'center' }}>Cargando productos...</Box>;
   }
 
   return (
-    <Box sx={{ maxWidth: 1000, mx: 'auto', pro: 2 }}>
-      {/* Campos de texto */}
-      <Grid item xs={12} mb={2} >
+    <Box sx={{ maxWidth: 1000, mx: 'auto', p: 2 }}>
+      {/* Switch de activo/inactivo */}
+      <Grid item xs={12} mb={2}>
         <FormControlLabel
           control={
             <Switch
@@ -274,6 +142,8 @@ const SetProductosEditable = ({
           sx={{ mb: 2 }}
         />
       </Grid>
+
+      {/* Campos de texto */}
       <Grid container spacing={3} mb={2}>
         <Grid item xs={12} md={6}>
           <Texto variant='h6'>Nombre:</Texto>
@@ -311,66 +181,23 @@ const SetProductosEditable = ({
           />
         </Grid>
 
-        {/* Selector de productos */}
+        {/* Lista de transferencia de productos */}
         <Grid item xs={12}>
-          <Texto variant='h6'>Productos:</Texto>
-          <Grid container spacing={2} justifyContent='center' alignItems='center' sx={{ mt: 2 }}>
-            <Grid item>
-              <ListaProductos
-                titulo='Disponibles'
-                productos={productosDisponibles}
-                esDisponibles={true}
-              />
-            </Grid>
-
-            <Grid>
-              <Grid container direction='column' sx={{alignItems: 'center'}} spacing={1}>
-                <Button
-                  variant='outlined'
-                  size='small'
-                  onClick={transferirTodos}
-                  disabled={productosDisponibles.length === 0}
-                  aria-label='Mover todos a seleccionados'
-                ><KeyboardDoubleArrowRight /></Button>
-
-                <Button
-                  variant='outlined'
-                  size='small'
-                  onClick={transferirSeleccionados}
-                  disabled={
-                    productosSeleccionados.filter((pro) =>
-                      productosDisponibles.some((pd) => pd.id === pro.id)).length === 0
-                  }
-                  aria-label='Mover seleccionados a seleccionados'
-                ><KeyboardArrowRight /></Button>
-                <Button
-                  variant='outlined'
-                  size='small'
-                  onClick={quitarSeleccionados}
-                  disabled={
-                    productosSeleccionados.filter((pro) =>
-                      productosAsignados.some((pa) => pa.id === pro.id)).length === 0
-                  }
-                  aria-label='Quitar seleccionados'
-                ><KeyboardArrowLeft /></Button>
-                <Button
-                  variant='outlined'
-                  size='small'
-                  onClick={quitarTodos}
-                  disabled={productosAsignados.length === 0}
-                  aria-label='Quitar todos'
-                ><KeyboardDoubleArrowLeft /></Button>
-              </Grid>
-            </Grid>
-
-            <Grid item sx={{ my: 2 }}>
-              <ListaProductos
-                titulo='Seleccionados'
-                productos={productosAsignados}
-                esDisponibles={false}
-              />
-            </Grid>
-          </Grid>
+          <Texto variant='h6' sx={{ mb: 2 }}>Productos:</Texto>
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+            <ListaTransferenciaPersonalizada
+              elementosDisponibles={productosDisponibles}
+              elementosSeleccionados={productosAsignados}
+              alCambiarSeleccion={manejarCambioTransferencia}
+              tituloIzquierda="Productos Disponibles"
+              tituloDerecha="Productos Seleccionados"
+              obtenerEtiquetaElemento={obtenerEtiquetaProducto}
+              obtenerClaveElemento={obtenerClaveProducto}
+              deshabilitado={false}
+              alturaMaxima={300}
+              ancho={350}
+            />
+          </Box>
         </Grid>
       </Grid>
     </Box>
@@ -380,6 +207,7 @@ const SetProductosEditable = ({
 SetProductosEditable.propTypes = {
   nombre: PropTypes.string,
   descripcion: PropTypes.string,
+  activo: PropTypes.bool,
   productos: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
@@ -387,13 +215,19 @@ SetProductosEditable.propTypes = {
       nombreProducto: PropTypes.string,
     })
   ),
+  idsProductos: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  ),
   onFormDataChange: PropTypes.func,
 };
 
 SetProductosEditable.defaultProps = {
   nombre: '',
   descripcion: '',
+  activo: true,
   productos: [],
+  idsProductos: [],
+  onFormDataChange: null,
 };
 
 export default SetProductosEditable;

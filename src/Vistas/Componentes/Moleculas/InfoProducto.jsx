@@ -20,7 +20,7 @@ const InfoProducto = ({detalleProducto, imagenProducto}) => {
   };
 
   return <>
-    <Grid container spacing={9} wrap='nowrap'>
+    <Grid container spacing={15} wrap='nowrap'>
       {/*Información General*/}
       <Grid >
         <Box sx={{maxWidth: '100%'}}>

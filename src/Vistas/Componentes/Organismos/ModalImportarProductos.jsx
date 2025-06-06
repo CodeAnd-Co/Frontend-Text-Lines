@@ -95,7 +95,7 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
     if (!infoJson.length) {
       setAlerta({
         tipo: 'error',
-        mensaje: 'Agrega un archivo CSV válido.',
+        mensaje: 'Agrega un archivo CSV con idProducto válidos.',
         duracion: 2500,
         cerrable: true,
         centradoInferior: true,
@@ -184,9 +184,7 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
                   Cada fila del archivo representa una opción específica de un producto. El sistema necesita saber qué filas pertenecen al mismo producto. Para eso sirve el campo <strong>idProducto</strong>.
                   <br /><br />
                   Dentro de ese producto, se organizan las <strong>variantes</strong> usando el campo <strong>nombreVariante</strong>.
-                  Y dentro de cada variante, se agrupan las <strong>opciones</strong> como "Rojo", "M", "32GB", etc. Consulta el siguente archivo de ejemplo: <a href="/ejemplo_importar_productos.csv" download="ejemplo_importar_productos.csv">
-                  Descargar ejemplo de plantilla CSV.
-                  </a>
+                  Y dentro de cada variante, se agrupan las <strong>opciones</strong> como "Rojo", "M", "32GB", etc. Consulta el archivo de ejemplo.
                   <br /><br />
                   Así se puede importar correctamente todo: producto, variantes y sus opciones.
                   <br /><br />
@@ -194,7 +192,7 @@ const ModalImportarProductos = ({ abierto, onCerrar, onConfirm, cargando, errore
                   <strong>Asegúrate de lo sigiente:</strong>
                   <ul>
                     <li>
-                      El <strong>idProducto</strong> sea único para cada producto dentro del archivo. Puede ser cualquier número, pero debe coincidir en todas las filas relacionadas con ese producto. Por cada campo vacío de idProducto, el sistema podría generar varios productos con el mismo nombre.
+                      El <strong>idProducto</strong> sea único para cada producto dentro del archivo. Puede ser cualquier número, pero debe coincidir en todas las filas relacionadas con ese producto. Por cada campo vacío de idProducto, el sistema ignorará la fila.
                     </li>
                     <li>
                       La primera fila de cada producto no debe tener campos vacíos, ya que el sistema la usa para identificar el producto principal. 

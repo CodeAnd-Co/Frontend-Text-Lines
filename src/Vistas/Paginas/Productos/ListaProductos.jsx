@@ -24,6 +24,12 @@ import { useLeerProducto } from '@Hooks/Productos/useLeerProducto.js';
 import useExportarProductos from '@Hooks/Productos/useExportarProductos';
 
 const ListaProductos = () => {
+  const { productos, cargando, error, recargar } = useConsultarProductos();
+  const { eliminar } = useEliminarProductos();
+  const theme = useTheme();
+  const colores = tokens(theme.palette.mode);
+  const { usuario } = useAuth();
+
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [productoDetalleSeleccionado, setProductoDetalleSeleccionado] = useState(null);
   const [mostrarModalProveedor, setMostrarModalProveedor] = useState(false);
@@ -31,15 +37,13 @@ const ListaProductos = () => {
   const [alerta, setAlerta] = useState(null);
   const [openModalEliminar, setAbrirPopUp] = useState(false);
   const [modalImportarAbierto, setModalImportarAbierto] = useState(false);
+  const { importar, errores, exito, cargando: cargandoImportacion } = useImportarProductos();
+ 
+  
   const [abrirModalDetalle, setAbrirModalDetalle] = useState(false);
   const [imagenProducto, setImagenProducto] = useState('')
+
   const [openModalExportar, setAbrirPopUpExportar] = useState(false);
-  const { productos, cargando, error, recargar } = useConsultarProductos();
-  const { eliminar } = useEliminarProductos();
-  const { importar, errores, exito, cargando: cargandoImportacion } = useImportarProductos();
-  const colores = tokens(theme.palette.mode);
-  const theme = useTheme();
-  const { usuario } = useAuth();
   const MENSAJE_POPUP_EXPORTAR = '¿Deseas exportar la lista de productos? El archivo será generado en formato .xlsx';
   const manejarCancelarExportar = () => {
     setAbrirPopUpExportar(false);

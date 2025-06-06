@@ -8,8 +8,9 @@ const transformarCSVaEstructuraProductos = (filas) => {
   const productosMap = new Map();
 
   for (const fila of filas) {
-    const idProducto = fila.idProducto;
+    const idProducto = fila.idProducto?.trim() || fila.idProducto.test;
 
+    if (!idProducto) continue;
     if (!productosMap.has(idProducto)) {
       const {
         idProveedor,

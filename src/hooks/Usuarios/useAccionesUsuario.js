@@ -18,8 +18,10 @@ export const useAccionesUsuario = (usuarioInicial = null) => {
 
       let genero = '';
       if (usuarioInicial.genero) {
-        if (usuarioInicial.genero.toLowerCase() === 'femenino') genero = 'Mujer';
-        else if (usuarioInicial.genero.toLowerCase() === 'masculino') genero = 'Hombre';
+        const generoLower = usuarioInicial.genero.toLowerCase();
+        if (['hombre', 'masculino'].includes(generoLower)) genero = 'Hombre';
+        else if (['mujer', 'femenino'].includes(generoLower)) genero = 'Mujer';
+        else if (['otro', 'no binario', 'nb'].includes(generoLower)) genero = 'Otro';
         else genero = 'Otro';
       }
 

@@ -127,7 +127,6 @@ const ListaProductos = () => {
   const manejarCancelarEliminar = () => {
     setAbrirPopUp(false);
   };
-
   const manejarConfirmarEliminar = async () => {
     try {
       const urlsImagenes = productos
@@ -276,6 +275,7 @@ const ListaProductos = () => {
           <FormularioActualizarProducto
             formularioAbierto={mostrarModalActualizarProducto}
             alCerrarFormularioProducto={cerrarFormularioProducto}
+            detalleProducto={detalleProducto}
           />
         )}
 

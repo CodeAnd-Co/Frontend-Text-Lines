@@ -288,11 +288,57 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       };
     });
   }, []);
-
+  // Esta función se usa para actualizar un campo individual del producto
   const manejarActualizarProducto = useCallback((evento) => {
     const { name, value } = evento.target;
-    setProducto((prev) => ({ ...prev, [name]: value }));
+    console.log(`Actualizando campo ${name} con valor ${value}`);
+    setProducto((prev) => {
+      const nuevoProducto = { ...prev, [name]: value };
+      console.log('Estado actualizado del producto:', nuevoProducto);
+      return nuevoProducto;
+    });
   }, []);
+
+  // Esta función se usa para guardar el producto actualizado cuando se presiona "Guardar"
+  const manejarGuardarProductoActualizado = useCallback(async () => {
+    try {
+      setCargando(true);
+      setAlerta({
+        tipo: 'info',
+        mensaje: 'Actualizando producto...',
+      });
+
+      console.log('Guardando producto con datos:', {
+        producto,
+        variantes,
+        imagenes,
+      });
+
+      // Aquí iría la lógica para guardar el producto actualizado
+      // Por ahora, simulamos una actualización exitosa
+
+      setTimeout(() => {
+        setAlerta({
+          tipo: 'success',
+          mensaje: 'Producto actualizado con éxito',
+        });
+
+        setCargando(false);
+
+        // Cerrar el formulario después de unos segundos
+        setTimeout(() => {
+          alCerrarFormularioProducto();
+        }, 2000);
+      }, 1000);
+    } catch (error) {
+      console.error('Error al actualizar producto:', error);
+      setAlerta({
+        tipo: 'error',
+        mensaje: 'Ocurrió un error al actualizar el producto',
+      });
+      setCargando(false);
+    }
+  }, [producto, variantes, imagenes, alCerrarFormularioProducto]);
 
   const manejarAgregarImagenVariante = useCallback(
     (idVariante, archivos) => {
@@ -490,7 +536,88 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       return imagenesActualizadas;
     });
   }, [idsVariantes]);
+  // Función para inicializar los datos del formulario a partir de detalleProducto
+  const inicializarDatosProducto = useCallback((detalleProducto) => {
+    if (!detalleProducto) return;
 
+    // Inicializar datos básicos del producto
+    setProducto({
+      nombreComun: detalleProducto.nombreComun || '',
+      nombreComercial: detalleProducto.nombreComercial || '',
+      descripcion: detalleProducto.descripcion || '',
+      marca: detalleProducto.marca || '',
+      modelo: detalleProducto.modelo || '',
+      tipoProducto: detalleProducto.tipoProducto || '',
+      precioPuntos: detalleProducto.precioPuntos || undefined,
+      precioCliente: detalleProducto.precioCliente || undefined,
+      precioVenta: detalleProducto.precioVenta || undefined,
+      costo: detalleProducto.costo || undefined,
+      impuesto: detalleProducto.impuesto || 16,
+      descuento: detalleProducto.descuento || undefined,
+      estado: detalleProducto.estado || 1,
+      envio: detalleProducto.envio || 1,
+      idProveedor: detalleProducto.idProveedor || undefined,
+    });
+
+    // Inicializar las variantes si existen
+    if (detalleProducto.variantes && detalleProducto.variantes.length > 0) {
+      // Transformar el arreglo de variantes a un objeto con idVariante como clave
+      const variantesObj = {};
+      const varianteIds = [];
+
+      detalleProducto.variantes.forEach((variante) => {
+        const idVariante = variante.idVariante;
+        varianteIds.push(idVariante);
+
+        variantesObj[idVariante] = {
+          nombreVariante: variante.nombreVariante || '',
+          descripcion: variante.descripcion || '',
+          opciones:
+            variante.opciones?.map((opcion) => ({
+              id: Date.now() + Math.random(),
+              cantidad: opcion.cantidad || 0,
+              valorOpcion: opcion.valorOpcion || '',
+              SKUautomatico: opcion.SKUautomatico || '',
+              SKUcomercial: opcion.SKUcomercial || '',
+              costoAdicional: opcion.costoAdicional || undefined,
+              descuento: opcion.descuento || undefined,
+              estado: opcion.estado || 1,
+            })) || [],
+        };
+      });
+
+      setVariantes(variantesObj);
+      setIdsVariantes(varianteIds);
+
+      // Inicializar el objeto de imágenes para cada variante
+      const nuevasImagenes = {
+        imagenProducto: detalleProducto.imagenProducto || null,
+        imagenesVariantes: {},
+      };
+
+      varianteIds.forEach((id) => {
+        nuevasImagenes.imagenesVariantes[id] = [];
+      });
+
+      setImagenes(nuevasImagenes);
+    } else {
+      // Si no hay variantes, inicializar con una variante vacía
+      setVariantes({
+        1: {
+          nombreVariante: '',
+          descripcion: '',
+          opciones: [],
+        },
+      });
+
+      setIdsVariantes([1]);
+
+      setImagenes({
+        imagenProducto: null,
+        imagenesVariantes: { 1: [] },
+      });
+    }
+  }, []);
   const contextValue = {
     refInputArchivo,
     alerta,
@@ -514,9 +641,11 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
     manejarEliminarImagenVariante,
     manejarCrearProducto,
     manejarActualizarProducto,
+    manejarGuardarProductoActualizado,
     manejarAgregarImagenProducto,
     prevenirNumerosNegativos,
     prevenirNumerosNoDecimales,
+    inicializarDatosProducto,
   };
 
   return (

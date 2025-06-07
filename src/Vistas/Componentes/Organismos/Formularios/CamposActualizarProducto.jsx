@@ -30,13 +30,13 @@ const CampoTextoFormulario = memo(
         <CampoTexto
           label={etiqueta}
           name={nombre}
-          value={valor}
+          value={valor || ''}
           onChange={(evento) => {
             const nuevoValor = evento.target.value.slice(0, limiteCaracteres);
             onChange({ target: { name: nombre, value: nuevoValor } });
           }}
           helperText={
-            tipo === 'text' && limiteCaracteres
+            tipo === 'text' && limiteCaracteres && valor
               ? `${valor.length}/${limiteCaracteres} - Máximo de caracteres. ${helperText || ''}`
               : helperText
           }
@@ -152,6 +152,7 @@ const CamposActualizarProducto = memo(
     prevenirNumerosNegativos,
     prevenirNumerosNoDecimales,
   }) => {
+    if (!producto) return null;
     return (
       <>
         <TituloFormulario titulo='Datos del Proveedor' varianteTitulo='h6' tamano={6} />

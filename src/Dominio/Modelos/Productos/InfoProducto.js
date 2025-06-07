@@ -21,6 +21,7 @@ export class InfoProducto {
     this.envio = producto.envio ?? 0;
     this.impuesto = producto.impuesto ?? 0;
     this.descuento = producto.descuento ?? 0;
+    this.descripcion = producto.descripcion ?? '';
 
     // Variantes del producto (puede ser un arreglo vacío)
     this.variantes = Array.isArray(producto.variantes)
@@ -42,14 +43,14 @@ class VarianteProducto {
 
 class OpcionVariante {
   constructor({
-                estado,
-                cantidad,
-                descuento,
-                valorOpcion,
-                SKUcomercial,
-                SKUautomatico,
-                costoAdicional,
-              }) {
+    estado,
+    cantidad,
+    descuento,
+    valorOpcion,
+    SKUcomercial,
+    SKUautomatico,
+    costoAdicional,
+  }) {
     this.estado = estado ?? null;
     this.cantidad = cantidad ?? 0;
     this.descuento = descuento ?? 0;

@@ -1,5 +1,5 @@
 //RF[29] Actualiza Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF29]
-import { memo } from 'react';
+import React, { memo } from 'react';
 import { Box, Grid } from '@mui/material';
 import Texto from '@Atomos/Texto';
 import TarjetaAccion from '@Moleculas/TarjetaAccion';
@@ -22,7 +22,7 @@ const CampoCrear = memo(({ etiqueta, onClick }) => (
   </Grid>
 ));
 
-const ContenidoFormulario = memo(() => {
+const ContenidoFormulario = memo(({ detalleProducto }) => {
   const {
     refInputArchivo,
     variantes,
@@ -47,7 +47,6 @@ const ContenidoFormulario = memo(() => {
     prevenirNumerosNegativos,
     prevenirNumerosNoDecimales,
   } = useProductoForm();
-
   return (
     <>
       <Box
@@ -63,6 +62,7 @@ const ContenidoFormulario = memo(() => {
           mb: 3,
         }}
       >
+        {' '}
         <Grid container spacing={2}>
           <CamposActualizarProducto
             producto={producto}
@@ -81,9 +81,7 @@ const ContenidoFormulario = memo(() => {
             <CamposVariante
               key={`variante-${idVariante}`}
               varianteId={idVariante}
-              variante={
-                variantes[idVariante] || { nombreVariante: '', descripcion: '', opciones: [] }
-              }
+              variante={variantes[idVariante]}
               imagenesVariante={imagenes.imagenesVariantes[idVariante] || []}
               erroresVariantes={erroresVariantes}
               intentosEnviar={intentosEnviar}
@@ -105,43 +103,62 @@ const ContenidoFormulario = memo(() => {
   );
 });
 
-const FormularioActualizarProducto = memo(({ formularioAbierto, alCerrarFormularioProducto }) => {
-  return (
-    <ProductoFormProvider alCerrarFormularioProducto={alCerrarFormularioProducto}>
-      <FormularioModal
-        formularioAbierto={formularioAbierto}
-        alCerrarFormularioProducto={alCerrarFormularioProducto}
-      />
-    </ProductoFormProvider>
-  );
-});
+const FormularioActualizarProducto = memo(
+  ({ formularioAbierto, alCerrarFormularioProducto, detalleProducto }) => {
+    return (
+      <ProductoFormProvider alCerrarFormularioProducto={alCerrarFormularioProducto}>
+        <FormularioModal
+          formularioAbierto={formularioAbierto}
+          alCerrarFormularioProducto={alCerrarFormularioProducto}
+          detalleProducto={detalleProducto}
+        />
+      </ProductoFormProvider>
+    );
+  }
+);
 
-const FormularioModal = memo(({ formularioAbierto, alCerrarFormularioProducto }) => {
-  const { manejarCrearProducto, alerta, cargando, setAlerta } = useProductoForm();
+const FormularioModal = memo(
+  ({ formularioAbierto, alCerrarFormularioProducto, detalleProducto }) => {
+    const {
+      manejarGuardarProductoActualizado,
+      alerta,
+      cargando,
+      setAlerta,
+      inicializarDatosProducto,
+    } = useProductoForm();
 
-  return (
-    <>
-      <ModalFlotante
-        open={formularioAbierto}
-        onClose={alCerrarFormularioProducto}
-        onConfirm={manejarCrearProducto}
-        titulo='Actualizar Producto'
-        confirmLabel='Guardar'
-        cancelLabel='Cerrar'
-        loading={cargando}
-        alerta={
-          alerta
-            ? {
-                ...alerta,
-                onClose: () => setAlerta(null),
-              }
-            : null
-        }
-      >
-        <ContenidoFormulario />
-      </ModalFlotante>
-    </>
-  );
-});
+    // Inicializar datos del producto cuando el formulario se abre
+    React.useEffect(() => {
+      if (formularioAbierto && detalleProducto) {
+        inicializarDatosProducto(detalleProducto);
+      }
+    }, [formularioAbierto, detalleProducto, inicializarDatosProducto]);
+
+    return (
+      <>
+        {' '}
+        <ModalFlotante
+          open={formularioAbierto}
+          onClose={alCerrarFormularioProducto}
+          onConfirm={manejarGuardarProductoActualizado}
+          titulo='Actualizar Producto'
+          confirmLabel='Guardar'
+          cancelLabel='Cerrar'
+          loading={cargando}
+          alerta={
+            alerta
+              ? {
+                  ...alerta,
+                  onClose: () => setAlerta(null),
+                }
+              : null
+          }
+        >
+          <ContenidoFormulario detalleProducto={detalleProducto} />
+        </ModalFlotante>
+      </>
+    );
+  }
+);
 
 export default FormularioActualizarProducto;

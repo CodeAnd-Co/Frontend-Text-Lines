@@ -17,7 +17,6 @@ const ModalActualizarUsuario = ({
   const {
     datosUsuario,
     erroresValidacion,
-    alerta,
     setAlerta,
     manejarCambio,
     manejarFechaNacimiento,

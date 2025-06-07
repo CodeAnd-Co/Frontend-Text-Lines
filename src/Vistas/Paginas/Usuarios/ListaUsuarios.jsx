@@ -47,7 +47,7 @@ const ListaUsuarios = () => {
   const navigate = useNavigate();
   const [alerta, setAlerta] = useState(null);
   const { usuarios, cargando, error, recargar } = useConsultarListaUsuarios();
-  const { clientes, cargando: cargandoClientes } = useConsultarClientes();
+  const { clientes } = useConsultarClientes();
   const { roles } = useConsultarRoles();
   const { usuario: usuarioAutenticado } = useAuth();
   const [modalCrearUsuarioAbierto, setModalCrearUsuarioAbierto] = useState(false);
@@ -467,7 +467,7 @@ const ListaUsuarios = () => {
             }}
             usuarioEdicion={{
               ...usuario,
-              cliente: usuario.clientes ? usuario.clientes.map((c) => c.idCliente) : [],
+              cliente: usuario.clientes ? usuario.clientes.map((cliente) => cliente.idCliente) : [],
             }}
             roles={roles}
             clientes={clientes}

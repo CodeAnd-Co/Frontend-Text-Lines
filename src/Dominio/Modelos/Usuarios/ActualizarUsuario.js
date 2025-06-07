@@ -24,8 +24,8 @@ export const validarDatosActualizarUsuario = (datos, usuariosExistentes = []) =>
   } else if (
     usuariosExistentes.some(
       (usuario) =>
-        usuario.correoElectronico === datos.correoElectronico &&
-        usuario.idUsuario !== datos.idUsuario
+        usuario.correoElectronico === datos.correoElectronico
+        && usuario.idUsuario !== datos.idUsuario
     )
   ) {
     errores.correoElectronico = 'Este correo ya está registrado';
@@ -34,8 +34,8 @@ export const validarDatosActualizarUsuario = (datos, usuariosExistentes = []) =>
   if (datos.contrasenia && datos.contrasenia.length < 8) {
     errores.contrasenia = 'La contraseña debe tener al menos 8 caracteres';
   } else if (datos.contrasenia && !tieneCaracterEspecial.test(datos.contrasenia)) {
-    errores.contrasenia =
-      'Debe contener al menos uno de estos caracteres: ! @ # $ % ^ & * ( ) , . ? " : { } | < >';
+    errores.contrasenia
+      = 'Debe contener al menos uno de estos caracteres: ! @ # $ % ^ & * ( ) , . ? " : { } | < >';
   } else if (datos.contrasenia && !tieneMayuscula.test(datos.contrasenia)) {
     errores.contrasenia = 'Debe contener al menos una letra mayúscula';
   }

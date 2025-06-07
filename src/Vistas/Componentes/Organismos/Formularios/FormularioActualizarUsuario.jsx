@@ -12,12 +12,9 @@ const FormularioActualizarUsuario = ({
   erroresValidacion,
   manejarCambio,
   manejarFechaNacimiento,
-  obtenerHelperText,
   roles = [],
   clientes = [],
   cargandoRoles = false,
-  cargando = false,
-  esSuperAdmin = false,
   CAMPO_OBLIGATORIO = 'Este campo es obligatorio',
 }) => {
   const estiloCuadricula = {
@@ -44,7 +41,7 @@ const FormularioActualizarUsuario = ({
       });
     }
     rolAnterior.current = datosUsuario.rol;
-  }, [datosUsuario.rol, clientes]);
+  }, [datosUsuario.rol, clientes, manejarCambio]);
 
   return (
     <Grid container columns={12}>
@@ -205,7 +202,7 @@ const FormularioActualizarUsuario = ({
       </Grid>
       <Grid size={6} sx={estiloCuadricula}>
         <CampoTexto
-          label='Cambiar Contraseña'
+          label='Cambiar contraseña'
           name='contrasenia'
           type='password'
           value={datosUsuario.contrasenia}

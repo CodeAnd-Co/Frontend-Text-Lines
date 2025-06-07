@@ -1,4 +1,3 @@
-// src/Organismos/ModalEditarCuotas.jsx
 import { useState, useEffect } from 'react';
 import ModalFlotante from '@Organismos/ModalFlotante';
 import CampoTexto from '@Atomos/CampoTexto';
@@ -198,7 +197,6 @@ const ModalEditarCuotas = ({
       disabledConfirm={cargando}
       customWidth={800}
     >
-      {/* SCROLLABLE CONTENT */}
       <Box sx={{ maxHeight: '70vh', overflow: 'auto', p: 2 }}>
         <Typography variant="h6" sx={{ mb: 2 }}>Información Básica</Typography>
 
@@ -317,7 +315,12 @@ const ModalEditarCuotas = ({
                   label="Límite *"
                   type="number"
                   value={producto.limite}
-                  onChange={(e) => cambiarProducto(index, 'limite', parseInt(e.target.value) || 0)}
+                  onChange={(e) => {
+                    const valor = e.target.value.replace(/\D/g, ''); 
+                    if (valor.length <= 9) {
+                      cambiarProducto(index, 'limite', parseInt(valor || '0', 10));
+                    }
+                  }}
                   inputProps={{ min: 0 }}
                   sx={{ minWidth: 120 }}
                 />
@@ -326,17 +329,22 @@ const ModalEditarCuotas = ({
                   label="Límite Actual *"
                   type="number"
                   value={producto.limiteActual}
-                  onChange={(e) => cambiarProducto(index, 'limiteActual', parseInt(e.target.value) || 0)}
+                  onChange={(e) => {
+                    const valor = e.target.value.replace(/\D/g, '');
+                    if (valor.length <= 9) {
+                      cambiarProducto(index, 'limiteActual', parseInt(valor || '0', 10));
+                    }
+                  }}
                   inputProps={{ min: 0 }}
                   sx={{ minWidth: 120 }}
                 />
+
               </Box>
             </Box>
           ))
         )}
       </Box>
 
-      {/* ✅ Alerta abajo del modal, como en ModalCrearRol */}
       {(alerta || error) && (
         <Box sx={{ px: 2, pb: 2 }}>
           <Alert severity="error" onClose={() => setAlerta('')}>

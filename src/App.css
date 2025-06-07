@@ -1,4 +1,4 @@
-/* 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 .logo {
   height: 6em;
@@ -34,11 +34,11 @@
 
 .read-the-docs {
   color: #888;
-} */
-
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+}
+*/ #root {
   text-align: center;
+}
+
+.css-1sf6n0n-MuiDataGrid-root {
+  height: auto !important;
 }

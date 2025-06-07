@@ -1,14 +1,25 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Home from "./Home";
-import "./App.css";
+import './App.css';
+
+import { ColorModeProvider } from '@SRC/theme';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from '@Hooks/AuthProvider';
+
+import RutasApp from '@Rutas/RutasApp';
+import { RUTAS } from '@Constantes/rutas';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path='/' element={<Home />} />
-      </Routes>
-    </Router>
+    <div className='app'>
+      <ColorModeProvider>
+        <Router>
+          <AuthProvider>
+            <Routes>
+              <Route path={RUTAS.RAIZ} element={<RutasApp />} />
+            </Routes>
+          </AuthProvider>
+        </Router>
+      </ColorModeProvider>
+    </div>
   );
 }
 

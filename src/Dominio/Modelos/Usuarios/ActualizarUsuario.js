@@ -2,7 +2,7 @@
 
 export const validarDatosActualizarUsuario = (datos, usuariosExistentes = []) => {
   const errores = {};
-  const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailValido = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const telefonoValido = /^\d{10}$/;
   const tieneCaracterEspecial = /[!@#$%^&*(),.?":{}|<>]/;
   const tieneMayuscula = /[A-Z]/;
@@ -31,7 +31,9 @@ export const validarDatosActualizarUsuario = (datos, usuariosExistentes = []) =>
     errores.correoElectronico = 'Este correo ya está registrado';
   }
 
-  if (datos.contrasenia && datos.contrasenia.length < 8) {
+  if (datos.contrasenia && /\s/.test(datos.contrasenia)) {
+    errores.contrasenia = 'La contraseña no debe contener espacios en blanco';
+  } else if (datos.contrasenia && datos.contrasenia.length < 8) {
     errores.contrasenia = 'La contraseña debe tener al menos 8 caracteres';
   } else if (datos.contrasenia && !tieneCaracterEspecial.test(datos.contrasenia)) {
     errores.contrasenia =
@@ -54,6 +56,10 @@ export const validarDatosActualizarUsuario = (datos, usuariosExistentes = []) =>
 
   if (!datos.direccion || datos.direccion.trim().length === 0) {
     errores.direccion = 'La dirección es obligatoria';
+  } else if (datos.direccion.trim().length < 3) {
+    errores.direccion = 'La dirección debe tener al menos 3 caracteres';
+  } else if (datos.direccion.length > 100) {
+    errores.direccion = 'La dirección no debe exceder 100 caracteres';
   }
 
   /*if (!datos.fechaNacimiento) {

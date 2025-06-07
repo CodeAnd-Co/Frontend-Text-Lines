@@ -50,7 +50,10 @@ const FormularioActualizarUsuario = ({
           label='Nombre'
           name='nombreCompleto'
           value={datosUsuario.nombreCompleto}
-          onChange={manejarCambio}
+          onChange={(letra) => {
+            const soloLetras = letra.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+            manejarCambio({ target: { name: 'nombreCompleto', value: soloLetras } });
+          }}
           required
           size='medium'
           error={!!erroresValidacion.nombreCompleto}
@@ -119,7 +122,10 @@ const FormularioActualizarUsuario = ({
           label='Número de Teléfono'
           name='numeroTelefono'
           value={datosUsuario.numeroTelefono}
-          onChange={manejarCambio}
+          onChange={(num) => {
+            const soloNumeros = num.target.value.replace(/\D/g, '');
+            manejarCambio({ target: { name: 'numeroTelefono', value: soloNumeros } });
+          }}
           required
           size='medium'
           error={!!erroresValidacion.numeroTelefono}
@@ -142,7 +148,11 @@ const FormularioActualizarUsuario = ({
           required
           size='medium'
           error={!!erroresValidacion.direccion}
-          helperText={erroresValidacion.direccion && CAMPO_OBLIGATORIO}
+          helperText={
+            erroresValidacion.direccion === true
+              ? CAMPO_OBLIGATORIO
+              : erroresValidacion.direccion || ''
+          }
           inputProps={{
             maxLength: 100,
           }}

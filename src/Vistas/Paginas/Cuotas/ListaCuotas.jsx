@@ -154,9 +154,11 @@ const ListaCuotas = () => {
       size: 'large',
       backgroundColor: colores.altertex[1],
       onClick: handleAbrirModalCrear,
+      disabled: !usuario?.permisos?.includes(PERMISOS.CREAR_SET_CUOTAS),
     },
     {
       label: 'Eliminar',
+      disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_SET_CUOTAS),
       onClick: () => {
         if (seleccionados.length === 0) {
           setAlerta({

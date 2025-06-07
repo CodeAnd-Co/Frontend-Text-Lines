@@ -121,6 +121,7 @@ const ListaEventos = () => {
       size: 'large',
       backgroundColor: colores.altertex[1],
       onClick: manejarAbrirCrear,
+      disabled: !usuario?.permisos?.includes(PERMISOS.CREAR_EVENTO),
     },
     {
       label: 'Eliminar',

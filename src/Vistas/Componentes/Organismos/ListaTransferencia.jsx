@@ -45,7 +45,6 @@ const ListaTransferenciaPersonalizada = ({
   const [izquierda, setIzquierda] = useState(elementosDisponibles);
   const [derecha, setDerecha] = useState(elementosSeleccionados);
 
-  // Use ref to track if we're in the middle of updating from props
   const updatingFromPropsRef = useRef(false);
 
   // Actualizar estado interno cuando cambien las props
@@ -61,7 +60,6 @@ const ListaTransferenciaPersonalizada = ({
     updatingFromPropsRef.current = false;
   }, [elementosSeleccionados]);
 
-  // Only notify parent when changes come from user interactions, not from prop updates
   useEffect(() => {
     if (alCambiarSeleccion && !updatingFromPropsRef.current) {
       alCambiarSeleccion({

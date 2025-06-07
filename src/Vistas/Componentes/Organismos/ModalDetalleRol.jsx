@@ -107,9 +107,7 @@ const ModalDetalleRol = ({ abierto, onCerrar, idRol }) => {
 
   const manejarGuardar = async () => {
     const datosParaEnviar = {
-      // Only send the name value if it was actually changed
       nombre: nombreRol !== nombreOriginal ? nombreRol : null,
-      // Only send the description value if it was actually changed
       descripcion: descripcionRol !== descripcionOriginal ? descripcionRol : null,
       permisos: permisosSeleccionados.map(permiso => permiso.id)
     };

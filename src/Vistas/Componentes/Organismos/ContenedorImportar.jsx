@@ -76,7 +76,7 @@ const ContenedorImportar = ({ onFileAccepted, onError, cargando = false }) => {
           ? 'Cargando…'
           : isDragActive
             ? 'Suelta el archivo aquí…'
-            : 'Arrastra tu CSV o haz clic para seleccionarlo'}
+            : 'Arrastra tu CSV o haz clic para seleccionarlo (5 MB máximo)'}
       </Typography>
     </Box>
   );

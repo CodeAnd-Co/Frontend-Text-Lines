@@ -31,29 +31,36 @@ const ListaCategorias = () => {
   const [cargandoDetalle, setCargandoDetalle] = useState(false);
   const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
   const [categoriaEditable, setCategoriaEditable] = useState(null);
-  
+
   const actualizar = useActualizarCategoria();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
 
-  const columns = useMemo(() => [
-    { field: 'nombreCategoria', headerName: 'Nombre', flex: 1 },
-    { field: 'descripcion', headerName: 'Descripción', flex: 2 },
-    {
-      field: 'cantidadProductos',
-      headerName: 'Número de productos asociados',
-      type: 'number',
-      flex: 1,
-    },
-  ], []);
+  const columns = useMemo(
+    () => [
+      { field: 'nombreCategoria', headerName: 'Nombre', flex: 1 },
+      { field: 'descripcion', headerName: 'Descripción', flex: 2 },
+      {
+        field: 'cantidadProductos',
+        headerName: 'Número de productos asociados',
+        type: 'number',
+        flex: 1,
+      },
+    ],
+    []
+  );
 
-  const rows = useMemo(() => categorias.map((cat) => ({
-    id: cat.idCategoria,
-    nombreCategoria: cat.nombreCategoria,
-    descripcion: cat.descripcion,
-    cantidadProductos: cat.cantidadProductos,
-    idCliente: cat.idCliente,
-  })), [categorias]);
+  const rows = useMemo(
+    () =>
+      categorias.map((cat) => ({
+        id: cat.idCategoria,
+        nombreCategoria: cat.nombreCategoria,
+        descripcion: cat.descripcion,
+        cantidadProductos: cat.cantidadProductos,
+        idCliente: cat.idCliente,
+      })),
+    [categorias]
+  );
 
   useEffect(() => {
     const cargarProductos = async () => {
@@ -75,7 +82,7 @@ const ListaCategorias = () => {
 
   const handleAbrirModalCrear = useCallback(() => setModalCrearAbierto(true), []);
   const handleCerrarModalCrear = useCallback(() => setModalCrearAbierto(false), []);
-  
+
   const handleCategoriaCreadaExitosamente = useCallback(() => {
     handleCerrarModalCrear();
     // Recarga la lista de categorías
@@ -167,7 +174,7 @@ const ListaCategorias = () => {
         setModalEditarAbierto(false);
         setCategoriaEditable(null);
         actualizar.limpiarEstado();
-        setAlerta(null); 
+        setAlerta(null);
         recargar();
       }, 2000);
     } else if (actualizar.error) {
@@ -209,36 +216,39 @@ const ListaCategorias = () => {
     setModalEditarAbierto(true);
   }, [productos, categoriaDetalle]);
 
-  const botones = useMemo(() => [
-    {
-      label: 'Añadir',
-      variant: 'contained',
-      color: 'error',
-      size: 'large',
-      backgroundColor: colores.altertex[1],
-      onClick: handleAbrirModalCrear,
-    },
-    {
-      label: 'Eliminar',
-      onClick: () => {
-        if (seleccionados.size === 0 || seleccionados.ids?.size === 0) {
-          setAlerta({
-            tipo: 'error',
-            mensaje: 'Selecciona al menos una categoría para eliminar.',
-            icono: true,
-            cerrable: true,
-            centradoInferior: true,
-          });
-        } else {
-          setIdsCategoria(Array.from(seleccionados.ids));
-          setOpenModalEliminar(true);
-        }
+  const botones = useMemo(
+    () => [
+      {
+        label: 'Añadir',
+        variant: 'contained',
+        color: 'error',
+        size: 'large',
+        backgroundColor: colores.altertex[1],
+        onClick: handleAbrirModalCrear,
       },
-      color: 'error',
-      size: 'large',
-      backgroundColor: colores.altertex[1],
-    },
-  ], [colores.altertex, handleAbrirModalCrear, seleccionados]);
+      {
+        label: 'Eliminar',
+        onClick: () => {
+          if (seleccionados.size === 0 || seleccionados.ids?.size === 0) {
+            setAlerta({
+              tipo: 'error',
+              mensaje: 'Selecciona al menos una categoría para eliminar.',
+              icono: true,
+              cerrable: true,
+              centradoInferior: true,
+            });
+          } else {
+            setIdsCategoria(Array.from(seleccionados.ids));
+            setOpenModalEliminar(true);
+          }
+        },
+        color: 'error',
+        size: 'large',
+        backgroundColor: colores.altertex[1],
+      },
+    ],
+    [colores.altertex, handleAbrirModalCrear, seleccionados]
+  );
 
   const botonesModalDetalle = useMemo(() => {
     if (errorDetalle) {
@@ -269,7 +279,7 @@ const ListaCategorias = () => {
         onClick: () => setModalDetalleAbierto(false),
       },
     ];
-  }, [errorDetalle, colores.primario, colores.altertex, abrirModalEditar]);
+  }, [errorDetalle, colores.altertex, abrirModalEditar]);
 
   return (
     <>
@@ -308,7 +318,7 @@ const ListaCategorias = () => {
         setAlerta={setAlerta}
         refrescarPagina={recargar}
       />
-      
+
       {modalDetalleAbierto && !cargandoDetalle && (
         <ModalFlotante
           open={modalDetalleAbierto}

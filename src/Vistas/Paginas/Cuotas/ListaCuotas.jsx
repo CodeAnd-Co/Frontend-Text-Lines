@@ -11,6 +11,7 @@ import ContenedorLista from '@Organismos/ContenedorLista';
 import Tabla from '@Organismos/Tabla';
 import Chip from '@Atomos/Chip';
 import ModalCrearCuotaSet from '@Organismos/Cuotas/ModalCrearCuotaSet';
+import ModalEditarCuotas from '@Organismos/Cuotas/ModalEditarCuotas';
 import Alerta from '@Moleculas/Alerta';
 import { useCuotaId } from '@Hooks/Cuotas/useLeerCuota';
 import PopUpEliminar from '@Moleculas/PopUp';
@@ -34,13 +35,15 @@ const ListaCuotas = () => {
   const [alerta, setAlerta] = useState(null);
   const [abrirPopUpEliminar, setAbrirPopUpEliminar] = useState(false);
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
+  const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
   const [idSetCuotaSeleccionado, setIdSetCuotaSeleccionado] = useState(null);
 
   const {
     cuota,
     cargando: cargandoDetalle,
     error: errorDetalle,
-  } = useCuotaId(modalDetalleAbierto ? idSetCuotaSeleccionado : null);
+  } = useCuotaId(modalDetalleAbierto || modalEditarAbierto ? idSetCuotaSeleccionado : null);
+
 
   useEffect(() => {
     if (!usuario?.clienteSeleccionado) {
@@ -119,6 +122,28 @@ const ListaCuotas = () => {
     } finally {
       setAbrirPopUpEliminar(false);
     }
+  };
+
+  const handleAbrirEditar = () => {
+    setModalDetalleAbierto(false);
+    setModalEditarAbierto(true);
+  };
+
+  const handleCerrarEditar = () => {
+    setModalEditarAbierto(false);
+  };
+
+  const handleCuotaActualizada = async () => {
+    await recargar();
+    setModalEditarAbierto(false);
+    setIdSetCuotaSeleccionado(null); 
+    setAlerta({
+      tipo: 'success',
+      mensaje: 'Set de cuotas actualizado correctamente.',
+      icono: true,
+      cerrable: true,
+      centradoInferior: true,
+    });
   };
 
   const botones = [
@@ -202,6 +227,7 @@ const ListaCuotas = () => {
         dialogo='¿Estás seguro de que deseas eliminar los sets de cuotas seleccionados? Esta acción no se puede deshacer.'
       />
 
+      {/* MODAL DE DETALLE */}
       {modalDetalleAbierto && (
         <ModalFlotante
           open={modalDetalleAbierto}
@@ -210,6 +236,13 @@ const ListaCuotas = () => {
           tituloVariant='h4'
           customWidth={530}
           botones={[
+            ...(usuario?.permisos?.includes(PERMISOS.ACTUALIZAR_SET_CUOTAS) ? [{
+              label: 'EDITAR',
+              variant: 'contained',
+              color: 'error',
+              backgroundColor: colores.altertex[1],
+              onClick: handleAbrirEditar,
+            }] : []),
             {
               label: 'Salir',
               variant: 'outlined',
@@ -229,6 +262,16 @@ const ListaCuotas = () => {
           )}
         </ModalFlotante>
       )}
+
+      {/* MODAL DE EDITAR */}
+      <ModalEditarCuotas
+        open={modalEditarAbierto}
+        cuotaOriginal={cuota} 
+        onClose={handleCerrarEditar}
+        onActualizado={handleCuotaActualizada}
+        cargandoDetalle={cargandoDetalle}
+        errorDetalle={errorDetalle}
+      />
 
       {alerta && (
         <Alerta

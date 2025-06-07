@@ -34,6 +34,7 @@ const FormaCrearCategorias = ({
   const [rows, setRows] = useState([]);
   const { usuario } = useAuth();
   const clienteSeleccionado = usuario.clienteSeleccionado;
+  
 
   useEffect(() => {
     const obtenerDatosProductos = async (clienteSeleccionado) => {

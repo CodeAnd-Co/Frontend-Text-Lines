@@ -44,7 +44,7 @@ const ListaUsuarios = () => {
   const navigate = useNavigate();
   const [alerta, setAlerta] = useState(null);
   const { usuarios, cargando, error, recargar } = useConsultarListaUsuarios();
-  const { roles} = useConsultarRoles();
+  const { roles } = useConsultarRoles();
   const { usuario: usuarioAutenticado } = useAuth();
   const [modalCrearUsuarioAbierto, setModalCrearUsuarioAbierto] = useState(false);
   const [idUsuarioSeleccionado, setIdUsuarioSeleccionado] = useState(null);
@@ -55,10 +55,10 @@ const ListaUsuarios = () => {
     error: errorDetalle,
   } = useUsuarioId(modalDetalleAbierto ? idUsuarioSeleccionado : null);
 
-    const [modal2FAAbierto, setModal2FAAbierto] = useState(false);
-    const { qrCode, cargando: cargandoQR, error: errorQR, setQrCode } = useActivar2FA();
+  const [modal2FAAbierto, setModal2FAAbierto] = useState(false);
+  const { qrCode, cargando: cargandoQR, error: errorQR, setQrCode } = useActivar2FA();
 
-    /** const manejarActivar2FA = async () => {
+  /** const manejarActivar2FA = async () => {
       await activar2FA({
         idUsuario: usuarioAutenticado?.idUsuario,
         nombre: usuarioAutenticado?.nombre,
@@ -68,7 +68,7 @@ const ListaUsuarios = () => {
     };
     */
   const opcionesRol = roles.map((rol) => ({
-    value: rol.idRol, 
+    value: rol.idRol,
     label: rol.nombre,
   }));
 
@@ -85,21 +85,21 @@ const ListaUsuarios = () => {
     await cerrarSesion();
   };
   const { cerrarSesion } = useAuth();
-const {
-  usuariosAEliminar,
-  abrirPopUp,
-  abrirModal2FA,
-  error2FA,
-  cargando2FA,
-  manejarSeleccion,
-  manejarAbrirPopUp,
-  manejarCerrarPopUp,
-  eliminarUsuarios,
-  manejarVerificar2FA,
-  manejarCerrarModal2FA,
-  codigo2FA,          
-  setCodigo2FA 
-} = useEliminarUsuarios(setAlerta, recargar);
+  const {
+    usuariosAEliminar,
+    abrirPopUp,
+    abrirModal2FA,
+    error2FA,
+    cargando2FA,
+    manejarSeleccion,
+    manejarAbrirPopUp,
+    manejarCerrarPopUp,
+    eliminarUsuarios,
+    manejarVerificar2FA,
+    manejarCerrarModal2FA,
+    codigo2FA,
+    setCodigo2FA,
+  } = useEliminarUsuarios(setAlerta, recargar);
 
   useEffect(() => {}, [usuariosAEliminar]);
 
@@ -257,7 +257,8 @@ const {
       backgroundColor: colores.verde[1],
       disabled: !usuarioAutenticado?.permisos?.includes(PERMISOS.ACTIVAR_2FA_SUPERADMIN),
     },
-  */];
+  */
+  ];
 
   const redirigirATienda = () => {
     navigate(RUTAS.SISTEMA_TIENDA.BASE, { replace: true });
@@ -389,7 +390,7 @@ const {
                 color: 'primary',
                 backgroundColor: colores.altertex[1],
                 onClick: () => console.log('Editar usuario'),
-                disabled: true, 
+                disabled: true,
               },
               {
                 label: 'SALIR',
@@ -404,34 +405,34 @@ const {
               <p>Cargando usuario...</p>
             ) : usuario ? (
               <>
-              <InfoUsuario
-                modoEdicion={false}
-                cliente={
-                  usuario.clientes?.some((cliente) => cliente?.nombreCliente)
-                    ? usuario.clientes
-                        .filter((cliente) => cliente?.nombreCliente)
-                        .map((cliente) => cliente.nombreCliente)
-                        .join(', ')
-                    : 'Sin cliente asignado'
-                }
-                rol={obtenerIdRolPorNombre(usuario.rol)}
-                datosContacto={{
-                  email: usuario.correoElectronico,
-                  telefono: usuario.numeroTelefono,
-                  direccion: usuario.direccion,
-                }}
-                datosAdicionales={{
-                  nacimiento: new Date(usuario.fechaNacimiento).toLocaleDateString('es-MX'),
-                  genero: usuario.genero,
-                }}
-                estadoUsuario={{
-                  label: usuario.estatus === 1 ? 'Activo' : 'Inactivo',
-                  color: 'primary',
-                  shape: 'circular',
-                  backgroundColor: 'rgba(24, 50, 165, 1)',
-                }}
-                opcionesRol={opcionesRol}
-              />
+                <InfoUsuario
+                  modoEdicion={false}
+                  cliente={
+                    usuario.clientes?.some((cliente) => cliente?.nombreCliente)
+                      ? usuario.clientes
+                          .filter((cliente) => cliente?.nombreCliente)
+                          .map((cliente) => cliente.nombreCliente)
+                          .join(', ')
+                      : 'Sin cliente asignado'
+                  }
+                  rol={obtenerIdRolPorNombre(usuario.rol)}
+                  datosContacto={{
+                    email: usuario.correoElectronico,
+                    telefono: usuario.numeroTelefono,
+                    direccion: usuario.direccion,
+                  }}
+                  datosAdicionales={{
+                    nacimiento: new Date(usuario.fechaNacimiento).toLocaleDateString('es-MX'),
+                    genero: usuario.genero,
+                  }}
+                  estadoUsuario={{
+                    label: usuario.estatus === 1 ? 'Activo' : 'Inactivo',
+                    color: 'primary',
+                    shape: 'circular',
+                    backgroundColor: 'rgba(24, 50, 165, 1)',
+                  }}
+                  opcionesRol={opcionesRol}
+                />
               </>
             ) : (
               <p>No se encontró información del usuario.</p>

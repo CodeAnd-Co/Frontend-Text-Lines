@@ -1,8 +1,10 @@
 //RF[26] Crea Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF26]
 //RF[27] Consulta Lista de Productos - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF27]
 //RF[30] Elimina Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF30]
+//RF[58] - Exportar Productos - [https://codeandco-wiki.netlify.app/docs/next/proyectos/textiles/documentacion/requisitos/RF58]
+
 import { Box, useTheme, Chip } from '@mui/material';
-import { useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Tabla from '@Organismos/Tabla';
 import ContenedorLista from '@Organismos/ContenedorLista';
 import Alerta from '@Moleculas/Alerta';
@@ -14,21 +16,93 @@ import { useEliminarProductos } from '@Hooks/Productos/useEliminarProductos';
 import { tokens } from '@SRC/theme';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
+import ModalImportarProdctos from '@Organismos/ModalImportarProductos';
+import useImportarProductos from '@Hooks/Productos/useImportarProductos';
+import ModalFlotante from '@Organismos/ModalFlotante.jsx';
+import InfoProducto from '@Moleculas/InfoProducto.jsx';
+import { useLeerProducto } from '@Hooks/Productos/useLeerProducto.js';
+import useExportarProductos from '@Hooks/Productos/useExportarProductos';
+
 const ListaProductos = () => {
   const { productos, cargando, error, recargar } = useConsultarProductos();
   const { eliminar } = useEliminarProductos();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const { usuario } = useAuth();
-  // prettier-ignore
-  const MENSAJE_POPUP_ELIMINAR 
-  = '¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.';
 
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
+  const [productoDetalleSeleccionado, setProductoDetalleSeleccionado] = useState(null);
   const [mostrarModalProveedor, setMostrarModalProveedor] = useState(false);
   const [mostrarModalProducto, setMostrarModalProducto] = useState(false);
   const [alerta, setAlerta] = useState(null);
   const [openModalEliminar, setAbrirPopUp] = useState(false);
+  const [modalImportarAbierto, setModalImportarAbierto] = useState(false);
+  const { importar, errores, exito, cargando: cargandoImportacion } = useImportarProductos();
+ 
+  
+  const [abrirModalDetalle, setAbrirModalDetalle] = useState(false);
+  const [imagenProducto, setImagenProducto] = useState('')
+
+  const [openModalExportar, setAbrirPopUpExportar] = useState(false);
+  const MENSAJE_POPUP_EXPORTAR = '¿Deseas exportar la lista de productos? El archivo será generado en formato .xlsx';
+  const manejarCancelarExportar = () => {
+    setAbrirPopUpExportar(false);
+  };
+
+  const manejarConfirmarExportar = async () => {
+    if (productosSeleccionados.length === 0) {
+      setAlerta({
+        tipo: 'warning',
+        mensaje: 'Selecciona al menos un producto para exportar.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+      return;
+    }
+
+    await exportar(productosSeleccionados);
+    setAbrirPopUpExportar(false);
+  };
+
+  const { exportar, error: errorExportar, mensaje } = useExportarProductos();
+  
+  useEffect(() => {
+    if (errorExportar) {
+      setAlerta({
+        tipo: 'error',
+        mensaje: errorExportar,
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+    }
+  }, [errorExportar]);
+
+  useEffect(() => {
+    if (mensaje) {
+      setAlerta({
+        tipo: 'success',
+        mensaje,
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+    }
+  }, [mensaje]);
+
+  const {
+    detalleProducto,
+    cargando: cargandoDetalle,
+    error: errorDetalle,
+  } = useLeerProducto(productoDetalleSeleccionado);
+
+  // Efecto: cuando se cierre el modal, se limpia el producto seleccionado
+  useEffect(() => {
+    if (!abrirModalDetalle) {
+      setProductoDetalleSeleccionado(null);
+    }
+  }, [abrirModalDetalle]);
 
   const mostrarFormularioProducto = useCallback(() => {
     setMostrarModalProducto(true);
@@ -83,6 +157,8 @@ const ListaProductos = () => {
     }
   };
 
+  const handleAbrirImportar = () => setModalImportarAbierto(true);
+
   const columnas = [
     {
       field: 'imagen',
@@ -90,7 +166,7 @@ const ListaProductos = () => {
       flex: 0.5,
       renderCell: (params) => (
         <img
-          src={params.row.urlImagen}
+          src={params.row.urlImagen || '/placeholder.png'}
           alt='Producto'
           style={{ width: 50, height: 50, objectFit: 'cover' }}
         />
@@ -118,10 +194,10 @@ const ListaProductos = () => {
       renderCell: ({ row: { estado } }) => (
         <Chip
           label={estado === 1 ? 'Disponible' : 'No disponible'}
-          variant='filled'
+          variant="filled"
           color={estado === 1 ? 'primary' : undefined}
-          size='medium'
-          shape='cuadrada'
+          size="medium"
+          shape="cuadrada"
           backgroundColor={estado === 1 ? undefined : '#f0f0f0'}
           textColor={estado === 1 ? undefined : '#000000'}
         />
@@ -143,24 +219,26 @@ const ListaProductos = () => {
       onClick: mostrarFormularioProducto,
       size: 'large',
       backgroundColor: colores.altertex[1],
+      disabled: !usuario?.permisos?.includes(PERMISOS.CREAR_PRODUCTO),
     },
     {
-      //variant: 'outlined',
+      variant: 'outlined',
       label: 'Importar',
-      onClick: () => console.log('Importar'),
+      onClick: handleAbrirImportar,
       color: 'primary',
       size: 'large',
-      outlineColor: colores.primario[10],
-      construccion: true,
+      outlineColor: colores.altertex[1],
+      disabled: !usuario?.permisos?.includes(PERMISOS.IMPORTAR_PRODUCTOS),
+
     },
     {
-      //variant: 'outlined',
+      variant: 'outlined',
       label: 'Exportar',
-      onClick: () => console.log('Exportar'),
+      onClick: () => setAbrirPopUpExportar(true),
       color: 'primary',
+      outlineColor: colores.altertex[1],
       size: 'large',
-      outlineColor: colores.primario[10],
-      construccion: true,
+      disabled: !usuario?.permisos?.includes(PERMISOS.EXPORTAR_PRODUCTOS),
     },
     {
       label: 'Eliminar',
@@ -187,8 +265,8 @@ const ListaProductos = () => {
   return (
     <>
       <ContenedorLista
-        titulo='Lista de Productos'
-        descripcion='Gestiona y organiza los productos registrados en el sistema.'
+        titulo="Lista de Productos"
+        descripcion="Gestiona y organiza los productos registrados en el sistema."
         informacionBotones={botones}
       >
         {mostrarModalProducto && (
@@ -204,8 +282,10 @@ const ListaProductos = () => {
             alCerrarFormularioProveedor={cerrarFormularioProveedor}
           />
         )}
-        <Box width='100%'>
-          {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}
+        <Box width="100%">
+          {error && (
+            <Alerta tipo="error" mensaje={error} icono cerrable centradoInferior />
+          )}
           <Tabla
             columns={columnas}
             rows={filas}
@@ -214,8 +294,14 @@ const ListaProductos = () => {
             checkboxSelection
             rowHeight={80}
             onRowSelectionModelChange={(nuevosIds) => {
-              const ids = Array.isArray(nuevosIds) ? nuevosIds : Array.from(nuevosIds?.ids || []);
+              const ids = (Array.isArray(nuevosIds) ? nuevosIds : Array.from(nuevosIds?.ids || []))
+                .map(id => parseInt(id));
               setProductosSeleccionados(ids);
+            }}
+            onRowClick={(parametros) => {
+              setProductoDetalleSeleccionado(parametros.row.id);
+              setImagenProducto(parametros.row.urlImagen)
+              setAbrirModalDetalle(true);
             }}
           />
         </Box>
@@ -237,8 +323,62 @@ const ListaProductos = () => {
         abrir={openModalEliminar}
         cerrar={manejarCancelarEliminar}
         confirmar={manejarConfirmarEliminar}
-        dialogo={MENSAJE_POPUP_ELIMINAR}
+        dialogo="¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer."
       />
+        <ModalImportarProdctos
+        abierto={modalImportarAbierto}
+        onCerrar={() => setModalImportarAbierto(false)}
+        onConfirm={importar}
+        cargando={cargandoImportacion}
+        errores={errores}
+        exito={exito}
+        recargar={recargar}
+      ></ModalImportarProdctos>
+
+      <PopUp
+        abrir={openModalExportar}
+        cerrar={manejarCancelarExportar}
+        confirmar={manejarConfirmarExportar}
+        dialogo={MENSAJE_POPUP_EXPORTAR}
+        labelCancelar = 'Cancelar'
+        labelConfirmar = 'Confirmar'
+        disabledConfirmar={cargando}
+      />
+
+      {abrirModalDetalle && (
+        <ModalFlotante
+          open={abrirModalDetalle}
+          onClose={() => setAbrirModalDetalle(false)}
+          titulo={detalleProducto?.nombreComun || 'Cargando...'}
+          tituloVariant='h4'
+          customWidth={950}
+          botones={[
+            {
+              label: 'Editar',
+              variant: 'contained',
+              color: 'primary',
+              backgroundColor: colores.altertex[1],
+              onClick: () => console.log('Editar producto'),
+              construccion: true,
+            },
+            {
+              label: 'Salir',
+              variant: 'outlined',
+              color: 'primary',
+              outlineColor: colores.primario[1],
+              onClick: () => setAbrirModalDetalle(false),
+            },
+          ]}
+        >
+          {cargandoDetalle ? (
+            <p>Cargando información del producto...</p>
+          ) : errorDetalle ? (
+            <p>Error al cargar la información del producto: {errorDetalle}</p>
+          ) : (
+            <InfoProducto detalleProducto={detalleProducto} imagenProducto={imagenProducto}/>
+          )}
+        </ModalFlotante>
+      )}
     </>
   );
 };

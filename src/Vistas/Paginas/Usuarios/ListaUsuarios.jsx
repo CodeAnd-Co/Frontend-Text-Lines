@@ -62,6 +62,8 @@ const ListaUsuarios = () => {
 
   const [modal2FAAbierto, setModal2FAAbierto] = useState(false);
   const { qrCode, cargando: cargandoQR, error: errorQR, setQrCode } = useActivar2FA();
+  const rolesPorId = Object.fromEntries(roles.map((fila) => [fila.idRol, fila.nombre]));
+
 
   /** const manejarActivar2FA = async () => {
       await activar2FA({
@@ -196,7 +198,7 @@ const ListaUsuarios = () => {
           id,
           idUsuario: id,
           nombre: usuario.nombre,
-          rol: usuario.rol || 'Sin rol',
+          rol: rolesPorId[usuario.rol] || 'Sin rol',
           cliente: usuario.cliente ? [usuario.cliente] : [],
           estatus: usuario.estatus,
           correo: usuario.correo,

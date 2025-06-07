@@ -7,6 +7,7 @@ import Alerta from '@Moleculas/Alerta';
 import { tokens } from '@SRC/theme';
 import InfoImportar from '@Organismos/InfoImportar';
 import CajaDesplazable from '@Organismos/CajaDesplazable';
+import Boton from '@Atomos/Boton';
 
 const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errores, exito, recargar }) => {
   const [archivo, setFile] = useState(null);
@@ -17,6 +18,7 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
   const colores = tokens(theme.palette.mode);
   const [abririnfo, setAbrirInfo] = useState(false);
   const [mensajeErrores, setMensajeErrores] = useState('');
+  const [descargarCSV, setDescargarCSV] = useState(false);
 
   // Manejo de errores en la importación
   useEffect(() => {
@@ -49,6 +51,19 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
       setMensajeErrores('');
     }
   }, [exito, onCerrar, recargar]);
+
+  const handleDescargarPlantilla = useCallback(() => {
+    setDescargarCSV(true);
+    const link = document.createElement('a');
+    link.href = '/plantilla_importar_empleados.csv';
+    link.download = 'plantilla_importar_empleados.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => {
+      setDescargarCSV(false);
+    }, 2000);
+  }, []);
 
   // Manejo de cierre del modal de importar
   const handleCerrar = useCallback(() => {
@@ -159,21 +174,19 @@ const ModalImportarEmpleados = ({ abierto, onCerrar, onConfirm, cargando, errore
       )}
 
       <Box mt={2} display="inline-flex" alignItems="center" gap={1}>
-        <a href="/plantilla_importar_empleados.csv" download="plantilla_importar_empleados.csv">
-          Descargar CSV de ejemplo 
-        </a>
+          <Boton style={{border: "none", textDecoration: 'underline', color: colores.altertex[1]}} onClick={handleDescargarPlantilla} label="Descargar plantilla CSV" variant="outlined" deshabilitado={descargarCSV} />
         <InfoImportar 
           open={abririnfo}
           onClose={() => setAbrirInfo(false)}> 
-              Consideraciones para tu CSV:<br/>
-              Campos obligatorios: no dejes celdas vacías en ninguna columna.<br/>
-              Correo electrónico: formato válido (usuario@dominio.com).<br/>
-              {`Contraseñas: mínimo 8 caracteres, al menos una mayúscula y un carácter especial (!@#$%^&*(),.?":{}|<>)`}<br/>
-              Teléfonos: exactamente 10 dígitos, sin espacios ni guiones.<br/>
-              Textos largos: máximo 75 caracteres por campo.<br/>
-              Fecha Nacimiento: formato DD/MM/AAAA (p. ej. 05/08/1998).<br/>
-              Estado: 1 → activo, 0 → inactivo.<br/>
-              Antiguedad: formato DD/MM/AAAA (p. ej. 05/08/1998).<br/>
+              <strong>Consideraciones para tu CSV:</strong><br /><br />
+              <strong>Campos obligatorios:</strong> no dejes celdas vacías en ninguna columna.<br/>
+              <strong>Correo electrónico:</strong> formato válido (usuario@dominio.com).<br/>
+              <strong>Contraseñas: </strong>{`mínimo 8 caracteres, al menos una mayúscula y un carácter especial (!@#$%^&*(),.?":{}|<>)`}<br/>
+              <strong>Teléfonos:</strong> exactamente 10 dígitos, sin espacios ni guiones.<br/>
+              <strong>Textos largos:</strong> máximo 75 caracteres por campo.<br/>
+              <strong>Fecha Nacimiento:</strong> formato DD/MM/AAAA (p. ej. 05/08/1998).<br/>
+              <strong>Estado:</strong> 1 → activo, 0 → inactivo.<br/>
+              <strong>Antiguedad:</strong> formato DD/MM/AAAA (p. ej. 05/08/1998).<br/>
            </InfoImportar>
             </Box><br/>
                 {mensajeErrores && (

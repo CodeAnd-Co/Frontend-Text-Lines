@@ -205,7 +205,7 @@ const FormularioActualizarUsuario = ({
       </Grid>
       <Grid size={6} sx={estiloCuadricula}>
         <CampoTexto
-          label='Contraseña'
+          label='Cambiar Contraseña'
           name='contrasenia'
           type='password'
           value={datosUsuario.contrasenia}
@@ -222,7 +222,7 @@ const FormularioActualizarUsuario = ({
       </Grid>
       <Grid size={6} sx={estiloCuadricula}>
         <CampoTexto
-          label='Confirmar contraseña'
+          label='Confirmar cambio de contraseña'
           name='confirmarContrasenia'
           type='password'
           value={datosUsuario.confirmarContrasenia || ''}

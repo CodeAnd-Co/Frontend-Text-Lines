@@ -156,7 +156,6 @@ const CamposActualizarProducto = memo(
     return (
       <>
         <TituloFormulario titulo='Datos del Proveedor' varianteTitulo='h6' tamano={6} />
-
         <CampoSelectFormulario
           etiqueta='Proveedor'
           nombre='idProveedor'
@@ -168,9 +167,7 @@ const CamposActualizarProducto = memo(
           placeholder='Selecciona un proveedor'
           required
         />
-
         <TituloFormulario titulo='Datos del Producto' varianteTitulo='h6' />
-
         <CampoTextoFormulario
           etiqueta='Nombre Común'
           nombre='nombreComun'
@@ -182,7 +179,6 @@ const CamposActualizarProducto = memo(
           placeholder='Ingresa el nombre común del producto'
           required
         />
-
         <CampoTextoFormulario
           etiqueta='Nombre Comercial'
           nombre='nombreComercial'
@@ -194,7 +190,6 @@ const CamposActualizarProducto = memo(
           placeholder='Ingresa el nombre comercial del producto'
           required
         />
-
         <CampoTextoFormulario
           etiqueta='Descripción'
           nombre='descripcion'
@@ -208,7 +203,6 @@ const CamposActualizarProducto = memo(
           filas={4}
           required
         />
-
         <CampoTextoFormulario
           etiqueta='Marca'
           nombre='marca'
@@ -220,7 +214,6 @@ const CamposActualizarProducto = memo(
           placeholder='Ingresa la marca del producto'
           required
         />
-
         <CampoTextoFormulario
           etiqueta='Modelo'
           nombre='modelo'
@@ -232,7 +225,6 @@ const CamposActualizarProducto = memo(
           placeholder='Ingresa el modelo del producto'
           required
         />
-
         <CampoTextoFormulario
           etiqueta='Tipo de Producto'
           nombre='tipoProducto'
@@ -244,7 +236,6 @@ const CamposActualizarProducto = memo(
           placeholder='Ingresa el tipo de producto'
           required
         />
-
         <CampoTextoFormulario
           etiqueta='Precio en Puntos'
           nombre='precioPuntos'
@@ -271,7 +262,6 @@ const CamposActualizarProducto = memo(
             }
           }}
         />
-
         <CampoTextoFormulario
           etiqueta='Precio Cliente'
           nombre='precioCliente'
@@ -294,7 +284,6 @@ const CamposActualizarProducto = memo(
             }
           }}
         />
-
         <CampoTextoFormulario
           etiqueta='Precio Venta'
           nombre='precioVenta'
@@ -313,7 +302,6 @@ const CamposActualizarProducto = memo(
             }
           }}
         />
-
         <CampoTextoFormulario
           etiqueta='Precio Costo'
           nombre='costo'
@@ -331,36 +319,67 @@ const CamposActualizarProducto = memo(
               evento.target.value = 1;
             }
           }}
-        />
-
+        />{' '}
         <CampoTextoFormulario
           etiqueta='Impuesto (%)'
           nombre='impuesto'
           valor={producto.impuesto}
           error={erroresProducto?.impuesto}
-          helperText={erroresProducto?.impuesto}
+          helperText={erroresProducto?.impuesto || 'Máximo 5 dígitos (ej: 16.00)'}
           onChange={alActualizarProducto}
           placeholder='Ej: 16'
           tipo='number'
           required={false}
-          min={1}
+          min={0}
+          max={99999.99}
           onKeyDown={prevenirNumerosNoDecimales}
-        />
-
+          onInput={(evento) => {
+            const valor = evento.target.value;
+            // Limitar a 5 dígitos enteros y 2 decimales
+            if (valor) {
+              const partes = valor.split('.');
+              if (partes[0] && partes[0].length > 5) {
+                // Si la parte entera tiene más de 5 dígitos, truncarla
+                partes[0] = partes[0].substring(0, 5);
+                evento.target.value = partes.join('.');
+              }
+              // Si el número es mayor a 99999.99, establecerlo al máximo
+              if (parseFloat(valor) > 99999.99) {
+                evento.target.value = '99999.99';
+              }
+            }
+          }}
+        />{' '}
         <CampoTextoFormulario
           etiqueta='Descuento (%)'
           nombre='descuento'
           valor={producto.descuento}
           error={erroresProducto?.descuento}
-          helperText={erroresProducto?.descuento}
+          helperText={erroresProducto?.descuento || 'Valores entre 0 y 100'}
           onChange={alActualizarProducto}
           placeholder='Ej: 10'
           tipo='number'
           required={false}
           min={0}
+          max={100}
           onKeyDown={prevenirNumerosNoDecimales}
+          onInput={(evento) => {
+            const valor = evento.target.value;
+            // Limitar a 3 dígitos (máximo 100)
+            if (valor) {
+              // Si el valor es mayor que 100, establecerlo a 100
+              if (parseFloat(valor) > 100) {
+                evento.target.value = '100';
+              }
+              // Si tiene más de 5 dígitos en total, truncarlo
+              const partes = valor.split('.');
+              if (partes[0] && partes[0].length > 3) {
+                partes[0] = partes[0].substring(0, 3);
+                evento.target.value = partes.join('.');
+              }
+            }
+          }}
         />
-
         <CampoSelectFormulario
           etiqueta='Envío'
           nombre='envio'
@@ -375,7 +394,6 @@ const CamposActualizarProducto = memo(
           placeholder='Selecciona opción de envío'
           required
         />
-
         <CampoSelectFormulario
           etiqueta='Estado'
           nombre='estado'
@@ -390,7 +408,6 @@ const CamposActualizarProducto = memo(
           placeholder='Selecciona el estado del producto'
           required
         />
-
         <CampoImagenProducto
           imagenProducto={imagenProducto}
           setImagenes={setImagenes}

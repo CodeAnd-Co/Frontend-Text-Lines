@@ -41,13 +41,17 @@ export const validarVariantes = (variantes) => {
         erroresOpcion.valorOpcion = 'El valor de la opción es obligatorio';
       } else if (opcion.valorOpcion.trim().length > 50) {
         erroresOpcion.valorOpcion = 'El valor de la opción debe tener máximo 50 caracteres';
-      }
-
-      // Validación de cantidad
-      if (!Number.isFinite(opcion.cantidad) || opcion.cantidad <= 0) {
-        erroresOpcion.cantidad = 'La cantidad debe ser un número mayor a 0';
-      } else if (!/^\d{1,10}$/.test(opcion.cantidad.toString())) {
-        erroresOpcion.cantidad = 'La cantidad debe tener máximo 10 dígitos.';
+      } // Validación de cantidad
+      if (opcion.cantidad === undefined || opcion.cantidad === null || opcion.cantidad === '') {
+        erroresOpcion.cantidad = 'La cantidad es obligatoria';
+      } else {
+        const cantidadNum = Number(opcion.cantidad);
+        if (isNaN(cantidadNum) || cantidadNum <= 0) {
+          erroresOpcion.cantidad = 'La cantidad debe ser un número mayor a 0';
+        } else if (cantidadNum > 9999999999) {
+          // 10 dígitos máximo (10^10 - 1)
+          erroresOpcion.cantidad = 'La cantidad no puede ser mayor a 9,999,999,999';
+        }
       }
 
       // Validación de descuento
@@ -62,13 +66,25 @@ export const validarVariantes = (variantes) => {
         if (!/^(0|[1-9]\d{0,4})(\.\d{1,2})?$/.test(opcion.descuento.toString())) {
           erroresOpcion.descuento = 'El descuento debe ser un número válido con máximo 5 dígitos.';
         }
-      }
-
-      // Validación de costo adicional con formato (10,2)
-      if (!Number.isFinite(opcion.costoAdicional) || opcion.costoAdicional < 0) {
-        erroresOpcion.costoAdicional = 'El costo adicional no es válido o el campo está vacío.';
-      } else if (!/^\d{1,8}(\.\d{1,2})?$/.test(opcion.costoAdicional.toString())) {
-        erroresOpcion.costoAdicional = 'El costo adicional debe tener máximo 10 dígitos.';
+      } // Validación de costo adicional con formato (10,2)
+      if (
+        opcion.costoAdicional !== undefined &&
+        opcion.costoAdicional !== null &&
+        opcion.costoAdicional !== ''
+      ) {
+        const costoNum = Number(opcion.costoAdicional);
+        if (isNaN(costoNum)) {
+          erroresOpcion.costoAdicional = 'El costo adicional debe ser un número válido';
+        } else if (costoNum < 0) {
+          erroresOpcion.costoAdicional = 'El costo adicional no puede ser negativo';
+        } else {
+          const partes = costoNum.toString().split('.');
+          if (partes[0] && partes[0].length > 8) {
+            erroresOpcion.costoAdicional = 'El costo adicional debe tener máximo 8 dígitos enteros';
+          } else if (partes[1] && partes[1].length > 2) {
+            erroresOpcion.costoAdicional = 'El costo adicional debe tener máximo 2 decimales';
+          }
+        }
       }
 
       if (!opcion.SKUautomatico?.trim()) {

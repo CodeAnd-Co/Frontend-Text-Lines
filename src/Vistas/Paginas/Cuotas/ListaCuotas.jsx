@@ -124,7 +124,6 @@ const ListaCuotas = () => {
     }
   };
 
-  // 👈 FUNCIONES CORREGIDAS
   const handleAbrirEditar = () => {
     setModalDetalleAbierto(false);
     setModalEditarAbierto(true);
@@ -132,13 +131,12 @@ const ListaCuotas = () => {
 
   const handleCerrarEditar = () => {
     setModalEditarAbierto(false);
-    // NO limpies el idSetCuotaSeleccionado aquí para mantener los datos
   };
 
   const handleCuotaActualizada = async () => {
     await recargar();
     setModalEditarAbierto(false);
-    setIdSetCuotaSeleccionado(null); // Ahora sí limpia aquí
+    setIdSetCuotaSeleccionado(null); 
     setAlerta({
       tipo: 'success',
       mensaje: 'Set de cuotas actualizado correctamente.',
@@ -268,7 +266,7 @@ const ListaCuotas = () => {
       {/* MODAL DE EDITAR */}
       <ModalEditarCuotas
         open={modalEditarAbierto}
-        cuotaOriginal={cuota} // 👈 Pasa el objeto completo 'cuota'
+        cuotaOriginal={cuota} 
         onClose={handleCerrarEditar}
         onActualizado={handleCuotaActualizada}
         cargandoDetalle={cargandoDetalle}

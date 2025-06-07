@@ -47,7 +47,7 @@ const Alerta = ({
 
   if (!visible) return null;
 
-  const colorFondo = `${coloresPorTipo[tipo]}20`;
+  const colorFondo = `${coloresPorTipo[tipo]}50`;
   const colorPrincipal = coloresPorTipo[tipo];
   const iconoMostrar = iconoNombre || iconosPorTipo[tipo];
 

@@ -1,6 +1,7 @@
 // RF42 - Super Administrador, Cliente Consulta Lista de Sets de Productos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF42
 // RF45 - Eliminar set de productos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF45
 // RF48 - Super Administrador, Cliente Lee Categoria de Productos - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/rf48/
+// RF44 - Actualiza Set de Productos - https://codeandco-wiki.netlify.app/docs/next/proyectos/textiles/documentacion/requisitos/RF44
 
 import React, { useState } from 'react';
 import Tabla from '@Organismos/Tabla';
@@ -17,6 +18,8 @@ import { tokens } from '@SRC/theme';
 import { PERMISOS } from '@Utilidades/Constantes/permisos';
 import { useAuth } from '@Hooks/AuthProvider';
 import ModalCrearSetsProductos from '@Organismos/ModalCrearSetsProductos.jsx';
+import SetProductosEditable from '@SRC/Vistas/Componentes/Moleculas/SetProductosEditable';
+import { useActualizarSetsProductos } from '@Hooks/SetsProductos/useActualizarSetsProductos';
 
 const ListaSetsProductos = () => {
   const { setsDeProductos, cargando, error, recargar } = useConsultarSetsProductos();
@@ -31,6 +34,8 @@ const ListaSetsProductos = () => {
   const [setSeleccionado, setSetSeleccionado] = useState(null);
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
   const [modalCrearAbierto, setModalCrearAbierto] = useState(false);
+  const [abrirModalEditar, setAbrirModalEditar] = useState(false);
+  const [formData, setFormData] = useState(null);
   const { eliminar } = useEliminarSetProductos();
   const { usuario } = useAuth();
 
@@ -63,15 +68,64 @@ const ListaSetsProductos = () => {
     }
   };
 
-
   const handleCerrarModalCrear = () => {
-    setModalCrearAbierto(false)
-  }
+    setModalCrearAbierto(false);
+  };
 
   const handleSetProductoCreadoExitosamente = () => {
-    handleCerrarModalCrear()
-    recargar()
-  }
+    handleCerrarModalCrear();
+    recargar();
+  };
+
+  const handleFormDataChange = (data) => {
+    setFormData(data);
+  };
+
+  const { actualizarSet } = useActualizarSetsProductos();
+
+  const esValido = (data) => {
+    return data?.nombre?.trim() !== '' && data?.descripcion?.trim() !== '';
+  };
+
+  const handleGuardar = async () => {
+    if (!esValido(formData)) {
+      setAlerta({
+        tipo: 'error',
+        mensaje: 'El nombre y la descripción son obligatorios.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+      return;
+    }
+
+    try {
+      await actualizarSet(
+        setSeleccionado.idSetProducto,
+        formData.nombre,
+        formData.descripcion,
+        formData.activo,
+        formData.productos
+      );
+      await recargar();
+      setAbrirModalEditar(false);
+      setAlerta({
+        tipo: 'success',
+        mensaje: 'Set de productos actualizado correctamente.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+    } catch (error) {
+      setAlerta({
+        tipo: 'error',
+        mensaje: error?.message || 'Error al actualizar el set de productos.',
+        icono: true,
+        cerrable: true,
+        centradoInferior: true,
+      });
+    }
+  };
 
   const columns = [
     {
@@ -230,7 +284,10 @@ const ListaSetsProductos = () => {
               variant: 'contained',
               color: 'error',
               backgroundColor: colores.altertex[1],
-              construccion: true,
+              onClick: () => {
+                setModalDetalleAbierto(false);
+                setAbrirModalEditar(true);
+              },
             },
             {
               label: 'SALIR',
@@ -245,7 +302,41 @@ const ListaSetsProductos = () => {
             nombre={''}
             descripcion={setSeleccionado.descripcion}
             productos={setSeleccionado.productos || []}
-            grupos={setSeleccionado.grupos || []}
+            idsProductos={setSeleccionado?.idsProductos || []}
+          />
+        </ModalFlotante>
+      )}
+      {abrirModalEditar && (
+        <ModalFlotante
+          open={abrirModalEditar}
+          onClose={() => setAbrirModalEditar(false)}
+          titulo='Editar Set de Productos'
+          tituloVariant='h4'
+          customWidth={890}
+          botones={[
+            {
+              label: 'Guardar',
+              variant: 'contained',
+              color: 'primary',
+              backgroundColor: colores.altertex[1],
+              onClick: handleGuardar,
+            },
+            {
+              label: 'Cancelar',
+              variant: 'outlined',
+              color: 'primary',
+              outlineColor: colores.altertex[1],
+              onClick: () => setAbrirModalEditar(false),
+            },
+          ]}
+        >
+          <SetProductosEditable
+            nombre={setSeleccionado?.nombre || ''}
+            descripcion={setSeleccionado?.descripcion || ''}
+            productos={setSeleccionado?.productos || []}
+            idsProductos={setSeleccionado?.idsProductos || []}
+            activo={setSeleccionado?.activo ?? 1}
+            onFormDataChange={handleFormDataChange}
           />
         </ModalFlotante>
       )}

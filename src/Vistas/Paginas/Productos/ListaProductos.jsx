@@ -16,6 +16,8 @@ import { useEliminarProductos } from '@Hooks/Productos/useEliminarProductos';
 import { tokens } from '@SRC/theme';
 import { useAuth } from '@Hooks/AuthProvider';
 import { PERMISOS } from '@Constantes/permisos';
+import ModalImportarProdctos from '@Organismos/ModalImportarProductos';
+import useImportarProductos from '@Hooks/Productos/useImportarProductos';
 import ModalFlotante from '@Organismos/ModalFlotante.jsx';
 import InfoProducto from '@Moleculas/InfoProducto.jsx';
 import { useLeerProducto } from '@Hooks/Productos/useLeerProducto.js';
@@ -34,6 +36,10 @@ const ListaProductos = () => {
   const [mostrarModalProducto, setMostrarModalProducto] = useState(false);
   const [alerta, setAlerta] = useState(null);
   const [openModalEliminar, setAbrirPopUp] = useState(false);
+  const [modalImportarAbierto, setModalImportarAbierto] = useState(false);
+  const { importar, errores, exito, cargando: cargandoImportacion } = useImportarProductos();
+ 
+  
   const [abrirModalDetalle, setAbrirModalDetalle] = useState(false);
   const [imagenProducto, setImagenProducto] = useState('')
 
@@ -151,6 +157,8 @@ const ListaProductos = () => {
     }
   };
 
+  const handleAbrirImportar = () => setModalImportarAbierto(true);
+
   const columnas = [
     {
       field: 'imagen',
@@ -158,8 +166,8 @@ const ListaProductos = () => {
       flex: 0.5,
       renderCell: (params) => (
         <img
-          src={params.row.urlImagen}
-          alt="Producto"
+          src={params.row.urlImagen || '/placeholder.png'}
+          alt='Producto'
           style={{ width: 50, height: 50, objectFit: 'cover' }}
         />
       ),
@@ -213,12 +221,13 @@ const ListaProductos = () => {
       backgroundColor: colores.altertex[1],
     },
     {
+      variant: 'outlined',
       label: 'Importar',
-      onClick: () => console.log('Importar'),
+      onClick: handleAbrirImportar,
       color: 'primary',
       size: 'large',
-      outlineColor: colores.primario[10],
-      construccion: true,
+      outlineColor: colores.altertex[1],
+
     },
     {
       variant: 'outlined',
@@ -314,6 +323,15 @@ const ListaProductos = () => {
         confirmar={manejarConfirmarEliminar}
         dialogo="¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer."
       />
+        <ModalImportarProdctos
+        abierto={modalImportarAbierto}
+        onCerrar={() => setModalImportarAbierto(false)}
+        onConfirm={importar}
+        cargando={cargandoImportacion}
+        errores={errores}
+        exito={exito}
+        recargar={recargar}
+      ></ModalImportarProdctos>
 
       <PopUp
         abrir={openModalExportar}

@@ -3,22 +3,22 @@
 import { Box } from '@mui/material';
 import Alerta from '@Moleculas/Alerta';
 import ModalFlotante from '@Organismos/ModalFlotante';
-import FormaEmpleado from '@Organismos/Formularios/FormaEmpleado';
-import { useAccionesEmpleado } from '@Hooks/Empleados/useAccionesEmpleado';
+import FormaActualizarEmpleado from '@Organismos/Formularios/FormaActualizarEmpleado';
+import { useActualizarEmpleado } from '@SRC/hooks/Empleados/useActualizarEmpleado';
 
-const ModalEmpleados = ({ open, onClose, onAccion, empleadoEdicion }) => {
+const ModalActualizarEmpleado = ({ open, onClose, onAccion, empleadoEdicion }) => {
   const {
     datosEmpleado,
     erroresValidacion,
     alerta,
     setAlerta,
-    esEdicion,
     manejarCambio,
     manejarAntiguedad,
     obtenerHelperText,
     handleGuardar,
     limpiarFormulario,
-  } = useAccionesEmpleado(empleadoEdicion);
+    cargando,
+  } = useActualizarEmpleado(empleadoEdicion);
 
   const manejarConfirmacion = async () => {
     const resultado = await handleGuardar();
@@ -26,9 +26,7 @@ const ModalEmpleados = ({ open, onClose, onAccion, empleadoEdicion }) => {
     if (resultado?.exito) {
       if (onAccion) await onAccion();
 
-      if (!esEdicion) {
-        limpiarFormulario();
-      }
+      limpiarFormulario();
 
       // Esperar un momento para que el usuario vea el mensaje de éxito
       setTimeout(() => {
@@ -47,7 +45,8 @@ const ModalEmpleados = ({ open, onClose, onAccion, empleadoEdicion }) => {
       open={open}
       onClose={manejarCierre}
       onConfirm={manejarConfirmacion}
-      titulo={esEdicion ? datosEmpleado.nombreCompleto : 'Agregar Empleado'}
+      titulo={datosEmpleado.nombreCompleto}
+      loading={cargando}
     >
       <Box
         component='form'
@@ -60,13 +59,12 @@ const ModalEmpleados = ({ open, onClose, onAccion, empleadoEdicion }) => {
         noValidate
         autoComplete='off'
       >
-        <FormaEmpleado
+        <FormaActualizarEmpleado
           datosEmpleado={datosEmpleado}
           erroresValidacion={erroresValidacion}
           manejarCambio={manejarCambio}
           manejarAntiguedad={manejarAntiguedad}
           obtenerHelperText={obtenerHelperText}
-          esEdicion={esEdicion}
         />
       </Box>
 
@@ -83,4 +81,4 @@ const ModalEmpleados = ({ open, onClose, onAccion, empleadoEdicion }) => {
   );
 };
 
-export default ModalEmpleados;
+export default ModalActualizarEmpleado;

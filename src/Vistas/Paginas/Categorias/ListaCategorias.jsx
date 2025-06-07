@@ -12,7 +12,8 @@ import { useConsultarCategorias } from '@Hooks/Categorias/useConsultarCategorias
 import { leerCategoria } from '@Hooks/Categorias/useLeerCategoria';
 import useActualizarCategoria from '@Hooks/Categorias/useActualizarCategoria';
 import obtenerProductosCategoria from '@Servicios/obtenerProductosCategoria';
-
+import { PERMISOS } from '@Utilidades/Constantes/permisos';
+import { useAuth } from '@Hooks/AuthProvider';
 import { Box, useTheme } from '@mui/material';
 import { tokens } from '@SRC/theme';
 import ModalCrearCategoria from '@Organismos/ModalCrearCategoria';
@@ -35,6 +36,8 @@ const ListaCategorias = () => {
   const actualizar = useActualizarCategoria();
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
+  const { usuario } = useAuth();
+  
 
   const columns = useMemo(
     () => [
@@ -225,9 +228,11 @@ const ListaCategorias = () => {
         size: 'large',
         backgroundColor: colores.altertex[1],
         onClick: handleAbrirModalCrear,
+        disabled: !usuario?.permisos?.includes(PERMISOS.CREAR_CATEGORIA_PRODUCTOS),
       },
       {
         label: 'Eliminar',
+        disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_CATEGORIA_PRODUCTOS),
         onClick: () => {
           if (seleccionados.size === 0 || seleccionados.ids?.size === 0) {
             setAlerta({
@@ -246,8 +251,9 @@ const ListaCategorias = () => {
         size: 'large',
         backgroundColor: colores.altertex[1],
       },
+      
     ],
-    [colores.altertex, handleAbrirModalCrear, seleccionados]
+    [colores.altertex, handleAbrirModalCrear, seleccionados, usuario?.permisos]
   );
 
   const botonesModalDetalle = useMemo(() => {

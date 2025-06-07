@@ -15,7 +15,6 @@ export class RepositorioObtenerOpcionesCuotas {
         }
       );
       
-      console.log('🔍 Respuesta del backend - opciones:', respuesta.data);
       return respuesta.data;
     } catch (error) {
       console.error('Error en repositorio opciones:', error);

@@ -9,6 +9,7 @@ import Chip from '@Atomos/Chip';
 import { useConsultarListaUsuarios } from '@Hooks/Usuarios/useConsultarListaUsuarios';
 import { useEliminarUsuarios } from '@Hooks/Usuarios/useEliminarUsuarios';
 import { useConsultarRoles } from '@Hooks/Roles/useConsultarRoles';
+import { useConsultarClientes } from '@Hooks/Clientes/useConsultarClientes';
 import { RUTAS } from '@Constantes/rutas';
 import { tokens } from '@SRC/theme';
 import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
@@ -21,6 +22,7 @@ import { useTheme } from '@mui/material';
 import { useActivar2FA } from '@Hooks/Usuarios/useActivar2FA';
 import Activar2FAModal from '@Organismos/Activar2FAModal';
 import Verificar2FAModal from '@Moleculas/Verificar2FAModal';
+import ModalActualizarUsuario from '@Organismos/ModalActualizarUsuario';
 
 const estiloImagenLogo = { marginRight: '1rem' };
 
@@ -36,6 +38,7 @@ const estiloImagenLogo = { marginRight: '1rem' };
  * @see [RF02 Super Administrador Consulta Lista de Usuarios](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF2)
  * @see [RF03 Leer usuario](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF3)
  * @see [RF05 Super Administrador Eliminar Usuario](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF5)
+ * @see [RF04 Super Administrador Actualiza Usuario](https://codeandco-wiki.netlify.app/docs/next/proyectos/textiles/documentacion/requisitos/RF4)
  */
 
 const ListaUsuarios = () => {
@@ -44,11 +47,13 @@ const ListaUsuarios = () => {
   const navigate = useNavigate();
   const [alerta, setAlerta] = useState(null);
   const { usuarios, cargando, error, recargar } = useConsultarListaUsuarios();
+  const { clientes } = useConsultarClientes();
   const { roles } = useConsultarRoles();
   const { usuario: usuarioAutenticado } = useAuth();
   const [modalCrearUsuarioAbierto, setModalCrearUsuarioAbierto] = useState(false);
   const [idUsuarioSeleccionado, setIdUsuarioSeleccionado] = useState(null);
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
+  const [modalActualizarAbierto, setModalActualizarAbierto] = useState(false);
   const {
     usuario,
     cargando: cargandoDetalle,
@@ -315,10 +320,11 @@ const ListaUsuarios = () => {
           <Alerta
             tipo={alerta.tipo}
             mensaje={alerta.mensaje}
-            cerrable
+            icono={alerta.icono}
+            cerrable={alerta.cerrable}
             duracion={3000}
+            centradoInferior={alerta.centradoInferior}
             onClose={() => setAlerta(null)}
-            centradoInferior
           />
         )}
         {modalCrearUsuarioAbierto && (
@@ -389,8 +395,11 @@ const ListaUsuarios = () => {
                 variant: 'contained',
                 color: 'primary',
                 backgroundColor: colores.altertex[1],
-                onClick: () => console.log('Editar usuario'),
-                disabled: true,
+                onClick: () => {
+                  setModalDetalleAbierto(false);
+                  setTimeout(() => setModalActualizarAbierto(true), 100);
+                },
+                disabled: !usuarioAutenticado?.permisos?.includes(PERMISOS.ACTUALIZAR_USUARIO),
               },
               {
                 label: 'SALIR',
@@ -438,6 +447,33 @@ const ListaUsuarios = () => {
               <p>No se encontró información del usuario.</p>
             )}
           </ModalFlotante>
+        )}
+
+        {modalActualizarAbierto && usuario && (
+          <ModalActualizarUsuario
+            open={modalActualizarAbierto}
+            onClose={() => setModalActualizarAbierto(false)}
+            onAccion={(exito, mensaje) => {
+              recargar();
+              if (exito) {
+                setAlerta({
+                  tipo: 'success',
+                  mensaje: mensaje || 'Usuario actualizado exitosamente',
+                  icono: true,
+                  cerrable: true,
+                  centradoInferior: true,
+                });
+              }
+            }}
+            usuarioEdicion={{
+              ...usuario,
+              cliente: usuario.clientes ? usuario.clientes.map((cliente) => cliente.idCliente) : [],
+            }}
+            roles={roles}
+            clientes={clientes}
+            esSuperAdmin={false}
+            cargandoRoles={false}
+          />
         )}
 
         {errorDetalle && (

@@ -77,11 +77,6 @@ const ListaUsuarios = () => {
     label: rol.nombre,
   }));
 
-  const obtenerIdRolPorNombre = (nombreRol) => {
-    const rolEncontrado = roles.find((rol) => rol.nombre === nombreRol);
-    return rolEncontrado ? rolEncontrado.idRol : '';
-  };
-
   const redirigirAInicio = () => {
     navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE, { replace: true });
   };
@@ -424,7 +419,7 @@ const ListaUsuarios = () => {
                           .join(', ')
                       : 'Sin cliente asignado'
                   }
-                  rol={obtenerIdRolPorNombre(usuario.rol)}
+                  rol={(usuario.rol)}
                   datosContacto={{
                     email: usuario.correoElectronico,
                     telefono: usuario.numeroTelefono,

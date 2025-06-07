@@ -313,10 +313,10 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
           const nuevosErrores = { ...prevErrores };
 
           if (
-            validacionPartial[idVariante] &&
-            validacionPartial[idVariante].opciones &&
-            validacionPartial[idVariante].opciones[indiceOpcion] &&
-            validacionPartial[idVariante].opciones[indiceOpcion][campo]
+            validacionPartial[idVariante]
+            && validacionPartial[idVariante].opciones
+            && validacionPartial[idVariante].opciones[indiceOpcion]
+            && validacionPartial[idVariante].opciones[indiceOpcion][campo]
           ) {
             // Asegurarse de que existe la estructura para guardar el error
             if (!nuevosErrores[idVariante]) {
@@ -330,12 +330,12 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
             }
 
             // Guardar el error de este campo específico
-            nuevosErrores[idVariante].opciones[indiceOpcion][campo] =
-              validacionPartial[idVariante].opciones[indiceOpcion][campo];
+            nuevosErrores[idVariante].opciones[indiceOpcion][campo]
+              = validacionPartial[idVariante].opciones[indiceOpcion][campo];
           } else if (
-            nuevosErrores[idVariante] &&
-            nuevosErrores[idVariante].opciones &&
-            nuevosErrores[idVariante].opciones[indiceOpcion]
+            nuevosErrores[idVariante]
+            && nuevosErrores[idVariante].opciones
+            && nuevosErrores[idVariante].opciones[indiceOpcion]
           ) {
             // Eliminar el error si ya no existe
             delete nuevosErrores[idVariante].opciones[indiceOpcion][campo];
@@ -455,8 +455,8 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       const erroresValidacionVariantes = validarVariantes(variantes);
       setErroresVariantes(erroresValidacionVariantes); // Verificar si hay errores
       if (
-        Object.keys(erroresValidacionProducto).length > 0 ||
-        Object.keys(erroresValidacionVariantes).length > 0
+        Object.keys(erroresValidacionProducto).length > 0
+        || Object.keys(erroresValidacionVariantes).length > 0
       ) {
         // Incrementar contador de intentos enviar para mostrar todos los errores
         setIntentosEnviar((prevIntentos) => prevIntentos + 1);
@@ -558,7 +558,7 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       setAlerta({
         tipo: 'error',
         mensaje:
-          'Ocurrió un error al actualizar el producto: ' + (error.message || 'Error desconocido'),
+          `Ocurrió un error al actualizar el producto: ${error.message || 'Error desconocido'}`,
       });
       setCargando(false);
     }

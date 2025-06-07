@@ -39,8 +39,8 @@ const ListaProductos = () => {
   const [imagenProducto, setImagenProducto] = useState('');
   const [mostrarModalActualizarProducto, setMostrarModalActualizarProducto] = useState(false);
   const [openModalExportar, setAbrirPopUpExportar] = useState(false);
-  const MENSAJE_POPUP_EXPORTAR =
-    '¿Deseas exportar la lista de productos? El archivo será generado en formato .xlsx';
+  const MENSAJE_POPUP_EXPORTAR
+    = '¿Deseas exportar la lista de productos? El archivo será generado en formato .xlsx';
   const manejarCancelarExportar = () => {
     setAbrirPopUpExportar(false);
   };

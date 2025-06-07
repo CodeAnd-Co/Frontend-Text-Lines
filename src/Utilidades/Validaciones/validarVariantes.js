@@ -68,9 +68,9 @@ export const validarVariantes = (variantes) => {
         }
       } // Validación de costo adicional con formato (10,2)
       if (
-        opcion.costoAdicional !== undefined &&
-        opcion.costoAdicional !== null &&
-        opcion.costoAdicional !== ''
+        opcion.costoAdicional !== undefined
+        && opcion.costoAdicional !== null
+        && opcion.costoAdicional !== ''
       ) {
         const costoNum = Number(opcion.costoAdicional);
         if (isNaN(costoNum)) {

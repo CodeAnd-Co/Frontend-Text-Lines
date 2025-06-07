@@ -22,7 +22,7 @@ const CampoCrear = memo(({ etiqueta, onClick }) => (
   </Grid>
 ));
 
-const ContenidoFormulario = memo(({ detalleProducto }) => {
+const ContenidoFormulario = memo(() => {
   const {
     refInputArchivo,
     variantes,
@@ -154,7 +154,7 @@ const FormularioModal = memo(
               : null
           }
         >
-          <ContenidoFormulario detalleProducto={detalleProducto} />
+          <ContenidoFormulario />
         </ModalFlotante>
       </>
     );

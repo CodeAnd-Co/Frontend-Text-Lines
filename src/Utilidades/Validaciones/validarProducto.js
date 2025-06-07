@@ -11,8 +11,8 @@ export const validarProducto = (producto) => {
   if (producto.precioPuntos == null || producto.precioPuntos === '') {
     errores.precioPuntos = 'El precio en puntos es obligatorio.';
   } else if (
-    Number(producto.precioPuntos) <= 0 ||
-    !Number.isInteger(Number(producto.precioPuntos))
+    Number(producto.precioPuntos) <= 0
+    || !Number.isInteger(Number(producto.precioPuntos))
   ) {
     errores.precioPuntos = 'El precio en puntos debe ser un número entero positivo.';
   } else if (!/^[1-9]\d{0,9}$/.test(producto.precioPuntos.toString())) {
@@ -62,8 +62,8 @@ export const validarProducto = (producto) => {
     } else if (Number(producto.impuesto) > 99999.99) {
       errores.impuesto = 'El impuesto no puede ser mayor a 99999.99.';
     } else if (!/^(0|[1-9]\d{0,4})(\.\d{1,2})?$/.test(producto.impuesto.toString())) {
-      errores.impuesto =
-        'El impuesto debe ser un número válido con máximo 5 dígitos enteros y 2 decimales.';
+      errores.impuesto
+        = 'El impuesto debe ser un número válido con máximo 5 dígitos enteros y 2 decimales.';
     }
   }
 
@@ -78,8 +78,8 @@ export const validarProducto = (producto) => {
     } else if (Number(producto.descuento) > 100) {
       errores.descuento = 'El descuento debe estar entre 0 y 100.';
     } else if (!/^(0|[1-9]?\d|100)(\.\d{1,2})?$/.test(producto.descuento.toString())) {
-      errores.descuento =
-        'El descuento debe ser un número válido entre 0 y 100 con hasta 2 decimales.';
+      errores.descuento
+        = 'El descuento debe ser un número válido entre 0 y 100 con hasta 2 decimales.';
     }
   }
 

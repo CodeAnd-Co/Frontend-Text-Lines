@@ -69,6 +69,7 @@ export const RUTAS_API = {
   },
   EMPLEADOS: {
     BASE: BASE_EMPLEADOS,
+    CREAR: `${BASE_EMPLEADOS}/crear`,
     CONSULTAR_LISTA: `${BASE_EMPLEADOS}/consultar-lista`,
     CONSULTAR_GRUPOS: `${BASE_EMPLEADOS}/consultar-grupo`,
     ELIMINAR_EMPLEADO: `${BASE_EMPLEADOS}/eliminar`,

@@ -1,4 +1,3 @@
-// src/Hooks/Cuotas/useObtenerOpcionesCuotas.js
 import { useState, useEffect } from 'react';
 import { useAuth } from '@Hooks/AuthProvider';
 import obtenerProductos from '@Servicios/obtenerProductos';
@@ -25,7 +24,7 @@ export const useObtenerOpcionesCuotas = () => {
       try {
         const productos = await obtenerProductos(idCliente);
         setOpciones(productos);
-      } catch (err) {
+      } catch  {
         setError('No se pudieron cargar las opciones de productos');
         setOpciones([]);
       } finally {

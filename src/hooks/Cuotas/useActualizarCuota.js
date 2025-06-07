@@ -1,4 +1,3 @@
-// useActualizarCuota.js - Versión Simple
 import { useState } from 'react';
 import axios from 'axios';
 

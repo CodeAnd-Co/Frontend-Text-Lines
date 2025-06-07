@@ -42,12 +42,12 @@ const ModalEditarCuotas = ({
 
   useEffect(() => {
     if (cuotaOriginal && open) {
-      const productosFormateados = (cuotaOriginal.productos || []).map(p => ({
-        idProducto: p.idProducto ? String(p.idProducto) : '',
-        nombreProducto: p.nombreProducto || p.nombreComun || p.nombre || '',
-        limite: p.limite || p.cuota_valor || 0,
-        limiteActual: p.limiteActual || p.limite_actual || 0
-      }));
+      const productosFormateados = (cuotaOriginal.productos || []).map(productoOriginal => ({
+    idProducto: productoOriginal.idProducto ? String(productoOriginal.idProducto) : '',
+    nombreProducto: productoOriginal.nombreProducto || productoOriginal.nombreComun || productoOriginal.nombre || '',
+    limite: productoOriginal.limite || productoOriginal.cuota_valor || 0,
+    limiteActual: productoOriginal.limiteActual || productoOriginal.limite_actual || 0
+  }));
 
       setDatos({
         idCuotaSet: cuotaOriginal.idCuotaSet || cuotaOriginal.idSetCuota,
@@ -86,23 +86,23 @@ const ModalEditarCuotas = ({
   const eliminarProducto = (index) => {
     setDatos(prev => ({
       ...prev,
-      productos: prev.productos.filter((_, i) => i !== index)
+      productos: prev.productos.filter((productoIgnorado, idx) => idx !== index)
     }));
   };
 
   const cambiarProducto = (index, campo, valor) => {
     setDatos(prev => ({
       ...prev,
-      productos: prev.productos.map((producto, i) => {
-        if (i === index) {
+      productos: prev.productos.map((producto, idxProducto) => {
+        if (idxProducto === index) {
           const nuevoProducto = { ...producto, [campo]: valor };
 
           if (campo === 'idProducto') {
             const opcionSeleccionada = opciones?.find(op => op.id == valor);
             nuevoProducto.nombreProducto = opcionSeleccionada?.nombreProducto || '';
 
-            const yaExiste = prev.productos.some((p, idx) =>
-              idx !== index && p.idProducto === valor && valor !== '');
+            const yaExiste = prev.productos.some((otroProducto, idx) =>
+              idx !== index && otroProducto.idProducto === valor && valor !== '');
 
             if (yaExiste && valor !== '') {
               const nombreProducto = opcionSeleccionada?.nombreProducto || 'este producto';
@@ -131,7 +131,7 @@ const ModalEditarCuotas = ({
       return;
     }
 
-    const productosValidos = datos.productos.filter(p => p.idProducto && p.idProducto !== '');
+    const productosValidos = datos.productos.filter(producto => producto.idProducto && producto.idProducto !== '');
 
     try {
       await actualizarCuota({
@@ -141,24 +141,24 @@ const ModalEditarCuotas = ({
           descripcion: datos.descripcion.trim(),
           periodoRenovacion: datos.periodoRenovacion,
           renovacionHabilitada: datos.renovacionHabilitada,
-          productos: productosValidos.map(p => ({
-            idProducto: Number(p.idProducto),
-            limite: Number(p.limite) || 0,
-            limiteActual: Number(p.limiteActual) || 0
+          productos: productosValidos.map(producto => ({
+            idProducto: Number(producto.idProducto),
+            limite: Number(producto.limite) || 0,
+            limiteActual: Number(producto.limiteActual) || 0
           }))
         }
       });
 
       onActualizado();
       onClose();
-    } catch (err) {
+    } catch (error) {
       let mensajeAmigable = 'Ocurrió un error al actualizar la cuota';
 
-      if (err.message.includes('Duplicate')) {
+      if (error.message.includes('Duplicate')) {
         mensajeAmigable = 'No se puede guardar: hay productos duplicados';
-      } else if (err.message.includes('foreign key')) {
+      } else if (error.message.includes('foreign key')) {
         mensajeAmigable = 'Error: producto no válido seleccionado';
-      } else if (err.message.includes('Network')) {
+      } else if (error.message.includes('Network')) {
         mensajeAmigable = 'Sin conexión a internet';
       }
 
@@ -169,7 +169,7 @@ const ModalEditarCuotas = ({
   if (cargandoDetalle) {
     return (
       <ModalFlotante open={open} onClose={onClose} titulo="Cargando...">
-        <Box sx={{ p: 3, textAlign: 'center' }}>
+        <Box sx={{ producto: 3, textAlign: 'center' }}>
           <Typography>Cargando información del set de cuotas...</Typography>
         </Box>
       </ModalFlotante>
@@ -179,7 +179,7 @@ const ModalEditarCuotas = ({
   if (errorDetalle) {
     return (
       <ModalFlotante open={open} onClose={onClose} titulo="Error" cancelLabel="Cerrar">
-        <Box sx={{ p: 2 }}>
+        <Box sx={{ producto: 2 }}>
           <Alert severity="error">Error al cargar la información: {errorDetalle}</Alert>
         </Box>
       </ModalFlotante>
@@ -197,13 +197,13 @@ const ModalEditarCuotas = ({
       disabledConfirm={cargando}
       customWidth={800}
     >
-      <Box sx={{ maxHeight: '70vh', overflow: 'auto', p: 2 }}>
+      <Box sx={{ maxHeight: '70vh', overflow: 'auto', producto: 2 }}>
         <Typography variant="h6" sx={{ mb: 2 }}>Información Básica</Typography>
 
         <CampoTexto
           label="Nombre *"
           value={datos.nombre}
-          onChange={(e) => setDatos(prev => ({ ...prev, nombre: e.target.value }))}
+          onChange={(evento) => setDatos(prev => ({ ...prev, nombre: evento.target.value }))}
           fullWidth
           sx={{ mb: 2 }}
           inputProps={{ maxLength: 50 }}
@@ -213,7 +213,7 @@ const ModalEditarCuotas = ({
         <CampoTexto
           label="Descripción"
           value={datos.descripcion}
-          onChange={(e) => setDatos(prev => ({ ...prev, descripcion: e.target.value }))}
+          onChange={(evento) => setDatos(prev => ({ ...prev, descripcion: evento.target.value }))}
           fullWidth
           multiline
           rows={3}
@@ -226,9 +226,9 @@ const ModalEditarCuotas = ({
           <NumeroInput
             label="Período de Renovación (meses) *"
             value={datos.periodoRenovacion}
-            onChange={(e) => setDatos(prev => ({
+            onChange={(evento) => setDatos(prev => ({
               ...prev,
-              periodoRenovacion: parseInt(e.target.value) || 6
+              periodoRenovacion: parseInt(evento.target.value) || 6
             }))}
             min={1}
             max={12}
@@ -238,9 +238,9 @@ const ModalEditarCuotas = ({
           <Switch
             label="Renovación Habilitada"
             checked={datos.renovacionHabilitada}
-            onChange={(e) => setDatos(prev => ({
+            onChange={(evento) => setDatos(prev => ({
               ...prev,
-              renovacionHabilitada: e.target.checked
+              renovacionHabilitada: evento.target.checked
             }))}
           />
         </Box>
@@ -267,7 +267,7 @@ const ModalEditarCuotas = ({
               sx={{
                 border: '1px solid #e0e0e0',
                 borderRadius: 1,
-                p: 2,
+                producto: 2,
                 mb: 2,
                 backgroundColor: '#fafafa'
               }}
@@ -291,18 +291,18 @@ const ModalEditarCuotas = ({
                   <InputLabel>Producto *</InputLabel>
                   <Select
                     value={producto.idProducto || ''}
-                    onChange={(e) => cambiarProducto(index, 'idProducto', e.target.value)}
+                    onChange={(evento) => cambiarProducto(index, 'idProducto', evento.target.value)}
                     label="Producto *"
                     disabled={cargandoOpciones}
                   >
                     <MenuItem value="">Seleccione un producto</MenuItem>
                     {opciones?.length > 0 ? (
                       opciones
-                        .filter(op => !datos.productos.some((p, idx) =>
-                          idx !== index && p.idProducto == op.id))
-                        .map((opcion) => (
-                          <MenuItem key={opcion.id} value={opcion.id}>
-                            {opcion.nombreProducto} ({opcion.tipo})
+                        .filter(opcion => !datos.productos.some((productoExistente, idx) =>
+                          idx !== index && productoExistente.idProducto == opcion.id))
+                        .map((opcionDisponible) => (
+                          <MenuItem key={opcionDisponible.id} value={opcionDisponible.id}>
+                            {opcionDisponible.nombreProducto} ({opcionDisponible.tipo})
                           </MenuItem>
                         ))
                     ) : (
@@ -315,8 +315,8 @@ const ModalEditarCuotas = ({
                   label="Límite *"
                   type="number"
                   value={producto.limite}
-                  onChange={(e) => {
-                    const valor = e.target.value.replace(/\D/g, ''); 
+                  onChange={(evento) => {
+                    const valor = evento.target.value.replace(/\D/g, ''); 
                     if (valor.length <= 9) {
                       cambiarProducto(index, 'limite', parseInt(valor || '0', 10));
                     }
@@ -329,8 +329,8 @@ const ModalEditarCuotas = ({
                   label="Límite Actual *"
                   type="number"
                   value={producto.limiteActual}
-                  onChange={(e) => {
-                    const valor = e.target.value.replace(/\D/g, '');
+                  onChange={(evento) => {
+                    const valor = evento.target.value.replace(/\D/g, '');
                     if (valor.length <= 9) {
                       cambiarProducto(index, 'limiteActual', parseInt(valor || '0', 10));
                     }

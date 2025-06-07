@@ -223,6 +223,7 @@ const ListaProductos = () => {
       onClick: mostrarFormularioProducto,
       size: 'large',
       backgroundColor: colores.altertex[1],
+      disabled: !usuario?.permisos?.includes(PERMISOS.CREAR_PRODUCTO),
     },
     {
       variant: 'outlined',
@@ -231,6 +232,7 @@ const ListaProductos = () => {
       color: 'primary',
       size: 'large',
       outlineColor: colores.altertex[1],
+      disabled: !usuario?.permisos?.includes(PERMISOS.IMPORTAR_PRODUCTOS),
     },
     {
       variant: 'outlined',

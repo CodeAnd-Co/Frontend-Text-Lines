@@ -186,6 +186,7 @@ const ListaSetsProductos = () => {
       size: 'large',
       backgroundColor: colores.altertex[1],
       onClick: () => setModalCrearAbierto(true),
+      disabled: !usuario?.permisos?.includes(PERMISOS.CREAR_SET_PRODUCTOS),
     },
     {
       label: 'Eliminar',
@@ -202,7 +203,7 @@ const ListaSetsProductos = () => {
           setAbrirPopUpEliminar(true);
         }
       },
-      disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_GRUPO_EMPLEADOS),
+      disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_SET_PRODUCTOS),
       size: 'large',
       color: 'error',
       backgroundColor: colores.altertex[1],

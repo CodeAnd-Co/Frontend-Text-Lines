@@ -161,6 +161,7 @@ const ListaGrupoEmpleados = () => {
       color: 'error',
       size: 'large',
       backgroundColor: colores.altertex[1],
+      disabled: !usuario?.permisos?.includes(PERMISOS.CREAR_GRUPO_EMPLEADOS),
       // construccion: true,
     },
     {

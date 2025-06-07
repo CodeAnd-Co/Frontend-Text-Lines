@@ -64,7 +64,6 @@ const ListaPedidos = () => {
 
   // Funciones para editar pedido
   const abrirModalEditar = (pedido) => {
-    console.log('Fila seleccionada:', pedido);
     setPedidoSeleccionado(pedido);
     setModalAbierto(true);
   };

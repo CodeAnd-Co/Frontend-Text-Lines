@@ -71,7 +71,6 @@ const TemplateConInfoUsuario = (args) => {
   };
 
   const handleConfirm = () => {
-    console.log('Datos guardados:', form);
     setOpen(false);
   };
 

@@ -65,7 +65,6 @@ export const AuthProvider = ({ children }) => {
         headers: { 'x-api-key': API_KEY },
         withCredentials: true,
       });
-      console.log(respuesta)
       setCsrfToken(respuesta.data.csrfToken);
     } catch (error) {
       console.error('Error al obtener token CSRF:', error);

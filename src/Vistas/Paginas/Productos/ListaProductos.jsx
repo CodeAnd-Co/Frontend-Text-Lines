@@ -122,7 +122,11 @@ const ListaProductos = () => {
   const cerrarFormularioProducto = useCallback(() => {
     setMostrarModalProducto(false);
     recargar();
-  }, [recargar]);
+  }, []);
+
+  const cerrarFormularioActualizarProducto = useCallback(() => {
+    setMostrarModalActualizarProducto(false);
+  }, []);
 
   const cerrarFormularioProveedor = useCallback(() => {
     setMostrarModalProveedor(false);
@@ -283,7 +287,7 @@ const ListaProductos = () => {
         {mostrarModalActualizarProducto && (
           <FormularioActualizarProducto
             formularioAbierto={mostrarModalActualizarProducto}
-            alCerrarFormularioProducto={cerrarFormularioProducto}
+            alCerrarFormularioProducto={cerrarFormularioActualizarProducto}
             detalleProducto={detalleProducto}
           />
         )}

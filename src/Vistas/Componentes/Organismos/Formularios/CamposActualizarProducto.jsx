@@ -95,7 +95,7 @@ const TituloFormulario = memo(({ titulo, varianteTitulo, tamano = 12 }) => (
 ));
 
 const CampoImagenProducto = memo(
-  ({ imagenProducto, setImagenes, refInputArchivo, alAgregarImagenProducto }) => (
+  ({ imagenProducto, setImagenes, refInputArchivo, alAgregarImagenProducto, error }) => (
     <>
       {imagenProducto ? (
         <Grid size={12}>
@@ -104,19 +104,28 @@ const CampoImagenProducto = memo(
             texto={imagenProducto.name}
             onEliminar={() => setImagenes((prev) => ({ ...prev, imagenProducto: null }))}
             tooltipEliminar='Eliminar'
-            borderColor='primary.light'
-            backgroundColor='primary.lighter'
-            iconColor='primary'
+            borderColor={error ? 'error.main' : 'primary.light'}
+            backgroundColor={error ? 'error.lighter' : 'primary.lighter'}
+            iconColor={error ? 'error' : 'primary'}
             iconSize='large'
             textoVariant='caption'
             tabIndex={0}
             disabled={false}
           />
+          {error && (
+            <Texto variant='caption' color='error' sx={{ mt: 1, display: 'block' }}>
+              {error}
+            </Texto>
+          )}
         </Grid>
       ) : (
         <>
+          {' '}
           <Grid size={12}>
             <Texto variant='h6'>Sube la Imagen Principal del Producto Aquí</Texto>
+            <Texto variant='caption' color='text.secondary'>
+              Formatos aceptados: JPG, JPEG, PNG - Tamaño máximo: 5MB
+            </Texto>
           </Grid>
           <Grid size={12}>
             <TarjetaAccion
@@ -356,29 +365,30 @@ const CamposActualizarProducto = memo(
           valor={producto.descuento}
           error={erroresProducto?.descuento}
           helperText={erroresProducto?.descuento || 'Valores entre 0 y 100'}
-          onChange={alActualizarProducto}
+          onChange={(evento) => {
+            // Validar antes de pasar al manejador general
+            const valor = evento.target.value;
+
+            // Si está vacío o es un valor válido entre 0 y 100, actualizar
+            if (valor === '' || (parseFloat(valor) >= 0 && parseFloat(valor) <= 100)) {
+              // Formatear para asegurar que no exceda los límites
+              const valorFormateado = valor === '' ? '' : parseFloat(valor) > 100 ? '100' : valor;
+
+              // Solo llamar al actualizador si el valor es válido
+              alActualizarProducto({
+                target: {
+                  name: 'descuento',
+                  value: valorFormateado,
+                },
+              });
+            }
+          }}
           placeholder='Ej: 10'
           tipo='number'
           required={false}
           min={0}
           max={100}
           onKeyDown={prevenirNumerosNoDecimales}
-          onInput={(evento) => {
-            const valor = evento.target.value;
-            // Limitar a 3 dígitos (máximo 100)
-            if (valor) {
-              // Si el valor es mayor que 100, establecerlo a 100
-              if (parseFloat(valor) > 100) {
-                evento.target.value = '100';
-              }
-              // Si tiene más de 5 dígitos en total, truncarlo
-              const partes = valor.split('.');
-              if (partes[0] && partes[0].length > 3) {
-                partes[0] = partes[0].substring(0, 3);
-                evento.target.value = partes.join('.');
-              }
-            }
-          }}
         />
         <CampoSelectFormulario
           etiqueta='Envío'
@@ -407,12 +417,13 @@ const CamposActualizarProducto = memo(
           helperText={erroresProducto?.estado}
           placeholder='Selecciona el estado del producto'
           required
-        />
+        />{' '}
         <CampoImagenProducto
           imagenProducto={imagenProducto}
           setImagenes={setImagenes}
           refInputArchivo={refInputArchivo}
           alAgregarImagenProducto={alAgregarImagenProducto}
+          error={erroresProducto?.imagenProducto}
         />
       </>
     );

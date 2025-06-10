@@ -134,12 +134,32 @@ const FormularioModal = memo(
       }
     }, [formularioAbierto, detalleProducto, inicializarDatosProducto]);
 
+    // Efecto para manejar el cierre del modal cuando hay éxito en la actualización
+    React.useEffect(() => {
+      if (alerta && alerta.tipo === 'success' && alerta.mensaje?.includes('éxito')) {
+        // Mostrar el mensaje de éxito durante 1.5 segundos antes de cerrar el modal
+        const timerCierre = setTimeout(() => {
+          alCerrarFormularioProducto();
+        }, 1500);
+
+        // Limpiar el temporizador si el componente se desmonta o si cambia el estado de alerta
+        return () => clearTimeout(timerCierre);
+      }
+    }, [alerta, alCerrarFormularioProducto]);
+
+    // Función para manejar el cierre manual del modal
+    const handleCloseModal = React.useCallback(() => {
+      // Limpiar cualquier alerta pendiente
+      setAlerta(null);
+      // Cerrar el modal
+      alCerrarFormularioProducto();
+    }, [setAlerta, alCerrarFormularioProducto]);
+
     return (
       <>
-        {' '}
         <ModalFlotante
           open={formularioAbierto}
-          onClose={alCerrarFormularioProducto}
+          onClose={handleCloseModal}
           onConfirm={manejarGuardarProductoActualizado}
           titulo='Actualizar Producto'
           confirmLabel='Guardar'

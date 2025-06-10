@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useCallback, useMemo, useRef } from 'react';
 import { useConsultarProveedores } from '@Hooks/Proveedores/useConsultarProveedores';
 import { useCrearProducto } from '@Hooks/Productos/useCrearProducto';
+import { useActualizarProducto } from '@Hooks/Productos/useActualizarProducto';
 import { useGenerarSKU } from '@Hooks/Productos/useGenerarSKU';
 import { v4 as uuidv4 } from 'uuid';
 import { validarProducto } from '@Utilidades/Validaciones/validarProducto';
@@ -77,6 +78,7 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
   });
   const { proveedores } = useConsultarProveedores();
   const { guardarProducto } = useCrearProducto();
+  const { actualizarProducto } = useActualizarProducto();
 
   // Estados para manejar los errores
   const [erroresProducto, setErroresProducto] = useState({});
@@ -313,10 +315,10 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
           const nuevosErrores = { ...prevErrores };
 
           if (
-            validacionPartial[idVariante]
-            && validacionPartial[idVariante].opciones
-            && validacionPartial[idVariante].opciones[indiceOpcion]
-            && validacionPartial[idVariante].opciones[indiceOpcion][campo]
+            validacionPartial[idVariante] &&
+            validacionPartial[idVariante].opciones &&
+            validacionPartial[idVariante].opciones[indiceOpcion] &&
+            validacionPartial[idVariante].opciones[indiceOpcion][campo]
           ) {
             // Asegurarse de que existe la estructura para guardar el error
             if (!nuevosErrores[idVariante]) {
@@ -330,12 +332,12 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
             }
 
             // Guardar el error de este campo específico
-            nuevosErrores[idVariante].opciones[indiceOpcion][campo]
-              = validacionPartial[idVariante].opciones[indiceOpcion][campo];
+            nuevosErrores[idVariante].opciones[indiceOpcion][campo] =
+              validacionPartial[idVariante].opciones[indiceOpcion][campo];
           } else if (
-            nuevosErrores[idVariante]
-            && nuevosErrores[idVariante].opciones
-            && nuevosErrores[idVariante].opciones[indiceOpcion]
+            nuevosErrores[idVariante] &&
+            nuevosErrores[idVariante].opciones &&
+            nuevosErrores[idVariante].opciones[indiceOpcion]
           ) {
             // Eliminar el error si ya no existe
             delete nuevosErrores[idVariante].opciones[indiceOpcion][campo];
@@ -394,23 +396,22 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       };
     });
   }, []); // Esta función se usa para actualizar y validar un campo individual del producto
-  const manejarActualizarProducto = useCallback((evento) => {
-    const { name, value } = evento.target;
-    console.log(`Actualizando campo ${name} con valor ${value}`);
+  const manejarActualizarProducto = useCallback(
+    (evento) => {
+      const { name, value } = evento.target;
 
-    // Primero actualizar el estado del producto
-    setProducto((prev) => {
-      const nuevoProducto = { ...prev, [name]: value };
-      console.log('Estado actualizado del producto:', nuevoProducto);
-      return nuevoProducto;
-    });
+      // Actualizar el estado del producto sin console.log
+      setProducto((prev) => {
+        // No necesitamos duplicar la validación del estado previo
+        return { ...prev, [name]: value };
+      });
 
-    // Luego, en una operación separada, validar y actualizar errores
-    setTimeout(() => {
-      // Esta validación se ejecutará después de que el estado se haya actualizado
-      setProducto((productoActual) => {
+      // Posponemos la validación para que se ejecute después de que el estado se haya actualizado
+      // pero evitamos usar setTimeout que puede causar problemas
+      requestAnimationFrame(() => {
         // Validar solo el campo que se está actualizando
-        const validacionPartial = validarProducto(productoActual);
+        const campoParaValidar = { [name]: value };
+        const validacionPartial = validarProducto({ ...producto, ...campoParaValidar });
 
         // Actualizar solo el error del campo específico
         setErroresProducto((prevErrores) => {
@@ -426,62 +427,92 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
 
           return nuevosErrores;
         });
-
-        // Devolver el mismo estado, no estamos modificando nada aquí
-        return productoActual;
       });
-    }, 0);
-  }, []);
+    },
+    [producto]
+  );
+
   // Esta función se usa para guardar el producto actualizado cuando se presiona "Guardar"
   const manejarGuardarProductoActualizado = useCallback(async () => {
     try {
       setCargando(true);
+
+      // Validate that we have a product ID
+      if (!producto.idProducto) {
+        setAlerta({
+          tipo: 'error',
+          mensaje:
+            'El ID del producto es requerido para actualizar. Por favor, asegúrate de seleccionar un producto válido.',
+        });
+        setCargando(false);
+        return;
+      }
+
+      // Validar tamaño de imágenes primero
+      const tamanioMaximoBytes = 5 * 1024 * 1024;
+      let erroresImagenes = {};
+
+      // Validar imagen principal
+      if (imagenes.imagenProducto && imagenes.imagenProducto.size > tamanioMaximoBytes) {
+        erroresImagenes.imagenProducto =
+          'La imagen es demasiado grande. El tamaño máximo permitido es 5MB.';
+      }
+
+      // Validar imágenes de variantes
+      Object.entries(imagenes.imagenesVariantes).forEach(([idVariante, imagenesVariante]) => {
+        const imagenesGrandes = imagenesVariante.filter(
+          (img) => img.file && img.file.size > tamanioMaximoBytes
+        );
+        if (imagenesGrandes.length > 0) {
+          if (!erroresImagenes.variantes) erroresImagenes.variantes = {};
+          erroresImagenes.variantes[
+            idVariante
+          ] = `${imagenesGrandes.length} imagen(es) excede(n) el tamaño máximo de 5MB.`;
+        }
+      });
+
       setAlerta({
         tipo: 'info',
         mensaje: 'Validando datos del producto...',
       });
 
-      // Convertir variantes de objeto a array para validación
-      const variantesArray = Object.entries(variantes).map(([idVariante, datos]) => ({
-        identificador: idVariante,
-        ...datos,
-      }));
-
       // Validar datos del producto
       const erroresValidacionProducto = validarProducto(producto);
-      setErroresProducto(erroresValidacionProducto);
 
       // Validar datos de las variantes
       const erroresValidacionVariantes = validarVariantes(variantes);
-      setErroresVariantes(erroresValidacionVariantes); // Verificar si hay errores
-      if (
-        Object.keys(erroresValidacionProducto).length > 0
-        || Object.keys(erroresValidacionVariantes).length > 0
-      ) {
-        // Incrementar contador de intentos enviar para mostrar todos los errores
-        setIntentosEnviar((prevIntentos) => prevIntentos + 1);
 
-        // Crear un mensaje de error más detallado
+      // Combinar todos los errores
+      const hayErroresImagenes = Object.keys(erroresImagenes).length > 0;
+      const hayErroresProducto = Object.keys(erroresValidacionProducto).length > 0;
+      const hayErroresVariantes = Object.keys(erroresValidacionVariantes).length > 0;
+
+      // Actualizar estados de error
+      setErroresProducto({
+        ...erroresValidacionProducto,
+        ...(erroresImagenes.imagenProducto && { imagenProducto: erroresImagenes.imagenProducto }),
+      });
+
+      setErroresVariantes((prev) => ({
+        ...erroresValidacionVariantes,
+        ...(erroresImagenes.variantes || {}),
+      }));
+
+      // Si hay errores, mostrar mensaje y detener el proceso
+      if (hayErroresImagenes || hayErroresProducto || hayErroresVariantes) {
+        setIntentosEnviar((prev) => prev + 1);
+
         let mensajeError = 'Por favor revisa los siguientes campos:';
 
-        // Agregar errores del producto
-        if (Object.keys(erroresValidacionProducto).length > 0) {
-          const camposConErrores = Object.keys(erroresValidacionProducto)
-            .map((campo) => {
-              // Convertir camelCase a texto legible
-              const nombreCampo = campo
-                .replace(/([A-Z])/g, ' $1') // Insertar un espacio antes de cada letra mayúscula
-                .toLowerCase() // Convertir todo a minúsculas
-                .replace(/^./, (str) => str.toUpperCase()); // Capitalizar la primera letra
-              return nombreCampo;
-            })
-            .join(', ');
-
+        if (hayErroresProducto || erroresImagenes.imagenProducto) {
+          const camposConErrores = [
+            ...Object.keys(erroresValidacionProducto),
+            ...(erroresImagenes.imagenProducto ? ['imagen principal'] : []),
+          ].join(', ');
           mensajeError += `\n- Datos del producto: ${camposConErrores}`;
         }
 
-        // Agregar errores de las variantes
-        if (Object.keys(erroresValidacionVariantes).length > 0) {
+        if (hayErroresVariantes || erroresImagenes.variantes) {
           mensajeError += '\n- Hay errores en una o más variantes y sus opciones';
         }
 
@@ -493,7 +524,21 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
         return;
       }
 
-      // Validar que haya al menos una variante
+      // Validar estructura básica del producto
+      if (!imagenes.imagenProducto) {
+        setAlerta({
+          tipo: 'error',
+          mensaje: 'Debes seleccionar una imagen principal para el producto.',
+        });
+        setCargando(false);
+        return;
+      }
+
+      const variantesArray = Object.entries(variantes).map(([idVariante, datos]) => ({
+        identificador: idVariante,
+        ...datos,
+      }));
+
       if (!variantesArray.length) {
         setAlerta({
           tipo: 'error',
@@ -503,7 +548,6 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
         return;
       }
 
-      // Validar que cada variante tenga al menos una opción
       const variantesSinOpciones = variantesArray.filter(
         (variante) => !Array.isArray(variante.opciones) || variante.opciones.length === 0
       );
@@ -515,66 +559,164 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
         });
         setCargando(false);
         return;
-      }
-
-      // Validar imagen del producto
-      if (!imagenes.imagenProducto) {
-        setAlerta({
-          tipo: 'error',
-          mensaje: 'Debes seleccionar una imagen principal para el producto.',
-        });
-        setCargando(false);
-        return;
-      }
-
+      } // Si llegamos aquí, todo está validado. Proceder con la actualización
       setAlerta({
         tipo: 'info',
         mensaje: 'Actualizando producto...',
       });
 
-      console.log('Guardando producto con datos:', {
-        producto,
-        variantes: variantesArray,
-        imagenes,
-      });
+      try {
+        // Formateamos los datos para la actualización
+        const datosVariantes = Object.entries(variantes).map(([id, datos]) => ({
+          identificador: id,
+          nombreVariante: datos.nombreVariante,
+          descripcion: datos.descripcion,
+          opciones: datos.opciones.map((opcion) => ({
+            cantidad: parsearNumero(opcion.cantidad),
+            valorOpcion: opcion.valorOpcion,
+            SKUautomatico: opcion.SKUautomatico || '',
+            SKUcomercial: opcion.SKUcomercial || '',
+            costoAdicional: parsearNumero(opcion.costoAdicional),
+            descuento: parsearNumero(opcion.descuento),
+            estado: Number(opcion.estado) || 1,
+          })),
+        }));
 
-      // Aquí iría la lógica para enviar los datos actualizados al backend
-      // Por ahora, simulamos una actualización exitosa
-      setTimeout(() => {
-        setAlerta({
-          tipo: 'success',
-          mensaje: 'Producto actualizado con éxito',
+        const productoFormateado = {
+          ...producto,
+          idProducto: producto.idProducto, // Ensure idProducto is included
+          precioPuntos: parsearNumero(producto.precioPuntos),
+          precioCliente: parsearNumero(producto.precioCliente),
+          precioVenta: parsearNumero(producto.precioVenta),
+          costo: parsearNumero(producto.costo),
+          impuesto: parsearNumero(producto.impuesto),
+          descuento: parsearNumero(producto.descuento),
+          estado: Number(producto.estado) || 1,
+          envio: parsearNumero(producto.envio),
+          idProveedor: parsearNumero(producto.idProveedor),
+        };
+
+        // Llamada a la API para actualizar el producto
+        const resultado = await actualizarProducto({
+          productoRaw: productoFormateado,
+          variantesRaw: datosVariantes,
+          imagenProducto: imagenes.imagenProducto,
+          imagenesVariantes: imagenes.imagenesVariantes,
         });
 
-        setCargando(false);
+        // Si la actualización fue exitosa
+        if (resultado?.exito) {
+          setAlerta({
+            tipo: 'success',
+            mensaje: 'Producto actualizado con éxito',
+          });
 
-        // Cerrar el formulario después de unos segundos
-        setTimeout(() => {
-          alCerrarFormularioProducto();
-        }, 2000);
-      }, 1000);
+          // Después de un breve retraso, cerrar el formulario
+          setTimeout(() => {
+            alCerrarFormularioProducto();
+          }, 2000);
+        } else if (resultado?.mensaje) {
+          setAlerta({
+            tipo: 'error',
+            mensaje: resultado.mensaje,
+          });
+        } else {
+          setAlerta({
+            tipo: 'success',
+            mensaje: 'Producto actualizado con éxito',
+          });
+
+          // Después de un breve retraso, cerrar el formulario
+          setTimeout(() => {
+            alCerrarFormularioProducto();
+          }, 2000);
+        }
+
+        // No cerramos el modal aquí, dejamos que el useEffect en FormularioModal se encargue
+        // después de mostrar el mensaje de éxito por un momento
+      } catch (error) {
+        console.error('Error en la comunicación con el servidor:', error);
+        setAlerta({
+          tipo: 'error',
+          mensaje: 'Error al comunicarse con el servidor',
+        });
+      }
     } catch (error) {
       console.error('Error al actualizar producto:', error);
       setAlerta({
         tipo: 'error',
-        mensaje:
-          `Ocurrió un error al actualizar el producto: ${error.message || 'Error desconocido'}`,
+        mensaje: `Ocurrió un error al actualizar el producto: ${
+          error.message || 'Error desconocido'
+        }`,
       });
+    } finally {
       setCargando(false);
     }
-  }, [producto, variantes, imagenes, alCerrarFormularioProducto]);
+  }, [producto, variantes, imagenes, alCerrarFormularioProducto, actualizarProducto]);
 
   const manejarAgregarImagenVariante = useCallback(
     (idVariante, archivos) => {
+      // Tamaño máximo permitido: 5MB (5 * 1024 * 1024 bytes)
+      const tamanioMaximoBytes = 5 * 1024 * 1024;
+
+      // Verificar cada archivo por tamaño
+      const archivosSobredimensionados = archivos.filter(
+        (archivo) => archivo.size > tamanioMaximoBytes
+      );
+
+      if (archivosSobredimensionados.length > 0) {
+        const mensajeError =
+          archivosSobredimensionados.length > 1
+            ? `${archivosSobredimensionados.length} imágenes exceden el tamaño máximo de 5MB.`
+            : 'La imagen es demasiado grande. El tamaño máximo permitido es 5MB.';
+
+        setAlerta({
+          tipo: 'error',
+          mensaje: mensajeError,
+        });
+
+        // Añadir error a la variante específica
+        setErroresVariantes((prevErrores) => {
+          const nuevosErrores = { ...prevErrores };
+          if (!nuevosErrores[idVariante]) {
+            nuevosErrores[idVariante] = {};
+          }
+          nuevosErrores[idVariante].imagenes = mensajeError;
+          return nuevosErrores;
+        });
+
+        // Si hay archivos válidos, continuamos con ellos
+        if (archivosSobredimensionados.length === archivos.length) {
+          return; // Si todos los archivos exceden el tamaño, no hacemos nada
+        }
+      } else {
+        // Limpiar errores de imágenes para esta variante si todos los archivos son válidos
+        setErroresVariantes((prevErrores) => {
+          const nuevosErrores = { ...prevErrores };
+          if (nuevosErrores[idVariante]?.imagenes) {
+            delete nuevosErrores[idVariante].imagenes;
+            if (Object.keys(nuevosErrores[idVariante]).length === 0) {
+              delete nuevosErrores[idVariante];
+            }
+          }
+          return nuevosErrores;
+        });
+      }
+
+      // Filtrar solo los archivos que no exceden el tamaño
+      const archivosValidos = archivos.filter((archivo) => archivo.size <= tamanioMaximoBytes);
+
+      if (archivosValidos.length === 0) return;
+
       setImagenes((prev) => {
         const imagenesVariante = prev.imagenesVariantes[idVariante] || [];
-        const nuevasImagenes = archivos.map((archivo) => ({
+        const nuevasImagenes = archivosValidos.map((archivo) => ({
           id: `${archivo.name}_${uuidv4()}_${idVariante}`,
           idVariante,
           file: archivo,
         }));
 
-        setSiguienteIdImagen(siguienteIdImagen + archivos.length);
+        setSiguienteIdImagen(siguienteIdImagen + archivosValidos.length);
 
         return {
           ...prev,
@@ -588,7 +730,9 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       setAlerta({
         tipo: 'success',
         mensaje: `${
-          archivos.length > 1 ? `${archivos.length} imágenes agregadas` : 'Imagen agregada'
+          archivosValidos.length > 1
+            ? `${archivosValidos.length} imágenes agregadas`
+            : 'Imagen agregada'
         } a la variante`,
       });
     },
@@ -725,10 +869,37 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       setCargando(false);
     }
   }, [guardarProducto, imagenes, producto, variantes, alCerrarFormularioProducto]);
-
   const manejarAgregarImagenProducto = useCallback((evento) => {
     const archivo = evento.target.files[0];
     if (!archivo) return;
+
+    // Tamaño máximo permitido: 5MB (5 * 1024 * 1024 bytes)
+    const tamanioMaximoBytes = 5 * 1024 * 1024;
+
+    if (archivo.size > tamanioMaximoBytes) {
+      // Mostrar alerta de error y no actualizar la imagen
+      setAlerta({
+        tipo: 'error',
+        mensaje: 'La imagen es demasiado grande. El tamaño máximo permitido es 5MB.',
+      });
+
+      // Añadir error específico para la imagen
+      setErroresProducto((prevErrores) => ({
+        ...prevErrores,
+        imagenProducto: 'La imagen es demasiado grande. El tamaño máximo permitido es 5MB.',
+      }));
+
+      // No actualizar la imagen si excede el tamaño
+      evento.target.value = '';
+      return;
+    }
+
+    // Limpiar cualquier error de imagen anterior
+    setErroresProducto((prevErrores) => {
+      const nuevosErrores = { ...prevErrores };
+      delete nuevosErrores.imagenProducto;
+      return nuevosErrores;
+    });
 
     setImagenes((prev) => ({ ...prev, imagenProducto: archivo }));
 
@@ -771,6 +942,7 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
 
       // Inicializar datos básicos del producto
       setProducto({
+        idProducto: detalleProducto.idProducto, // Ensure idProducto is included
         nombreComun: detalleProducto.nombreComun || '',
         nombreComercial: detalleProducto.nombreComercial || '',
         descripcion: detalleProducto.descripcion || '',

@@ -105,14 +105,17 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
 
     setIdsVariantes((prev) => [...prev, nuevoId].sort((id1, id2) => id1 - id2));
 
-    setImagenes((prev) => ({
-      ...prev,
-      imagenesVariantes: {
-        ...prev.imagenesVariantes,
-        [nuevoId]: [],
-      },
-    }));
+    setImagenes((prev) => {
+      const imagenesActualizadas = { ...prev };
+      idsVariantes.forEach((id) => {
+        if (!imagenesActualizadas.imagenesVariantes[id]) {
+          imagenesActualizadas.imagenesVariantes[id] = [];
+        }
+      });
+      return imagenesActualizadas;
+    });
   }, [idsVariantes]);
+
   const manejarActualizarVariante = useCallback((idVariante, campo, valor) => {
     // Primero actualizar el estado de las variantes
     setVariantes((prev) => {
@@ -375,9 +378,8 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       ) {
         return variantesActuales;
       }
-
       const opcionesActualizadas = varianteActual.opciones.filter(
-        (_, index) => index !== indiceOpcion
+        (opcion, index) => index !== indiceOpcion
       );
 
       setAlerta({
@@ -932,10 +934,9 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       })) || [],
     [proveedores]
   );
-
   useMemo(() => {
-    setImagenes((prev) => {
-      const imagenesActualizadas = { ...prev };
+    setImagenes((imagenesActuales) => {
+      const imagenesActualizadas = { ...imagenesActuales };
 
       idsVariantes.forEach((id) => {
         if (!imagenesActualizadas.imagenesVariantes[id]) {

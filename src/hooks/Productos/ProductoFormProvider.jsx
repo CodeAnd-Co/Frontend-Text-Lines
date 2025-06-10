@@ -364,23 +364,21 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
     },
     [generarSKUAutomatico, producto.nombreComun]
   );
-
   const manejarEliminarOpcion = useCallback((idVariante, indiceOpcion) => {
-    setVariantes((prev) => {
-      const varianteActual = prev[idVariante];
+    setVariantes((variantesActuales) => {
+      const varianteActual = variantesActuales[idVariante];
       // prettier-ignore
       if (
         !varianteActual 
         || !varianteActual.opciones 
         || indiceOpcion >= varianteActual.opciones.length
       ) {
-        return prev;
+        return variantesActuales;
       }
 
-      const opcionesActualizadas = [
-        ...varianteActual.opciones.slice(0, indiceOpcion),
-        ...varianteActual.opciones.slice(indiceOpcion + 1),
-      ];
+      const opcionesActualizadas = varianteActual.opciones.filter(
+        (_, index) => index !== indiceOpcion
+      );
 
       setAlerta({
         tipo: 'success',
@@ -388,12 +386,37 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       });
 
       return {
-        ...prev,
+        ...variantesActuales,
         [idVariante]: {
           ...varianteActual,
           opciones: opcionesActualizadas,
         },
       };
+    });
+
+    // Also clear any errors associated with the removed option
+    setErroresVariantes((erroresPrevios) => {
+      if (!erroresPrevios[idVariante]?.opciones?.[indiceOpcion]) {
+        return erroresPrevios;
+      }
+
+      const nuevosErrores = { ...erroresPrevios };
+
+      if (nuevosErrores[idVariante]?.opciones) {
+        const opcionesActualizadas = { ...nuevosErrores[idVariante].opciones };
+        delete opcionesActualizadas[indiceOpcion];
+
+        if (Object.keys(opcionesActualizadas).length === 0) {
+          delete nuevosErrores[idVariante].opciones;
+          if (Object.keys(nuevosErrores[idVariante]).length === 0) {
+            delete nuevosErrores[idVariante];
+          }
+        } else {
+          nuevosErrores[idVariante].opciones = opcionesActualizadas;
+        }
+      }
+
+      return nuevosErrores;
     });
   }, []); // Esta función se usa para actualizar y validar un campo individual del producto
   const manejarActualizarProducto = useCallback(

@@ -1,6 +1,5 @@
 //RF [29] Actualiza Producto - [https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF29]
 import { useState } from 'react';
-import axios from 'axios';
 import { RepositorioActualizarProducto } from '@Repositorios/Productos/RepositorioActualizarProducto';
 import { validarProducto } from '@Utilidades/Validaciones/validarProducto';
 import { validarVariantes } from '@Utilidades/Validaciones/validarVariantes';

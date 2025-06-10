@@ -400,14 +400,10 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
     (evento) => {
       const { name, value } = evento.target;
 
-      // Actualizar el estado del producto sin console.log
       setProducto((prev) => {
-        // No necesitamos duplicar la validación del estado previo
         return { ...prev, [name]: value };
       });
 
-      // Posponemos la validación para que se ejecute después de que el estado se haya actualizado
-      // pero evitamos usar setTimeout que puede causar problemas
       requestAnimationFrame(() => {
         // Validar solo el campo que se está actualizando
         const campoParaValidar = { [name]: value };
@@ -432,12 +428,9 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
     [producto]
   );
 
-  // Esta función se usa para guardar el producto actualizado cuando se presiona "Guardar"
   const manejarGuardarProductoActualizado = useCallback(async () => {
     try {
       setCargando(true);
-
-      // Validate that we have a product ID
       if (!producto.idProducto) {
         setAlerta({
           tipo: 'error',
@@ -448,7 +441,6 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
         return;
       }
 
-      // Validar tamaño de imágenes primero
       const tamanioMaximoBytes = 5 * 1024 * 1024;
       let erroresImagenes = {};
 

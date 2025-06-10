@@ -11,6 +11,7 @@ const validarDatosCrearEmpleado = (datos) => {
   const tieneCaracterEspecial = /[!@#$%^&*(),.?":{}|<>]/;
   const tieneMayuscula = /[A-Z]/;
   const tieneMinuscula = /[a-z]/;
+  const soloIngles = /^[A-Za-z0-9!@#$%^&*(),.?":{}|<> ]*$/;
   const tieneNumero = /\d/;
 
   if (!datos.nombreCompleto || datos.nombreCompleto.trim() === '') {
@@ -49,6 +50,8 @@ const validarDatosCrearEmpleado = (datos) => {
     errores.contrasenia = 'La contraseña debe tener al menos 8 caracteres';
   } else if (!tieneCaracterEspecial.test(datos.contrasenia)) {
     errores.contrasenia = 'Debe contener al menos un carácter especial';
+  } else if (!soloIngles.test(datos.contrasenia)) {
+    errores.contrasenia = 'No se permiten ñ, Ñ ni tildes.';
   } else if (!tieneMayuscula.test(datos.contrasenia)) {
     errores.contrasenia = 'Debe contener al menos una letra mayúscula';
   } else if (!tieneMinuscula.test(datos.contrasenia)) {
@@ -56,8 +59,8 @@ const validarDatosCrearEmpleado = (datos) => {
   } else if (!tieneNumero.test(datos.contrasenia)) {
     errores.contrasenia = 'Debe contener al menos un número';
   } else if (datos.contrasenia.replace(/\s/g, '').length < 2) {
-    errores.contrasenia
-      = 'La contraseña no puede estar compuesta solo de espacios y un carácter especial';
+    errores.contrasenia =
+      'La contraseña no puede estar compuesta solo de espacios y un carácter especial';
   }
 
   if (!datos.confirmarContrasenia || datos.confirmarContrasenia.trim() === '') {
@@ -75,9 +78,9 @@ const validarDatosCrearEmpleado = (datos) => {
     errores.posicion = true;
   }
   if (
-    !datos.cantidadPuntos
-    || isNaN(Number(datos.cantidadPuntos))
-    || Number(datos.cantidadPuntos) < 0
+    !datos.cantidadPuntos ||
+    isNaN(Number(datos.cantidadPuntos)) ||
+    Number(datos.cantidadPuntos) < 0
   ) {
     errores.cantidadPuntos = 'La cantidad de puntos debe ser un número positivo';
   }

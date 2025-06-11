@@ -48,11 +48,9 @@ const FormaCrearSetsProducto = ({
     if (!yaExiste) {
       setProductos((prev) => [...prev, productoSeleccionado]);
     } else {
-      // Remove product if it already exists (toggle behavior)
       setProductos((prev) => prev.filter((producto) => producto.id !== productoSeleccionado.id));
     }
 
-    // Clear products error when a product is selected
     if (erroresCampos?.productos) {
       setErroresCampos(prev => ({ ...prev, productos: false }));
     }
@@ -61,15 +59,12 @@ const FormaCrearSetsProducto = ({
   const handleFilaSeleccion = (itemSeleccion) => {
     const ids = Array.isArray(itemSeleccion) ? itemSeleccion : Array.from(itemSeleccion?.ids || []);
 
-    // Get all products that correspond to the selected IDs
     const productosSeleccionados = ids
       .map((id) => rows.find((row) => row.id === id))
       .filter((fila) => fila);
 
-    // Update the productos array to match exactly what's selected
     setProductos(productosSeleccionados);
 
-    // Clear products error when products are selected
     if (erroresCampos?.productos && productosSeleccionados.length > 0) {
       setErroresCampos(prev => ({ ...prev, productos: false }));
     }
@@ -83,7 +78,6 @@ const FormaCrearSetsProducto = ({
       setNombreSetsProducto('');
     }
 
-    // Clear error when user starts typing
     if (erroresCampos?.nombre && value.trim()) {
       setErroresCampos(prev => ({ ...prev, nombre: false }));
     }
@@ -97,7 +91,6 @@ const FormaCrearSetsProducto = ({
       setNombreVisible('');
     }
 
-    // Clear error when user starts typing
     if (erroresCampos?.nombreVisible && value.trim()) {
       setErroresCampos(prev => ({ ...prev, nombreVisible: false }));
     }
@@ -111,7 +104,6 @@ const FormaCrearSetsProducto = ({
       setDescripcionSetsProducto('');
     }
 
-    // Clear error when user starts typing
     if (erroresCampos?.descripcion && value.trim()) {
       setErroresCampos(prev => ({ ...prev, descripcion: false }));
     }

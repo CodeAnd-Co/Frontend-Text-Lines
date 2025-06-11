@@ -435,8 +435,8 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
         const validacionPartial = validarProducto({ ...producto, ...campoParaValidar });
 
         // Actualizar solo el error del campo específico
-        setErroresProducto((prevErrores) => {
-          const nuevosErrores = { ...prevErrores };
+        setErroresProducto((erroresActuales) => {
+          const nuevosErrores = { ...erroresActuales };
 
           // Si hay un error para este campo, actualizarlo
           if (validacionPartial[name]) {
@@ -510,7 +510,7 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
         ...(erroresImagenes.imagenProducto && { imagenProducto: erroresImagenes.imagenProducto }),
       });
 
-      setErroresVariantes((prev) => ({
+      setErroresVariantes(() => ({
         ...erroresValidacionVariantes,
         ...(erroresImagenes.variantes || {}),
       }));
@@ -901,8 +901,8 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       });
 
       // Añadir error específico para la imagen
-      setErroresProducto((prevErrores) => ({
-        ...prevErrores,
+      setErroresProducto((erroresActuales) => ({
+        ...erroresActuales,
         imagenProducto: 'La imagen es demasiado grande. El tamaño máximo permitido es 5MB.',
       }));
 
@@ -912,8 +912,8 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
     }
 
     // Limpiar cualquier error de imagen anterior
-    setErroresProducto((prevErrores) => {
-      const nuevosErrores = { ...prevErrores };
+    setErroresProducto((erroresActuales) => {
+      const nuevosErrores = { ...erroresActuales };
       delete nuevosErrores.imagenProducto;
       return nuevosErrores;
     });

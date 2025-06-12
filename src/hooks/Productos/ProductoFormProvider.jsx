@@ -318,10 +318,10 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
           const nuevosErrores = { ...prevErrores };
 
           if (
-            validacionPartial[idVariante] &&
-            validacionPartial[idVariante].opciones &&
-            validacionPartial[idVariante].opciones[indiceOpcion] &&
-            validacionPartial[idVariante].opciones[indiceOpcion][campo]
+            validacionPartial[idVariante]
+            && validacionPartial[idVariante].opciones
+            && validacionPartial[idVariante].opciones[indiceOpcion]
+            && validacionPartial[idVariante].opciones[indiceOpcion][campo]
           ) {
             // Asegurarse de que existe la estructura para guardar el error
             if (!nuevosErrores[idVariante]) {
@@ -335,12 +335,12 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
             }
 
             // Guardar el error de este campo específico
-            nuevosErrores[idVariante].opciones[indiceOpcion][campo] =
-              validacionPartial[idVariante].opciones[indiceOpcion][campo];
+            nuevosErrores[idVariante].opciones[indiceOpcion][campo]
+              = validacionPartial[idVariante].opciones[indiceOpcion][campo];
           } else if (
-            nuevosErrores[idVariante] &&
-            nuevosErrores[idVariante].opciones &&
-            nuevosErrores[idVariante].opciones[indiceOpcion]
+            nuevosErrores[idVariante]
+            && nuevosErrores[idVariante].opciones
+            && nuevosErrores[idVariante].opciones[indiceOpcion]
           ) {
             // Eliminar el error si ya no existe
             delete nuevosErrores[idVariante].opciones[indiceOpcion][campo];
@@ -471,8 +471,8 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
 
       // Validar imagen principal
       if (imagenes.imagenProducto && imagenes.imagenProducto.size > tamanioMaximoBytes) {
-        erroresImagenes.imagenProducto =
-          'La imagen es demasiado grande. El tamaño máximo permitido es 5MB.';
+        erroresImagenes.imagenProducto
+          = 'La imagen es demasiado grande. El tamaño máximo permitido es 5MB.';
       }
 
       // Validar imágenes de variantes
@@ -673,8 +673,8 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
       );
 
       if (archivosSobredimensionados.length > 0) {
-        const mensajeError =
-          archivosSobredimensionados.length > 1
+        const mensajeError
+          = archivosSobredimensionados.length > 1
             ? `${archivosSobredimensionados.length} imágenes exceden el tamaño máximo de 5MB.`
             : 'La imagen es demasiado grande. El tamaño máximo permitido es 5MB.';
 

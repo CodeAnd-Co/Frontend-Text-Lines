@@ -164,7 +164,7 @@ const CamposActualizarProducto = memo(
     if (!producto) return null;
     return (
       <>
-        <TituloFormulario titulo='Datos del Proveedor' varianteTitulo='h6' tamano={6} />
+        <TituloFormulario titulo='Datos del Proveedor' varianteTitulo='h6' tamano={12} />
         <CampoSelectFormulario
           etiqueta='Proveedor'
           nombre='idProveedor'
@@ -174,6 +174,7 @@ const CamposActualizarProducto = memo(
           error={erroresProducto?.idProveedor}
           helperText={erroresProducto?.idProveedor}
           placeholder='Selecciona un proveedor'
+          size={12}
           required
         />
         <TituloFormulario titulo='Datos del Producto' varianteTitulo='h6' />

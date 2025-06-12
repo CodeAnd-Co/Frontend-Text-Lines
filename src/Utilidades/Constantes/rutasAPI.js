@@ -44,7 +44,8 @@ export const RUTAS_API = {
     ELIMINAR_PRODUCTO: `${BASE_PRODUCTOS}/eliminar`,
     IMPORTAR: `${BASE_PRODUCTOS}/importar`,
     LEER_PRODCUTO: `${BASE_PRODUCTOS}/leer-producto`,
-    EXPORTAR_PRODUCTOS: `${BASE_PRODUCTOS}/exportar-productos`
+    EXPORTAR_PRODUCTOS: `${BASE_PRODUCTOS}/exportar-productos`,
+    ACTUALIZAR_PRODUCTO: `${BASE_PRODUCTOS}/actualizar`,
   },
   PROVEEDORES: {
     BASE: BASE_PROVEEDORES,

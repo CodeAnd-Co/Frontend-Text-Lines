@@ -50,7 +50,7 @@ export function useConsultarEmpleados() {
   }, [usuario, recargarToken]);
 
   const recargar = () => {
-    setRecargarToken(prev => prev + 1);
+    setRecargarToken((prev) => prev + 1);
   };
 
   return { empleados, mensaje, cargando, error, recargar };

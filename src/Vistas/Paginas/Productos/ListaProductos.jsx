@@ -10,6 +10,7 @@ import ContenedorLista from '@Organismos/ContenedorLista';
 import Alerta from '@Moleculas/Alerta';
 import PopUp from '@Moleculas/PopUp';
 import FormularioProducto from '@Organismos/Formularios/FormularioProducto';
+import FormularioActualizarProducto from '@Organismos/Formularios/FormularioActualizarProducto';
 import FormularioProveedor from '@Organismos/Formularios/FormularioProveedor';
 import { useConsultarProductos } from '@Hooks/Productos/useConsultarProductos';
 import { useEliminarProductos } from '@Hooks/Productos/useEliminarProductos';
@@ -38,13 +39,13 @@ const ListaProductos = () => {
   const [openModalEliminar, setAbrirPopUp] = useState(false);
   const [modalImportarAbierto, setModalImportarAbierto] = useState(false);
   const { importar, errores, exito, cargando: cargandoImportacion } = useImportarProductos();
- 
-  
-  const [abrirModalDetalle, setAbrirModalDetalle] = useState(false);
-  const [imagenProducto, setImagenProducto] = useState('')
 
+  const [abrirModalDetalle, setAbrirModalDetalle] = useState(false);
+  const [imagenProducto, setImagenProducto] = useState('');
+  const [mostrarModalActualizarProducto, setMostrarModalActualizarProducto] = useState(false);
   const [openModalExportar, setAbrirPopUpExportar] = useState(false);
-  const MENSAJE_POPUP_EXPORTAR = '¿Deseas exportar la lista de productos? El archivo será generado en formato .xlsx';
+  const MENSAJE_POPUP_EXPORTAR
+    = '¿Deseas exportar la lista de productos? El archivo será generado en formato .xlsx';
   const manejarCancelarExportar = () => {
     setAbrirPopUpExportar(false);
   };
@@ -66,7 +67,7 @@ const ListaProductos = () => {
   };
 
   const { exportar, error: errorExportar, mensaje } = useExportarProductos();
-  
+
   useEffect(() => {
     if (errorExportar) {
       setAlerta({
@@ -108,6 +109,10 @@ const ListaProductos = () => {
     setMostrarModalProducto(true);
     setMostrarModalProveedor(false);
   }, []);
+  const mostrarFormularioActualizarProducto = useCallback(() => {
+    setMostrarModalActualizarProducto(true);
+    setAbrirModalDetalle(false);
+  }, []);
 
   const mostrarFormularioProveedor = useCallback(() => {
     setMostrarModalProducto(false);
@@ -116,6 +121,10 @@ const ListaProductos = () => {
 
   const cerrarFormularioProducto = useCallback(() => {
     setMostrarModalProducto(false);
+    recargar();
+  }, [recargar]);
+  const cerrarFormularioActualizarProducto = useCallback(() => {
+    setMostrarModalActualizarProducto(false);
     recargar();
   }, [recargar]);
 
@@ -127,7 +136,6 @@ const ListaProductos = () => {
   const manejarCancelarEliminar = () => {
     setAbrirPopUp(false);
   };
-
   const manejarConfirmarEliminar = async () => {
     try {
       const urlsImagenes = productos
@@ -194,10 +202,10 @@ const ListaProductos = () => {
       renderCell: ({ row: { estado } }) => (
         <Chip
           label={estado === 1 ? 'Disponible' : 'No disponible'}
-          variant="filled"
+          variant='filled'
           color={estado === 1 ? 'primary' : undefined}
-          size="medium"
-          shape="cuadrada"
+          size='medium'
+          shape='cuadrada'
           backgroundColor={estado === 1 ? undefined : '#f0f0f0'}
           textColor={estado === 1 ? undefined : '#000000'}
         />
@@ -229,7 +237,6 @@ const ListaProductos = () => {
       size: 'large',
       outlineColor: colores.altertex[1],
       disabled: !usuario?.permisos?.includes(PERMISOS.IMPORTAR_PRODUCTOS),
-
     },
     {
       variant: 'outlined',
@@ -265,8 +272,8 @@ const ListaProductos = () => {
   return (
     <>
       <ContenedorLista
-        titulo="Lista de Productos"
-        descripcion="Gestiona y organiza los productos registrados en el sistema."
+        titulo='Lista de Productos'
+        descripcion='Gestiona y organiza los productos registrados en el sistema.'
         informacionBotones={botones}
       >
         {mostrarModalProducto && (
@@ -276,16 +283,23 @@ const ListaProductos = () => {
             alMostrarFormularioProveedor={mostrarFormularioProveedor}
           />
         )}
+
+        {mostrarModalActualizarProducto && (
+          <FormularioActualizarProducto
+            formularioAbierto={mostrarModalActualizarProducto}
+            alCerrarFormularioProducto={cerrarFormularioActualizarProducto}
+            detalleProducto={detalleProducto}
+          />
+        )}
+
         {mostrarModalProveedor && (
           <FormularioProveedor
             formularioAbierto={mostrarModalProveedor}
             alCerrarFormularioProveedor={cerrarFormularioProveedor}
           />
         )}
-        <Box width="100%">
-          {error && (
-            <Alerta tipo="error" mensaje={error} icono cerrable centradoInferior />
-          )}
+        <Box width='100%'>
+          {error && <Alerta tipo='error' mensaje={error} icono cerrable centradoInferior />}
           <Tabla
             columns={columnas}
             rows={filas}
@@ -294,13 +308,14 @@ const ListaProductos = () => {
             checkboxSelection
             rowHeight={80}
             onRowSelectionModelChange={(nuevosIds) => {
-              const ids = (Array.isArray(nuevosIds) ? nuevosIds : Array.from(nuevosIds?.ids || []))
-                .map(id => parseInt(id));
+              const ids = (
+                Array.isArray(nuevosIds) ? nuevosIds : Array.from(nuevosIds?.ids || [])
+              ).map((id) => parseInt(id));
               setProductosSeleccionados(ids);
             }}
             onRowClick={(parametros) => {
               setProductoDetalleSeleccionado(parametros.row.id);
-              setImagenProducto(parametros.row.urlImagen)
+              setImagenProducto(parametros.row.urlImagen);
               setAbrirModalDetalle(true);
             }}
           />
@@ -323,9 +338,9 @@ const ListaProductos = () => {
         abrir={openModalEliminar}
         cerrar={manejarCancelarEliminar}
         confirmar={manejarConfirmarEliminar}
-        dialogo="¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer."
+        dialogo='¿Estás seguro de que deseas eliminar los productos seleccionados? Esta acción no se puede deshacer.'
       />
-        <ModalImportarProdctos
+      <ModalImportarProdctos
         abierto={modalImportarAbierto}
         onCerrar={() => setModalImportarAbierto(false)}
         onConfirm={importar}
@@ -340,8 +355,8 @@ const ListaProductos = () => {
         cerrar={manejarCancelarExportar}
         confirmar={manejarConfirmarExportar}
         dialogo={MENSAJE_POPUP_EXPORTAR}
-        labelCancelar = 'Cancelar'
-        labelConfirmar = 'Confirmar'
+        labelCancelar='Cancelar'
+        labelConfirmar='Confirmar'
         disabledConfirmar={cargando}
       />
 
@@ -358,8 +373,8 @@ const ListaProductos = () => {
               variant: 'contained',
               color: 'primary',
               backgroundColor: colores.altertex[1],
-              onClick: () => console.log('Editar producto'),
-              construccion: true,
+              onClick: mostrarFormularioActualizarProducto,
+              disabled: !usuario?.permisos?.includes(PERMISOS.ACTUALIZAR_PRODUCTO),
             },
             {
               label: 'Salir',
@@ -375,7 +390,7 @@ const ListaProductos = () => {
           ) : errorDetalle ? (
             <p>Error al cargar la información del producto: {errorDetalle}</p>
           ) : (
-            <InfoProducto detalleProducto={detalleProducto} imagenProducto={imagenProducto}/>
+            <InfoProducto detalleProducto={detalleProducto} imagenProducto={imagenProducto} />
           )}
         </ModalFlotante>
       )}

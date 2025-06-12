@@ -144,7 +144,7 @@ const CamposOpcion = memo(
           onChange={(evento) => manejarActualizarOpcion('valorOpcion', evento.target.value)}
           error={Boolean(errores?.valorOpcion)}
           helperText={errores?.valorOpcion || ''}
-        />
+        />{' '}
         <CampoTextoForm
           label='Cantidad'
           type='number'
@@ -153,18 +153,27 @@ const CamposOpcion = memo(
           onChange={(evento) => manejarActualizarOpcion('cantidad', evento.target.value)}
           placeholder='Ingresa la cantidad'
           error={Boolean(errores?.cantidad)}
-          helperText={errores?.cantidad || ''}
+          helperText={errores?.cantidad || 'Valor entero positivo (máx. 9,999,999,999)'}
           min={1}
+          max={9999999999}
           onKeyDown={(evento) => {
             prevenirNumerosNegativos(evento);
           }}
           onInput={(evento) => {
             // Solo permite números enteros positivos
             const valor = evento.target.value;
-            if (valor === '' || /^\d+$/.test(valor)) {
-              evento.target.value = valor;
+            if (valor === '') {
+              evento.target.value = '';
+            } else if (/^\d+$/.test(valor)) {
+              // Convertir a número para verificar el rango
+              const num = Number(valor);
+              if (num > 9999999999) {
+                evento.target.value = '9999999999';
+              } else if (valor.length > 10) {
+                evento.target.value = valor.slice(0, 10);
+              }
             } else {
-              evento.target.value = valor.replace(/\D/g, '');
+              evento.target.value = valor.replace(/\D/g, '').slice(0, 10);
             }
           }}
         />
@@ -184,7 +193,7 @@ const CamposOpcion = memo(
           onChange={(evento) => manejarActualizarOpcion('SKUcomercial', evento.target.value)}
           error={Boolean(errores?.SKUcomercial)}
           helperText={errores?.SKUcomercial || ''}
-        />
+        />{' '}
         <CampoTextoForm
           label='Costo Adicional'
           type='number'
@@ -192,16 +201,27 @@ const CamposOpcion = memo(
           value={opcion.costoAdicional}
           onChange={(evento) => manejarActualizarOpcion('costoAdicional', evento.target.value)}
           placeholder='Ingresa el costo adicional'
-          helperText={errores?.costoAdicional} // Consolidado con helperText
-          error={errores?.costoAdicional}
+          helperText={errores?.costoAdicional || 'Máximo 8 dígitos enteros y 2 decimales'}
+          error={Boolean(errores?.costoAdicional)}
           min={0}
           onKeyDown={prevenirNumerosNoDecimales}
-          /*onInput={(evento) => {
-            if (evento.target.value && evento.target.value < 1) {
-              evento.target.value = 1;
+          onInput={(evento) => {
+            const valor = evento.target.value;
+            if (valor) {
+              const partes = valor.split('.');
+              // Limitar a 8 dígitos enteros
+              if (partes[0] && partes[0].length > 8) {
+                partes[0] = partes[0].substring(0, 8);
+                evento.target.value = partes.join('.');
+              }
+              // Limitar a 2 decimales
+              if (partes[1] && partes[1].length > 2) {
+                partes[1] = partes[1].substring(0, 2);
+                evento.target.value = partes.join('.');
+              }
             }
-          }}*/
-        />
+          }}
+        />{' '}
         <CampoTextoForm
           label='Descuento (%)'
           type='number'
@@ -209,15 +229,26 @@ const CamposOpcion = memo(
           value={opcion.descuento}
           onChange={(evento) => manejarActualizarOpcion('descuento', evento.target.value)}
           placeholder='Ingresa el descuento'
-          helperText={errores?.descuento}
+          helperText={errores?.descuento || 'Valores entre 0 y 100'}
           error={errores?.descuento}
           min={0}
+          max={100}
           onKeyDown={prevenirNumerosNoDecimales}
-          /*onInput={(evento) => {
-            if (evento.target.value && evento.target.value < 1) {
-              evento.target.value = 1;
+          onInput={(evento) => {
+            const valor = evento.target.value;
+            if (valor) {
+              // Limitar a un valor máximo de 100
+              if (parseFloat(valor) > 100) {
+                evento.target.value = '100';
+              }
+              // Limitar a 2 decimales
+              const partes = valor.split('.');
+              if (partes[1] && partes[1].length > 2) {
+                partes[1] = partes[1].substring(0, 2);
+                evento.target.value = partes.join('.');
+              }
             }
-          }}*/
+          }}
         />
         <CampoSelectForm
           label='Estado'

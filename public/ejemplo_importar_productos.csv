@@ -1,0 +1,26 @@
+﻿idProducto,idProveedor,nombreProducto,nombreComercial,descripcionProducto,tipoProducto,marca,modelo,costo,precioVenta,precioCliente,precioPuntos,impuesto,descuento,estado,envio,nombreVariante,descripcionVariante,valorOpcion,SKUcomercial,cantidad,costoAdicional,descuentoOpcion,estadoOpcion
+P1,101,Próducto 1,Comercial 1,Descripcion del producto 2,GENERAL,Marca1,M1,100,296.33,221.59,1,16,0,1,1,Variante 1,Variante 1 del producto 1,Opcion1,SKU-COM-1-1-1,1,0,0,1
+P1,,,,,,,,,,,,,,,,Variante 1,Variante 1 del producto 1,Opcion2,SKU-COM-1-1-2,17,0,0,1
+P1,,,,,,,,,,,,,,,,Variante 1,Variante 1 del producto 1,Opcion3,SKU-COM-1-1-3,17,0,0,1
+P1,,,,,,,,,,,,,,,,Variante 1,Variante 1 del producto 1,Opcion4,SKU-COM-1-1-4,17,0,0,1
+P1,,,,,,,,,,,,,,,,Variante 1,Variante 1 del producto 1,Opcion5,SKU-COM-1-1-5,8,0,0,1
+P1,,,,,,,,,,,,,,,,Variante 2,Variante 2 del producto 1,Opcion1,SKU-COM-1-2-1,14,20,0,1
+P1,,,,,,,,,,,,,,,,Variante 2,Variante 2 del producto 1,Opcion2,SKU-COM-1-2-2,11,20,0,1
+P1,,,,,,,,,,,,,,,,Variante 2,Variante 2 del producto 1,Opcion3,SKU-COM-1-2-3,13,20,0,1
+P1,,,,,,,,,,,,,,,,Variante 2,Variante 2 del producto 1,Opcion4,SKU-COM-1-2-4,12,20,0,1
+P1,,,,,,,,,,,,,,,,Variante 2,Variante 2 del producto 1,Opcion5,SKU-COM-1-2-5,12,20,0,1
+P2,101,Producto 2,Comercial 2,Descripcion del producto 11,GENERAL,Marca2,M2,56.48,229.2,190.15,12,16,0,1,1,Variante 1,Variante 1 del producto 2,Opcion1,SKU-COM-2-1-1,7,0,0,1
+P2,,,,,,,,,,,,,,,,Variante 1,Variante 1 del producto 2,Opcion2,SKU-COM-2-1-2,11,0,0,1
+P2,,,,,,,,,,,,,,,,Variante 1,Variante 1 del producto 2,Opcion3,SKU-COM-2-1-3,13,0,0,1
+P2,,,,,,,,,,,,,,,,Variante 1,Variante 1 del producto 2,Opcion4,SKU-COM-2-1-4,17,0,0,1
+P2,,,,,,,,,,,,,,,,Variante 1,Variante 1 del producto 2,Opcion5,SKU-COM-2-1-5,6,0,0,1
+P2,,,,,,,,,,,,,,,,Variante 2,Variante 2 del producto 2,Opcion1,SKU-COM-2-2-1,18,10,0,1
+P2,,,,,,,,,,,,,,,,Variante 2,Variante 2 del producto 2,Opcion2,SKU-COM-2-2-2,5,10,0,1
+P2,,,,,,,,,,,,,,,,Variante 2,Variante 2 del producto 2,Opcion3,SKU-COM-2-2-3,13,10,0,1
+P2,,,,,,,,,,,,,,,,Variante 2,Variante 2 del producto 2,Opcion4,SKU-COM-2-2-4,18,10,0,1
+P2,,,,,,,,,,,,,,,,Variante 2,Variante 2 del producto 2,Opcion5,SKU-COM-2-2-5,11,10,0,1
+P3,101,Producto 3,Comercial 3,Descripcion del producto 22,GENERAL,Marca3,M3,80.76,289.09,186.15,45,16,0,1,1,Variante 1,Variante 1 del producto 3,Opcion1,SKU-COM-3-1-1,18,0,0,1
+P3,,,,,,,,,,,,,,,,Variante 1,Variante 1 del producto 3,Opcion2,SKU-COM-3-1-2,18,0,0,1
+P3,,,,,,,,,,,,,,,,Variante 1,Variante 1 del producto 3,Opcion3,SKU-COM-3-1-3,18,0,0,1
+P3,,,,,,,,,,,,,,,,Variante 1,Variante 1 del producto 3,Opcion4,SKU-COM-3-1-4,14,0,0,1
+P3,,,,,,,,,,,,,,,,Variante 1,Variante 1 del producto 3,Opcion5,SKU-COM-3-1-5,11,0,0,1

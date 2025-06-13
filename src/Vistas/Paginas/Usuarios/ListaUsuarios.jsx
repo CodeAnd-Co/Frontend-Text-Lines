@@ -9,6 +9,7 @@ import Chip from '@Atomos/Chip';
 import { useConsultarListaUsuarios } from '@Hooks/Usuarios/useConsultarListaUsuarios';
 import { useEliminarUsuarios } from '@Hooks/Usuarios/useEliminarUsuarios';
 import { useConsultarRoles } from '@Hooks/Roles/useConsultarRoles';
+import { useConsultarClientes } from '@Hooks/Clientes/useConsultarClientes';
 import { RUTAS } from '@Constantes/rutas';
 import { tokens } from '@SRC/theme';
 import NavegadorAdministrador from '@Organismos/NavegadorAdministrador';
@@ -21,6 +22,7 @@ import { useTheme } from '@mui/material';
 import { useActivar2FA } from '@Hooks/Usuarios/useActivar2FA';
 import Activar2FAModal from '@Organismos/Activar2FAModal';
 import Verificar2FAModal from '@Moleculas/Verificar2FAModal';
+import ModalActualizarUsuario from '@Organismos/ModalActualizarUsuario';
 
 const estiloImagenLogo = { marginRight: '1rem' };
 
@@ -36,6 +38,7 @@ const estiloImagenLogo = { marginRight: '1rem' };
  * @see [RF02 Super Administrador Consulta Lista de Usuarios](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF2)
  * @see [RF03 Leer usuario](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF3)
  * @see [RF05 Super Administrador Eliminar Usuario](https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF5)
+ * @see [RF04 Super Administrador Actualiza Usuario](https://codeandco-wiki.netlify.app/docs/next/proyectos/textiles/documentacion/requisitos/RF4)
  */
 
 const ListaUsuarios = () => {
@@ -44,21 +47,25 @@ const ListaUsuarios = () => {
   const navigate = useNavigate();
   const [alerta, setAlerta] = useState(null);
   const { usuarios, cargando, error, recargar } = useConsultarListaUsuarios();
-  const { roles} = useConsultarRoles();
+  const { clientes } = useConsultarClientes();
+  const { roles } = useConsultarRoles();
   const { usuario: usuarioAutenticado } = useAuth();
   const [modalCrearUsuarioAbierto, setModalCrearUsuarioAbierto] = useState(false);
   const [idUsuarioSeleccionado, setIdUsuarioSeleccionado] = useState(null);
   const [modalDetalleAbierto, setModalDetalleAbierto] = useState(false);
+  const [modalActualizarAbierto, setModalActualizarAbierto] = useState(false);
   const {
     usuario,
     cargando: cargandoDetalle,
     error: errorDetalle,
   } = useUsuarioId(modalDetalleAbierto ? idUsuarioSeleccionado : null);
 
-    const [modal2FAAbierto, setModal2FAAbierto] = useState(false);
-    const { qrCode, cargando: cargandoQR, error: errorQR, setQrCode } = useActivar2FA();
+  const [modal2FAAbierto, setModal2FAAbierto] = useState(false);
+  const { qrCode, cargando: cargandoQR, error: errorQR, setQrCode } = useActivar2FA();
+  const rolesPorId = Object.fromEntries(roles.map((fila) => [fila.idRol, fila.nombre]));
 
-    /** const manejarActivar2FA = async () => {
+
+  /** const manejarActivar2FA = async () => {
       await activar2FA({
         idUsuario: usuarioAutenticado?.idUsuario,
         nombre: usuarioAutenticado?.nombre,
@@ -68,14 +75,9 @@ const ListaUsuarios = () => {
     };
     */
   const opcionesRol = roles.map((rol) => ({
-    value: rol.idRol, 
+    value: rol.idRol,
     label: rol.nombre,
   }));
-
-  const obtenerIdRolPorNombre = (nombreRol) => {
-    const rolEncontrado = roles.find((rol) => rol.nombre === nombreRol);
-    return rolEncontrado ? rolEncontrado.idRol : '';
-  };
 
   const redirigirAInicio = () => {
     navigate(RUTAS.SISTEMA_ADMINISTRATIVO.BASE, { replace: true });
@@ -85,21 +87,21 @@ const ListaUsuarios = () => {
     await cerrarSesion();
   };
   const { cerrarSesion } = useAuth();
-const {
-  usuariosAEliminar,
-  abrirPopUp,
-  abrirModal2FA,
-  error2FA,
-  cargando2FA,
-  manejarSeleccion,
-  manejarAbrirPopUp,
-  manejarCerrarPopUp,
-  eliminarUsuarios,
-  manejarVerificar2FA,
-  manejarCerrarModal2FA,
-  codigo2FA,          
-  setCodigo2FA 
-} = useEliminarUsuarios(setAlerta, recargar);
+  const {
+    usuariosAEliminar,
+    abrirPopUp,
+    abrirModal2FA,
+    error2FA,
+    cargando2FA,
+    manejarSeleccion,
+    manejarAbrirPopUp,
+    manejarCerrarPopUp,
+    eliminarUsuarios,
+    manejarVerificar2FA,
+    manejarCerrarModal2FA,
+    codigo2FA,
+    setCodigo2FA,
+  } = useEliminarUsuarios(setAlerta, recargar);
 
   useEffect(() => {}, [usuariosAEliminar]);
 
@@ -196,7 +198,7 @@ const {
           id,
           idUsuario: id,
           nombre: usuario.nombre,
-          rol: usuario.rol || 'Sin rol',
+          rol: rolesPorId[usuario.rol] || 'Sin rol',
           cliente: usuario.cliente ? [usuario.cliente] : [],
           estatus: usuario.estatus,
           correo: usuario.correo,
@@ -257,7 +259,8 @@ const {
       backgroundColor: colores.verde[1],
       disabled: !usuarioAutenticado?.permisos?.includes(PERMISOS.ACTIVAR_2FA_SUPERADMIN),
     },
-  */];
+  */
+  ];
 
   const redirigirATienda = () => {
     navigate(RUTAS.SISTEMA_TIENDA.BASE, { replace: true });
@@ -310,16 +313,6 @@ const {
         }
         informacionBotones={botones}
       >
-        {alerta && (
-          <Alerta
-            tipo={alerta.tipo}
-            mensaje={alerta.mensaje}
-            cerrable
-            duracion={3000}
-            onClose={() => setAlerta(null)}
-            centradoInferior
-          />
-        )}
         {modalCrearUsuarioAbierto && (
           <FormularioCrearUsuario
             open={modalCrearUsuarioAbierto}
@@ -388,8 +381,11 @@ const {
                 variant: 'contained',
                 color: 'primary',
                 backgroundColor: colores.altertex[1],
-                onClick: () => console.log('Editar usuario'),
-                disabled: true, 
+                onClick: () => {
+                  setModalDetalleAbierto(false);
+                  setTimeout(() => setModalActualizarAbierto(true), 100);
+                },
+                disabled: !usuarioAutenticado?.permisos?.includes(PERMISOS.ACTUALIZAR_USUARIO),
               },
               {
                 label: 'SALIR',
@@ -404,39 +400,57 @@ const {
               <p>Cargando usuario...</p>
             ) : usuario ? (
               <>
-              <InfoUsuario
-                modoEdicion={false}
-                cliente={
-                  usuario.clientes?.some((cliente) => cliente?.nombreCliente)
-                    ? usuario.clientes
-                        .filter((cliente) => cliente?.nombreCliente)
-                        .map((cliente) => cliente.nombreCliente)
-                        .join(', ')
-                    : 'Sin cliente asignado'
-                }
-                rol={obtenerIdRolPorNombre(usuario.rol)}
-                datosContacto={{
-                  email: usuario.correoElectronico,
-                  telefono: usuario.numeroTelefono,
-                  direccion: usuario.direccion,
-                }}
-                datosAdicionales={{
-                  nacimiento: new Date(usuario.fechaNacimiento).toLocaleDateString('es-MX'),
-                  genero: usuario.genero,
-                }}
-                estadoUsuario={{
-                  label: usuario.estatus === 1 ? 'Activo' : 'Inactivo',
-                  color: 'primary',
-                  shape: 'circular',
-                  backgroundColor: 'rgba(24, 50, 165, 1)',
-                }}
-                opcionesRol={opcionesRol}
-              />
+                <InfoUsuario
+                  modoEdicion={false}
+                  cliente={
+                    usuario.clientes?.some((cliente) => cliente?.nombreCliente)
+                      ? usuario.clientes
+                          .filter((cliente) => cliente?.nombreCliente)
+                          .map((cliente) => cliente.nombreCliente)
+                          .join(', ')
+                      : 'Sin cliente asignado'
+                  }
+                  rol={(usuario.rol)}
+                  datosContacto={{
+                    email: usuario.correoElectronico,
+                    telefono: usuario.numeroTelefono,
+                    direccion: usuario.direccion,
+                  }}
+                  datosAdicionales={{
+                    nacimiento: new Date(usuario.fechaNacimiento).toLocaleDateString('es-MX'),
+                    genero: usuario.genero,
+                  }}
+                  estadoUsuario={{
+                    label: usuario.estatus === 1 ? 'Activo' : 'Inactivo',
+                    color: 'primary',
+                    shape: 'circular',
+                    backgroundColor: 'rgba(24, 50, 165, 1)',
+                  }}
+                  opcionesRol={opcionesRol}
+                />
               </>
             ) : (
               <p>No se encontró información del usuario.</p>
             )}
           </ModalFlotante>
+        )}
+
+        {modalActualizarAbierto && usuario && (
+          <ModalActualizarUsuario
+            open={modalActualizarAbierto}
+            onClose={() => setModalActualizarAbierto(false)}
+            onAccion={() => {
+              recargar();
+            }}
+            usuarioEdicion={{
+              ...usuario,
+              cliente: usuario.clientes ? usuario.clientes.map((cliente) => cliente.idCliente) : [],
+            }}
+            roles={roles}
+            clientes={clientes}
+            esSuperAdmin={false}
+            cargandoRoles={false}
+          />
         )}
 
         {errorDetalle && (
@@ -445,6 +459,17 @@ const {
           </div>
         )}
       </ContenedorLista>
+      {alerta && (
+          <Alerta
+            tipo={alerta.tipo}
+            mensaje={alerta.mensaje}
+            icono={alerta.icono}
+            cerrable={alerta.cerrable}
+            duracion={3000}
+            centradoInferior
+            onClose={() => setAlerta(null)}
+          />
+        )}
     </>
   );
 };

@@ -7,12 +7,13 @@
  */
 
 export class SetProductos {
-  constructor({ idSetProducto, nombre, descripcion, activo, productos, grupos }) {
+  constructor({ idSetProducto, nombre, descripcion, activo, productos, grupos, idsProductos }) {
     this.idSetProducto = idSetProducto;
     this.nombre = nombre;
     this.descripcion = descripcion;
     this.activo = activo;
     this.productos = productos;
     this.grupos = grupos;
+    this.idsProductos = idsProductos;
   }
 }

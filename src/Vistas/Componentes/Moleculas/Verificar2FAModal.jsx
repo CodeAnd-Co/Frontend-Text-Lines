@@ -17,14 +17,14 @@ const estiloModal = {
 };
 
 const Verificar2FAModal = ({
-  abierto,
-  onCerrar,
-  onConfirmar,
-  cargando,
-  error,
-  codigo,
-  setCodigo,
-}) => {
+                             abierto,
+                             onCerrar,
+                             onConfirmar,
+                             cargando,
+                             error,
+                             codigo,
+                             setCodigo,
+                           }) => {
   const theme = useTheme();
   const colores = tokens(theme.palette.mode);
   const manejarConfirmar = () => {
@@ -32,7 +32,18 @@ const Verificar2FAModal = ({
   };
 
   return (
-    <Modal open={abierto} onClose={onCerrar}>
+    <Modal
+      open={abierto}
+      onClose={onCerrar}
+      slotProps={{
+        backdrop: {
+          sx: {
+            backdropFilter: 'blur(4px)',
+            backgroundColor: colores.acciones[2],
+          },
+        },
+      }}
+    >
       <Box sx={estiloModal}>
         <Typography variant="h6">Verificar en tu app de autenticación</Typography>
 
@@ -51,35 +62,35 @@ const Verificar2FAModal = ({
 
         {error && <Typography color="error">{error}</Typography>}
 
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          gap: 2, 
-          mt: 2,
-        }}
-      >
-        <Boton
-          label="Cancelar"
-          variant="outlined"
-          onClick={onCerrar}
-          outlineColor={colores.altertex[1]}
-        />
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            gap: 2,
+            mt: 2,
+          }}
+        >
+          <Boton
+            label="Cancelar"
+            variant="outlined"
+            onClick={onCerrar}
+            outlineColor={colores.altertex[1]}
+          />
 
-        <Boton
-          label={cargando ? (
-            <>
-              Verificando... <CircularProgress size={16} sx={{ ml: 1 }} />
-            </>
-          ) : (
-            'Verificar'
-          )}
-          variant="contained"
-          onClick={manejarConfirmar}
-          backgroundColor={colores.altertex[1]}
-          disabled={cargando || String(codigo).length !== 6}
-        />
-      </Box>
+          <Boton
+            label={cargando ? (
+              <>
+                Verificando... <CircularProgress size={16} sx={{ ml: 1 }} />
+              </>
+            ) : (
+              'Verificar'
+            )}
+            variant="contained"
+            onClick={manejarConfirmar}
+            backgroundColor={colores.altertex[1]}
+            disabled={cargando || String(codigo).length !== 6}
+          />
+        </Box>
       </Box>
     </Modal>
   );

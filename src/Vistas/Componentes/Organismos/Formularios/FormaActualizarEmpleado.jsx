@@ -4,13 +4,20 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import CampoTexto from '@Atomos/CampoTexto';
 
-const FormaEmpleado = ({
+// Límites para los campos
+const LIMITE_NUMERO_EMERGENCIA = 10;
+const LIMITE_AREA_TRABAJO = 50;
+const LIMITE_POSICION = 50;
+const LIMITE_CANTIDAD_PUNTOS = 10;
+const MENSAJE_LIMITE = 'Máximo caracteres';
+const CAMPO_OBLIGATORIO = 'Este campo es obligatorio';
+
+const FormaActualizarEmpleado = ({
   datosEmpleado,
   erroresValidacion,
   manejarCambio,
   manejarAntiguedad,
   obtenerHelperText,
-  esEdicion,
 }) => {
   const estiloCuadricula = {
     display: 'flex',
@@ -20,46 +27,6 @@ const FormaEmpleado = ({
     <Grid container columns={12}>
       <Grid size={6} sx={estiloCuadricula}>
         <CampoTexto
-          label='ID Empleado'
-          name='idEmpleado'
-          disabled={esEdicion}
-          value={datosEmpleado.idEmpleado}
-          onChange={manejarCambio}
-          required
-          size='medium'
-          error={!!erroresValidacion.idEmpleado}
-          helperText={obtenerHelperText('idEmpleado')}
-          inputProps={{
-            maxLength: 8,
-            type: 'number',
-            min: 1,
-            step: 1,
-          }}
-        />
-      </Grid>
-
-      <Grid size={6} sx={estiloCuadricula}>
-        <CampoTexto
-          label='ID Usuario'
-          name='idUsuario'
-          disabled={esEdicion}
-          value={datosEmpleado.idUsuario}
-          onChange={manejarCambio}
-          required
-          size='medium'
-          error={!!erroresValidacion.idUsuario}
-          helperText={obtenerHelperText('idUsuario')}
-          inputProps={{
-            maxLength: 8,
-            type: 'number',
-            min: 1,
-            step: 1,
-          }}
-        />
-      </Grid>
-
-      <Grid size={6} sx={estiloCuadricula}>
-        <CampoTexto
           label='Número de Emergencia'
           name='numeroEmergencia'
           value={datosEmpleado.numeroEmergencia}
@@ -67,9 +34,13 @@ const FormaEmpleado = ({
           required
           size='medium'
           error={!!erroresValidacion.numeroEmergencia}
-          helperText={obtenerHelperText('numeroEmergencia')}
+          helperText={
+            erroresValidacion.numeroEmergencia
+              ? CAMPO_OBLIGATORIO
+              : `${datosEmpleado.numeroEmergencia.length}/${LIMITE_NUMERO_EMERGENCIA} - ${MENSAJE_LIMITE}`
+          }
           inputProps={{
-            maxLength: 10,
+            maxLength: LIMITE_NUMERO_EMERGENCIA,
             type: 'text',
             inputMode: 'numeric',
             pattern: '[0-9]*',
@@ -91,9 +62,13 @@ const FormaEmpleado = ({
           required
           size='medium'
           error={!!erroresValidacion.areaTrabajo}
-          helperText={obtenerHelperText('areaTrabajo')}
+          helperText={
+            erroresValidacion.areaTrabajo
+              ? CAMPO_OBLIGATORIO
+              : `${datosEmpleado.areaTrabajo.length}/${LIMITE_AREA_TRABAJO} - ${MENSAJE_LIMITE}`
+          }
           inputProps={{
-            maxLength: 50,
+            maxLength: LIMITE_AREA_TRABAJO,
           }}
         />
       </Grid>
@@ -114,9 +89,13 @@ const FormaEmpleado = ({
           required
           size='medium'
           error={!!erroresValidacion.posicion}
-          helperText={obtenerHelperText('posicion')}
+          helperText={
+            erroresValidacion.posicion
+              ? CAMPO_OBLIGATORIO
+              : `${datosEmpleado.posicion.length}/${LIMITE_POSICION} - ${MENSAJE_LIMITE}`
+          }
           inputProps={{
-            maxLength: 40,
+            maxLength: LIMITE_POSICION,
           }}
         />
       </Grid>
@@ -126,16 +105,24 @@ const FormaEmpleado = ({
           label='Cantidad de Puntos'
           name='cantidadPuntos'
           value={datosEmpleado.cantidadPuntos}
-          onChange={manejarCambio}
+          onChange={(num) => {
+            const soloNumeros = num.target.value.replace(/\D/g, '');
+            manejarCambio({ target: { name: 'cantidadPuntos', value: soloNumeros } });
+          }}
           required
           size='medium'
           error={!!erroresValidacion.cantidadPuntos}
-          helperText={obtenerHelperText('cantidadPuntos')}
+          helperText={
+            erroresValidacion.cantidadPuntos
+              ? CAMPO_OBLIGATORIO
+              : `${
+                  (datosEmpleado.cantidadPuntos || '').toString().length
+                }/${LIMITE_CANTIDAD_PUNTOS} - ${MENSAJE_LIMITE}`
+          }
           inputProps={{
-            maxLength: 10,
-            type: 'number',
-            min: 0,
-            step: 1,
+            maxLength: LIMITE_CANTIDAD_PUNTOS,
+            inputMode: 'numeric',
+            pattern: '[0-9]*',
           }}
         />
       </Grid>
@@ -162,4 +149,4 @@ const FormaEmpleado = ({
   );
 };
 
-export default FormaEmpleado;
+export default FormaActualizarEmpleado;

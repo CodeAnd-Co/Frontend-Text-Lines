@@ -40,6 +40,7 @@ export const DetalleClienteModal = ({
             variant: 'outlined',
             outlineColor: colores.rojo[2],
             onClick: onToggleEliminar,
+            disabled: !usuario?.permisos?.includes(PERMISOS.ELIMINAR_CLIENTE),
           },
           {
             label: modoEdicion ? 'GUARDAR' : 'EDITAR',

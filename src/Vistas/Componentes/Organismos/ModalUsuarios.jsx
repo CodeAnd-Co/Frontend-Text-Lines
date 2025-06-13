@@ -1,36 +1,31 @@
-//RF16 - Agregar empleado - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF16
-//RF19 - Actualizar empleado - https://codeandco-wiki.netlify.app/docs/proyectos/textiles/documentacion/requisitos/RF19
 import { Box } from '@mui/material';
 import Alerta from '@Moleculas/Alerta';
 import ModalFlotante from '@Organismos/ModalFlotante';
-import FormaEmpleado from '@Organismos/Formularios/FormaEmpleado';
-import { useAccionesEmpleado } from '@Hooks/Empleados/useAccionesEmpleado';
+import FormularioActualizarUsuario from './Formularios/FormularioActualizarUsuario';
+import { useAccionesUsuario } from '@Hooks/Usuarios/useAccionesUsuario';
 
-const ModalEmpleados = ({ open, onClose, onAccion, empleadoEdicion }) => {
+const ModalUsuarios = ({ open, onClose, onAccion, usuarioEdicion }) => {
   const {
-    datosEmpleado,
+    datosUsuario,
     erroresValidacion,
     alerta,
     setAlerta,
     esEdicion,
     manejarCambio,
-    manejarAntiguedad,
+    manejarFechaNacimiento,
     obtenerHelperText,
     handleGuardar,
-    limpiarFormulario,
-  } = useAccionesEmpleado(empleadoEdicion);
+    CAMPO_OBLIGATORIO,
+    roles,
+    clientes,
+    esSuperAdmin,
+    cargandoRoles,
+  } = useAccionesUsuario(usuarioEdicion);
 
   const manejarConfirmacion = async () => {
     const resultado = await handleGuardar();
-
     if (resultado?.exito) {
       if (onAccion) await onAccion();
-
-      if (!esEdicion) {
-        limpiarFormulario();
-      }
-
-      // Esperar un momento para que el usuario vea el mensaje de éxito
       setTimeout(() => {
         onClose();
       }, 1500);
@@ -47,7 +42,7 @@ const ModalEmpleados = ({ open, onClose, onAccion, empleadoEdicion }) => {
       open={open}
       onClose={manejarCierre}
       onConfirm={manejarConfirmacion}
-      titulo={esEdicion ? datosEmpleado.nombreCompleto : 'Agregar Empleado'}
+      titulo={esEdicion ? datosUsuario.nombreCompleto : 'Actualizar Usuario'}
     >
       <Box
         component='form'
@@ -60,16 +55,19 @@ const ModalEmpleados = ({ open, onClose, onAccion, empleadoEdicion }) => {
         noValidate
         autoComplete='off'
       >
-        <FormaEmpleado
-          datosEmpleado={datosEmpleado}
+        <FormularioActualizarUsuario
+          datosUsuario={datosUsuario}
           erroresValidacion={erroresValidacion}
           manejarCambio={manejarCambio}
-          manejarAntiguedad={manejarAntiguedad}
+          manejarFechaNacimiento={manejarFechaNacimiento}
           obtenerHelperText={obtenerHelperText}
-          esEdicion={esEdicion}
+          roles={roles}
+          clientes={clientes}
+          esSuperAdmin={esSuperAdmin}
+          cargandoRoles={cargandoRoles}
+          CAMPO_OBLIGATORIO={CAMPO_OBLIGATORIO}
         />
       </Box>
-
       {alerta && (
         <Alerta
           sx={{ marginBottom: 2 }}
@@ -83,4 +81,4 @@ const ModalEmpleados = ({ open, onClose, onAccion, empleadoEdicion }) => {
   );
 };
 
-export default ModalEmpleados;
+export default ModalUsuarios;

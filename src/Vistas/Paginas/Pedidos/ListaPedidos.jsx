@@ -7,6 +7,8 @@ import ContenedorLista from '@Organismos/ContenedorLista';
 import Tabla from '@Organismos/Tabla';
 import Alerta from '@Moleculas/Alerta';
 import PopUp from '@Moleculas/PopUp';
+import Boton from '@Atomos/Boton';
+import ModalEditarPedido from '@Organismos/ModalEditarPedido';
 import { tokens } from '@SRC/theme';
 import { useConsultarPedidos } from '@Hooks/Pedidos/useConsultarPedidos';
 import { useEliminarPedido } from '@Hooks/Pedidos/useEliminarPedido';
@@ -23,12 +25,16 @@ const ListaPedidos = () => {
   const [alerta, setAlerta] = useState(null);
   const { eliminar } = useEliminarPedido();
 
-  // Estado para controlar la visualización del modal eliminar
-  const [abrirPopUpEliminar, setAbrirPopUpEliminar] = useState(false);
+  const { usuario } = useAuth();
+
+  // Estados para actualizar pedido
+  const [modalAbierto, setModalAbierto] = useState(false);
+  const [pedidoSeleccionado, setPedidoSeleccionado] = useState(null);
+
   const manejarCancelarEliminar = () => {
     setAbrirPopUpEliminar(false);
   };
-  const { usuario } = useAuth();
+
   const manejarConfirmarEliminar = async () => {
     try {
       await eliminar(seleccionados);
@@ -54,42 +60,40 @@ const ListaPedidos = () => {
     }
   };
 
+  const [abrirPopUpEliminar, setAbrirPopUpEliminar] = useState(false);
+
+  // Funciones para editar pedido
+  const abrirModalEditar = (pedido) => {
+    console.log('Fila seleccionada:', pedido);
+    setPedidoSeleccionado(pedido);
+    setModalAbierto(true);
+  };
+
+  const cerrarModal = () => {
+    setPedidoSeleccionado(null);
+    setModalAbierto(false);
+  };
+
+  const mostrarAlerta = (mensaje, tipo) => {
+    setAlerta({
+      tipo,
+      mensaje,
+      icono: true,
+      cerrable: true,
+      centradoInferior: true,
+    });
+    setTimeout(() => setAlerta(null), 3000);
+  };
+
   const columnas = [
-    {
-      field: 'pedido',
-      headerName: 'Pedido ID',
-      flex: 1,
-    },
-    {
-      field: 'nombreEmpleado',
-      headerName: 'Empleado',
-      flex: 1,
-    },
-    {
-      field: 'fechaOrden',
-      headerName: 'Fecha',
-      flex: 1,
-    },
-    {
-      field: 'estatusPedido',
-      headerName: 'Estatus',
-      flex: 1,
-    },
-    {
-      field: 'precioTotal',
-      headerName: 'Precio Total',
-      flex: 1,
-    },
-    {
-      field: 'estatusPago',
-      headerName: 'Pago',
-      flex: 1,
-    },
-    {
-      field: 'estatusEnvio',
-      headerName: 'Envio',
-      flex: 1,
-    },
+    { field: 'pedido', headerName: 'Pedido ID', flex: 1 },
+    { field: 'nombreEmpleado', headerName: 'Empleado', flex: 1 },
+    { field: 'fechaOrden', headerName: 'Fecha', flex: 1 },
+    { field: 'estatusPedido', headerName: 'Estatus', flex: 1 },
+    { field: 'precioTotal', headerName: 'Precio Total', flex: 1 },
+    { field: 'estatusPago', headerName: 'Pago', flex: 1 },
+    { field: 'estatusEnvio', headerName: 'Envio', flex: 1 },
+    
   ];
 
   const botones = [
@@ -148,14 +152,18 @@ const ListaPedidos = () => {
               rows={filas}
               disableRowSelectionOnClick={true}
               checkboxSelection
+              onRowClick={({ row }) => abrirModalEditar(row)}
               onRowSelectionModelChange={(seleccion) => {
-                const ids = Array.isArray(seleccion) ? seleccion : Array.from(seleccion?.ids || []);
+                const ids = Array.isArray(seleccion)
+                  ? seleccion
+                  : Array.from(seleccion?.ids || []);
                 setSeleccionados(ids);
               }}
             />
           )}
         </Box>
       </ContenedorLista>
+
       {alerta && (
         <Alerta
           tipo={alerta.tipo}
@@ -167,11 +175,21 @@ const ListaPedidos = () => {
           onClose={() => setAlerta(null)}
         />
       )}
+
       <PopUp
         abrir={abrirPopUpEliminar}
         cerrar={manejarCancelarEliminar}
         confirmar={manejarConfirmarEliminar}
         dialogo={MENSAJE_POPUP_ELIMINAR}
+      />
+
+      {/* 🆕 Modal Editar Pedido */}
+      <ModalEditarPedido
+        abierto={modalAbierto}
+        onCerrar={cerrarModal}
+        datosIniciales={pedidoSeleccionado}
+        onActualizar={recargar}
+        onMostrarAlerta={mostrarAlerta}
       />
     </>
   );

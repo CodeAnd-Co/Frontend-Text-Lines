@@ -121,8 +121,8 @@ export const ProductoFormProvider = ({ children, alCerrarFormularioProducto }) =
           [campo]: valor,
         },
       };
-    }, []);
-  });
+    });
+  }, []);
 
   const manejarEliminarVariante = useCallback((idVariante) => {
     setVariantes((prev) => {

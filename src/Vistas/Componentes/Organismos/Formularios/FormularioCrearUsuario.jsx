@@ -19,7 +19,7 @@ const LIMITE_APELLIDO = 50;
 const LIMITE_CORREO = 100;
 const LIMITE_TELEFONO = 10;
 const LIMITE_DIRECCION = 100;
-const LIMITE_CONTRASENIA = 64; 
+const LIMITE_CONTRASENIA = 64;
 const MENSAJE_LIMITE = 'Máximo caracteres';
 
 const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
@@ -85,7 +85,7 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
         setAlerta({
           tipo: 'success',
           mensaje: resumenUsuario,
-          icono: true, 
+          icono: true,
           cerrable: true,
           centradoInferior: true,
           duracion: 3000,
@@ -172,7 +172,7 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
                 size='medium'
                 error={!!errores.nombreCompleto}
                 helperText={
-                errores.nombreCompleto
+                  errores.nombreCompleto
                     ? CAMPO_OBLIGATORIO
                     : `${datosUsuario.nombreCompleto.length}/${LIMITE_NOMBRE} - ${MENSAJE_LIMITE}`
                 }
@@ -192,7 +192,7 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
                 size='medium'
                 error={!!errores.apellido}
                 helperText={
-                errores.apellido
+                  errores.apellido
                     ? CAMPO_OBLIGATORIO
                     : `${datosUsuario.apellido.length}/${LIMITE_APELLIDO} - ${MENSAJE_LIMITE}`
                 }
@@ -253,7 +253,9 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
                 error={!!errores.correoElectronico}
                 helperText={
                   errores.correoElectronico
-                    ? (errores.correoElectronico === true ? CAMPO_OBLIGATORIO : errores.correoElectronico)
+                    ? errores.correoElectronico === true
+                      ? CAMPO_OBLIGATORIO
+                      : errores.correoElectronico
                     : `${datosUsuario.correoElectronico.length}/${LIMITE_CORREO} - ${MENSAJE_LIMITE}`
                 }
                 inputProps={{
@@ -264,28 +266,29 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
 
             <Grid size={6} sx={estiloCuadricula}>
               <CampoTexto
-              label='Número de Teléfono'
-              name='numeroTelefono'
-              value={datosUsuario.numeroTelefono}
-              onChange={(num) => {
-                const soloNumeros = num.target.value.replace(/\D/g, ''); // elimina todo lo que no es dígito
-                manejarCambio({ target: { name: 'numeroTelefono', value: soloNumeros } });
-              }}
-              required
-              size='medium'
-              error={!!errores.numeroTelefono}
-              helperText={
-                errores.numeroTelefono
-                  ? (errores.numeroTelefono === true ? CAMPO_OBLIGATORIO : errores.numeroTelefono)
-                  : `${datosUsuario.numeroTelefono.length}/${LIMITE_TELEFONO} - ${MENSAJE_LIMITE}`
-              }
-              inputProps={{
-                maxLength: LIMITE_TELEFONO,
-                inputMode: 'numeric', // para teclado numérico en móviles
-                pattern: '[0-9]*',
-              }}
-            />
-
+                label='Número de Teléfono'
+                name='numeroTelefono'
+                value={datosUsuario.numeroTelefono}
+                onChange={(num) => {
+                  const soloNumeros = num.target.value.replace(/\D/g, ''); // elimina todo lo que no es dígito
+                  manejarCambio({ target: { name: 'numeroTelefono', value: soloNumeros } });
+                }}
+                required
+                size='medium'
+                error={!!errores.numeroTelefono}
+                helperText={
+                  errores.numeroTelefono
+                    ? errores.numeroTelefono === true
+                      ? CAMPO_OBLIGATORIO
+                      : errores.numeroTelefono
+                    : `${datosUsuario.numeroTelefono.length}/${LIMITE_TELEFONO} - ${MENSAJE_LIMITE}`
+                }
+                inputProps={{
+                  maxLength: LIMITE_TELEFONO,
+                  inputMode: 'numeric', // para teclado numérico en móviles
+                  pattern: '[0-9]*',
+                }}
+              />
             </Grid>
 
             <Grid size={6} sx={estiloCuadricula}>
@@ -298,7 +301,7 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
                 size='medium'
                 error={!!errores.direccion}
                 helperText={
-                errores.direccion
+                  errores.direccion
                     ? CAMPO_OBLIGATORIO
                     : `${datosUsuario.direccion.length}/${LIMITE_DIRECCION} - ${MENSAJE_LIMITE}`
                 }
@@ -359,13 +362,14 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
                 autoComplete='new-password'
                 helperText={
                   errores.contrasenia
-                    ? (errores.contrasenia === true ? CAMPO_OBLIGATORIO : errores.contrasenia)
+                    ? errores.contrasenia === true
+                      ? CAMPO_OBLIGATORIO
+                      : errores.contrasenia
                     : `${datosUsuario.contrasenia.length}/${LIMITE_CONTRASENIA} - ${MENSAJE_LIMITE}`
                 }
                 inputProps={{
                   maxLength: LIMITE_CONTRASENIA,
                 }}
-                
               />
             </Grid>
 
@@ -382,7 +386,9 @@ const FormularioCrearUsuario = ({ open, onClose, onUsuarioCreado }) => {
                 autoComplete='new-password'
                 helperText={
                   errores.confirmarContrasenia
-                    ? (errores.confirmarContrasenia === true ? CAMPO_OBLIGATORIO : errores.confirmarContrasenia)
+                    ? errores.confirmarContrasenia === true
+                      ? CAMPO_OBLIGATORIO
+                      : errores.confirmarContrasenia
                     : `${datosUsuario.confirmarContrasenia.length}/${LIMITE_CONTRASENIA} - ${MENSAJE_LIMITE}`
                 }
                 inputProps={{

@@ -111,10 +111,6 @@ export const useAccionesUsuario = (usuarioInicial = null) => {
 
     if (Object.keys(nuevosErrores).length > 0) {
       setErroresValidacion(nuevosErrores);
-      setAlerta({
-        tipo: 'error',
-        mensaje: 'Corrige los errores en el formulario antes de guardar.',
-      });
       return { exito: false };
     }
 

@@ -27,7 +27,7 @@ const ListaPedidos = () => {
 
   const { usuario } = useAuth();
 
-  // 🆕 Estados para actualizar pedido
+  // Estados para actualizar pedido
   const [modalAbierto, setModalAbierto] = useState(false);
   const [pedidoSeleccionado, setPedidoSeleccionado] = useState(null);
 
@@ -62,7 +62,7 @@ const ListaPedidos = () => {
 
   const [abrirPopUpEliminar, setAbrirPopUpEliminar] = useState(false);
 
-  // 🆕 Funciones para editar pedido
+  // Funciones para editar pedido
   const abrirModalEditar = (pedido) => {
     console.log('Fila seleccionada:', pedido);
     setPedidoSeleccionado(pedido);

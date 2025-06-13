@@ -18,6 +18,7 @@ const ModalActualizarUsuario = ({
     datosUsuario,
     erroresValidacion,
     setAlerta,
+    alerta,
     manejarCambio,
     manejarFechaNacimiento,
     obtenerHelperText,
@@ -75,7 +76,18 @@ const ModalActualizarUsuario = ({
             cargando={cargando}
           />
         </Box>
+
       </ModalFlotante>
+      {alerta && (
+                <Alerta
+                  sx={{ marginBottom: 2 }}
+                  tipo={alerta.tipo}
+                  mensaje={alerta.mensaje}
+                  duracion='3000'
+                  onClose={() => setAlerta(null)}
+                  centradoInferior
+                />
+              )}
     </>
   );
 };

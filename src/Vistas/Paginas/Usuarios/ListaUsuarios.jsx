@@ -439,17 +439,8 @@ const ListaUsuarios = () => {
           <ModalActualizarUsuario
             open={modalActualizarAbierto}
             onClose={() => setModalActualizarAbierto(false)}
-            onAccion={(exito, mensaje) => {
+            onAccion={() => {
               recargar();
-              if (exito) {
-                setAlerta({
-                  tipo: 'success',
-                  mensaje: mensaje || 'Usuario actualizado exitosamente',
-                  icono: true,
-                  cerrable: true,
-                  centradoInferior: true,
-                });
-              }
             }}
             usuarioEdicion={{
               ...usuario,

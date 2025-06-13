@@ -313,17 +313,6 @@ const ListaUsuarios = () => {
         }
         informacionBotones={botones}
       >
-        {alerta && (
-          <Alerta
-            tipo={alerta.tipo}
-            mensaje={alerta.mensaje}
-            icono={alerta.icono}
-            cerrable={alerta.cerrable}
-            duracion={3000}
-            centradoInferior={alerta.centradoInferior}
-            onClose={() => setAlerta(null)}
-          />
-        )}
         {modalCrearUsuarioAbierto && (
           <FormularioCrearUsuario
             open={modalCrearUsuarioAbierto}
@@ -479,6 +468,17 @@ const ListaUsuarios = () => {
           </div>
         )}
       </ContenedorLista>
+      {alerta && (
+          <Alerta
+            tipo={alerta.tipo}
+            mensaje={alerta.mensaje}
+            icono={alerta.icono}
+            cerrable={alerta.cerrable}
+            duracion={3000}
+            centradoInferior
+            onClose={() => setAlerta(null)}
+          />
+        )}
     </>
   );
 };
